@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d18b0702c76df542a3a20fe8e6205e9, type: 3}
+  m_Name: Bulbasaur
+  m_EditorClassIdentifier: 
+  name: Bulbasaur
+  primaryType: {fileID: 11400000, guid: 16677bacbe9d55246878c477b58016ba, type: 2}
+  secondaryType: {fileID: 0}
+  moves:
+  - {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
+  texture: {fileID: 21300000, guid: 172c0180b1b30a44ab24fa8d177bfb43, type: 3}
