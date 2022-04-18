@@ -9,5 +9,12 @@ public class BattlerTemplate : ScriptableObject
     public Type secondaryType;
     public List<Move> moves;
     public Sprite texture;
-    public float maxHealth;
+    [Space]
+    [Header("Stats")]
+    public int baseHealth;
+    public int baseAttack;
+    public int baseDefense;
+    public int baseSpecialAttack;
+    public int baseSpecialDefense;
+    public int baseSpeed;
 }

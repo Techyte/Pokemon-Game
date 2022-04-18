@@ -2,38 +2,84 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+public enum Turn
+{
+    Player,
+    Enemy
+}
+
 public class Battle : MonoBehaviour
 {
-    [Header("Assignments")]
-    public BattlerTemplate currentBattler;
-    public SpriteRenderer currentBattlerRenderer;
-    public Slider currentBattlerHealthSlider;
+    [Header("PLAYER UI:")]
+    public GameObject PlayerUIHolder;
 
-    public BattlerTemplate aponentBattler;
+    [Space]
+    [Header("Assignments")]
+    public BattlerTemplate currentBattlerSource;
+    public Battler currentBattler;
+    public SpriteRenderer currentBattlerRenderer;
+
+    public BattlerTemplate aponentBattlerSource;
+    public Battler aponentBattler;
     public SpriteRenderer aponentBattlerRenderer;
+    public Slider AponentHealthDisplay;
 
     public TextMeshProUGUI[] moveTexts;
+
+    public AllMoves allMoves;
+
     [Space]
-    public float currentBattlercurrentHealth;
+    [Header("Health Readouts")]
+    public float currentHealth;
+    public float aponentHealth;
+
+    [Space]
+    [Header("Other Readouts")]
+    public Turn currentTurn = Turn.Player;
+
+    private bool playerHasAttacked;
 
     private void Start()
     {
+        currentBattler = new GameObject("CurrentBattlerHolder").AddComponent<Battler>();
+        currentBattler.SetUp(currentBattlerSource, 5, currentBattlerSource.baseHealth, currentBattlerSource.moves[0], currentBattlerSource.moves[1]);
+
+        aponentBattler = new GameObject("AponentBattlerHolder").AddComponent<Battler>();
+        aponentBattler.SetUp(aponentBattlerSource, 5, aponentBattlerSource.baseHealth, aponentBattlerSource.moves[0]);
+
         currentBattlerRenderer.sprite = currentBattler.texture;
         aponentBattlerRenderer.sprite = aponentBattler.texture;
 
-        for (int i = 0; i < currentBattler.moves.Count; i++)
+        for(int i = 0; i < moveTexts.Length; i++)
         {
-            moveTexts[i].transform.parent.gameObject.SetActive(true);
-            moveTexts[i].text = currentBattler.moves[0].name;
+            moveTexts[i].transform.parent.gameObject.SetActive(false);
         }
 
-        currentBattlerHealthSlider.maxValue = currentBattler.maxHealth;
-        currentBattlercurrentHealth = currentBattler.maxHealth;
+        for(int i = 0; i < currentBattler.moves.Length; i++)
+        {
+            if (currentBattler.moves[i])
+            {
+                moveTexts[i].transform.parent.gameObject.SetActive(true);
+                moveTexts[i].text = currentBattler.moves[i].name;
+            }
+        }
+
+        aponentBattler.currentHealth = aponentBattler.maxHealth;
+        AponentHealthDisplay.maxValue = aponentBattler.maxHealth;
+        AponentHealthDisplay.value = aponentBattler.maxHealth;
     }
 
     private void Update()
     {
-        currentBattlerHealthSlider.value = currentBattlercurrentHealth;
+        if(currentTurn == Turn.Player)
+        {
+            DoPlayerTurn();
+        }
+
+        if (currentTurn == Turn.Enemy)
+        {
+            DoEnemyTurn();
+        }
     }
 
     public void DoMove(int moveID)
@@ -45,7 +91,92 @@ public class Battle : MonoBehaviour
     void DoMoveOnAposingBattler(Move move)
     {
         //You can add any animation calls for attacking here
-        Debug.Log("We are attacking to aposing Battler with: " + move);
-        currentBattlercurrentHealth -= move.damage;
+
+        float damageToDo = CalculateDamage(move, currentBattler, aponentBattler);
+        aponentBattler.currentHealth -= (int)damageToDo;
+        Debug.Log(damageToDo);
+
+        playerHasAttacked = true;
+    }
+
+    bool CheckForTypeAdvantages(Move move, Battler battler, int i)
+    {
+        if (move.type.strongAgainst[i] == battler.primaryType || move.type.strongAgainst[i] == battler.secondaryType)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    float CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
+    {
+        float finalDamage;
+
+        float STAB = 0;
+        for (int i = 0; i < move.type.strongAgainst.Length; i++)
+        {
+            if (move.type.strongAgainst[i] == battlerBeingAttacked.primaryType || move.type.strongAgainst[i] == battlerBeingAttacked.secondaryType)
+            {
+                STAB += 1.5f;
+            }
+        }
+
+        float TYPE = 0;
+        if (move.type == battlerThatUsed.primaryType)
+        {
+            TYPE += 2;
+        }
+
+        if (move.type == battlerThatUsed.secondaryType)
+        {
+            TYPE += 2;
+        }
+
+        float damage = ((2* battlerThatUsed.level /5 + 2)* move.damage * (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * STAB * TYPE;
+
+        float RANDOMNESS = 0;
+        RANDOMNESS = Mathf.RoundToInt(Random.Range(.8f * damage, damage));
+        damage = RANDOMNESS;
+        Debug.Log(RANDOMNESS);
+
+        finalDamage = damage;
+
+        return finalDamage;
+    }
+
+    void ChangeTurn()
+    {
+        switch (currentTurn)
+        {
+            case Turn.Player:
+                currentTurn = Turn.Enemy;
+                break;
+            case Turn.Enemy:
+                currentTurn = Turn.Player;
+                break;
+        }
+    }
+
+    void DoPlayerTurn()
+    {
+        PlayerUIHolder.SetActive(true);
+
+        if (playerHasAttacked)
+        {
+            AponentHealthDisplay.value = aponentBattler.currentHealth;
+            playerHasAttacked = false;
+
+            ChangeTurn();
+        }
+    }
+
+    void DoEnemyTurn()
+    {
+        PlayerUIHolder.SetActive(false);
+        Debug.Log("Is enemy turn");
+        ChangeTurn();
     }
 }

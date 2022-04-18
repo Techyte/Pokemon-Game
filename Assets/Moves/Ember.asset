@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e5aad296ed7fa84eacb82768c04ccc9, type: 3}
-  m_Name: Tackle
+  m_Name: Ember
   m_EditorClassIdentifier: 
-  name: Tackle
-  type: {fileID: 11400000, guid: 7d400c8d21a01854e94041f45793cbf1, type: 2}
-  damage: 35
+  name: Ember
+  type: {fileID: 11400000, guid: 2a85514d25185dc4b9be8cdaec17c0d0, type: 2}
+  damage: 40

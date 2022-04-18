@@ -18,3 +18,9 @@ MonoBehaviour:
   moves:
   - {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
   texture: {fileID: 21300000, guid: 172c0180b1b30a44ab24fa8d177bfb43, type: 3}
+  baseHealth: 45
+  baseAttack: 49
+  baseDefense: 49
+  baseSpecialAttack: 65
+  baseSpecialDefense: 65
+  baseSpeed: 45
