@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 644bcc128be0d5e47a40fec391d5fcd4, type: 3}
-  m_Name: Normal
+  m_Name: Fairy
   m_EditorClassIdentifier: 
-  name: Normal
-  strongAgainst: []
-  cantHit:
-  - {fileID: 11400000, guid: 50da9e89bbda9c5418a62d8a5362cab0, type: 2}
+  name: Fairy
+  strongAgainst:
+  - {fileID: 11400000, guid: d19a1b210053ade4ab55da13c78024fd, type: 2}
+  - {fileID: 11400000, guid: 2a0dd581c0f039443914f076081082d8, type: 2}
+  - {fileID: 11400000, guid: 6814cf3b84c0291459658e8469b19aa6, type: 2}
+  cantHit: []
   weakAgainst:
-  - {fileID: 11400000, guid: b26a9af63fede1e4982ef43c75f280ea, type: 2}
+  - {fileID: 11400000, guid: a1e857e04105cf747bc8c86d4a4cc14c, type: 2}
   - {fileID: 11400000, guid: e15b708ccad685240ae9eea4c601524a, type: 2}
+  - {fileID: 11400000, guid: 2a85514d25185dc4b9be8cdaec17c0d0, type: 2}

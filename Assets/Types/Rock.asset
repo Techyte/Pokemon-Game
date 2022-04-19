@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 644bcc128be0d5e47a40fec391d5fcd4, type: 3}
-  m_Name: Water
+  m_Name: Rock
   m_EditorClassIdentifier: 
-  name: Water
+  name: Rock
   strongAgainst:
+  - {fileID: 11400000, guid: 6a482d51d49ba5a45bff8e1435389d3f, type: 2}
+  - {fileID: 11400000, guid: bf9a294a54121aa4388e9b483a5a6612, type: 2}
   - {fileID: 11400000, guid: 2a85514d25185dc4b9be8cdaec17c0d0, type: 2}
-  - {fileID: 11400000, guid: 4641dc3e5ff6ea64f8f1cea1bfaf0a9c, type: 2}
-  - {fileID: 11400000, guid: b26a9af63fede1e4982ef43c75f280ea, type: 2}
+  - {fileID: 11400000, guid: cc8553e72fcb59547b96efa41bfb6395, type: 2}
   cantHit: []
   weakAgainst:
-  - {fileID: 11400000, guid: 16677bacbe9d55246878c477b58016ba, type: 2}
-  - {fileID: 11400000}
-  - {fileID: 11400000, guid: 2a0dd581c0f039443914f076081082d8, type: 2}
+  - {fileID: 11400000, guid: d19a1b210053ade4ab55da13c78024fd, type: 2}
+  - {fileID: 11400000, guid: 4641dc3e5ff6ea64f8f1cea1bfaf0a9c, type: 2}
+  - {fileID: 11400000, guid: e15b708ccad685240ae9eea4c601524a, type: 2}

@@ -4,8 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - Ember: {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
-  - Tackle: {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
+  - EmberSource: {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

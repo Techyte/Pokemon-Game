@@ -15,5 +15,12 @@ MonoBehaviour:
   name: Fire
   strongAgainst:
   - {fileID: 11400000, guid: 16677bacbe9d55246878c477b58016ba, type: 2}
+  - {fileID: 11400000, guid: bf9a294a54121aa4388e9b483a5a6612, type: 2}
+  - {fileID: 11400000, guid: e15b708ccad685240ae9eea4c601524a, type: 2}
+  - {fileID: 11400000, guid: cc8553e72fcb59547b96efa41bfb6395, type: 2}
+  cantHit: []
   weakAgainst:
   - {fileID: 11400000, guid: e96a8bed7870822469f0947b19e4e57d, type: 2}
+  - {fileID: 11400000, guid: b26a9af63fede1e4982ef43c75f280ea, type: 2}
+  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 2a0dd581c0f039443914f076081082d8, type: 2}

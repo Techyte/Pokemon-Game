@@ -10,12 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 644bcc128be0d5e47a40fec391d5fcd4, type: 3}
-  m_Name: Normal
+  m_Name: Flying
   m_EditorClassIdentifier: 
-  name: Normal
-  strongAgainst: []
-  cantHit:
-  - {fileID: 11400000, guid: 50da9e89bbda9c5418a62d8a5362cab0, type: 2}
+  name: Flying
+  strongAgainst:
+  - {fileID: 11400000, guid: d19a1b210053ade4ab55da13c78024fd, type: 2}
+  - {fileID: 11400000, guid: bf9a294a54121aa4388e9b483a5a6612, type: 2}
+  - {fileID: 11400000, guid: e15b708ccad685240ae9eea4c601524a, type: 2}
+  - {fileID: 11400000, guid: cc8553e72fcb59547b96efa41bfb6395, type: 2}
+  - {fileID: 11400000, guid: 6814cf3b84c0291459658e8469b19aa6, type: 2}
+  cantHit: []
   weakAgainst:
   - {fileID: 11400000, guid: b26a9af63fede1e4982ef43c75f280ea, type: 2}
   - {fileID: 11400000, guid: e15b708ccad685240ae9eea4c601524a, type: 2}
+  - {fileID: 11400000, guid: cde34f3d09353db4dbc1c3345d036ff3, type: 2}

@@ -18,6 +18,7 @@ public class Battle : MonoBehaviour
     public BattlerTemplate currentBattlerSource;
     public Battler currentBattler;
     public SpriteRenderer currentBattlerRenderer;
+    public Slider currentBattlerDisplay;
 
     public BattlerTemplate aponentBattlerSource;
     public Battler aponentBattler;
@@ -42,10 +43,10 @@ public class Battle : MonoBehaviour
     private void Start()
     {
         currentBattler = new GameObject("CurrentBattlerHolder").AddComponent<Battler>();
-        currentBattler.SetUp(currentBattlerSource, 5, currentBattlerSource.baseHealth, currentBattlerSource.moves[0], currentBattlerSource.moves[1]);
+        currentBattler.SetUp(currentBattlerSource, 5, currentBattlerSource.baseHealth, allMoves.Ember, allMoves.Tackle);
 
         aponentBattler = new GameObject("AponentBattlerHolder").AddComponent<Battler>();
-        aponentBattler.SetUp(aponentBattlerSource, 5, aponentBattlerSource.baseHealth, aponentBattlerSource.moves[0]);
+        aponentBattler.SetUp(aponentBattlerSource, 5, aponentBattlerSource.baseHealth, allMoves.Tackle);
 
         currentBattlerRenderer.sprite = currentBattler.texture;
         aponentBattlerRenderer.sprite = aponentBattler.texture;
@@ -67,18 +68,22 @@ public class Battle : MonoBehaviour
         aponentBattler.currentHealth = aponentBattler.maxHealth;
         AponentHealthDisplay.maxValue = aponentBattler.maxHealth;
         AponentHealthDisplay.value = aponentBattler.maxHealth;
+
+        currentBattler.currentHealth = currentBattler.maxHealth;
+        currentBattlerDisplay.maxValue = currentBattler.maxHealth;
+        currentBattlerDisplay.value = currentBattler.maxHealth;
     }
 
     private void Update()
     {
-        if(currentTurn == Turn.Player)
+        switch (currentTurn)
         {
-            DoPlayerTurn();
-        }
-
-        if (currentTurn == Turn.Enemy)
-        {
-            DoEnemyTurn();
+            case Turn.Player:
+                DoPlayerTurn();
+                break;
+            case Turn.Enemy:
+                DoEnemyTurn();
+                break;
         }
     }
 
@@ -94,7 +99,8 @@ public class Battle : MonoBehaviour
 
         float damageToDo = CalculateDamage(move, currentBattler, aponentBattler);
         aponentBattler.currentHealth -= (int)damageToDo;
-        Debug.Log(damageToDo);
+
+        //Debug.Log(damageToDo);
 
         playerHasAttacked = true;
     }
@@ -103,19 +109,46 @@ public class Battle : MonoBehaviour
     {
         float finalDamage;
 
-        float STAB = 1;
-        for (int i = 0; i < move.type.strongAgainst.Length; i++)
+        for(int i = 0; i < move.type.cantHit.Length; i++)
         {
-            if (move.type.strongAgainst[i] == battlerBeingAttacked.primaryType || move.type.strongAgainst[i] == battlerBeingAttacked.secondaryType)
+            if(move.type.cantHit[i] == battlerBeingAttacked.primaryType || move.type.cantHit[i] == battlerBeingAttacked.secondaryType)
             {
-                STAB = 1.5f;
+                Debug.Log(move.type + " can't hit that battler");
+                return 0;
             }
         }
 
         float TYPE = 1;
+        for (int i = 0; i < move.type.strongAgainst.Length; i++)
+        {
+            if (move.type.strongAgainst[i] == battlerBeingAttacked.primaryType || move.type.strongAgainst[i] == battlerBeingAttacked.secondaryType)
+            {
+                TYPE = 1.5f;
+            }
+        }
+
+        for (int i = 0; i < move.type.weakAgainst.Length; i++)
+        {
+            if (move.type.weakAgainst[i] == battlerBeingAttacked.primaryType || move.type.weakAgainst[i] == battlerBeingAttacked.secondaryType)
+            {
+                Debug.Log(move.type + " is weak against " + move.type.weakAgainst[i]);
+                if (TYPE == 1.5f)
+                {
+                    TYPE = 1;
+                }
+                else
+                {
+                    TYPE = .5f;
+                }
+            }
+        }
+
+        Debug.Log("TYPE is " + TYPE);
+
+        float STAB = 1;
         if (move.type == battlerThatUsed.primaryType)
         {
-            TYPE = 2;
+            STAB = 2;
         }
 
         if (move.type == battlerThatUsed.secondaryType)
@@ -129,6 +162,8 @@ public class Battle : MonoBehaviour
                 TYPE = 2;
             }
         }
+
+        Debug.Log("STAB is " + STAB);
 
         float damage = 1;
 
@@ -146,7 +181,6 @@ public class Battle : MonoBehaviour
 
         float RANDOMNESS = 0;
         RANDOMNESS = Mathf.RoundToInt(Random.Range(.8f * damage, damage * 1.2f));
-        Debug.Log("Damage was " + damage + " but now it is " + RANDOMNESS);
         damage = RANDOMNESS;
 
         finalDamage = damage;
@@ -183,7 +217,7 @@ public class Battle : MonoBehaviour
     void DoEnemyTurn()
     {
         PlayerUIHolder.SetActive(false);
-        Debug.Log("Is enemy turn");
+        //Debug.Log("Is enemy turn");
         ChangeTurn();
     }
 }

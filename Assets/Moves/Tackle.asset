@@ -15,3 +15,4 @@ MonoBehaviour:
   name: Tackle
   type: {fileID: 11400000, guid: 7d400c8d21a01854e94041f45793cbf1, type: 2}
   damage: 35
+  category: 0
