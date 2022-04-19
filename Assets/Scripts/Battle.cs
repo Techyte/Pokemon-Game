@@ -99,48 +99,55 @@ public class Battle : MonoBehaviour
         playerHasAttacked = true;
     }
 
-    bool CheckForTypeAdvantages(Move move, Battler battler, int i)
-    {
-        if (move.type.strongAgainst[i] == battler.primaryType || move.type.strongAgainst[i] == battler.secondaryType)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     float CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
     {
         float finalDamage;
 
-        float STAB = 0;
+        float STAB = 1;
         for (int i = 0; i < move.type.strongAgainst.Length; i++)
         {
             if (move.type.strongAgainst[i] == battlerBeingAttacked.primaryType || move.type.strongAgainst[i] == battlerBeingAttacked.secondaryType)
             {
-                STAB += 1.5f;
+                STAB = 1.5f;
             }
         }
 
-        float TYPE = 0;
+        float TYPE = 1;
         if (move.type == battlerThatUsed.primaryType)
         {
-            TYPE += 2;
+            TYPE = 2;
         }
 
         if (move.type == battlerThatUsed.secondaryType)
         {
-            TYPE += 2;
+            if(TYPE == 2)
+            {
+                TYPE += 2;
+            }
+            else
+            {
+                TYPE = 2;
+            }
         }
 
-        float damage = ((2* battlerThatUsed.level /5 + 2)* move.damage * (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * STAB * TYPE;
+        float damage = 1;
+
+        //Damage calculation is corect
+
+        switch (move.category)
+        {
+            case MoveCategory.Physical:
+                damage = ((2 * battlerThatUsed.level / 5 + 2) * move.damage * (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * STAB * TYPE;
+                break;
+            case MoveCategory.Special:
+                damage = ((2 * battlerThatUsed.level / 5 + 2) * move.damage * (battlerThatUsed.specialAttack / battlerBeingAttacked.specialDefense) / 50 + 2) * STAB * TYPE;
+                break;
+        }
 
         float RANDOMNESS = 0;
-        RANDOMNESS = Mathf.RoundToInt(Random.Range(.8f * damage, damage));
+        RANDOMNESS = Mathf.RoundToInt(Random.Range(.8f * damage, damage * 1.2f));
+        Debug.Log("Damage was " + damage + " but now it is " + RANDOMNESS);
         damage = RANDOMNESS;
-        Debug.Log(RANDOMNESS);
 
         finalDamage = damage;
 
