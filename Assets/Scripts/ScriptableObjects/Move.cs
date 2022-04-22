@@ -12,5 +12,6 @@ public class Move : ScriptableObject
 public enum MoveCategory
 {
     Physical,
-    Special
+    Special,
+    Status
 }

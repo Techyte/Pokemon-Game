@@ -42,11 +42,13 @@ public class Battle : MonoBehaviour
 
     private void Start()
     {
-        currentBattler = new GameObject("CurrentBattlerHolder").AddComponent<Battler>();
-        currentBattler.SetUp(currentBattlerSource, 5, currentBattlerSource.baseHealth, allMoves.Ember, allMoves.Tackle);
+        Battler[] party = GameManagerGlobal.LoadParty();
 
-        aponentBattler = new GameObject("AponentBattlerHolder").AddComponent<Battler>();
-        aponentBattler.SetUp(aponentBattlerSource, 5, aponentBattlerSource.baseHealth, allMoves.Tackle);
+        currentBattler = party[0];
+
+        //currentBattler = BattlerCreator.SetUp(currentBattlerSource, 5, currentBattlerSource.baseHealth, allMoves.Ember, allMoves.Tackle, null, null);
+
+        aponentBattler = BattlerCreator.SetUp(aponentBattlerSource, 5, aponentBattlerSource.baseHealth, allMoves.Tackle, null, null, null);
 
         currentBattlerRenderer.sprite = currentBattler.texture;
         aponentBattlerRenderer.sprite = aponentBattler.texture;
@@ -100,7 +102,7 @@ public class Battle : MonoBehaviour
         float damageToDo = CalculateDamage(move, currentBattler, aponentBattler);
         aponentBattler.currentHealth -= (int)damageToDo;
 
-        //Debug.Log(damageToDo);
+        Debug.Log(damageToDo);
 
         playerHasAttacked = true;
     }
@@ -143,8 +145,6 @@ public class Battle : MonoBehaviour
             }
         }
 
-        Debug.Log("TYPE is " + TYPE);
-
         float STAB = 1;
         if (move.type == battlerThatUsed.primaryType)
         {
@@ -162,8 +162,6 @@ public class Battle : MonoBehaviour
                 TYPE = 2;
             }
         }
-
-        Debug.Log("STAB is " + STAB);
 
         float damage = 1;
 
