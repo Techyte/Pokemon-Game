@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571322, b: 0.30692163, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1922,9 +1922,11 @@ MonoBehaviour:
   - {fileID: 316355925}
   - {fileID: 478171705}
   - {fileID: 1436893733}
-  allMoves: {fileID: 1983521229}
+  allMoves: {fileID: 0}
   currentTurn: 0
-  party:
+  playerParty:
+    party: []
+  aponentParty:
     party: []
 --- !u!4 &1038033300
 Transform:
@@ -2558,7 +2560,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1923441073
 MonoBehaviour:
@@ -2572,10 +2574,98 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8304e68acb7364ab1805bb19e6f55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partyTemplate:
+  playerPartyTemplate:
   - {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3, type: 2}
-  allMoves: {fileID: 1983521229}
-  party:
+  aponentPartyTemplate:
+  - {fileID: 11400000, guid: f98dd2fa32827594da82f4b72db0840f, type: 2}
+  allMoves: {fileID: 0}
+  playerParty:
+    party:
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+  aponentParty:
     party:
     - source: {fileID: 0}
       name: 
@@ -2759,49 +2849,3 @@ Transform:
   m_Father: {fileID: 292107205}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1983521227
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1983521228}
-  - component: {fileID: 1983521229}
-  m_Layer: 0
-  m_Name: AllMovesInitilizer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1983521228
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983521227}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 828.3921, y: 559.0666, z: -1.1858845}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1983521229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983521227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30d5a5695b12e8d4b8d9d04562275021, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Ember: {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
-  Tackle: {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}

@@ -31,17 +31,19 @@ public class Battle : MonoBehaviour
     [Space]
     [Header("Other Readouts")]
     public Turn currentTurn = Turn.Player;
-    public Party party;
+    public Party playerParty;
+    public Party aponentParty;
 
     private bool playerHasAttacked;
 
     private void Start()
     {
-        party = SaveAndLoad.LoadParty();
+        playerParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/party.json");
+        aponentParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/aponentTestParty.json");
 
-        currentBattler = party.party[0];
+        currentBattler = playerParty.party[0];
 
-        aponentBattler = BattlerCreator.SetUp(aponentBattlerSource, 5, aponentBattler.source.name, aponentBattlerSource.baseHealth, allMoves.Tackle, null, null, null);
+        aponentBattler = aponentParty.party[0];
 
         currentBattlerRenderer.sprite = currentBattler.texture;
         aponentBattlerRenderer.sprite = aponentBattler.texture;
@@ -94,8 +96,6 @@ public class Battle : MonoBehaviour
 
         float damageToDo = CalculateDamage(move, currentBattler, aponentBattler);
         aponentBattler.currentHealth -= (int)damageToDo;
-
-        Debug.Log(damageToDo);
 
         playerHasAttacked = true;
     }

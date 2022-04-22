@@ -1,26 +1,24 @@
 using System.IO;
 using UnityEngine;
 
-public class SaveAndLoad
+public class SaveAndLoad<Type>
 {
-    static string json;
-    public static void SaveParty(Party party)
+    public static void SaveJson(Type party, string path)
     {
-        string path = Application.persistentDataPath + "/party.json";
-
-        json = JsonUtility.ToJson(party, true);
+        string json = JsonUtility.ToJson(party, true);
 
         File.WriteAllText(path, json);
     }
 
-    public static Party LoadParty()
+    public static Type LoadJson(string path)
     {
-        string path = Application.persistentDataPath + "/party.json";
-        Party returnParty = new Party();
+        Type returnObject;
 
-        returnParty = JsonUtility.FromJson<Party>(json);
+        string json = File.ReadAllText(path);
 
-        return returnParty;
+        returnObject = JsonUtility.FromJson<Type>(json);
+
+        return returnObject;
     }
 }
 

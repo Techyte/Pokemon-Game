@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AllMoves : MonoBehaviour
+public class AllMoves : ScriptableObject
 {
     public Move Ember;
     public Move Tackle;
