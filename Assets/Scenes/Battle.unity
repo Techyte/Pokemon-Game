@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571322, b: 0.30692163, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1873,12 +1873,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerUIHolder: {fileID: 583115924}
-  currentBattlerSource: {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3,
-    type: 2}
+  currentBattler:
+    source: {fileID: 0}
+    name: 
+    maxHealth: 0
+    currentHealth: 0
+    level: 0
+    attack: 0
+    defense: 0
+    specialAttack: 0
+    specialDefense: 0
+    speed: 0
+    texture: {fileID: 0}
+    primaryType: {fileID: 0}
+    secondaryType: {fileID: 0}
+    moves:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   currentBattlerRenderer: {fileID: 1027051802}
   currentBattlerDisplay: {fileID: 432099178}
   aponentBattlerSource: {fileID: 11400000, guid: f98dd2fa32827594da82f4b72db0840f,
     type: 2}
+  aponentBattler:
+    source: {fileID: 0}
+    name: 
+    maxHealth: 0
+    currentHealth: 0
+    level: 0
+    attack: 0
+    defense: 0
+    specialAttack: 0
+    specialDefense: 0
+    speed: 0
+    texture: {fileID: 0}
+    primaryType: {fileID: 0}
+    secondaryType: {fileID: 0}
+    moves:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   aponentBattlerRenderer: {fileID: 795133518}
   AponentHealthDisplay: {fileID: 912497052}
   moveTexts:
@@ -1887,9 +1923,9 @@ MonoBehaviour:
   - {fileID: 478171705}
   - {fileID: 1436893733}
   allMoves: {fileID: 1983521229}
-  currentHealth: 0
-  aponentHealth: 0
   currentTurn: 0
+  party:
+    party: []
 --- !u!4 &1038033300
 Transform:
   m_ObjectHideFlags: 0
@@ -2536,6 +2572,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8304e68acb7364ab1805bb19e6f55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partyTemplate:
+  - {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3, type: 2}
+  allMoves: {fileID: 1983521229}
+  party:
+    party:
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
 --- !u!1 &1982330908
 GameObject:
   m_ObjectHideFlags: 0

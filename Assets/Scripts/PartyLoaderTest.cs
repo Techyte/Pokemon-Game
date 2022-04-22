@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class PartyLoaderTest : MonoBehaviour
 {
-    public Battler[] party;
+    public BattlerTemplate[] partyTemplate;
 
-    void Start()
+    public AllMoves allMoves;
+
+    public Party party;
+
+    void Awake()
     {
-        GameManagerGlobal.SaveParty(party);
+        for(int i = 0; i < partyTemplate.Length; i++)
+        {
+            party.party[i] = BattlerCreator.SetUp(partyTemplate[i], 5, partyTemplate[i].name, partyTemplate[i].baseHealth, allMoves.Ember, allMoves.Tackle, null, null);
+        }
+
+        SaveAndLoad.SaveParty(party);
     }
 }

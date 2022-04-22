@@ -15,7 +15,6 @@ public class Battle : MonoBehaviour
 
     [Space]
     [Header("Assignments")]
-    public BattlerTemplate currentBattlerSource;
     public Battler currentBattler;
     public SpriteRenderer currentBattlerRenderer;
     public Slider currentBattlerDisplay;
@@ -30,25 +29,19 @@ public class Battle : MonoBehaviour
     public AllMoves allMoves;
 
     [Space]
-    [Header("Health Readouts")]
-    public float currentHealth;
-    public float aponentHealth;
-
-    [Space]
     [Header("Other Readouts")]
     public Turn currentTurn = Turn.Player;
+    public Party party;
 
     private bool playerHasAttacked;
 
     private void Start()
     {
-        Battler[] party = GameManagerGlobal.LoadParty();
+        party = SaveAndLoad.LoadParty();
 
-        currentBattler = party[0];
+        currentBattler = party.party[0];
 
-        //currentBattler = BattlerCreator.SetUp(currentBattlerSource, 5, currentBattlerSource.baseHealth, allMoves.Ember, allMoves.Tackle, null, null);
-
-        aponentBattler = BattlerCreator.SetUp(aponentBattlerSource, 5, aponentBattlerSource.baseHealth, allMoves.Tackle, null, null, null);
+        aponentBattler = BattlerCreator.SetUp(aponentBattlerSource, 5, aponentBattler.source.name, aponentBattlerSource.baseHealth, allMoves.Tackle, null, null, null);
 
         currentBattlerRenderer.sprite = currentBattler.texture;
         aponentBattlerRenderer.sprite = aponentBattler.texture;

@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class BattlerCreator
 {
-    public static Battler SetUp(BattlerTemplate source, int level, int health, Move move1, Move move2, Move move3, Move move4)
+    public static Battler SetUp(BattlerTemplate source, int level, string name, int health, Move move1, Move move2, Move move3, Move move4)
     {
         Battler battler = new Battler();
         battler.source = source;
         battler.level = level;
+        battler.name = name;
         battler.primaryType = source.primaryType;
         battler.secondaryType = source.secondaryType;
         battler.currentHealth = health;
