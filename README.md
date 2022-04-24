@@ -1,2 +1,2 @@
-# Pokemon Style Battle System
- A Pokemon style battle system template
+# A Pokemon Game
+ A Pokemon game that I'm making for fun
