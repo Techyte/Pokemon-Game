@@ -2,17 +2,17 @@ using UnityEngine.SceneManagement;
 
 public class BattlleManager
 {
-    public static void LoadBattleScene(Battler[] playerParty, Battler[] aponentParty)
+    public static void LoadBattleScene(Party playerParty, Party aponentParty)
     {
         BattleLoaderInfo.playerParty = playerParty;
         BattleLoaderInfo.aponentParty = aponentParty;
 
-        SceneManager.GetSceneByName("Battle");
+        SceneManager.LoadScene(0);
     }
 }
 
 public class BattleLoaderInfo
 {
-    public static Battler[] playerParty;
-    public static Battler[] aponentParty;
+    public static Party playerParty;
+    public static Party aponentParty;
 }

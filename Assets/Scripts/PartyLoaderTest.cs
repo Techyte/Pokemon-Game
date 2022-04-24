@@ -10,22 +10,25 @@ public class PartyLoaderTest : MonoBehaviour
     public Party playerParty;
     public Party aponentParty;
 
-    void Awake()
+    private void Awake()
     {
-        for(int i = 0; i < playerPartyTemplate.Length; i++)
-        {
-            playerParty.party[i] = BattlerCreator.SetUp(playerPartyTemplate[i], 5, playerPartyTemplate[i].name, playerPartyTemplate[i].baseHealth, allMoves.Ember, allMoves.Tackle, null, null);
-        }
+        LoadBattle();
+    }
 
-        for (int i = 0; i < aponentPartyTemplate.Length; i++)
-        {
-            aponentParty.party[i] = BattlerCreator.SetUp(aponentPartyTemplate[i], 5, aponentPartyTemplate[i].name, aponentPartyTemplate[i].baseHealth, allMoves.Tackle, null, null, null);
-        }
+    public void LoadBattle()
+    {
+        playerParty.party[0] = BattlerCreator.SetUp(playerPartyTemplate[0], 5, playerPartyTemplate[0].name, playerPartyTemplate[0].baseHealth, allMoves.Ember, allMoves.Tackle, null, null);
+        playerParty.party[1] = BattlerCreator.SetUp(playerPartyTemplate[1], 5, playerPartyTemplate[1].name, playerPartyTemplate[1].baseHealth, allMoves.Tackle, null, null, null);
+
+        aponentParty.party[0] = BattlerCreator.SetUp(aponentPartyTemplate[0], 5, aponentPartyTemplate[0].name, aponentPartyTemplate[0].baseHealth, allMoves.Tackle, null, null, null);
 
         string playerPath = Application.persistentDataPath + "/party.json";
         string aponentPath = Application.persistentDataPath + "/aponentTestParty.json";
 
         SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
         SaveAndLoad<Party>.SaveJson(aponentParty, aponentPath);
+
+        //While testing, when finished with the batle system I will switch to the more dynamic system
+        //BattlleManager.LoadBattleScene(SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(aponentPath));
     }
 }

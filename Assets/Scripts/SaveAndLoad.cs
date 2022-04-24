@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class SaveAndLoad<Type>
 {
-    public static void SaveJson(Type party, string path)
+    public static void SaveJson(Type data, string path)
     {
-        string json = JsonUtility.ToJson(party, true);
+        string json = JsonUtility.ToJson(data, true);
 
         File.WriteAllText(path, json);
     }
@@ -25,5 +25,5 @@ public class SaveAndLoad<Type>
 [System.Serializable]
 public class Party
 {
-    public Battler[] party;
+    public Battler[] party = new Battler[6];
 }

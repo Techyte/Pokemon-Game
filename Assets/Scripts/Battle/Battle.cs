@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+
 
 public enum Turn
 {
@@ -10,8 +12,9 @@ public enum Turn
 
 public class Battle : MonoBehaviour
 {
-    [Header("PLAYER UI:")]
+    [Header("UI:")]
     public GameObject PlayerUIHolder;
+    [SerializeField] BattleUIManager UIManager;
 
     [Space]
     [Header("Assignments")]
@@ -19,7 +22,6 @@ public class Battle : MonoBehaviour
     public SpriteRenderer currentBattlerRenderer;
     public Slider currentBattlerDisplay;
 
-    public BattlerTemplate aponentBattlerSource;
     public Battler aponentBattler;
     public SpriteRenderer aponentBattlerRenderer;
     public Slider AponentHealthDisplay;
@@ -38,6 +40,12 @@ public class Battle : MonoBehaviour
 
     private void Start()
     {
+        //While testing, when finished with the batle system I will switch to the more dynamic system
+        /*
+        playerParty = BattleLoaderInfo.playerParty;
+        aponentParty = BattleLoaderInfo.aponentParty;
+        */
+
         playerParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/party.json");
         aponentParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/aponentTestParty.json");
 
@@ -45,22 +53,9 @@ public class Battle : MonoBehaviour
 
         aponentBattler = aponentParty.party[0];
 
-        currentBattlerRenderer.sprite = currentBattler.texture;
-        aponentBattlerRenderer.sprite = aponentBattler.texture;
+        UpdateBattlerSprites();
 
-        for(int i = 0; i < moveTexts.Length; i++)
-        {
-            moveTexts[i].transform.parent.gameObject.SetActive(false);
-        }
-
-        for(int i = 0; i < currentBattler.moves.Length; i++)
-        {
-            if (currentBattler.moves[i])
-            {
-                moveTexts[i].transform.parent.gameObject.SetActive(true);
-                moveTexts[i].text = currentBattler.moves[i].name;
-            }
-        }
+        UpdateBattlerMoveDisplays();
 
         aponentBattler.currentHealth = aponentBattler.maxHealth;
         AponentHealthDisplay.maxValue = aponentBattler.maxHealth;
@@ -69,6 +64,8 @@ public class Battle : MonoBehaviour
         currentBattler.currentHealth = currentBattler.maxHealth;
         currentBattlerDisplay.maxValue = currentBattler.maxHealth;
         currentBattlerDisplay.value = currentBattler.maxHealth;
+
+        UIManager.UpdateBattlerButtons();
     }
 
     private void Update()
@@ -86,8 +83,7 @@ public class Battle : MonoBehaviour
 
     public void DoMove(int moveID)
     {
-        if (currentBattler.moves[moveID])
-            DoMoveOnAposingBattler(currentBattler.moves[moveID]);
+        DoMoveOnAposingBattler(currentBattler.moves[moveID]);
     }
 
     void DoMoveOnAposingBattler(Move move)
@@ -100,13 +96,36 @@ public class Battle : MonoBehaviour
         playerHasAttacked = true;
     }
 
+    public void UpdateBattlerSprites()
+    {
+        currentBattlerRenderer.sprite = currentBattler.texture;
+        aponentBattlerRenderer.sprite = aponentBattler.texture;
+    }
+
+    public void UpdateBattlerMoveDisplays()
+    {
+        for (int i = 0; i < moveTexts.Length; i++)
+        {
+            moveTexts[i].transform.parent.gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < currentBattler.moves.Length; i++)
+        {
+            if (currentBattler.moves[i])
+            {
+                moveTexts[i].transform.parent.gameObject.SetActive(true);
+                moveTexts[i].text = currentBattler.moves[i].name;
+            }
+        }
+    }
+
     float CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
     {
         float finalDamage;
 
-        for(int i = 0; i < move.type.cantHit.Length; i++)
+        for (int i = 0; i < move.type.cantHit.Length; i++)
         {
-            if(move.type.cantHit[i] == battlerBeingAttacked.primaryType || move.type.cantHit[i] == battlerBeingAttacked.secondaryType)
+            if (move.type.cantHit[i] == battlerBeingAttacked.primaryType || move.type.cantHit[i] == battlerBeingAttacked.secondaryType)
             {
                 Debug.Log(move.type + " can't hit that battler");
                 return 0;
@@ -146,7 +165,7 @@ public class Battle : MonoBehaviour
 
         if (move.type == battlerThatUsed.secondaryType)
         {
-            if(TYPE == 2)
+            if (TYPE == 2)
             {
                 TYPE += 2;
             }
@@ -179,7 +198,7 @@ public class Battle : MonoBehaviour
         return finalDamage;
     }
 
-    void ChangeTurn()
+    public void ChangeTurn()
     {
         switch (currentTurn)
         {
@@ -210,5 +229,11 @@ public class Battle : MonoBehaviour
         PlayerUIHolder.SetActive(false);
         //Debug.Log("Is enemy turn");
         ChangeTurn();
+    }
+
+    public void EndBattle()
+    {
+        Debug.Log("Ending Battle");
+        SceneManager.LoadScene(1);
     }
 }

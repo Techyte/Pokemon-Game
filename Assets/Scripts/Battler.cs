@@ -8,12 +8,14 @@ public class Battler
     public int maxHealth;
     public int currentHealth;
     public int level;
+    public int exp = 0;
     public int attack;
     public int defense;
     public int specialAttack;
     public int specialDefense;
     public int speed;
     public Sprite texture;
+    public bool isFainted = false;
 
     public Type primaryType;
     public Type secondaryType;
