@@ -10,12 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e5aad296ed7fa84eacb82768c04ccc9, type: 3}
-  m_Name: Ember
+  m_Name: Toxic
   m_EditorClassIdentifier: 
-  name: Ember
-  type: {fileID: 11400000, guid: 2a85514d25185dc4b9be8cdaec17c0d0, type: 2}
-  damage: 40
-  category: 1
-  moveEffects:
-    m_PersistentCalls:
-      m_Calls: []
+  name: Toxic
+  type: {fileID: 11400000, guid: a1e857e04105cf747bc8c86d4a4cc14c, type: 2}
+  damage: 0
+  category: 2

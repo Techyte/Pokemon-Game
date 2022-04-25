@@ -1,8 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
-using UnityEngine.UI;
-
 
 public enum Turn
 {
@@ -19,22 +16,18 @@ public class Battle : MonoBehaviour
     [Space]
     [Header("Assignments")]
     public Battler currentBattler;
-    public SpriteRenderer currentBattlerRenderer;
-    public Slider currentBattlerDisplay;
 
-    public Battler aponentBattler;
-    public SpriteRenderer aponentBattlerRenderer;
-    public Slider AponentHealthDisplay;
-
-    public TextMeshProUGUI[] moveTexts;
+    public Battler apponentBattler;
 
     public AllMoves allMoves;
+    public GameObject statusMoves;
+    public GameObject statusEffects;
 
     [Space]
     [Header("Other Readouts")]
     public Turn currentTurn = Turn.Player;
     public Party playerParty;
-    public Party aponentParty;
+    public Party apponentParty;
 
     private bool playerHasAttacked;
 
@@ -47,23 +40,14 @@ public class Battle : MonoBehaviour
         */
 
         playerParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/party.json");
-        aponentParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/aponentTestParty.json");
+        apponentParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/apponentTestParty.json");
 
         currentBattler = playerParty.party[0];
 
-        aponentBattler = aponentParty.party[0];
+        apponentBattler = apponentParty.party[0];
 
-        UpdateBattlerSprites();
-
-        UpdateBattlerMoveDisplays();
-
-        aponentBattler.currentHealth = aponentBattler.maxHealth;
-        AponentHealthDisplay.maxValue = aponentBattler.maxHealth;
-        AponentHealthDisplay.value = aponentBattler.maxHealth;
-
+        apponentBattler.currentHealth = apponentBattler.maxHealth;
         currentBattler.currentHealth = currentBattler.maxHealth;
-        currentBattlerDisplay.maxValue = currentBattler.maxHealth;
-        currentBattlerDisplay.value = currentBattler.maxHealth;
 
         UIManager.UpdateBattlerButtons();
     }
@@ -90,33 +74,19 @@ public class Battle : MonoBehaviour
     {
         //You can add any animation calls for attacking here
 
-        float damageToDo = CalculateDamage(move, currentBattler, aponentBattler);
-        aponentBattler.currentHealth -= (int)damageToDo;
+        if (move.category == MoveCategory.Status)
+        {
+            statusMoves.BroadcastMessage(move.name);
+        }
+        else
+        {
+            float damageToDo = CalculateDamage(move, currentBattler, apponentBattler);
+            apponentBattler.currentHealth -= (int)damageToDo;
+        }
+
+        UIManager.UpdateHealthDisplays();
 
         playerHasAttacked = true;
-    }
-
-    public void UpdateBattlerSprites()
-    {
-        currentBattlerRenderer.sprite = currentBattler.texture;
-        aponentBattlerRenderer.sprite = aponentBattler.texture;
-    }
-
-    public void UpdateBattlerMoveDisplays()
-    {
-        for (int i = 0; i < moveTexts.Length; i++)
-        {
-            moveTexts[i].transform.parent.gameObject.SetActive(false);
-        }
-
-        for (int i = 0; i < currentBattler.moves.Length; i++)
-        {
-            if (currentBattler.moves[i])
-            {
-                moveTexts[i].transform.parent.gameObject.SetActive(true);
-                moveTexts[i].text = currentBattler.moves[i].name;
-            }
-        }
     }
 
     float CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
@@ -217,7 +187,13 @@ public class Battle : MonoBehaviour
 
         if (playerHasAttacked)
         {
-            AponentHealthDisplay.value = aponentBattler.currentHealth;
+            UIManager.UpdateHealthDisplays();
+
+            if(apponentBattler.statusEffect != null)
+            {
+                statusEffects.SendMessage(apponentBattler.statusEffect.name);
+            }
+
             playerHasAttacked = false;
 
             ChangeTurn();

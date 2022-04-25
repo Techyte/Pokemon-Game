@@ -16,6 +16,7 @@ public class Battler
     public int speed;
     public Sprite texture;
     public bool isFainted = false;
+    public StatusEffect statusEffect;
 
     public Type primaryType;
     public Type secondaryType;

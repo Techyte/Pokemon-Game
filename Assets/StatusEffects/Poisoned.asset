@@ -9,13 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e5aad296ed7fa84eacb82768c04ccc9, type: 3}
-  m_Name: Ember
+  m_Script: {fileID: 11500000, guid: 53a3ecee5adf23c42af052e4246e08d2, type: 3}
+  m_Name: Poisoned
   m_EditorClassIdentifier: 
-  name: Ember
-  type: {fileID: 11400000, guid: 2a85514d25185dc4b9be8cdaec17c0d0, type: 2}
-  damage: 40
-  category: 1
-  moveEffects:
-    m_PersistentCalls:
-      m_Calls: []
+  name: Poisoned

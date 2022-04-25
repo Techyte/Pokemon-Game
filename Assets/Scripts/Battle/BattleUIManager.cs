@@ -9,8 +9,23 @@ public class BattleUIManager : MonoBehaviour
     public GameObject changeBattlerDisplay;
     public GameObject miscButtons;
     public TextMeshProUGUI[] battlerDisplays;
+    public SpriteRenderer currentBattlerRenderer;
+    public SpriteRenderer apponentBattlerRenderer;
+    public Slider currentBattlerHealthDisplay;
+    public Slider apponentHealthDisplay;
+    public TextMeshProUGUI[] moveTexts;
+    public TextMeshProUGUI currentBattlerNameDisplay;
+    public TextMeshProUGUI apponentBattlerNameDisplay;
 
     public Battle battle;
+
+    private void Start()
+    {
+        UpdateBattlerSprites();
+        UpdateBattlerMoveDisplays();
+        UpdateHealthDisplays();
+        UpdateBattlerTexts();
+    }
 
     public void UpdateBattlerButtons()
     {
@@ -52,8 +67,10 @@ public class BattleUIManager : MonoBehaviour
         battle.currentBattler = battle.playerParty.party[partyID];
         battle.ChangeTurn();
         UpdateBattlerButtons();
-        battle.UpdateBattlerSprites();
-        battle.UpdateBattlerMoveDisplays();
+        UpdateBattlerSprites();
+        UpdateBattlerMoveDisplays();
+        UpdateHealthDisplays();
+        UpdateBattlerTexts();
     }
 
     public void Back()
@@ -63,5 +80,43 @@ public class BattleUIManager : MonoBehaviour
         miscButtons.SetActive(true);
         changeBattlerDisplay.SetActive(false);
         UpdateBattlerButtons();
+    }
+
+    public void UpdateBattlerTexts()
+    {
+        currentBattlerNameDisplay.text = battle.currentBattler.name;
+        apponentBattlerNameDisplay.text = battle.apponentBattler.name;
+    }
+
+    public void UpdateBattlerSprites()
+    {
+        currentBattlerRenderer.sprite = battle.currentBattler.texture;
+        apponentBattlerRenderer.sprite = battle.apponentBattler.texture;
+    }
+
+    public void UpdateBattlerMoveDisplays()
+    {
+        for (int i = 0; i < moveTexts.Length; i++)
+        {
+            moveTexts[i].transform.parent.gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < battle.currentBattler.moves.Length; i++)
+        {
+            if (battle.currentBattler.moves[i])
+            {
+                moveTexts[i].transform.parent.gameObject.SetActive(true);
+                moveTexts[i].text = battle.currentBattler.moves[i].name;
+            }
+        }
+    }
+
+    public void UpdateHealthDisplays()
+    {
+        apponentHealthDisplay.maxValue = battle.apponentBattler.maxHealth;
+        apponentHealthDisplay.value = battle.apponentBattler.currentHealth;
+
+        currentBattlerHealthDisplay.maxValue = battle.currentBattler.maxHealth;
+        currentBattlerHealthDisplay.value = battle.currentBattler.currentHealth;
     }
 }
