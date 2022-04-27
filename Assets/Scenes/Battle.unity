@@ -3128,6 +3128,7 @@ MonoBehaviour:
       - {fileID: 0}
       - {fileID: 0}
       - {fileID: 0}
+  ApponentAI: {fileID: 11400000, guid: 890041d0d446fe44aa04478a13cc6116, type: 2}
 --- !u!4 &1038033300
 Transform:
   m_ObjectHideFlags: 0

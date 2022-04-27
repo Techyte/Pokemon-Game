@@ -6,9 +6,9 @@ public class StatusMoves : MonoBehaviour
     private Battle battle;
 
     public StatusEffect poisoned;
-    public void Toxic()
+    public void Toxic(Battler target)
     {
-        battle.apponentBattler.statusEffect = poisoned;
+        target.statusEffect = poisoned;
         Debug.Log("Used Toxic");
     }
 }

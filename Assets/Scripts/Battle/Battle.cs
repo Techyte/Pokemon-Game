@@ -28,6 +28,7 @@ public class Battle : MonoBehaviour
     public Turn currentTurn = Turn.Player;
     public Party playerParty;
     public Party apponentParty;
+    public EnemyAI ApponentAI;
 
     private bool playerHasAttacked;
 
@@ -76,13 +77,20 @@ public class Battle : MonoBehaviour
 
         if (move.category == MoveCategory.Status)
         {
-            statusMoves.BroadcastMessage(move.name);
+            statusMoves.BroadcastMessage(move.name, apponentBattler);
         }
         else
         {
             float damageToDo = CalculateDamage(move, currentBattler, apponentBattler);
             apponentBattler.currentHealth -= (int)damageToDo;
         }
+
+        if(apponentBattler.currentHealth <= 0)
+        {
+            apponentBattler.isFainted = true;
+        }
+
+        CheckForWinCondition();
 
         UIManager.UpdateHealthDisplays();
 
@@ -203,13 +211,83 @@ public class Battle : MonoBehaviour
     void DoEnemyTurn()
     {
         PlayerUIHolder.SetActive(false);
+
+        ApponentAI.EnemyTurn(apponentBattler, apponentParty, this);
+
         //Debug.Log("Is enemy turn");
         ChangeTurn();
+    }
+
+    public void DoMoveOnPlayer(Move move)
+    {
+        float damageToDo = CalculateDamage(move, apponentBattler, currentBattler);
+
+        if (currentBattler.currentHealth <= 0)
+        {
+            currentBattler.isFainted = true;
+        }
+
+        CheckForWinCondition();
+
+        currentBattler.currentHealth -= (int) damageToDo;
     }
 
     public void EndBattle()
     {
         Debug.Log("Ending Battle");
         SceneManager.LoadScene(1);
+    }
+
+    void CheckForWinCondition()
+    {
+        int playerFaintedPokemon = 0;
+        int playerPartyCount = 0;
+
+        for (int i = 0; i < playerParty.party.Length; i++)
+        {
+            if (playerParty.party[i] != null)
+            {
+                playerPartyCount++;
+            }
+        }
+
+        for (int i = 0; i < playerParty.party.Length; i++)
+        {
+            if (playerParty.party[i].isFainted)
+            {
+                playerFaintedPokemon++;
+            }
+        }
+
+        if(playerFaintedPokemon == playerPartyCount)
+        {
+            Debug.Log("Battle ended because player lost all pokemon");
+            EndBattle();
+        }
+
+        int enemyFaintedPokemon = 0;
+        int enemyPartyCount = 0;
+
+        for (int i = 0; i < playerParty.party.Length; i++)
+        {
+            if (playerParty.party[i] != null)
+            {
+                enemyPartyCount++;
+            }
+        }
+
+        for (int i = 0; i < playerParty.party.Length; i++)
+        {
+            if (playerParty.party[i].isFainted)
+            {
+                enemyFaintedPokemon++;
+            }
+        }
+
+        if (enemyFaintedPokemon == enemyPartyCount)
+        {
+            Debug.Log("Battle ended because enemy lost all pokemon");
+            EndBattle();
+        }
     }
 }
