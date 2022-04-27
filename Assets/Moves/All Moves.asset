@@ -15,3 +15,4 @@ MonoBehaviour:
   Ember: {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
   Tackle: {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
   Toxic: {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}
+  RazorLeaf: {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
