@@ -2997,6 +2997,7 @@ MonoBehaviour:
   allMoves: {fileID: 11400000, guid: 081d4d866f9aa8c42be06c885cd5d61d, type: 2}
   statusMoves: {fileID: 605669838}
   statusEffects: {fileID: 530977887}
+  enemyCanAttack: 1
   currentTurn: 0
   playerParty:
     party: []
@@ -3160,6 +3161,7 @@ MonoBehaviour:
   healthDisplays: {fileID: 1971165366}
   changeBattlerDisplay: {fileID: 337073833}
   miscButtons: {fileID: 1406917649}
+  backButton: {fileID: 1208924946}
   battlerDisplays:
   - {fileID: 2060876510}
   - {fileID: 1222545123}

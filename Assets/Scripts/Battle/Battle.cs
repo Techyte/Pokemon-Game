@@ -231,6 +231,7 @@ public class Battle : MonoBehaviour
         if (currentBattler.currentHealth <= 0)
         {
             currentBattler.isFainted = true;
+            UIManager.SwitchBattlerBecauseOfDeath();
         }
 
         CheckForWinCondition();

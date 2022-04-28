@@ -8,6 +8,7 @@ public class BattleUIManager : MonoBehaviour
     public GameObject healthDisplays;
     public GameObject changeBattlerDisplay;
     public GameObject miscButtons;
+    public GameObject backButton;
     public TextMeshProUGUI[] battlerDisplays;
     public SpriteRenderer currentBattlerRenderer;
     public SpriteRenderer apponentBattlerRenderer;
@@ -55,6 +56,17 @@ public class BattleUIManager : MonoBehaviour
         moveButtons.SetActive(false);
         miscButtons.SetActive(false);
         changeBattlerDisplay.SetActive(true);
+        backButton.SetActive(true);
+        UpdateBattlerButtons();
+    }
+
+    public void SwitchBattlerBecauseOfDeath()
+    {
+        healthDisplays.SetActive(false);
+        moveButtons.SetActive(false);
+        miscButtons.SetActive(false);
+        changeBattlerDisplay.SetActive(true);
+        backButton.SetActive(false);
         UpdateBattlerButtons();
     }
 
