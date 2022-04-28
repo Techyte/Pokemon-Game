@@ -1,2 +1,2 @@
 # A Pokemon Game
- A Pokemon game that I'm making for fun
+ A Pokemon game template that I'm making for fun
