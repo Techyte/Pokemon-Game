@@ -23,6 +23,9 @@ public class Battle : MonoBehaviour
     public GameObject statusMoves;
     public GameObject statusEffects;
 
+    //For testing
+    public bool enemyCanAttack;
+
     [Space]
     [Header("Other Readouts")]
     public Turn currentTurn = Turn.Player;
@@ -212,7 +215,10 @@ public class Battle : MonoBehaviour
     {
         PlayerUIHolder.SetActive(false);
 
-        ApponentAI.EnemyTurn(apponentBattler, apponentParty, this);
+        if (enemyCanAttack)
+        {
+            ApponentAI.EnemyTurn(apponentBattler, apponentParty, this);
+        }
 
         //Debug.Log("Is enemy turn");
         ChangeTurn();
@@ -245,7 +251,7 @@ public class Battle : MonoBehaviour
 
         for (int i = 0; i < playerParty.party.Length; i++)
         {
-            if (playerParty.party[i] != null)
+            if (playerParty.party[i].name != "")
             {
                 playerPartyCount++;
             }
@@ -259,7 +265,7 @@ public class Battle : MonoBehaviour
             }
         }
 
-        if(playerFaintedPokemon == playerPartyCount)
+        if (playerFaintedPokemon == playerPartyCount)
         {
             Debug.Log("Battle ended because player lost all pokemon");
             EndBattle();
@@ -268,17 +274,17 @@ public class Battle : MonoBehaviour
         int enemyFaintedPokemon = 0;
         int enemyPartyCount = 0;
 
-        for (int i = 0; i < playerParty.party.Length; i++)
+        for (int i = 0; i < apponentParty.party.Length; i++)
         {
-            if (playerParty.party[i] != null)
+            if (apponentParty.party[i].name != "")
             {
                 enemyPartyCount++;
             }
         }
 
-        for (int i = 0; i < playerParty.party.Length; i++)
+        for (int i = 0; i < apponentParty.party.Length; i++)
         {
-            if (playerParty.party[i].isFainted)
+            if (apponentParty.party[i].isFainted)
             {
                 enemyFaintedPokemon++;
             }
