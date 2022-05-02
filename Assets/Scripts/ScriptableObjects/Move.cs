@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -7,6 +8,9 @@ public class Move : ScriptableObject
     public Type type;
     public int damage;
     public MoveCategory category;
+
+    public delegate void MoveMethod(Battler target);
+    public MoveMethod moveMethod;
 }
 
 public enum MoveCategory

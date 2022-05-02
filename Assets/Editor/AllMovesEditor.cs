@@ -12,7 +12,16 @@ public class AllMovesEditor : Editor
 
         if(GUILayout.Button("Add Move"))
         {
-            Debug.Log("We pressed add move");
+            allMoves.moves.Add(allMoves.MoveToAdd.name, allMoves.MoveToAdd);
+
+            allMoves.myString.Add("Added lol");
+
+            Debug.Log(allMoves.moves);
+        }
+
+        foreach(var p in allMoves.moves)
+        {
+            EditorGUILayout.LabelField(p.Key + ": " + p.Value);
         }
     }
 }

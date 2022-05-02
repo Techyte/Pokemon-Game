@@ -1,9 +1,11 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class AllMoves : ScriptableObject
 {
-    public Move Ember;
-    public Move Tackle;
-    public Move Toxic;
-    public Move RazorLeaf;
+    public Dictionary<string, Move> moves = new Dictionary<string, Move>();
+
+    public List<string> myString;
+
+    public Move MoveToAdd;
 }

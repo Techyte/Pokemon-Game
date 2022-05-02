@@ -20,8 +20,6 @@ public class Battle : MonoBehaviour
     public Battler apponentBattler;
 
     public AllMoves allMoves;
-    public GameObject statusMoves;
-    public GameObject statusEffects;
 
     //For testing
     public bool enemyCanAttack;
@@ -31,9 +29,10 @@ public class Battle : MonoBehaviour
     public Turn currentTurn = Turn.Player;
     public Party playerParty;
     public Party apponentParty;
-    public EnemyAI ApponentAI;
 
     private bool playerHasAttacked;
+    private delegate void ApponentAI(Battler battlerToUse, Party usableParty, Battle caller);
+    ApponentAI enemyAI;
 
     private void Start()
     {
@@ -45,6 +44,7 @@ public class Battle : MonoBehaviour
 
         playerParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/party.json");
         apponentParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/apponentTestParty.json");
+        enemyAI = EnemyAI.DefaultAI;
 
         currentBattler = playerParty.party[0];
 
@@ -54,6 +54,8 @@ public class Battle : MonoBehaviour
         currentBattler.currentHealth = currentBattler.maxHealth;
 
         UIManager.UpdateBattlerButtons();
+
+        BattlleManager.ClearBattleLoader();
     }
 
     private void Update()
@@ -80,7 +82,7 @@ public class Battle : MonoBehaviour
 
         if (move.category == MoveCategory.Status)
         {
-            statusMoves.BroadcastMessage(move.name, apponentBattler);
+            move.moveMethod(apponentBattler);
         }
         else
         {
@@ -202,7 +204,7 @@ public class Battle : MonoBehaviour
 
             if(apponentBattler.statusEffect != null)
             {
-                statusEffects.SendMessage(apponentBattler.statusEffect.name);
+                currentBattler.statusEffect.effect(apponentBattler);
             }
 
             playerHasAttacked = false;
@@ -217,7 +219,7 @@ public class Battle : MonoBehaviour
 
         if (enemyCanAttack)
         {
-            ApponentAI.EnemyTurn(apponentBattler, apponentParty, this);
+            //enemyAI(apponentBattler, apponentParty, this);
         }
 
         //Debug.Log("Is enemy turn");

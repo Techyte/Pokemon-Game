@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30d5a5695b12e8d4b8d9d04562275021, type: 3}
-  m_Name: All Moves
+  m_Script: {fileID: 11500000, guid: 3000e441a13033147ad80c3ef3380053, type: 3}
+  m_Name: All Status Effects
   m_EditorClassIdentifier: 
-  s: []
-  MoveToAdd: {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
+  Poisoned: {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
