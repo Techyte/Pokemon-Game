@@ -6,21 +6,26 @@ public class StatusSystemInitilizer : MonoBehaviour
 {
     public Move[] statusMoves;
     public StatusEffect[] statusEffects;
+    public EnemyAI[] enemyAis;
+    public StatusMovesMethods moveMethods;
+    public StatusEffectsMethods effectMethods;
+    public EnemyAIMethods enemyAiMethods;
 
     void Start()
     {
         for(int i = 0; i < statusMoves.Length; i++)
         {
-            StatusMovesMethods moveMethods = new StatusMovesMethods();
-
             statusMoves[i].moveMethod = GetByNameMove(moveMethods, statusMoves[i].name);
         }
 
         for (int i = 0; i < statusEffects.Length; i++)
         {
-            StatusEffectsMethods effectMethods = new StatusEffectsMethods();
-
             statusEffects[i].effect = GetByNameEffect(effectMethods, statusEffects[i].name);
+        }
+
+        for (int i = 0; i < enemyAis.Length; i++)
+        {
+            enemyAis[i].aiMethod = GetByNameAI(enemyAiMethods, enemyAis[i].name);
         }
     }
 
@@ -50,5 +55,19 @@ public class StatusSystemInitilizer : MonoBehaviour
 
         return (Move.MoveMethod)Delegate.CreateDelegate
             (typeof(Move.MoveMethod), target, method);
+    }
+
+    EnemyAI.AIMethod GetByNameAI(object target, string methodName)
+    {
+        MethodInfo method = target.GetType()
+            .GetMethod(methodName,
+                       BindingFlags.Public
+                       | BindingFlags.Instance
+                       | BindingFlags.FlattenHierarchy);
+
+        // Insert appropriate check for method == null here
+
+        return (EnemyAI.AIMethod)Delegate.CreateDelegate
+            (typeof(EnemyAI.AIMethod), target, method);
     }
 }

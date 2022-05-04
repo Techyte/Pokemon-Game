@@ -20,6 +20,7 @@ public class Battle : MonoBehaviour
     public Battler apponentBattler;
 
     public AllMoves allMoves;
+    public AllAis allAis;
 
     //For testing
     public bool enemyCanAttack;
@@ -31,8 +32,7 @@ public class Battle : MonoBehaviour
     public Party apponentParty;
 
     private bool playerHasAttacked;
-    private delegate void ApponentAI(Battler battlerToUse, Party usableParty, Battle caller);
-    ApponentAI enemyAI;
+    EnemyAI enemyAI;
 
     private void Start()
     {
@@ -44,7 +44,7 @@ public class Battle : MonoBehaviour
 
         playerParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/party.json");
         apponentParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/apponentTestParty.json");
-        enemyAI = EnemyAI.DefaultAI;
+        enemyAI = allAis.ais["DefaultAI"];
 
         currentBattler = playerParty.party[0];
 
@@ -202,9 +202,14 @@ public class Battle : MonoBehaviour
         {
             UIManager.UpdateHealthDisplays();
 
-            if(apponentBattler.statusEffect != null)
+            if(currentBattler.statusEffect != null)
             {
-                currentBattler.statusEffect.effect(apponentBattler);
+                currentBattler.statusEffect.effect(currentBattler);
+            }
+
+            if (apponentBattler.statusEffect != null)
+            {
+                apponentBattler.statusEffect.effect(apponentBattler);
             }
 
             playerHasAttacked = false;

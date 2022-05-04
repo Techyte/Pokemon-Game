@@ -9,6 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c20d1d4975191cf4197b2a61eb52dfee, type: 3}
-  m_Name: EnemyAI
+  m_Script: {fileID: 11500000, guid: de2668799278cff4d9ccb92435948dc4, type: 3}
+  m_Name: All Ai
   m_EditorClassIdentifier: 
+  _keys:
+  - DefaultAI
+  _values:
+  - {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}
+  MoveToAdd: {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}

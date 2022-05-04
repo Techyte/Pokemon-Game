@@ -12,15 +12,36 @@ public class PartyLoaderTest : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log(allMoves.moves.Keys.Count);
         LoadBattle();
     }
 
     public void LoadBattle()
     {
-        playerParty.party[0] = BattlerCreator.SetUp(playerPartyTemplate[0], 5, playerPartyTemplate[0].name, allMoves.moves["Ember"], allMoves.moves["Tackle"], allMoves.moves["Toxic"], null);
-        playerParty.party[1] = BattlerCreator.SetUp(playerPartyTemplate[1], 5, playerPartyTemplate[1].name, allMoves.moves["Tackle"], allMoves.moves["Toxic"], null, null);
+        playerParty.party[0] = BattlerCreator.SetUp(
+            playerPartyTemplate[0],
+            5, playerPartyTemplate[0].name,
+            allMoves.moves["Ember"],
+            allMoves.moves["Tackle"],
+            allMoves.moves["Toxic"],
+            null);
 
-        apponentParty.party[0] = BattlerCreator.SetUp(apponentPartyTemplate[0], 5, apponentPartyTemplate[0].name, apponentPartyTemplate[0].baseHealth, allMoves.moves["Tackle"], allMoves.moves["Razor Leaf"], allMoves.moves["Toxic"], null);
+        playerParty.party[1] = BattlerCreator.SetUp(
+            playerPartyTemplate[1],
+            5, playerPartyTemplate[1].name,
+            allMoves.moves["Tackle"],
+            allMoves.moves["Toxic"],
+            null,
+            null);
+
+        apponentParty.party[0] = BattlerCreator.SetUp(
+            apponentPartyTemplate[0],
+            5, apponentPartyTemplate[0].name,
+            apponentPartyTemplate[0].baseHealth,
+            allMoves.moves["Tackle"],
+            allMoves.moves["Razor Leaf"],
+            allMoves.moves["Toxic"],
+            null);
 
         string playerPath = Application.persistentDataPath + "/party.json";
         string aponentPath = Application.persistentDataPath + "/apponentTestParty.json";

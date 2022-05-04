@@ -12,5 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d5a5695b12e8d4b8d9d04562275021, type: 3}
   m_Name: All Moves
   m_EditorClassIdentifier: 
-  s: []
-  MoveToAdd: {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
+  _keys:
+  - Ember
+  - Razor Leaf
+  - Tackle
+  - Toxic
+  _values:
+  - {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
+  - {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
+  - {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
+  - {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}
+  MoveToAdd: {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}

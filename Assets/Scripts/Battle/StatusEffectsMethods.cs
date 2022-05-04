@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StatusEffectsMethods
+public class StatusEffectsMethods : MonoBehaviour
 {
     [SerializeField]
     private Battle battle;
@@ -9,6 +9,6 @@ public class StatusEffectsMethods
     {
         target.currentHealth -= target.maxHealth / 16;
 
-        Debug.Log("Was hurt by Poison");
+        Debug.Log(target.name + " was hurt by poison");
     }
 }

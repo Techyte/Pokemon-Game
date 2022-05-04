@@ -1,7 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyAI", menuName = "ScriptableObjects/EnemyAI/DefaultAI")]
-public class EnemyAI : ScriptableObject
+public class EnemyAIMethods : MonoBehaviour
 {
     public static void DefaultAI(Battler battlerToUse, Party usableParty, Battle caller)
     {
