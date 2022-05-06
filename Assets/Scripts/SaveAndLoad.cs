@@ -1,29 +1,33 @@
 using System.IO;
 using UnityEngine;
 
-public class SaveAndLoad<Type>
+namespace PokemonGame
 {
-    public static void SaveJson(Type data, string path)
+    public class SaveAndLoad<Type>
     {
-        string json = JsonUtility.ToJson(data, true);
+        public static void SaveJson(Type data, string path)
+        {
+            string json = JsonUtility.ToJson(data, true);
 
-        File.WriteAllText(path, json);
+            File.WriteAllText(path, json);
+        }
+
+        public static Type LoadJson(string path)
+        {
+            Type returnObject;
+
+            string json = File.ReadAllText(path);
+
+            returnObject = JsonUtility.FromJson<Type>(json);
+
+            return returnObject;
+        }
     }
 
-    public static Type LoadJson(string path)
+    [System.Serializable]
+    public class Party
     {
-        Type returnObject;
-
-        string json = File.ReadAllText(path);
-
-        returnObject = JsonUtility.FromJson<Type>(json);
-
-        return returnObject;
+        public Battler[] party = new Battler[6];
     }
-}
 
-[System.Serializable]
-public class Party
-{
-    public Battler[] party = new Battler[6];
 }

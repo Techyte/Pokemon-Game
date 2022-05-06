@@ -1,307 +1,301 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum Turn
+namespace PokemonGame.Battle
 {
-    Player,
-    Enemy
-}
-
-public class Battle : MonoBehaviour
-{
-    [Header("UI:")]
-    public GameObject PlayerUIHolder;
-    [SerializeField] BattleUIManager UIManager;
-
-    [Space]
-    [Header("Assignments")]
-    public Battler currentBattler;
-
-    public Battler apponentBattler;
-
-    public AllMoves allMoves;
-    public AllAis allAis;
-
-    //For testing
-    public bool enemyCanAttack;
-
-    [Space]
-    [Header("Other Readouts")]
-    public Turn currentTurn = Turn.Player;
-    public Party playerParty;
-    public Party apponentParty;
-
-    private bool playerHasAttacked;
-    EnemyAI enemyAI;
-
-    private void Start()
+    public enum Turn
     {
-        //While testing, when finished with the batle system I will switch to the more dynamic system
-        /*
-        playerParty = BattleLoaderInfo.playerParty;
-        aponentParty = BattleLoaderInfo.aponentParty;
-        */
-
-        playerParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/party.json");
-        apponentParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/apponentTestParty.json");
-        enemyAI = allAis.ais["DefaultAI"];
-
-        currentBattler = playerParty.party[0];
-
-        apponentBattler = apponentParty.party[0];
-
-        apponentBattler.currentHealth = apponentBattler.maxHealth;
-        currentBattler.currentHealth = currentBattler.maxHealth;
-
-        UIManager.UpdateBattlerButtons();
-
-        BattlleManager.ClearBattleLoader();
+        Player,
+        Enemy
     }
 
-    private void Update()
+    public class Battle : MonoBehaviour
     {
-        switch (currentTurn)
+        [Header("UI:")]
+        public GameObject PlayerUIHolder;
+        [SerializeField] BattleUIManager UIManager;
+
+        [Space]
+        [Header("Assignments")]
+        public Battler currentBattler;
+
+        public Battler apponentBattler;
+
+        public AllMoves allMoves;
+        public AllAis allAis;
+
+        //For testing
+        public bool enemyCanAttack;
+
+        [Space]
+        [Header("Other Readouts")]
+        public Turn currentTurn = Turn.Player;
+        public Party playerParty;
+        public Party apponentParty;
+
+        private bool playerHasAttacked;
+        EnemyAI enemyAI;
+
+        private void Start()
         {
-            case Turn.Player:
-                DoPlayerTurn();
-                break;
-            case Turn.Enemy:
-                DoEnemyTurn();
-                break;
+            //While testing, when finished with the batle system I will switch to the more dynamic system
+            playerParty = BattleLoaderInfo.playerParty;
+            apponentParty = BattleLoaderInfo.apponentParty;
+
+            //playerParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/party.json");
+            //apponentParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/apponentTestParty.json");
+            enemyAI = allAis.ais["DefaultAI"];
+
+            currentBattler = playerParty.party[0];
+
+            apponentBattler = apponentParty.party[0];
+
+            apponentBattler.currentHealth = apponentBattler.maxHealth;
+            currentBattler.currentHealth = currentBattler.maxHealth;
+
+            UIManager.UpdateBattlerButtons();
+
+            BattleManager.ClearBattleLoader();
         }
-    }
 
-    public void DoMove(int moveID)
-    {
-        DoMoveOnAposingBattler(currentBattler.moves[moveID]);
-    }
-
-    void DoMoveOnAposingBattler(Move move)
-    {
-        //You can add any animation calls for attacking here
-
-        if (move.category == MoveCategory.Status)
+        private void Update()
         {
-            move.moveMethod(apponentBattler);
-        }
-        else
-        {
-            float damageToDo = CalculateDamage(move, currentBattler, apponentBattler);
-            apponentBattler.currentHealth -= (int)damageToDo;
-        }
-
-        if(apponentBattler.currentHealth <= 0)
-        {
-            apponentBattler.isFainted = true;
-        }
-
-        CheckForWinCondition();
-
-        UIManager.UpdateHealthDisplays();
-
-        playerHasAttacked = true;
-    }
-
-    float CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
-    {
-        float finalDamage;
-
-        for (int i = 0; i < move.type.cantHit.Length; i++)
-        {
-            if (move.type.cantHit[i] == battlerBeingAttacked.primaryType || move.type.cantHit[i] == battlerBeingAttacked.secondaryType)
+            switch (currentTurn)
             {
-                Debug.Log(move.type + " can't hit that battler");
-                return 0;
+                case Turn.Player:
+                    DoPlayerTurn();
+                    break;
+                case Turn.Enemy:
+                    DoEnemyTurn();
+                    break;
             }
         }
 
-        float TYPE = 1;
-        for (int i = 0; i < move.type.strongAgainst.Length; i++)
+        public void DoMove(int moveID)
         {
-            if (move.type.strongAgainst[i] == battlerBeingAttacked.primaryType || move.type.strongAgainst[i] == battlerBeingAttacked.secondaryType)
-            {
-                TYPE = 1.5f;
-            }
+            DoMoveOnAposingBattler(currentBattler.moves[moveID]);
         }
 
-        for (int i = 0; i < move.type.weakAgainst.Length; i++)
+        private void DoMoveOnAposingBattler(Move move)
         {
-            if (move.type.weakAgainst[i] == battlerBeingAttacked.primaryType || move.type.weakAgainst[i] == battlerBeingAttacked.secondaryType)
-            {
-                Debug.Log(move.type + " is weak against " + move.type.weakAgainst[i]);
-                if (TYPE == 1.5f)
-                {
-                    TYPE = 1;
-                }
-                else
-                {
-                    TYPE = .5f;
-                }
-            }
-        }
+            //You can add any animation calls for attacking here
 
-        float STAB = 1;
-        if (move.type == battlerThatUsed.primaryType)
-        {
-            STAB = 2;
-        }
-
-        if (move.type == battlerThatUsed.secondaryType)
-        {
-            if (TYPE == 2)
+            if (move.category == MoveCategory.Status)
             {
-                TYPE += 2;
+                move.moveMethod(apponentBattler);
             }
             else
             {
-                TYPE = 2;
+                float damageToDo = CalculateDamage(move, currentBattler, apponentBattler);
+                apponentBattler.currentHealth -= (int)damageToDo;
             }
-        }
 
-        float damage = 1;
+            if (apponentBattler.currentHealth <= 0)
+            {
+                apponentBattler.isFainted = true;
+            }
 
-        //Damage calculation is corect
+            CheckForWinCondition();
 
-        switch (move.category)
-        {
-            case MoveCategory.Physical:
-                damage = ((2 * battlerThatUsed.level / 5 + 2) * move.damage * (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * STAB * TYPE;
-                break;
-            case MoveCategory.Special:
-                damage = ((2 * battlerThatUsed.level / 5 + 2) * move.damage * (battlerThatUsed.specialAttack / battlerBeingAttacked.specialDefense) / 50 + 2) * STAB * TYPE;
-                break;
-        }
-
-        float RANDOMNESS = 0;
-        RANDOMNESS = Mathf.RoundToInt(Random.Range(.8f * damage, damage * 1.2f));
-        damage = RANDOMNESS;
-
-        finalDamage = damage;
-
-        return finalDamage;
-    }
-
-    public void ChangeTurn()
-    {
-        switch (currentTurn)
-        {
-            case Turn.Player:
-                currentTurn = Turn.Enemy;
-                break;
-            case Turn.Enemy:
-                currentTurn = Turn.Player;
-                break;
-        }
-    }
-
-    void DoPlayerTurn()
-    {
-        PlayerUIHolder.SetActive(true);
-
-        if (playerHasAttacked)
-        {
             UIManager.UpdateHealthDisplays();
 
-            if(currentBattler.statusEffect != null)
+            playerHasAttacked = true;
+        }
+
+        private float CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
+        {
+            float finalDamage;
+
+            for (int i = 0; i < move.type.cantHit.Length; i++)
             {
+                if (move.type.cantHit[i] == battlerBeingAttacked.primaryType || move.type.cantHit[i] == battlerBeingAttacked.secondaryType)
+                {
+                    Debug.Log(move.type + " can't hit that battler");
+                    return 0;
+                }
+            }
+
+            float TYPE = 1;
+            for (int i = 0; i < move.type.strongAgainst.Length; i++)
+            {
+                if (move.type.strongAgainst[i] == battlerBeingAttacked.primaryType || move.type.strongAgainst[i] == battlerBeingAttacked.secondaryType)
+                {
+                    TYPE = 1.5f;
+                }
+            }
+
+            for (int i = 0; i < move.type.weakAgainst.Length; i++)
+            {
+                if (move.type.weakAgainst[i] == battlerBeingAttacked.primaryType || move.type.weakAgainst[i] == battlerBeingAttacked.secondaryType)
+                {
+                    Debug.Log(move.type + " is weak against " + move.type.weakAgainst[i]);
+                    if (TYPE == 1.5f)
+                    {
+                        TYPE = 1;
+                    }
+                    else
+                    {
+                        TYPE = .5f;
+                    }
+                }
+            }
+
+            float STAB = 1;
+            if (move.type == battlerThatUsed.primaryType)
+            {
+                STAB = 2;
+            }
+
+            if (move.type == battlerThatUsed.secondaryType)
+            {
+                if (TYPE == 2)
+                {
+                    TYPE += 2;
+                }
+                else
+                {
+                    TYPE = 2;
+                }
+            }
+
+            float damage = 1;
+
+            //Damage calculation is corect
+
+            switch (move.category)
+            {
+                case MoveCategory.Physical:
+                    damage = ((2 * battlerThatUsed.level / 5 + 2) * move.damage * (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * STAB * TYPE;
+                    break;
+                case MoveCategory.Special:
+                    damage = ((2 * battlerThatUsed.level / 5 + 2) * move.damage * (battlerThatUsed.specialAttack / battlerBeingAttacked.specialDefense) / 50 + 2) * STAB * TYPE;
+                    break;
+            }
+
+            float RANDOMNESS = 0;
+            RANDOMNESS = Mathf.RoundToInt(Random.Range(.8f * damage, damage * 1.2f));
+            damage = RANDOMNESS;
+
+            finalDamage = damage;
+
+            return finalDamage;
+        }
+
+        public void ChangeTurn()
+        {
+            switch (currentTurn)
+            {
+                case Turn.Player:
+                    currentTurn = Turn.Enemy;
+                    break;
+                case Turn.Enemy:
+                    currentTurn = Turn.Player;
+                    break;
+            }
+        }
+
+        private void DoPlayerTurn()
+        {
+            PlayerUIHolder.SetActive(true);
+
+            if (playerHasAttacked)
+            {
+                UIManager.UpdateHealthDisplays();
+
                 currentBattler.statusEffect.effect(currentBattler);
-            }
-
-            if (apponentBattler.statusEffect != null)
-            {
                 apponentBattler.statusEffect.effect(apponentBattler);
+
+                playerHasAttacked = false;
+
+                ChangeTurn();
+            }
+        }
+
+        private void DoEnemyTurn()
+        {
+            PlayerUIHolder.SetActive(false);
+
+            if (enemyCanAttack)
+            {
+                enemyAI.aiMethod(apponentBattler, apponentParty, this);
             }
 
-            playerHasAttacked = false;
-
+            //Debug.Log("Is enemy turn");
             ChangeTurn();
         }
-    }
 
-    void DoEnemyTurn()
-    {
-        PlayerUIHolder.SetActive(false);
-
-        if (enemyCanAttack)
+        public void DoMoveOnPlayer(Move move)
         {
-            //enemyAI(apponentBattler, apponentParty, this);
-        }
+            float damageToDo = CalculateDamage(move, apponentBattler, currentBattler);
 
-        //Debug.Log("Is enemy turn");
-        ChangeTurn();
-    }
-
-    public void DoMoveOnPlayer(Move move)
-    {
-        float damageToDo = CalculateDamage(move, apponentBattler, currentBattler);
-
-        if (currentBattler.currentHealth <= 0)
-        {
-            currentBattler.isFainted = true;
-            UIManager.SwitchBattlerBecauseOfDeath();
-        }
-
-        CheckForWinCondition();
-
-        currentBattler.currentHealth -= (int) damageToDo;
-    }
-
-    public void EndBattle()
-    {
-        Debug.Log("Ending Battle");
-        SceneManager.LoadScene(1);
-    }
-
-    void CheckForWinCondition()
-    {
-        int playerFaintedPokemon = 0;
-        int playerPartyCount = 0;
-
-        for (int i = 0; i < playerParty.party.Length; i++)
-        {
-            if (playerParty.party[i].name != "")
+            if (currentBattler.currentHealth <= 0)
             {
-                playerPartyCount++;
+                currentBattler.isFainted = true;
+                UIManager.SwitchBattlerBecauseOfDeath();
             }
+
+            CheckForWinCondition();
+
+            currentBattler.currentHealth -= (int)damageToDo;
         }
 
-        for (int i = 0; i < playerParty.party.Length; i++)
+        public void EndBattle()
         {
-            if (playerParty.party[i].isFainted)
+            Debug.Log("Ending Battle");
+            SceneManager.LoadScene(1);
+        }
+
+        private void CheckForWinCondition()
+        {
+            int playerFaintedPokemon = 0;
+            int playerPartyCount = 0;
+
+            for (int i = 0; i < playerParty.party.Length; i++)
             {
-                playerFaintedPokemon++;
+                if (playerParty.party[i].name != "")
+                {
+                    playerPartyCount++;
+                }
             }
-        }
 
-        if (playerFaintedPokemon == playerPartyCount)
-        {
-            Debug.Log("Battle ended because player lost all pokemon");
-            EndBattle();
-        }
-
-        int enemyFaintedPokemon = 0;
-        int enemyPartyCount = 0;
-
-        for (int i = 0; i < apponentParty.party.Length; i++)
-        {
-            if (apponentParty.party[i].name != "")
+            for (int i = 0; i < playerParty.party.Length; i++)
             {
-                enemyPartyCount++;
+                if (playerParty.party[i].isFainted)
+                {
+                    playerFaintedPokemon++;
+                }
             }
-        }
 
-        for (int i = 0; i < apponentParty.party.Length; i++)
-        {
-            if (apponentParty.party[i].isFainted)
+            if (playerFaintedPokemon == playerPartyCount)
             {
-                enemyFaintedPokemon++;
+                Debug.Log("Battle ended because player lost all pokemon");
+                EndBattle();
             }
-        }
 
-        if (enemyFaintedPokemon == enemyPartyCount)
-        {
-            Debug.Log("Battle ended because enemy lost all pokemon");
-            EndBattle();
+            int enemyFaintedPokemon = 0;
+            int enemyPartyCount = 0;
+
+            for (int i = 0; i < apponentParty.party.Length; i++)
+            {
+                if (apponentParty.party[i].name != "")
+                {
+                    enemyPartyCount++;
+                }
+            }
+
+            for (int i = 0; i < apponentParty.party.Length; i++)
+            {
+                if (apponentParty.party[i].isFainted)
+                {
+                    enemyFaintedPokemon++;
+                }
+            }
+
+            if (enemyFaintedPokemon == enemyPartyCount)
+            {
+                Debug.Log("Battle ended because enemy lost all pokemon");
+                EndBattle();
+            }
         }
     }
 }

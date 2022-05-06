@@ -1,26 +1,30 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(AllStatusEffects))]
-public class AllStatusEffectEditor : Editor
+namespace PokemonGame.Battle
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(AllStatusEffects))]
+    public class AllStatusEffectEditor : Editor
     {
-        base.OnInspectorGUI();
-        AllStatusEffects allMoves = (AllStatusEffects)target;
-
-        if (GUILayout.Button("Add Status Effect"))
+        public override void OnInspectorGUI()
         {
-            Debug.Log(allMoves.effects.Keys.Count);
+            base.OnInspectorGUI();
+            AllStatusEffects allMoves = (AllStatusEffects)target;
 
-            allMoves.effects.Add(allMoves.MoveToAdd.name, allMoves.MoveToAdd);
-        }
-        if (Application.isPlaying)
-        {
-            foreach (var p in allMoves.effects)
+            if (GUILayout.Button("Add Status Effect"))
             {
-                EditorGUILayout.LabelField(p.Key + ": " + p.Value);
+                Debug.Log(allMoves.effects.Keys.Count);
+
+                allMoves.effects.Add(allMoves.MoveToAdd.name, allMoves.MoveToAdd);
+            }
+            if (Application.isPlaying)
+            {
+                foreach (var p in allMoves.effects)
+                {
+                    EditorGUILayout.LabelField(p.Key + ": " + p.Value);
+                }
             }
         }
     }
+
 }

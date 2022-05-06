@@ -1,73 +1,82 @@
 using System.Reflection;
 using UnityEngine;
 using System;
+using PokemonGame.Battle;
 
-public class StatusSystemInitilizer : MonoBehaviour
+namespace PokemonGame
 {
-    public Move[] statusMoves;
-    public StatusEffect[] statusEffects;
-    public EnemyAI[] enemyAis;
-    public StatusMovesMethods moveMethods;
-    public StatusEffectsMethods effectMethods;
-    public EnemyAIMethods enemyAiMethods;
-
-    void Start()
+    public class StatusSystemInitilizer : MonoBehaviour
     {
-        for(int i = 0; i < statusMoves.Length; i++)
+        public AllMoves allMoves;
+        public AllStatusEffects allStatusEffects;
+        public AllAis allEnemyAIs;
+        public StatusMovesMethods moveMethods;
+        public StatusEffectsMethods effectMethods;
+        public EnemyAIMethods enemyAiMethods;
+
+        private void Start()
         {
-            statusMoves[i].moveMethod = GetByNameMove(moveMethods, statusMoves[i].name);
+            foreach (var item in allMoves.moves)
+            {
+                string name = item.Key;
+                allMoves.moves[name].moveMethod = GetByNameMove(moveMethods, allMoves.moves[name].name);
+            }
+
+            foreach (var item in allStatusEffects.effects)
+            {
+                string name = item.Key;
+                allStatusEffects.effects[name].effect = GetByNameEffect(effectMethods, allStatusEffects.effects[name].name);
+            }
+
+            foreach (var item in allEnemyAIs.ais)
+            {
+                string name = item.Key;
+                allEnemyAIs.ais[name].aiMethod = GetByNameAI(enemyAiMethods, allEnemyAIs.ais[name].name);
+            }
         }
 
-        for (int i = 0; i < statusEffects.Length; i++)
+        private Move.MoveMethod GetByNameMove(object target, string methodName)
         {
-            statusEffects[i].effect = GetByNameEffect(effectMethods, statusEffects[i].name);
+            MethodInfo method = target.GetType()
+                .GetMethod(methodName,
+                           BindingFlags.Public
+                           | BindingFlags.Instance
+                           | BindingFlags.FlattenHierarchy);
+
+
+            // Insert appropriate check for method == null here
+
+            return (Move.MoveMethod)Delegate.CreateDelegate
+                (typeof(Move.MoveMethod), target, method);
         }
 
-        for (int i = 0; i < enemyAis.Length; i++)
+        private StatusEffect.Effect GetByNameEffect(object target, string methodName)
         {
-            enemyAis[i].aiMethod = GetByNameAI(enemyAiMethods, enemyAis[i].name);
+            MethodInfo method = target.GetType()
+                .GetMethod(methodName,
+                           BindingFlags.Public
+                           | BindingFlags.Instance
+                           | BindingFlags.FlattenHierarchy);
+
+            // Insert appropriate check for method == null here
+
+            return (StatusEffect.Effect)Delegate.CreateDelegate
+                (typeof(StatusEffect.Effect), target, method);
+        }
+
+        private EnemyAI.AIMethod GetByNameAI(object target, string methodName)
+        {
+            MethodInfo method = target.GetType()
+                .GetMethod(methodName,
+                           BindingFlags.Public
+                           | BindingFlags.Instance
+                           | BindingFlags.FlattenHierarchy);
+
+            // Insert appropriate check for method == null here
+
+            return (EnemyAI.AIMethod)Delegate.CreateDelegate
+                (typeof(EnemyAI.AIMethod), target, method);
         }
     }
 
-    StatusEffect.Effect GetByNameEffect(object target, string methodName)
-    {
-        MethodInfo method = target.GetType()
-            .GetMethod(methodName,
-                       BindingFlags.Public
-                       | BindingFlags.Instance
-                       | BindingFlags.FlattenHierarchy);
-
-        // Insert appropriate check for method == null here
-
-        return (StatusEffect.Effect)Delegate.CreateDelegate
-            (typeof(StatusEffect.Effect), target, method);
-    }
-
-    Move.MoveMethod GetByNameMove(object target, string methodName)
-    {
-        MethodInfo method = target.GetType()
-            .GetMethod(methodName,
-                       BindingFlags.Public
-                       | BindingFlags.Instance
-                       | BindingFlags.FlattenHierarchy);
-
-        // Insert appropriate check for method == null here
-
-        return (Move.MoveMethod)Delegate.CreateDelegate
-            (typeof(Move.MoveMethod), target, method);
-    }
-
-    EnemyAI.AIMethod GetByNameAI(object target, string methodName)
-    {
-        MethodInfo method = target.GetType()
-            .GetMethod(methodName,
-                       BindingFlags.Public
-                       | BindingFlags.Instance
-                       | BindingFlags.FlattenHierarchy);
-
-        // Insert appropriate check for method == null here
-
-        return (EnemyAI.AIMethod)Delegate.CreateDelegate
-            (typeof(EnemyAI.AIMethod), target, method);
-    }
 }

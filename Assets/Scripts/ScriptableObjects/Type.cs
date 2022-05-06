@@ -1,10 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu]
-public class Type : ScriptableObject
+namespace PokemonGame
 {
-    public new string name;
-    public Type[] strongAgainst;
-    public Type[] cantHit;
-    public Type[] weakAgainst;
+    [CreateAssetMenu]
+    public class Type : ScriptableObject
+    {
+        public new string name;
+        public Type[] strongAgainst;
+        public Type[] cantHit;
+        public Type[] weakAgainst;
+    }
+
 }

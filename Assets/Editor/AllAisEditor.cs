@@ -1,26 +1,30 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(AllAis))]
-public class AllAisEditor : Editor
+namespace PokemonGame.Battle
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(AllAis))]
+    public class AllAisEditor : Editor
     {
-        base.OnInspectorGUI();
-        AllAis allAis = (AllAis)target;
-
-        if (GUILayout.Button("Add AI"))
+        public override void OnInspectorGUI()
         {
-            Debug.Log(allAis.ais.Keys.Count);
+            base.OnInspectorGUI();
+            AllAis allAis = (AllAis)target;
 
-            allAis.ais.Add(allAis.MoveToAdd.name, allAis.MoveToAdd);
-        }
-        if (Application.isPlaying)
-        {
-            foreach (var p in allAis.ais)
+            if (GUILayout.Button("Add AI"))
             {
-                EditorGUILayout.LabelField(p.Key + ": " + p.Value);
+                Debug.Log(allAis.ais.Keys.Count);
+
+                allAis.ais.Add(allAis.MoveToAdd.name, allAis.MoveToAdd);
+            }
+            if (Application.isPlaying)
+            {
+                foreach (var p in allAis.ais)
+                {
+                    EditorGUILayout.LabelField(p.Key + ": " + p.Value);
+                }
             }
         }
     }
+
 }

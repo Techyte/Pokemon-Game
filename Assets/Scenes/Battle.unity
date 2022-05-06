@@ -2158,51 +2158,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585518014}
   m_CullTransparentMesh: 1
---- !u!1 &637654182
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 637654184}
-  - component: {fileID: 637654183}
-  m_Layer: 0
-  m_Name: StatusMoveInitilizer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &637654183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637654182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7dcc2e1c74bfd948af269051b4a324b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allStatusEffects: {fileID: 11400000, guid: 74ea5cd36e1708040a14f2334a0c701c, type: 2}
---- !u!4 &637654184
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 637654182}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5370407, y: 1.0902185, z: -0.17022896}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &665733506
 GameObject:
   m_ObjectHideFlags: 0
@@ -2297,50 +2252,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 292107205}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &732992541
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 732992543}
-  - component: {fileID: 732992542}
-  m_Layer: 0
-  m_Name: EnemyAIInitilizer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &732992542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732992541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c20d1d4975191cf4197b2a61eb52dfee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &732992543
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732992541}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5370407, y: 1.0902185, z: -0.17022896}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &795133516
 GameObject:
@@ -2593,59 +2504,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &967170327
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 967170329}
-  - component: {fileID: 967170328}
-  m_Layer: 0
-  m_Name: EffectInitilizer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &967170328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 967170327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9a3845a82cd4f143bef2627738c327b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statusMoves:
-  - {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}
-  statusEffects:
-  - {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
-  enemyAis:
-  - {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}
-  moveMethods: {fileID: 637654183}
-  effectMethods: {fileID: 1845420949}
-  enemyAiMethods: {fileID: 732992542}
---- !u!4 &967170329
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 967170327}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &988433631
 GameObject:
   m_ObjectHideFlags: 0
@@ -3768,6 +3626,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1222545121}
   m_CullTransparentMesh: 1
+--- !u!1001 &1292973155
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3231623555529086736, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_Name
+      value: Initializer
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: abd0a87497357cb4b88c47d7698f1f25, type: 3}
 --- !u!1 &1313120826
 GameObject:
   m_ObjectHideFlags: 0
@@ -4080,312 +4007,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338694113}
   m_CullTransparentMesh: 1
---- !u!1 &1379646374
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1379646376}
-  - component: {fileID: 1379646375}
-  m_Layer: 0
-  m_Name: BattleLoader
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1379646375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1379646374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc8304e68acb7364ab1805bb19e6f55e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPartyTemplate:
-  - {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3, type: 2}
-  - {fileID: 11400000, guid: db309f2b3aa1fb047b0aa64dcd5d8d4c, type: 2}
-  apponentPartyTemplate:
-  - {fileID: 11400000, guid: f98dd2fa32827594da82f4b72db0840f, type: 2}
-  allMoves: {fileID: 11400000, guid: 081d4d866f9aa8c42be06c885cd5d61d, type: 2}
-  playerParty:
-    party:
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-  apponentParty:
-    party:
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
---- !u!4 &1379646376
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1379646374}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 974.6431, y: 555.1443, z: -15.7596855}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1406917649
 GameObject:
   m_ObjectHideFlags: 0
@@ -5240,51 +4861,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1838204568}
   m_CullTransparentMesh: 1
---- !u!1 &1845420948
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1845420950}
-  - component: {fileID: 1845420949}
-  m_Layer: 0
-  m_Name: StatusEffectInitilizer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1845420949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845420948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55bbb29de5f114c41b19deca511ea9d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  battle: {fileID: 1038033299}
---- !u!4 &1845420950
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1845420948}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5370407, y: 1.0902185, z: -0.17022896}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1865855786
 GameObject:
   m_ObjectHideFlags: 0

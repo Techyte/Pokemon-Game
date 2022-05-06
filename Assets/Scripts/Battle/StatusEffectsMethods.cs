@@ -1,14 +1,20 @@
 using UnityEngine;
 
-public class StatusEffectsMethods : MonoBehaviour
+namespace PokemonGame.Battle
 {
-    [SerializeField]
-    private Battle battle;
-
-    public void Poisoned(Battler target)
+    public class StatusEffectsMethods : MonoBehaviour
     {
-        target.currentHealth -= target.maxHealth / 16;
+        public void Healthy(Battler target)
+        {
+            Debug.Log(target.name + " was healthy");
+            return;
+        }
 
-        Debug.Log(target.name + " was hurt by poison");
+        public void Poisoned(Battler target)
+        {
+            target.currentHealth -= target.maxHealth / 16;
+
+            Debug.Log(target.name + " was hurt by poison");
+        }
     }
 }

@@ -1,23 +1,27 @@
 using UnityEngine;
 
-public class BobEffect : MonoBehaviour
+namespace PokemonGame
 {
-    public float bobIntensity;
-    public float bobSpeed;
-    float orignY;
-
-    private void Start()
+    public class BobEffect : MonoBehaviour
     {
-        orignY = transform.position.y;
+        public float bobIntensity;
+        public float bobSpeed;
+        float orignY;
+
+        private void Start()
+        {
+            orignY = transform.position.y;
+        }
+
+        void Update()
+        {
+            Vector3 newPos = transform.position;
+            newPos = transform.position;
+            newPos.y = Mathf.Sin(Time.time * bobSpeed) * bobIntensity;
+            newPos.y += orignY;
+
+            transform.position = newPos;
+        }
     }
 
-    void Update()
-    {
-        Vector3 newPos = transform.position;
-        newPos = transform.position;
-        newPos.y = Mathf.Sin(Time.time * bobSpeed) * bobIntensity;
-        newPos.y += orignY;
-
-        transform.position = newPos;
-    }
 }

@@ -1,26 +1,30 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(AllMoves))]
-public class AllMovesEditor : Editor
+namespace PokemonGame.Battle
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(AllMoves))]
+    public class AllMovesEditor : Editor
     {
-        base.OnInspectorGUI();
-        AllMoves allMoves = (AllMoves) target;
-
-        if(GUILayout.Button("Add Move"))
+        public override void OnInspectorGUI()
         {
-            Debug.Log(allMoves.moves.Keys.Count);
+            base.OnInspectorGUI();
+            AllMoves allMoves = (AllMoves)target;
 
-            allMoves.moves.Add(allMoves.MoveToAdd.name, allMoves.MoveToAdd);
-        }
-        if (Application.isPlaying)
-        {
-            foreach (var p in allMoves.moves)
+            if (GUILayout.Button("Add Move"))
             {
-                EditorGUILayout.LabelField(p.Key + ": " + p.Value);
+                Debug.Log(allMoves.moves.Keys.Count);
+
+                allMoves.moves.Add(allMoves.MoveToAdd.name, allMoves.MoveToAdd);
+            }
+            if (Application.isPlaying)
+            {
+                foreach (var p in allMoves.moves)
+                {
+                    EditorGUILayout.LabelField(p.Key + ": " + p.Value);
+                }
             }
         }
     }
+
 }

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _keys:
   - Poisoned
+  - Healthy
   _values:
   - {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
-  MoveToAdd: {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
+  - {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
+  MoveToAdd: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
