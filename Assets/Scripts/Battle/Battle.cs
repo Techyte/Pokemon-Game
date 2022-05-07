@@ -21,9 +21,6 @@ namespace PokemonGame.Battle
 
         public Battler apponentBattler;
 
-        public AllMoves allMoves;
-        public AllAis allAis;
-
         //For testing
         public bool enemyCanAttack;
 
@@ -38,13 +35,9 @@ namespace PokemonGame.Battle
 
         private void Start()
         {
-            //While testing, when finished with the batle system I will switch to the more dynamic system
             playerParty = BattleLoaderInfo.playerParty;
             apponentParty = BattleLoaderInfo.apponentParty;
-
-            //playerParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/party.json");
-            //apponentParty = SaveAndLoad<Party>.LoadJson(Application.persistentDataPath + "/apponentTestParty.json");
-            enemyAI = allAis.ais["DefaultAI"];
+            enemyAI = BattleLoaderInfo.enemyAI;
 
             currentBattler = playerParty.party[0];
 
@@ -242,6 +235,13 @@ namespace PokemonGame.Battle
         public void EndBattle()
         {
             Debug.Log("Ending Battle");
+
+            string playerPath = Application.persistentDataPath + "/party.json";
+            string aponentPath = Application.persistentDataPath + "/apponentTestParty.json";
+
+            SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
+            SaveAndLoad<Party>.SaveJson(apponentParty, aponentPath);
+
             SceneManager.LoadScene(1);
         }
 

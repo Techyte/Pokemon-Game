@@ -7,31 +7,28 @@ namespace PokemonGame
 {
     public class StatusSystemInitilizer : MonoBehaviour
     {
-        public AllMoves allMoves;
-        public AllStatusEffects allStatusEffects;
-        public AllAis allEnemyAIs;
+        public Move[] allMoves;
+        public StatusEffect[] allStatusEffects;
+        public EnemyAI[] allEnemyAIs;
         public StatusMovesMethods moveMethods;
         public StatusEffectsMethods effectMethods;
         public EnemyAIMethods enemyAiMethods;
 
         private void Start()
         {
-            foreach (var item in allMoves.moves)
+            for(int i = 0; i < allMoves.Length; i++)
             {
-                string name = item.Key;
-                allMoves.moves[name].moveMethod = GetByNameMove(moveMethods, allMoves.moves[name].name);
+                allMoves[i].moveMethod = GetByNameMove(moveMethods, allMoves[i].name);
             }
 
-            foreach (var item in allStatusEffects.effects)
+            for (int i = 0; i < allStatusEffects.Length; i++)
             {
-                string name = item.Key;
-                allStatusEffects.effects[name].effect = GetByNameEffect(effectMethods, allStatusEffects.effects[name].name);
+                allStatusEffects[i].effect = GetByNameEffect(effectMethods, allStatusEffects[i].name);
             }
 
-            foreach (var item in allEnemyAIs.ais)
+            for (int i = 0; i < allEnemyAIs.Length; i++)
             {
-                string name = item.Key;
-                allEnemyAIs.ais[name].aiMethod = GetByNameAI(enemyAiMethods, allEnemyAIs.ais[name].name);
+                allEnemyAIs[i].aiMethod = GetByNameAI(enemyAiMethods, allEnemyAIs[i].name);
             }
         }
 

@@ -7,7 +7,6 @@ namespace PokemonGame.Battle
         public void Healthy(Battler target)
         {
             Debug.Log(target.name + " was healthy");
-            return;
         }
 
         public void Poisoned(Battler target)

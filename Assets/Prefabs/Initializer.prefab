@@ -177,9 +177,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a3845a82cd4f143bef2627738c327b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allMoves: {fileID: 11400000, guid: 081d4d866f9aa8c42be06c885cd5d61d, type: 2}
-  allStatusEffects: {fileID: 11400000, guid: 74ea5cd36e1708040a14f2334a0c701c, type: 2}
-  allEnemyAIs: {fileID: 11400000, guid: 6f53c4caadde46a4988f63d9c43e439e, type: 2}
+  allMoves:
+  - {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
+  - {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
+  - {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
+  - {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}
+  allStatusEffects:
+  - {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
+  - {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
+  allEnemyAIs:
+  - {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}
   moveMethods: {fileID: 3231623555336301162}
   effectMethods: {fileID: 3231623554074533208}
   enemyAiMethods: {fileID: 3231623555110906579}
