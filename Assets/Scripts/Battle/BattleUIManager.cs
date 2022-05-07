@@ -28,6 +28,7 @@ namespace PokemonGame.Battle
             UpdateBattlerMoveDisplays();
             UpdateHealthDisplays();
             UpdateBattlerTexts();
+            UpdateBattlerButtons();
         }
 
         public void UpdateBattlerButtons()
@@ -49,7 +50,21 @@ namespace PokemonGame.Battle
                     battlerDisplays[i].text = battle.playerParty.party[i].name;
                     battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = !battle.playerParty.party[i].isFainted;
                 }
+
+                if (i == battle.currentBattlerIndex)
+                {
+                    Debug.Log("Dissabling " + battle.playerParty.party[i].name + " option");
+                    battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
+                }
             }
+
+            /*
+            if (i == battle.currentBattlerIndex)
+            {
+                Debug.Log("Dissabling " + battle.playerParty.party[i].name + " option");
+                battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
+            }
+            */
         }
 
         public void SwitchBattler()
@@ -78,7 +93,8 @@ namespace PokemonGame.Battle
             moveButtons.SetActive(true);
             miscButtons.SetActive(true);
             changeBattlerDisplay.SetActive(false);
-            battle.currentBattler = battle.playerParty.party[partyID];
+            battle.currentBattlerIndex = partyID;
+            battle.playerParty.party[battle.currentBattlerIndex] = battle.playerParty.party[partyID];
             battle.ChangeTurn();
             UpdateBattlerButtons();
             UpdateBattlerSprites();
@@ -98,14 +114,14 @@ namespace PokemonGame.Battle
 
         public void UpdateBattlerTexts()
         {
-            currentBattlerNameDisplay.text = battle.currentBattler.name;
-            apponentBattlerNameDisplay.text = battle.apponentBattler.name;
+            currentBattlerNameDisplay.text = battle.playerParty.party[battle.currentBattlerIndex].name;
+            apponentBattlerNameDisplay.text = battle.apponentParty.party[battle.apponentBattlerIndex].name;
         }
 
         public void UpdateBattlerSprites()
         {
-            currentBattlerRenderer.sprite = battle.currentBattler.texture;
-            apponentBattlerRenderer.sprite = battle.apponentBattler.texture;
+            currentBattlerRenderer.sprite = battle.playerParty.party[battle.currentBattlerIndex].texture;
+            apponentBattlerRenderer.sprite = battle.apponentParty.party[battle.apponentBattlerIndex].texture;
         }
 
         public void UpdateBattlerMoveDisplays()
@@ -115,23 +131,23 @@ namespace PokemonGame.Battle
                 moveTexts[i].transform.parent.gameObject.SetActive(false);
             }
 
-            for (int i = 0; i < battle.currentBattler.moves.Length; i++)
+            for (int i = 0; i < battle.playerParty.party[battle.currentBattlerIndex].moves.Length; i++)
             {
-                if (battle.currentBattler.moves[i])
+                if (battle.playerParty.party[battle.currentBattlerIndex].moves[i])
                 {
                     moveTexts[i].transform.parent.gameObject.SetActive(true);
-                    moveTexts[i].text = battle.currentBattler.moves[i].name;
+                    moveTexts[i].text = battle.playerParty.party[battle.currentBattlerIndex].moves[i].name;
                 }
             }
         }
 
         public void UpdateHealthDisplays()
         {
-            apponentHealthDisplay.maxValue = battle.apponentBattler.maxHealth;
-            apponentHealthDisplay.value = battle.apponentBattler.currentHealth;
+            apponentHealthDisplay.maxValue = battle.apponentParty.party[battle.apponentBattlerIndex].maxHealth;
+            apponentHealthDisplay.value = battle.apponentParty.party[battle.apponentBattlerIndex].currentHealth;
 
-            currentBattlerHealthDisplay.maxValue = battle.currentBattler.maxHealth;
-            currentBattlerHealthDisplay.value = battle.currentBattler.currentHealth;
+            currentBattlerHealthDisplay.maxValue = battle.playerParty.party[battle.currentBattlerIndex].maxHealth;
+            currentBattlerHealthDisplay.value = battle.playerParty.party[battle.currentBattlerIndex].currentHealth;
         }
     }
 

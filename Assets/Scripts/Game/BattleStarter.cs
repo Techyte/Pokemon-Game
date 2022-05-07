@@ -22,6 +22,7 @@ namespace PokemonGame.Game
 
         private void Start()
         {
+            LoadBattle();
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.white, 100);
         }
 
