@@ -208,8 +208,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1038033299}
-        m_TargetAssemblyTypeName: Battle, Assembly-CSharp
-        m_MethodName: DoMove
+        m_TargetAssemblyTypeName: PokemonGame.Battle.Battle, Assembly-CSharp
+        m_MethodName: ChooseMove
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -611,8 +611,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1038033299}
-        m_TargetAssemblyTypeName: Battle, Assembly-CSharp
-        m_MethodName: DoMove
+        m_TargetAssemblyTypeName: PokemonGame.Battle.Battle, Assembly-CSharp
+        m_MethodName: ChooseMove
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2778,8 +2778,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1038033299}
-        m_TargetAssemblyTypeName: Battle, Assembly-CSharp
-        m_MethodName: DoMove
+        m_TargetAssemblyTypeName: PokemonGame.Battle.Battle, Assembly-CSharp
+        m_MethodName: ChooseMove
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2859,52 +2859,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerUIHolder: {fileID: 583115924}
   UIManager: {fileID: 1038033301}
-  currentBattler:
-    source: {fileID: 0}
-    name: 
-    maxHealth: 0
-    currentHealth: 0
-    level: 0
-    exp: 0
-    attack: 0
-    defense: 0
-    specialAttack: 0
-    specialDefense: 0
-    speed: 0
-    texture: {fileID: 0}
-    isFainted: 0
-    statusEffect: {fileID: 0}
-    primaryType: {fileID: 0}
-    secondaryType: {fileID: 0}
-    moves:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-  apponentBattler:
-    source: {fileID: 0}
-    name: 
-    maxHealth: 0
-    currentHealth: 0
-    level: 0
-    exp: 0
-    attack: 0
-    defense: 0
-    specialAttack: 0
-    specialDefense: 0
-    speed: 0
-    texture: {fileID: 0}
-    isFainted: 0
-    statusEffect: {fileID: 0}
-    primaryType: {fileID: 0}
-    secondaryType: {fileID: 0}
-    moves:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-  allMoves: {fileID: 11400000, guid: 081d4d866f9aa8c42be06c885cd5d61d, type: 2}
-  allAis: {fileID: 11400000, guid: 6f53c4caadde46a4988f63d9c43e439e, type: 2}
+  currentBattlerIndex: 0
+  apponentBattlerIndex: 0
   enemyCanAttack: 1
   currentTurn: 0
   playerParty:
@@ -3037,6 +2993,8 @@ MonoBehaviour:
       - {fileID: 0}
       - {fileID: 0}
       - {fileID: 0}
+  playerHasChosenAttack: 0
+  enemyHasChosenAttack: 0
 --- !u!4 &1038033300
 Transform:
   m_ObjectHideFlags: 0
@@ -3064,6 +3022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04aeb2d4f80f4c644a885c70d951681a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerUIHolder: {fileID: 583115924}
   moveButtons: {fileID: 1313120826}
   healthDisplays: {fileID: 1971165366}
   changeBattlerDisplay: {fileID: 337073833}
@@ -4812,8 +4771,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1038033299}
-        m_TargetAssemblyTypeName: Battle, Assembly-CSharp
-        m_MethodName: DoMove
+        m_TargetAssemblyTypeName: PokemonGame.Battle.Battle, Assembly-CSharp
+        m_MethodName: ChooseMove
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

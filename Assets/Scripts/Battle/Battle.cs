@@ -3,17 +3,18 @@ using UnityEngine.SceneManagement;
 
 namespace PokemonGame.Battle
 {
-    public enum Turn
+    public enum TurnStatus
     {
-        Player,
-        Enemy
+        Chosing,
+        Showing,
+        Ending
     }
 
     public class Battle : MonoBehaviour
     {
         [Header("UI:")]
         public GameObject PlayerUIHolder;
-        [SerializeField] BattleUIManager UIManager;
+        [SerializeField] private BattleUIManager UIManager;
 
         [Space]
         [Header("Assignments")]
@@ -21,17 +22,19 @@ namespace PokemonGame.Battle
 
         public int apponentBattlerIndex;
 
-        //For testing
-        public bool enemyCanAttack;
-
         [Space]
         [Header("Other Readouts")]
-        public Turn currentTurn = Turn.Player;
+        public TurnStatus currentTurn = TurnStatus.Chosing;
         public Party playerParty;
         public Party apponentParty;
 
-        private bool playerHasAttacked;
         EnemyAI enemyAI;
+
+        private Move playerMoveToDo;
+        private Move enemyMoveToDo;
+        public bool playerHasChosenAttack;
+        private bool hasDoneChoosingUpdate;
+        private bool hasShowedMoves;
 
         private void Start()
         {
@@ -39,47 +42,71 @@ namespace PokemonGame.Battle
             apponentParty = BattleLoaderInfo.apponentParty;
             enemyAI = BattleLoaderInfo.enemyAI;
 
+            BattleManager.ClearBattleLoader();
+
             currentBattlerIndex = 0;
 
             apponentBattlerIndex = 0;
 
             apponentParty.party[apponentBattlerIndex].currentHealth = apponentParty.party[apponentBattlerIndex].maxHealth;
             playerParty.party[currentBattlerIndex].currentHealth = playerParty.party[currentBattlerIndex].maxHealth;
-
-            //UIManager.UpdateBattlerButtons();
-
-            BattleManager.ClearBattleLoader();
         }
 
         private void Update()
         {
+            if (playerHasChosenAttack)
+            {
+                currentTurn = TurnStatus.Showing;
+            }
+
             switch (currentTurn)
             {
-                case Turn.Player:
-                    DoPlayerTurn();
+                case TurnStatus.Ending:
+                    UIManager.ShowUI(false);
+                    hasDoneChoosingUpdate = false;
+                    hasShowedMoves = false;
+                    playerHasChosenAttack = false;
+                    currentTurn = TurnStatus.Chosing;
                     break;
-                case Turn.Enemy:
-                    DoEnemyTurn();
+                case TurnStatus.Showing:
+                    UIManager.ShowUI(false);
+                    if (!hasShowedMoves)
+                    {
+                        DoMoves();
+                    }
+                    hasShowedMoves = true;
+                    currentTurn = TurnStatus.Ending;
+                    break;
+                case TurnStatus.Chosing:
+                    if (!hasDoneChoosingUpdate)
+                    {
+                        UIManager.ShowUI(true);
+                        enemyAI.aiMethod(apponentParty.party[apponentBattlerIndex], apponentParty, this);
+                        hasDoneChoosingUpdate = true;
+                    }
                     break;
             }
+            Debug.Log(currentTurn);
         }
 
-        public void DoMove(int moveID)
+        public void ChooseMove(int moveID)
         {
-            DoMoveOnAposingBattler(playerParty.party[currentBattlerIndex].moves[moveID]);
+            playerMoveToDo = playerParty.party[currentBattlerIndex].moves[moveID];
+            playerHasChosenAttack = true;
+            Debug.Log("Player chose move and playerhaschosenattack is equal to: " + playerHasChosenAttack);
         }
 
-        private void DoMoveOnAposingBattler(Move move)
+        private void DoPlayerMove()
         {
             //You can add any animation calls for attacking here
 
-            if (move.category == MoveCategory.Status)
+            if (playerMoveToDo.category == MoveCategory.Status)
             {
-                move.moveMethod(apponentParty.party[apponentBattlerIndex]);
+                playerMoveToDo.moveMethod(apponentParty.party[apponentBattlerIndex]);
             }
             else
             {
-                float damageToDo = CalculateDamage(move, playerParty.party[currentBattlerIndex], apponentParty.party[apponentBattlerIndex]);
+                float damageToDo = CalculateDamage(playerMoveToDo, playerParty.party[currentBattlerIndex], apponentParty.party[apponentBattlerIndex]);
                 apponentParty.party[apponentBattlerIndex].currentHealth -= (int)damageToDo;
             }
 
@@ -91,8 +118,6 @@ namespace PokemonGame.Battle
             CheckForWinCondition();
 
             UIManager.UpdateHealthDisplays();
-
-            playerHasAttacked = true;
         }
 
         private float CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
@@ -174,52 +199,34 @@ namespace PokemonGame.Battle
             return finalDamage;
         }
 
-        public void ChangeTurn()
+        private void DoMoves()
         {
-            switch (currentTurn)
+            if(apponentParty.party[apponentBattlerIndex].speed > playerParty.party[currentBattlerIndex].speed)
             {
-                case Turn.Player:
-                    currentTurn = Turn.Enemy;
-                    break;
-                case Turn.Enemy:
-                    currentTurn = Turn.Player;
-                    break;
+                //Enemy is faster
+                DoEnemyMove();
+                DoPlayerMove();
             }
-        }
-
-        private void DoPlayerTurn()
-        {
-            PlayerUIHolder.SetActive(true);
-
-            if (playerHasAttacked)
+            else
             {
-                UIManager.UpdateHealthDisplays();
-
-                playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
-                apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
-
-                playerHasAttacked = false;
-
-                ChangeTurn();
-            }
-        }
-
-        private void DoEnemyTurn()
-        {
-            PlayerUIHolder.SetActive(false);
-
-            if (enemyCanAttack)
-            {
-                enemyAI.aiMethod(apponentParty.party[apponentBattlerIndex], apponentParty, this);
+                //Player is faster
+                DoPlayerMove();
+                DoEnemyMove();
             }
 
-            //Debug.Log("Is enemy turn");
-            ChangeTurn();
+            playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
+            apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
+            UIManager.UpdateHealthDisplays();
         }
 
         public void DoMoveOnPlayer(Move move)
         {
-            float damageToDo = CalculateDamage(move, apponentParty.party[apponentBattlerIndex], playerParty.party[currentBattlerIndex]);
+            enemyMoveToDo = move;
+        }
+
+        private void DoEnemyMove()
+        {
+            float damageToDo = CalculateDamage(enemyMoveToDo, apponentParty.party[apponentBattlerIndex], playerParty.party[currentBattlerIndex]);
 
             if (playerParty.party[currentBattlerIndex].currentHealth <= 0)
             {

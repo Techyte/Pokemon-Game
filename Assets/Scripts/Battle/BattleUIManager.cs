@@ -6,6 +6,7 @@ namespace PokemonGame.Battle
 {
     public class BattleUIManager : MonoBehaviour
     {
+        public GameObject PlayerUIHolder;
         public GameObject moveButtons;
         public GameObject healthDisplays;
         public GameObject changeBattlerDisplay;
@@ -33,6 +34,8 @@ namespace PokemonGame.Battle
 
         public void UpdateBattlerButtons()
         {
+            PlayerUIHolder.SetActive(false);
+
             for (int i = 0; i < battlerDisplays.Length; i++)
             {
                 battlerDisplays[i].transform.parent.gameObject.SetActive(false);
@@ -53,7 +56,7 @@ namespace PokemonGame.Battle
 
                 if (i == battle.currentBattlerIndex)
                 {
-                    Debug.Log("Dissabling " + battle.playerParty.party[i].name + " option");
+                    battlerDisplays[i].text = battle.playerParty.party[i].name + " is selected";
                     battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
                 }
             }
@@ -65,6 +68,11 @@ namespace PokemonGame.Battle
                 battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
             }
             */
+        }
+
+        public void ShowUI(bool showUIBool)
+        {
+            PlayerUIHolder.SetActive(showUIBool);
         }
 
         public void SwitchBattler()
@@ -95,7 +103,7 @@ namespace PokemonGame.Battle
             changeBattlerDisplay.SetActive(false);
             battle.currentBattlerIndex = partyID;
             battle.playerParty.party[battle.currentBattlerIndex] = battle.playerParty.party[partyID];
-            battle.ChangeTurn();
+            battle.currentTurn = TurnStatus.Showing;
             UpdateBattlerButtons();
             UpdateBattlerSprites();
             UpdateBattlerMoveDisplays();
