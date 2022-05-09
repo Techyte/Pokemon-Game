@@ -35,7 +35,6 @@ namespace PokemonGame.Battle
         public bool playerHasChosenAttack;
         [SerializeField]private bool hasDoneChoosingUpdate;
         [SerializeField]private bool hasShowedMoves;
-        [SerializeField]private bool hasEnded;
 
         private void Start()
         {
@@ -60,17 +59,10 @@ namespace PokemonGame.Battle
                 currentTurn = TurnStatus.Showing;
             }
 
-            Debug.Log(currentTurn);
-            /*
             switch (currentTurn)
             {
                 case TurnStatus.Ending:
-                    if (!hasEnded)
-                    {
-                        TurnEnding();
-                        Debug.Log("Ending but the have not ended so you should see this once");
-                    }
-                    Debug.Log("Ending but we have ended so you shouldnt see this");
+                    TurnEnding();
                     break;
                 case TurnStatus.Showing:
                     TurnShowing();
@@ -81,32 +73,8 @@ namespace PokemonGame.Battle
                         UIManager.ShowUI(true);
                         enemyAI.aiMethod(apponentParty.party[apponentBattlerIndex], apponentParty, this);
                         hasDoneChoosingUpdate = true;
-                        hasEnded = false;
                     }
                     break;
-            }
-            */
-
-            if(currentTurn == TurnStatus.Ending)
-            {
-                if (!hasEnded)
-                {
-                    TurnEnding();
-                    Debug.Log("Ending but the have not ended so you should see this once");
-                }
-                Debug.Log("Ending but we have ended so you shouldnt see this");
-            }else if(currentTurn == TurnStatus.Showing)
-            {
-                TurnShowing();
-            }else if(currentTurn == TurnStatus.Chosing)
-            {
-                if (!hasDoneChoosingUpdate)
-                {
-                    UIManager.ShowUI(true);
-                    enemyAI.aiMethod(apponentParty.party[apponentBattlerIndex], apponentParty, this);
-                    hasDoneChoosingUpdate = true;
-                    hasEnded = false;
-                }
             }
         }
 
@@ -116,10 +84,10 @@ namespace PokemonGame.Battle
             if (!hasShowedMoves)
             {
                 DoMoves();
-                Debug.Log("Doing moves so you should only see this once");
             }
             hasShowedMoves = true;
-            hasEnded = false;
+            playerHasChosenAttack = false;
+            Debug.Log(currentTurn);
             currentTurn = TurnStatus.Ending;
             Debug.Log(currentTurn);
         }
@@ -130,8 +98,15 @@ namespace PokemonGame.Battle
             hasDoneChoosingUpdate = false;
             hasShowedMoves = false;
             playerHasChosenAttack = false;
-            hasEnded = true;
+            DoStatusEffects();
             currentTurn = TurnStatus.Chosing;
+        }
+
+        private void DoStatusEffects()
+        {
+            apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
+
+            playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
         }
 
         public void ChooseMove(int moveID)

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Poisoned
   m_EditorClassIdentifier: 
   name: Poisoned
+  callerStage: 1
