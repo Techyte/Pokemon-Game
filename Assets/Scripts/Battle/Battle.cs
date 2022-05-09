@@ -33,8 +33,9 @@ namespace PokemonGame.Battle
         private Move playerMoveToDo;
         private Move enemyMoveToDo;
         public bool playerHasChosenAttack;
-        private bool hasDoneChoosingUpdate;
-        private bool hasShowedMoves;
+        [SerializeField]private bool hasDoneChoosingUpdate;
+        [SerializeField]private bool hasShowedMoves;
+        [SerializeField]private bool hasEnded;
 
         private void Start()
         {
@@ -59,23 +60,20 @@ namespace PokemonGame.Battle
                 currentTurn = TurnStatus.Showing;
             }
 
+            Debug.Log(currentTurn);
+            /*
             switch (currentTurn)
             {
                 case TurnStatus.Ending:
-                    UIManager.ShowUI(false);
-                    hasDoneChoosingUpdate = false;
-                    hasShowedMoves = false;
-                    playerHasChosenAttack = false;
-                    currentTurn = TurnStatus.Chosing;
+                    if (!hasEnded)
+                    {
+                        TurnEnding();
+                        Debug.Log("Ending but the have not ended so you should see this once");
+                    }
+                    Debug.Log("Ending but we have ended so you shouldnt see this");
                     break;
                 case TurnStatus.Showing:
-                    UIManager.ShowUI(false);
-                    if (!hasShowedMoves)
-                    {
-                        DoMoves();
-                    }
-                    hasShowedMoves = true;
-                    currentTurn = TurnStatus.Ending;
+                    TurnShowing();
                     break;
                 case TurnStatus.Chosing:
                     if (!hasDoneChoosingUpdate)
@@ -83,17 +81,63 @@ namespace PokemonGame.Battle
                         UIManager.ShowUI(true);
                         enemyAI.aiMethod(apponentParty.party[apponentBattlerIndex], apponentParty, this);
                         hasDoneChoosingUpdate = true;
+                        hasEnded = false;
                     }
                     break;
             }
+            */
+
+            if(currentTurn == TurnStatus.Ending)
+            {
+                if (!hasEnded)
+                {
+                    TurnEnding();
+                    Debug.Log("Ending but the have not ended so you should see this once");
+                }
+                Debug.Log("Ending but we have ended so you shouldnt see this");
+            }else if(currentTurn == TurnStatus.Showing)
+            {
+                TurnShowing();
+            }else if(currentTurn == TurnStatus.Chosing)
+            {
+                if (!hasDoneChoosingUpdate)
+                {
+                    UIManager.ShowUI(true);
+                    enemyAI.aiMethod(apponentParty.party[apponentBattlerIndex], apponentParty, this);
+                    hasDoneChoosingUpdate = true;
+                    hasEnded = false;
+                }
+            }
+        }
+
+        private void TurnShowing()
+        {
+            UIManager.ShowUI(false);
+            if (!hasShowedMoves)
+            {
+                DoMoves();
+                Debug.Log("Doing moves so you should only see this once");
+            }
+            hasShowedMoves = true;
+            hasEnded = false;
+            currentTurn = TurnStatus.Ending;
             Debug.Log(currentTurn);
+        }
+
+        private void TurnEnding()
+        {
+            UIManager.ShowUI(false);
+            hasDoneChoosingUpdate = false;
+            hasShowedMoves = false;
+            playerHasChosenAttack = false;
+            hasEnded = true;
+            currentTurn = TurnStatus.Chosing;
         }
 
         public void ChooseMove(int moveID)
         {
             playerMoveToDo = playerParty.party[currentBattlerIndex].moves[moveID];
             playerHasChosenAttack = true;
-            Debug.Log("Player chose move and playerhaschosenattack is equal to: " + playerHasChosenAttack);
         }
 
         private void DoPlayerMove()
