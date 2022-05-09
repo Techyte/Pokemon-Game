@@ -3,26 +3,25 @@ using UnityEngine;
 
 namespace PokemonGame
 {
-    [CustomEditor(typeof(AllStatusEffects))]
-    public class AllStatusEffectEditor : Editor
+    [CustomEditor(typeof(AllAis))]
+    public class AllAisEditor : Editor
     {
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-            AllStatusEffects allEffects = (AllStatusEffects)target;
+            AllAis allAis = (AllAis)target;
 
             if (GUILayout.Button("Add Status Effect"))
             {
-                allEffects.effects.Add(allEffects.EffectToAdd.name, allEffects.EffectToAdd);
+                allAis.ais.Add(allAis.AIToAdd.name, allAis.AIToAdd);
             }
             if (Application.isPlaying)
             {
-                foreach (var p in allEffects.effects)
+                foreach (var p in allAis.ais)
                 {
                     EditorGUILayout.LabelField(p.Key + ": " + p.Value);
                 }
             }
         }
     }
-
 }

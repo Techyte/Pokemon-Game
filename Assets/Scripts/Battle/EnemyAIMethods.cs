@@ -6,7 +6,7 @@ namespace PokemonGame.Battle
     {
         public void DefaultAI(Battler battlerToUse, Party usableParty, Battle caller)
         {
-            Debug.Log("Default AI was called");
+            //Debug.Log("Default AI was called");
             int moveCount = 0;
             for (int i = 0; i < battlerToUse.moves.Length; i++)
             {

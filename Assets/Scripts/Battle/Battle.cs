@@ -80,16 +80,14 @@ namespace PokemonGame.Battle
 
         private void TurnShowing()
         {
-            UIManager.ShowUI(false);
             if (!hasShowedMoves)
             {
+                UIManager.ShowUI(false);
                 DoMoves();
+                hasShowedMoves = true;
+                playerHasChosenAttack = false;
+                currentTurn = TurnStatus.Ending;
             }
-            hasShowedMoves = true;
-            playerHasChosenAttack = false;
-            Debug.Log(currentTurn);
-            currentTurn = TurnStatus.Ending;
-            Debug.Log(currentTurn);
         }
 
         private void TurnEnding()
@@ -105,6 +103,7 @@ namespace PokemonGame.Battle
         private void DoStatusEffects()
         {
             apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
+            Debug.Log(apponentParty.party[apponentBattlerIndex].statusEffect);
 
             playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
         }
@@ -233,8 +232,6 @@ namespace PokemonGame.Battle
                 DoEnemyMove();
             }
 
-            playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
-            apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
             UIManager.UpdateHealthDisplays();
         }
 
@@ -247,6 +244,8 @@ namespace PokemonGame.Battle
         {
             float damageToDo = CalculateDamage(enemyMoveToDo, apponentParty.party[apponentBattlerIndex], playerParty.party[currentBattlerIndex]);
 
+            playerParty.party[currentBattlerIndex].currentHealth -= (int)damageToDo;
+
             if (playerParty.party[currentBattlerIndex].currentHealth <= 0)
             {
                 playerParty.party[currentBattlerIndex].isFainted = true;
@@ -254,8 +253,6 @@ namespace PokemonGame.Battle
             }
 
             CheckForWinCondition();
-
-            playerParty.party[currentBattlerIndex].currentHealth -= (int)damageToDo;
         }
 
         public void EndBattle()

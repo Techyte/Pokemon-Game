@@ -43,6 +43,12 @@ namespace PokemonGame.Battle
 
             for (int i = 0; i < battle.playerParty.party.Length; i++)
             {
+                if (i == battle.currentBattlerIndex)
+                {
+                    battlerDisplays[i].text = battle.playerParty.party[i].name + " is selected";
+                    battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
+                }
+
                 if (battle.playerParty.party[i].name == "")
                 {
                     battlerDisplays[i].transform.parent.gameObject.SetActive(false);
@@ -53,21 +59,7 @@ namespace PokemonGame.Battle
                     battlerDisplays[i].text = battle.playerParty.party[i].name;
                     battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = !battle.playerParty.party[i].isFainted;
                 }
-
-                if (i == battle.currentBattlerIndex)
-                {
-                    battlerDisplays[i].text = battle.playerParty.party[i].name + " is selected";
-                    battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
-                }
             }
-
-            /*
-            if (i == battle.currentBattlerIndex)
-            {
-                Debug.Log("Dissabling " + battle.playerParty.party[i].name + " option");
-                battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
-            }
-            */
         }
 
         public void ShowUI(bool showUIBool)

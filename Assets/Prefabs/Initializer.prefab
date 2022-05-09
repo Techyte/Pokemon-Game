@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3231623555529086739}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3231623554074533208
 MonoBehaviour:
@@ -88,51 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20d1d4975191cf4197b2a61eb52dfee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &3231623555336301163
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3231623555336301157}
-  - component: {fileID: 3231623555336301162}
-  m_Layer: 0
-  m_Name: StatusMoveInitilizer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3231623555336301157
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3231623555336301163}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3231623555529086739}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3231623555336301162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3231623555336301163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7dcc2e1c74bfd948af269051b4a324b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allStatusEffects: {fileID: 11400000, guid: 74ea5cd36e1708040a14f2334a0c701c, type: 2}
 --- !u!1 &3231623555347048410
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,17 +132,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a3845a82cd4f143bef2627738c327b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allMoves:
-  - {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
-  - {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
-  - {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
-  - {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}
-  allStatusEffects:
-  - {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
-  - {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
-  allEnemyAIs:
-  - {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}
-  moveMethods: {fileID: 3231623555336301162}
+  allMoves: {fileID: 11400000, guid: 081d4d866f9aa8c42be06c885cd5d61d, type: 2}
+  allStatusEffects: {fileID: 11400000, guid: 74ea5cd36e1708040a14f2334a0c701c, type: 2}
+  allEnemyAIs: {fileID: 11400000, guid: f4b7bfc0899c1db4593d2a9eed24bbe0, type: 2}
   effectMethods: {fileID: 3231623554074533208}
   enemyAiMethods: {fileID: 3231623555110906579}
 --- !u!1 &3231623555529086736
@@ -220,7 +167,6 @@ Transform:
   m_Children:
   - {fileID: 3231623555347048404}
   - {fileID: 3231623555110906578}
-  - {fileID: 3231623555336301157}
   - {fileID: 3231623554074533211}
   m_Father: {fileID: 0}
   m_RootOrder: 0

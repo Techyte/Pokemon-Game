@@ -2,13 +2,14 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
-    public class StatusMovesMethods : MonoBehaviour
+    public class StatusMovesMethods
     {
-        [SerializeField] AllStatusEffects allStatusEffects;
+        public static AllStatusEffects allStatusEffects;
 
         public void Toxic(Battler target)
         {
             target.statusEffect = allStatusEffects.effects["Poisoned"];
+            Debug.Log(target.statusEffect);
             Debug.Log("Used Toxic on " + target.name);
         }
 
@@ -27,5 +28,4 @@ namespace PokemonGame.Battle
             Debug.Log("Used Tackle Leaf on " + target.name);
         }
     }
-
 }

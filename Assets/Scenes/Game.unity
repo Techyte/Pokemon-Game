@@ -277,6 +277,214 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db309f2b3aa1fb047b0aa64dcd5d8d4c, type: 2}
   npcStarterPokemon:
   - {fileID: 11400000, guid: f98dd2fa32827594da82f4b72db0840f, type: 2}
+  playerParty:
+    party:
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+  apponentParty:
+    party:
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
+    - source: {fileID: 0}
+      name: 
+      maxHealth: 0
+      currentHealth: 0
+      level: 0
+      exp: 0
+      attack: 0
+      defense: 0
+      specialAttack: 0
+      specialDefense: 0
+      speed: 0
+      texture: {fileID: 0}
+      isFainted: 0
+      statusEffect: {fileID: 0}
+      primaryType: {fileID: 0}
+      secondaryType: {fileID: 0}
+      moves: []
   healthy: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
   Ember: {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
   Tackle: {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
