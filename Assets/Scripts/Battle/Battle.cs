@@ -102,10 +102,10 @@ namespace PokemonGame.Battle
 
         private void DoStatusEffects()
         {
-            apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
+            apponentParty.party[apponentBattlerIndex] = apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
             Debug.Log(apponentParty.party[apponentBattlerIndex].statusEffect);
 
-            playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
+            playerParty.party[currentBattlerIndex] = playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
         }
 
         public void ChooseMove(int moveID)
@@ -120,7 +120,7 @@ namespace PokemonGame.Battle
 
             if (playerMoveToDo.category == MoveCategory.Status)
             {
-                playerMoveToDo.moveMethod(apponentParty.party[apponentBattlerIndex]);
+                apponentParty.party[apponentBattlerIndex] = playerMoveToDo.moveMethod(apponentParty.party[apponentBattlerIndex]);
             }
             else
             {

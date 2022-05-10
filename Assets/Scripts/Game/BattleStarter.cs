@@ -7,11 +7,9 @@ namespace PokemonGame.Game
     {
         public BattlerTemplate[] playerPartyTemplate;
         public BattlerTemplate[] npcStarterPokemon;
-
+        public AllStatusEffects allStatusEffects;
         public Party playerParty;
         public Party apponentParty;
-
-        public StatusEffect healthy;
 
         public Move Ember;
         public Move Tackle;
@@ -40,7 +38,7 @@ namespace PokemonGame.Game
             playerParty.party[0] = new Battler(
                 playerPartyTemplate[0],
                 5,
-                healthy,
+                allStatusEffects.effects["Healthy"],
                 playerPartyTemplate[0].name,
                 Ember,
                 Tackle,
@@ -50,7 +48,7 @@ namespace PokemonGame.Game
             playerParty.party[1] = new Battler(
                 playerPartyTemplate[1],
                 5,
-                healthy,
+                allStatusEffects.effects["Healthy"],
                 playerPartyTemplate[1].name,
                 Tackle,
                 Toxic,
@@ -60,7 +58,7 @@ namespace PokemonGame.Game
             apponentParty.party[0] = new Battler(
                 npcStarterPokemon[0],
                 5,
-                healthy,
+                allStatusEffects.effects["Healthy"],
                 npcStarterPokemon[0].name,
                 Tackle,
                 RazorLeaf,

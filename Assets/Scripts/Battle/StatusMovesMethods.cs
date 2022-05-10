@@ -6,26 +6,31 @@ namespace PokemonGame.Battle
     {
         public static AllStatusEffects allStatusEffects;
 
-        public void Toxic(Battler target)
+        public Battler Toxic(Battler target)
         {
             target.statusEffect = allStatusEffects.effects["Poisoned"];
+            target.speed = 4;
             Debug.Log(target.statusEffect);
             Debug.Log("Used Toxic on " + target.name);
+            return target;
         }
 
-        public void Ember(Battler target)
+        public Battler Ember(Battler target)
         {
             Debug.Log("Used Ember on " + target.name);
+            return target;
         }
 
-        public void RazorLeaf(Battler target)
+        public Battler RazorLeaf(Battler target)
         {
             Debug.Log("Used Razor Leaf on " + target.name);
+            return target;
         }
 
-        public void Tackle(Battler target)
+        public Battler Tackle(Battler target)
         {
             Debug.Log("Used Tackle Leaf on " + target.name);
+            return target;
         }
     }
 }
