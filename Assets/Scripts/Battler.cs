@@ -4,7 +4,7 @@ using UnityEngine;
 namespace PokemonGame
 {
     [System.Serializable]
-    public struct Battler
+    public class Battler
     {
         public BattlerTemplate source;
         public string name;

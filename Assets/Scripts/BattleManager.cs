@@ -11,7 +11,7 @@ namespace PokemonGame
             BattleLoaderInfo.apponentParty = aponentParty;
             BattleLoaderInfo.enemyAI = enemyAI;
 
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
 
         public static void ClearBattleLoader()

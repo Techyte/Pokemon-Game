@@ -34,8 +34,6 @@ namespace PokemonGame.Battle
 
         public void UpdateBattlerButtons()
         {
-            PlayerUIHolder.SetActive(false);
-
             for (int i = 0; i < battlerDisplays.Length; i++)
             {
                 battlerDisplays[i].transform.parent.gameObject.SetActive(false);
@@ -43,12 +41,6 @@ namespace PokemonGame.Battle
 
             for (int i = 0; i < battle.playerParty.party.Length; i++)
             {
-                if (i == battle.currentBattlerIndex)
-                {
-                    battlerDisplays[i].text = battle.playerParty.party[i].name + " is selected";
-                    battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
-                }
-
                 if (battle.playerParty.party[i].name == "")
                 {
                     battlerDisplays[i].transform.parent.gameObject.SetActive(false);
@@ -58,6 +50,18 @@ namespace PokemonGame.Battle
                     battlerDisplays[i].transform.parent.gameObject.SetActive(true);
                     battlerDisplays[i].text = battle.playerParty.party[i].name;
                     battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = !battle.playerParty.party[i].isFainted;
+
+                    if (i == battle.currentBattlerIndex)
+                    {
+                        battlerDisplays[i].text = battle.playerParty.party[i].name + " is selected";
+                        battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
+                    }
+
+                    if (battle.playerParty.party[i].isFainted)
+                    {
+                        battlerDisplays[i].text = battle.playerParty.party[i].name + " is fainted";
+                        battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
+                    }
                 }
             }
         }
@@ -69,6 +73,7 @@ namespace PokemonGame.Battle
 
         public void SwitchBattler()
         {
+            PlayerUIHolder.SetActive(true);
             healthDisplays.SetActive(false);
             moveButtons.SetActive(false);
             miscButtons.SetActive(false);
@@ -79,6 +84,7 @@ namespace PokemonGame.Battle
 
         public void SwitchBattlerBecauseOfDeath()
         {
+            PlayerUIHolder.SetActive(true);
             healthDisplays.SetActive(false);
             moveButtons.SetActive(false);
             miscButtons.SetActive(false);

@@ -31,7 +31,7 @@ namespace PokemonGame.Battle
         EnemyAI enemyAI;
 
         private Move playerMoveToDo;
-        private Move enemyMoveToDo;
+        public Move enemyMoveToDo;
         public bool playerHasChosenAttack;
         [SerializeField]private bool hasDoneChoosingUpdate;
         [SerializeField]private bool hasShowedMoves;
@@ -102,10 +102,10 @@ namespace PokemonGame.Battle
 
         private void DoStatusEffects()
         {
-            apponentParty.party[apponentBattlerIndex] = apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
-            Debug.Log(apponentParty.party[apponentBattlerIndex].statusEffect);
+            apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
 
-            playerParty.party[currentBattlerIndex] = playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
+            playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
+            UIManager.UpdateHealthDisplays();
         }
 
         public void ChooseMove(int moveID)
@@ -118,19 +118,23 @@ namespace PokemonGame.Battle
         {
             //You can add any animation calls for attacking here
 
-            if (playerMoveToDo.category == MoveCategory.Status)
+            if (playerMoveToDo != null)
             {
-                apponentParty.party[apponentBattlerIndex] = playerMoveToDo.moveMethod(apponentParty.party[apponentBattlerIndex]);
-            }
-            else
-            {
-                float damageToDo = CalculateDamage(playerMoveToDo, playerParty.party[currentBattlerIndex], apponentParty.party[apponentBattlerIndex]);
-                apponentParty.party[apponentBattlerIndex].currentHealth -= (int)damageToDo;
-            }
 
-            if (apponentParty.party[apponentBattlerIndex].currentHealth <= 0)
-            {
-                apponentParty.party[apponentBattlerIndex].isFainted = true;
+                if (playerMoveToDo.category == MoveCategory.Status)
+                {
+                    playerMoveToDo.moveMethod(apponentParty.party[apponentBattlerIndex]);
+                }
+                else
+                {
+                    float damageToDo = CalculateDamage(playerMoveToDo, playerParty.party[currentBattlerIndex], apponentParty.party[apponentBattlerIndex]);
+                    apponentParty.party[apponentBattlerIndex].currentHealth -= (int)damageToDo;
+                }
+
+                if (apponentParty.party[apponentBattlerIndex].currentHealth <= 0)
+                {
+                    apponentParty.party[apponentBattlerIndex].isFainted = true;
+                }
             }
 
             CheckForWinCondition();
@@ -242,9 +246,17 @@ namespace PokemonGame.Battle
 
         private void DoEnemyMove()
         {
-            float damageToDo = CalculateDamage(enemyMoveToDo, apponentParty.party[apponentBattlerIndex], playerParty.party[currentBattlerIndex]);
+            //You can add any animation calls for attacking here
 
-            playerParty.party[currentBattlerIndex].currentHealth -= (int)damageToDo;
+            if (enemyMoveToDo.category == MoveCategory.Status)
+            {
+                enemyMoveToDo.moveMethod(apponentParty.party[currentBattlerIndex]);
+            }
+            else
+            {
+                float damageToDo = CalculateDamage(enemyMoveToDo, apponentParty.party[apponentBattlerIndex], playerParty.party[currentBattlerIndex]);
+                playerParty.party[currentBattlerIndex].currentHealth -= (int)damageToDo;
+            }
 
             if (playerParty.party[currentBattlerIndex].currentHealth <= 0)
             {
@@ -253,6 +265,8 @@ namespace PokemonGame.Battle
             }
 
             CheckForWinCondition();
+
+            UIManager.UpdateHealthDisplays();
         }
 
         public void EndBattle()
@@ -265,7 +279,7 @@ namespace PokemonGame.Battle
             SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
             SaveAndLoad<Party>.SaveJson(apponentParty, aponentPath);
 
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(0);
         }
 
         private void CheckForWinCondition()

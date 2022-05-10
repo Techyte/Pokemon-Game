@@ -914,7 +914,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1038033301}
-        m_TargetAssemblyTypeName: BattleUIManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: PokemonGame.Battle.BattleUIManager, Assembly-CSharp
         m_MethodName: SwitchBattler
         m_Mode: 1
         m_Arguments:
@@ -2861,7 +2861,6 @@ MonoBehaviour:
   UIManager: {fileID: 1038033301}
   currentBattlerIndex: 0
   apponentBattlerIndex: 0
-  enemyCanAttack: 1
   currentTurn: 0
   playerParty:
     party: []
@@ -2993,8 +2992,10 @@ MonoBehaviour:
       - {fileID: 0}
       - {fileID: 0}
       - {fileID: 0}
+  enemyMoveToDo: {fileID: 0}
   playerHasChosenAttack: 0
-  enemyHasChosenAttack: 0
+  hasDoneChoosingUpdate: 0
+  hasShowedMoves: 0
 --- !u!4 &1038033300
 Transform:
   m_ObjectHideFlags: 0

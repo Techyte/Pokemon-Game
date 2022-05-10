@@ -10,7 +10,7 @@ namespace PokemonGame
         public int damage;
         public MoveCategory category;
 
-        public delegate Battler MoveMethod(Battler target);
+        public delegate void MoveMethod(Battler target);
         public MoveMethod moveMethod;
     }
 

@@ -62,7 +62,7 @@ namespace PokemonGame.Game
                 npcStarterPokemon[0].name,
                 Tackle,
                 RazorLeaf,
-                Toxic,
+                null,
                 null);
 
             BattleManager.LoadBattleScene(playerParty, apponentParty, ai);

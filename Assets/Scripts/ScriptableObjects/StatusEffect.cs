@@ -7,7 +7,7 @@ namespace PokemonGame.Battle
     {
         public new string name;
 
-        public delegate Battler Effect(Battler target);
+        public delegate void Effect(Battler target);
         public Effect effect;
     }
 
