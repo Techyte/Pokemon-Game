@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571322, b: 0.30692163, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -277,6 +277,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: db309f2b3aa1fb047b0aa64dcd5d8d4c, type: 2}
   npcStarterPokemon:
   - {fileID: 11400000, guid: f98dd2fa32827594da82f4b72db0840f, type: 2}
+  allStatusEffects: {fileID: 11400000, guid: 74ea5cd36e1708040a14f2334a0c701c, type: 2}
   playerParty:
     party:
     - source: {fileID: 0}
@@ -485,7 +486,6 @@ MonoBehaviour:
       primaryType: {fileID: 0}
       secondaryType: {fileID: 0}
       moves: []
-  healthy: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
   Ember: {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
   Tackle: {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
   Toxic: {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}
