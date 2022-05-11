@@ -1,5 +1,6 @@
 using PokemonGame.Battle;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace PokemonGame.Game
 {
@@ -16,11 +17,15 @@ namespace PokemonGame.Game
         public Move Toxic;
         public Move RazorLeaf;
 
+        public NavMeshAgent agent;
+
         public EnemyAI ai;
+
+        private bool hasStartedwalking;
 
         private void Start()
         {
-            LoadBattle();
+            agent = gameObject.GetComponent<NavMeshAgent>();
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.white, 100);
         }
 
@@ -29,8 +34,21 @@ namespace PokemonGame.Game
             RaycastHit hit;
             if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
             {
-                LoadBattle();
+                hit.transform.gameObject.GetComponent<PlayerMovement>().canMove = false;
+                agent.destination = hit.transform.position;
+
+                Invoke("HasStartedWalkingSetter", .1f);
+
+                if (agent.velocity.magnitude < 0.15f && hasStartedwalking)
+                {
+                    LoadBattle();
+                }
             }
+        }
+
+        private void HasStartedWalkingSetter()
+        {
+            hasStartedwalking = true;
         }
 
         public void LoadBattle()

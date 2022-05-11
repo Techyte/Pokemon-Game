@@ -4,42 +4,41 @@ namespace PokemonGame.Game
 {
     public class PlayerMovement : MonoBehaviour
     {
-        private Rigidbody rb;
-        [SerializeField] private float speed;
+        [Header("Asignables")]
+        public CharacterController controller;
+        public Transform cam;
 
+        [Header("Control Values")]
+        public float normalSpeed = 6f;
+
+        private float turnSmoothTime = 0.1f;
+        private float turnSmoothVelocity;
+        public bool canMove = true;
+        [SerializeField] float speed;
         private void Start()
         {
-            rb = gameObject.GetComponent<Rigidbody>();
+            speed = normalSpeed;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
-        private void Update()
+        void Update()
         {
-            /*
-            float xInput = Input.GetAxis("Horizontal");
-            float yInput = Input.GetAxis("Vertical");
+            if (canMove)
+            {
+                float horizontal = Input.GetAxis("Horizontal");
+                float vertical = Input.GetAxis("Vertical");
+                Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-            rb.velocity = new Vector3(xInput * speed, 0, yInput * speed);
-            */
+                if (direction.magnitude >= 0.1f)
+                {
+                    float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                    float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                    transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            if (Input.GetKey(KeyCode.W))
-            {
-                rb.velocity = Vector3.forward * speed;
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                rb.velocity = Vector3.left * speed;
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                rb.velocity = Vector3.back * speed;
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                rb.velocity = Vector3.right * speed;
-            }
-            else
-            {
-                rb.velocity = Vector3.zero;
+                    Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                    controller.Move(moveDirection.normalized * speed * Time.deltaTime);
+                }
             }
         }
     }

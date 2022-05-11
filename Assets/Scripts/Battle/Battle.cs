@@ -38,6 +38,9 @@ namespace PokemonGame.Battle
 
         private void Start()
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
             playerParty = BattleLoaderInfo.playerParty;
             apponentParty = BattleLoaderInfo.apponentParty;
             enemyAI = BattleLoaderInfo.enemyAI;
