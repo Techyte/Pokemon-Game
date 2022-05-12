@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(order = 4, fileName = "New AI", menuName = "Pokemon Game/New AI")]
     public class EnemyAI : ScriptableObject
     {
         public new string name;

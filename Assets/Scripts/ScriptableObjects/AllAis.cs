@@ -5,7 +5,6 @@ using PokemonGame.Battle;
 
 namespace PokemonGame
 {
-    [CreateAssetMenu]
     public class AllAis : ScriptableObject, ISerializationCallbackReceiver
     {
         public List<string> _keys = new List<string>();

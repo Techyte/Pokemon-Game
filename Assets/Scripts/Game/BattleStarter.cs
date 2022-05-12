@@ -22,6 +22,7 @@ namespace PokemonGame.Game
         public EnemyAI ai;
 
         private bool hasStartedwalking;
+        private bool isDefeated;
 
         private void Start()
         {
@@ -34,14 +35,26 @@ namespace PokemonGame.Game
             RaycastHit hit;
             if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
             {
-                hit.transform.gameObject.GetComponent<PlayerMovement>().canMove = false;
-                agent.destination = hit.transform.position;
-
-                Invoke("HasStartedWalkingSetter", .1f);
-
-                if (agent.velocity.magnitude < 0.15f && hasStartedwalking)
+                if (!isDefeated)
                 {
-                    LoadBattle();
+                    hit.transform.gameObject.GetComponent<PlayerMovement>().canMove = false;
+                    agent.destination = hit.transform.position;
+
+                    if (hit.transform.gameObject.GetComponent<Player>() != null)
+                    {
+                        hit.transform.gameObject.GetComponent<Player>().LookAtTrainer(transform.position);
+                    }
+
+                    Invoke("HasStartedWalkingSetter", .1f);
+
+                    if (agent.velocity.magnitude < 0.15f && hasStartedwalking)
+                    {
+                        LoadBattle();
+                    }
+                }
+                else
+                {
+                    hit.transform.gameObject.GetComponent<PlayerMovement>().canMove = true;
                 }
             }
         }

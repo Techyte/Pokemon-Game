@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace PokemonGame
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(order = 0, fileName = "New Battler Template", menuName = "Pokemon Game/New Battler Template")]
     public class BattlerTemplate : ScriptableObject
     {
         public new string name;
