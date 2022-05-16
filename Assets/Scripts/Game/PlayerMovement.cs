@@ -1,4 +1,5 @@
 using UnityEngine;
+using PokemonGame.Dialogue;
 
 namespace PokemonGame.Game
 {
@@ -24,8 +25,12 @@ namespace PokemonGame.Game
 
         void Update()
         {
+            canMove = !DialogueManager.GetInstance().dialogueIsPlaying;
             if (canMove)
             {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
                 float horizontal = Input.GetAxis("Horizontal");
                 float vertical = Input.GetAxis("Vertical");
                 Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
@@ -39,6 +44,11 @@ namespace PokemonGame.Game
                     Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                     controller.Move(moveDirection.normalized * speed * Time.deltaTime);
                 }
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
         }
     }
