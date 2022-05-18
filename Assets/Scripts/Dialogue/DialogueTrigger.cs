@@ -19,7 +19,6 @@ namespace PokemonGame.Dialogue
                 visualCue.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    Debug.Log("doing the thing");
                     DialogueManager.GetInstance().EnterDialogueMode(inkJson);
                 }
             }

@@ -35,11 +35,18 @@ namespace PokemonGame.Dialogue
 
             currentChoices = currentStory.currentChoices.Count;
 
-            if (currentStory.currentChoices.Count > 0)
+            bool hasChoices;
+
+            if (currentChoices > 0)
             {
-                //Debug.Log("Has Choices");
+                hasChoices = true;
             }
-            else if (Input.GetKeyDown(KeyCode.Space))
+            else
+            {
+                hasChoices = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && !hasChoices)
             {
                 ContinueStory();
             }
@@ -87,10 +94,36 @@ namespace PokemonGame.Dialogue
             {
                 dialogueTextDisplay.text = currentStory.Continue();
                 DisplayChoices();
+
+                HandleTags(currentStory.currentTags);
             }
             else
             {
                 StartCoroutine(ExitDialogueMode());
+            }
+        }
+
+        private void HandleTags(List<string> currentTags)
+        {
+            foreach(string tag in currentTags)
+            {
+                string[] splitTag = tag.Split(':');
+                if(splitTag.Length != 2)
+                {
+                    Debug.LogError("Tag could not be appropriately parsed: " + tag);
+                }
+                string tagKey = splitTag[0].Trim();
+                string tagValue = splitTag[1].Trim();
+
+                switch (tagKey)
+                {
+                    case "chosenPokemon":
+                        Debug.Log("speaker = " + tagValue);
+                        break;
+                    default:
+                        Debug.LogWarning("Tag cam in but is not currently being handled");
+                        break;
+                }
             }
         }
 
@@ -116,15 +149,6 @@ namespace PokemonGame.Dialogue
             {
                 choices[i].gameObject.SetActive(false);
             }
-
-            StartCoroutine(SelectFirstChoice());
-        }
-
-        private IEnumerator SelectFirstChoice()
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-            yield return new WaitForEndOfFrame();
-            EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
         }
 
         public void MakeChoice(int choiceIndex)
