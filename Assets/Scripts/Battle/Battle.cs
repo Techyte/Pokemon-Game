@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace PokemonGame.Battle
 {
@@ -41,11 +40,11 @@ namespace PokemonGame.Battle
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            playerParty = BattleLoaderInfo.playerParty;
-            apponentParty = BattleLoaderInfo.apponentParty;
-            enemyAI = BattleLoaderInfo.enemyAI;
+            playerParty = LoaderInfo.playerParty;
+            apponentParty = LoaderInfo.apponentParty;
+            enemyAI = LoaderInfo.enemyAI;
 
-            BattleManager.ClearBattleLoader();
+            BattleManager.ClearLoader();
 
             currentBattlerIndex = 0;
 
@@ -171,7 +170,7 @@ namespace PokemonGame.Battle
             {
                 if (move.type.weakAgainst[i] == battlerBeingAttacked.primaryType || move.type.weakAgainst[i] == battlerBeingAttacked.secondaryType)
                 {
-                    Debug.Log(move.type + " is weak against " + move.type.weakAgainst[i]);
+                    //Debug.Log(move.type + " is weak against " + move.type.weakAgainst[i]);
                     if (TYPE == 1.5f)
                     {
                         TYPE = 1;
@@ -274,7 +273,7 @@ namespace PokemonGame.Battle
 
         public void EndBattle()
         {
-            Debug.Log("Ending Battle");
+            //Debug.Log("Ending Battle");
 
             string playerPath = Application.persistentDataPath + "/party.json";
             string aponentPath = Application.persistentDataPath + "/apponentTestParty.json";
@@ -282,7 +281,7 @@ namespace PokemonGame.Battle
             SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
             SaveAndLoad<Party>.SaveJson(apponentParty, aponentPath);
 
-            SceneManager.LoadScene(0);
+            BattleManager.LoadScene(null, null, null, 0);
         }
 
         private void CheckForWinCondition()
@@ -290,7 +289,7 @@ namespace PokemonGame.Battle
             int playerFaintedPokemon = 0;
             int playerPartyCount = 0;
 
-            for (int i = 0; i < playerParty.party.Length; i++)
+            for (int i = 0; i < playerParty.party.Count; i++)
             {
                 if (playerParty.party[i].name != "")
                 {
@@ -298,7 +297,7 @@ namespace PokemonGame.Battle
                 }
             }
 
-            for (int i = 0; i < playerParty.party.Length; i++)
+            for (int i = 0; i < playerParty.party.Count; i++)
             {
                 if (playerParty.party[i].isFainted)
                 {
@@ -315,7 +314,7 @@ namespace PokemonGame.Battle
             int enemyFaintedPokemon = 0;
             int enemyPartyCount = 0;
 
-            for (int i = 0; i < apponentParty.party.Length; i++)
+            for (int i = 0; i < apponentParty.party.Count; i++)
             {
                 if (apponentParty.party[i].name != "")
                 {
@@ -323,7 +322,7 @@ namespace PokemonGame.Battle
                 }
             }
 
-            for (int i = 0; i < apponentParty.party.Length; i++)
+            for (int i = 0; i < apponentParty.party.Count; i++)
             {
                 if (apponentParty.party[i].isFainted)
                 {
@@ -333,7 +332,7 @@ namespace PokemonGame.Battle
 
             if (enemyFaintedPokemon == enemyPartyCount)
             {
-                Debug.Log("Battle ended because enemy lost all pokemon");
+                //Debug.Log("Battle ended because enemy lost all pokemon");
                 EndBattle();
             }
         }

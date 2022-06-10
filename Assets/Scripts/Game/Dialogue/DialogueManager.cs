@@ -19,6 +19,8 @@ namespace PokemonGame.Dialogue
 
         private static DialogueManager instance;
 
+        public DialogueTrigger currentTrigger;
+
         private void Awake()
         {
             if(instance != null)
@@ -114,16 +116,8 @@ namespace PokemonGame.Dialogue
                 }
                 string tagKey = splitTag[0].Trim();
                 string tagValue = splitTag[1].Trim();
-
-                switch (tagKey)
-                {
-                    case "chosenPokemon":
-                        Debug.Log("speaker = " + tagValue);
-                        break;
-                    default:
-                        Debug.LogWarning("Tag cam in but is not currently being handled");
-                        break;
-                }
+                
+                currentTrigger.CallTag(tag, tagValue);
             }
         }
 

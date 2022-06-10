@@ -1,35 +1,11 @@
 using UnityEngine;
+using PokemonGame.Dialogue;
 
-public class NPC : MonoBehaviour
+namespace PokemonGame.Game
 {
-    private bool isInideInteractCollider;
-    public BoxCollider interactCollider;
-
-    private void OnTriggerEnter(Collider other)
+    public class NPC : DialogueTrigger
     {
-        isInideInteractCollider = true;
+        
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        isInideInteractCollider = false;
-    }
-
-    private void Update()
-    {
-        if (isInideInteractCollider)
-        {
-            if (Input.GetKeyDown(KeyCode.B))
-            {
-                OnInteract();
-
-                
-            }
-        }
-    }
-
-    public virtual void OnInteract()
-    {
-        Debug.Log("Interacted on: " + gameObject.name);
-    }
+   
 }

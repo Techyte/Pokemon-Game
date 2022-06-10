@@ -5,24 +5,24 @@ namespace PokemonGame
 {
     public class BattleManager
     {
-        public static void LoadBattleScene(Party playerParty, Party aponentParty, EnemyAI enemyAI)
+        public static void LoadScene(Party playerParty, Party aponentParty, EnemyAI enemyAI, int sceneToLoad)
         {
-            BattleLoaderInfo.playerParty = playerParty;
-            BattleLoaderInfo.apponentParty = aponentParty;
-            BattleLoaderInfo.enemyAI = enemyAI;
+            LoaderInfo.playerParty = playerParty;
+            LoaderInfo.apponentParty = aponentParty;
+            LoaderInfo.enemyAI = enemyAI;
 
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(sceneToLoad);
         }
 
-        public static void ClearBattleLoader()
+        public static void ClearLoader()
         {
-            BattleLoaderInfo.playerParty = null;
-            BattleLoaderInfo.apponentParty = null;
-            BattleLoaderInfo.enemyAI = null;
+            LoaderInfo.playerParty = null;
+            LoaderInfo.apponentParty = null;
+            LoaderInfo.enemyAI = null;
         }
     }
 
-    public class BattleLoaderInfo
+    public class LoaderInfo
     {
         public static Party playerParty;
         public static Party apponentParty;

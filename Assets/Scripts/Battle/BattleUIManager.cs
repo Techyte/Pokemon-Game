@@ -39,7 +39,7 @@ namespace PokemonGame.Battle
                 battlerDisplays[i].transform.parent.gameObject.SetActive(false);
             }
 
-            for (int i = 0; i < battle.playerParty.party.Length; i++)
+            for (int i = 0; i < battle.playerParty.party.Count; i++)
             {
                 if (battle.playerParty.party[i].name == "")
                 {

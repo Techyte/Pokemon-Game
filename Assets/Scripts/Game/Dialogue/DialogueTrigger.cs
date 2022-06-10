@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace PokemonGame.Dialogue
@@ -19,6 +20,7 @@ namespace PokemonGame.Dialogue
                 visualCue.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
+                    DialogueManager.GetInstance().currentTrigger = this;
                     DialogueManager.GetInstance().EnterDialogueMode(inkJson);
                 }
             }
@@ -44,6 +46,11 @@ namespace PokemonGame.Dialogue
         {
             if (other.gameObject.tag == "Player")
                 playerInRange = false;
+        }
+
+        public virtual void CallTag(string TagKey, string TagValue)
+        {
+            
         }
     }
 }

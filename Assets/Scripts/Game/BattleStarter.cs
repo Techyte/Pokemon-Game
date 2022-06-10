@@ -9,6 +9,8 @@ namespace PokemonGame.Game
         public BattlerTemplate[] playerPartyTemplate;
         public BattlerTemplate[] npcStarterPokemon;
         public AllStatusEffects allStatusEffects;
+        public AllMoves allMoves;
+        public AllAis allAis;
         public Party playerParty;
         public Party apponentParty;
 
@@ -22,12 +24,19 @@ namespace PokemonGame.Game
         public EnemyAI ai;
 
         private bool hasStartedwalking;
-        private bool isDefeated;
+        public bool isDefeated;
+
+        [SerializeField] private Transform player;
 
         private void Start()
         {
             agent = gameObject.GetComponent<NavMeshAgent>();
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.white, 100);
+        }
+
+        public void Defeated()
+        {
+            Debug.Log("I have been defeated");
         }
 
         private void Update()
@@ -71,9 +80,9 @@ namespace PokemonGame.Game
                 5,
                 allStatusEffects.effects["Healthy"],
                 playerPartyTemplate[0].name,
-                Ember,
-                Tackle,
-                Toxic,
+                allMoves.moves["Ember"],
+                allMoves.moves["Tackle"],
+                allMoves.moves["Toxic"],
                 null);
 
             playerParty.party[1] = new Battler(
@@ -81,8 +90,8 @@ namespace PokemonGame.Game
                 5,
                 allStatusEffects.effects["Healthy"],
                 playerPartyTemplate[1].name,
-                Tackle,
-                Toxic,
+                allMoves.moves["Tackle"],
+                allMoves.moves["Toxic"],
                 null,
                 null);
 
@@ -91,12 +100,13 @@ namespace PokemonGame.Game
                 5,
                 allStatusEffects.effects["Healthy"],
                 npcStarterPokemon[0].name,
-                Tackle,
-                RazorLeaf,
+                allMoves.moves["Tackle"],
+                allMoves.moves["RazorLeaf"],
                 null,
                 null);
 
-            BattleManager.LoadBattleScene(playerParty, apponentParty, ai);
+            GameWorldData.playerTransform = player;
+            BattleManager.LoadScene(playerParty, apponentParty, ai, 1);
         }
     }
 }

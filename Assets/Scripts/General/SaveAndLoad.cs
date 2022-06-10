@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace PokemonGame
     [System.Serializable]
     public class Party
     {
-        public Battler[] party = new Battler[6];
+        public List<Battler> party = new List<Battler>();
     }
 
 }
