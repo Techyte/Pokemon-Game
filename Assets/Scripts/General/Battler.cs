@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace PokemonGame
 {
-    [System.Serializable]
     [CreateAssetMenu(order = 0, fileName = "New Battler", menuName = "Pokemon Game/New Battler")]
+    [Serializable]
     public class Battler : ScriptableObject
     {
         private BattlerTemplate oldSource;
@@ -48,7 +48,7 @@ namespace PokemonGame
 
         private void UpdateStats()
         {
-            if(source==null) return;
+            if(!source) return;
             
             maxHealth = Mathf.FloorToInt(0.01f * (2 * source.baseHealth + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + level + 10;
             attack = Mathf.FloorToInt(0.01f * (2 * source.baseAttack + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
@@ -58,49 +58,31 @@ namespace PokemonGame
             speed = Mathf.FloorToInt(0.01f * (2 * source.baseSpeed + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
         }
 
-        public Battler(BattlerTemplate source, int level, StatusEffect statusEffect, string name, int health, Move move1, Move move2, Move move3, Move move4)
+        public static Battler Init(BattlerTemplate source, int level, StatusEffect statusEffect, string name, Move move1, Move move2, Move move3, Move move4, bool autoAsignHealth)
         {
-            this.source = source;
-            this.level = level;
-            this.name = name;
-            isFainted = false;
-            exp = 0;
-            this.statusEffect = statusEffect;
-            primaryType = source.primaryType;
-            secondaryType = source.secondaryType;
-            currentHealth = health;
-            moves = new Move[4];
-            moves[0] = move1;
-            moves[1] = move2;
-            moves[2] = move3;
-            moves[3] = move4;
+            Battler returnBattler = CreateInstance<Battler>();
+            returnBattler.source = source;
+            returnBattler.level = level;
+            returnBattler.name = name;
+            returnBattler.isFainted = false;
+            returnBattler.exp = 0;
+            returnBattler.statusEffect = statusEffect;
+            returnBattler.primaryType = source.primaryType;
+            returnBattler.secondaryType = source.secondaryType;
+            returnBattler.moves = new Move[4];
+            returnBattler.moves[0] = move1;
+            returnBattler.moves[1] = move2;
+            returnBattler.moves[2] = move3;
+            returnBattler.moves[3] = move4;
+
+            if (autoAsignHealth)
+                returnBattler.currentHealth = returnBattler.maxHealth;
             
-            UpdateStats();
+            returnBattler.UpdateStats();
 
-            texture = source.texture;
-        }
-
-        public Battler(BattlerTemplate source, int level, StatusEffect statusEffect, string name, Move move1, Move move2, Move move3, Move move4)
-        {
-            this.source = source;
-            this.level = level;
-            this.name = name;
-            isFainted = false;
-            exp = 0;
-            this.statusEffect = statusEffect;
-            primaryType = source.primaryType;
-            secondaryType = source.secondaryType;
-            moves = new Move[4];
-            moves[0] = move1;
-            moves[1] = move2;
-            moves[2] = move3;
-            moves[3] = move4;
+            returnBattler.texture = source.texture;
             
-            UpdateStats();
-
-            currentHealth = maxHealth;
-
-            texture = source.texture;
+            return returnBattler;
         }
     }
 }

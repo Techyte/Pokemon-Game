@@ -26,16 +26,17 @@ namespace PokemonGame.Game
         private void ChosePokemon(string TagValue)
         {
             Debug.Log("Chosen Pokemon is: " + TagValue);
+            Battler battler = ScriptableObject.CreateInstance<Battler>();;
             switch (TagValue)
             {
-                case "Charmander":
-                    PartyManager.Singleton.AddPokemon(new Battler(charmander, 5, null, "Charmander", null, null, null, null));
+                case "Charmander": 
+                    PartyManager.Singleton.AddPokemon(Battler.Init(charmander, 5, null, "Charmander", null, null, null, null, true));
                     break;
                 case "Squirtle":
-                    PartyManager.Singleton.AddPokemon(new Battler(squirtle, 5, null, "Squirtle", null, null, null, null));
+                    PartyManager.Singleton.AddPokemon(Battler.Init(squirtle, 5, null, "Squirtle", null, null, null, null, true));
                     break;
                 case "Bulbasaur":
-                    PartyManager.Singleton.AddPokemon(new Battler(bulbasaur, 5, null, "Bulbasaur", null, null, null, null));
+                    PartyManager.Singleton.AddPokemon(Battler.Init(bulbasaur, 5, null, "Bulbasaur", null, null, null, null, true));
                     break;
             }
         }

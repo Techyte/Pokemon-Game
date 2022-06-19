@@ -10,14 +10,8 @@ namespace PokemonGame.Game
         public BattlerTemplate[] npcStarterPokemon;
         public AllStatusEffects allStatusEffects;
         public AllMoves allMoves;
-        public AllAis allAis;
         public Party playerParty;
         public Party apponentParty;
-
-        public Move Ember;
-        public Move Tackle;
-        public Move Toxic;
-        public Move RazorLeaf;
 
         public NavMeshAgent agent;
 
@@ -76,7 +70,7 @@ namespace PokemonGame.Game
 
         public void LoadBattle()
         {
-            playerParty.party[0] = new Battler(
+            playerParty.party[0] = Battler.Init(
                 playerPartyTemplate[0],
                 5,
                 allStatusEffects.effects["Healthy"],
@@ -84,9 +78,10 @@ namespace PokemonGame.Game
                 allMoves.moves["Ember"],
                 allMoves.moves["Tackle"],
                 allMoves.moves["Toxic"],
-                null);
+                null,
+                true);
 
-            playerParty.party[1] = new Battler(
+            playerParty.party[1] = Battler.Init(
                 playerPartyTemplate[1],
                 5,
                 allStatusEffects.effects["Healthy"],
@@ -94,9 +89,10 @@ namespace PokemonGame.Game
                 allMoves.moves["Tackle"],
                 allMoves.moves["Toxic"],
                 null,
-                null);
+                null,
+                true);
 
-            apponentParty.party[0] = new Battler(
+            apponentParty.party[0] = Battler.Init(
                 npcStarterPokemon[0],
                 5,
                 allStatusEffects.effects["Healthy"],
@@ -104,7 +100,8 @@ namespace PokemonGame.Game
                 allMoves.moves["Tackle"],
                 allMoves.moves["RazorLeaf"],
                 null,
-                null);
+                null,
+                true);
 
             GameWorldData.playerTransform = playerSpawnPos.position;
             BattleManager.LoadScene(playerParty, apponentParty, ai, 1);
