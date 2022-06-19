@@ -15,6 +15,7 @@ namespace PokemonGame.Game
             switch (TagKey)
             {
                 case "chosenPokemon":
+                    Debug.Log("About to choose a pokemon");
                     ChosePokemon(TagValue);
                     break;
             }

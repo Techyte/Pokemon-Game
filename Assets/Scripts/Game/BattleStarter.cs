@@ -27,6 +27,7 @@ namespace PokemonGame.Game
         public bool isDefeated;
 
         [SerializeField] private Transform player;
+        [SerializeField] private Transform playerSpawnPos;
 
         private void Start()
         {
@@ -105,7 +106,7 @@ namespace PokemonGame.Game
                 null,
                 null);
 
-            GameWorldData.playerTransform = player;
+            GameWorldData.playerTransform = playerSpawnPos.position;
             BattleManager.LoadScene(playerParty, apponentParty, ai, 1);
         }
     }

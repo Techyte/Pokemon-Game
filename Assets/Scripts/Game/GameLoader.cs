@@ -13,12 +13,12 @@ namespace PokemonGame.Battle
 
         private void LoadGame()
         {
-            player = GameWorldData.playerTransform;
+            player.position = GameWorldData.playerTransform;
         }
     }
 
     public class GameWorldData
     {
-        public static Transform playerTransform;
+        public static Vector3 playerTransform;
     }   
 }

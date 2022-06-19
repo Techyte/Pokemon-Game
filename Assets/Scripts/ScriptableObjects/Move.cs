@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace PokemonGame
 {
-    [CreateAssetMenu(order = 1, fileName = "New Move", menuName = "Pokemon Game/New Move")]
+    [CreateAssetMenu(order = 2, fileName = "New Move", menuName = "Pokemon Game/New Move")]
     public class Move : ScriptableObject
     {
         public new string name;

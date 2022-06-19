@@ -117,7 +117,7 @@ namespace PokemonGame.Dialogue
                 string tagKey = splitTag[0].Trim();
                 string tagValue = splitTag[1].Trim();
                 
-                currentTrigger.CallTag(tag, tagValue);
+                currentTrigger.CallTag(tagKey, tagValue);
             }
         }
 
