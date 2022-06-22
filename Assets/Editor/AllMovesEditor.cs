@@ -11,9 +11,9 @@ namespace PokemonGame
             base.OnInspectorGUI();
             AllMoves allMoves = (AllMoves)target;
 
-            if (GUILayout.Button("Add Status Effect"))
+            if (GUILayout.Button("Add Move"))
             {
-                allMoves.moves.Add(allMoves.MoveToAdd.name, allMoves.MoveToAdd);
+                allMoves.moves.Add(allMoves.moveToAdd.name, allMoves.moveToAdd);
             }
             if (Application.isPlaying)
             {

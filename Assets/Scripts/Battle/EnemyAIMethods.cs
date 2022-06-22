@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
-    public class EnemyAIMethods : MonoBehaviour
+    [CreateAssetMenu(fileName = "New Enemy AI Methods", menuName = "All/New Enemy AI Mehods")]
+    public class EnemyAIMethods : ScriptableObject
     {
         public void DefaultAI(Battler battlerToUse, Party usableParty, Battle caller)
         {
-            Debug.Log("Default AI was called");
             int moveCount = 0;
             for (int i = 0; i < battlerToUse.moves.Length; i++)
             {
@@ -16,9 +16,9 @@ namespace PokemonGame.Battle
                 }
             }
 
-            int MoveToDo = Random.Range(0, moveCount);
+            int moveToDo = Random.Range(0, moveCount);
 
-            caller.enemyMoveToDo = battlerToUse.moves[MoveToDo];
+            caller.enemyMoveToDo = battlerToUse.moves[moveToDo];
         }
     }
 }

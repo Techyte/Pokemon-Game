@@ -5,11 +5,11 @@ namespace PokemonGame
 {
     public class LevelLoader : MonoBehaviour
     {
-        [SerializeField] private string LevelName;
+        [SerializeField] private string levelName;
 
         private void OnTriggerEnter(Collider other)
         {
-            SceneManager.LoadScene(LevelName);
+            SceneManager.LoadScene(levelName);
         }
     }
 }

@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
-    public class StatusEffectsMethods : MonoBehaviour
+    [CreateAssetMenu(fileName = "New Status Effect Methods", menuName = "All/New Status Effect Mehods")]
+    public class StatusEffectsMethods : ScriptableObject
     {
         public void Healthy(Battler target)
         {

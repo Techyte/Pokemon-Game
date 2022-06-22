@@ -6,7 +6,7 @@ namespace PokemonGame.Battle
 {
     public class BattleUIManager : MonoBehaviour
     {
-        public GameObject PlayerUIHolder;
+        public GameObject playerUIHolder;
         public GameObject moveButtons;
         public GameObject healthDisplays;
         public GameObject changeBattlerDisplay;
@@ -14,12 +14,12 @@ namespace PokemonGame.Battle
         public GameObject backButton;
         public TextMeshProUGUI[] battlerDisplays;
         public SpriteRenderer currentBattlerRenderer;
-        public SpriteRenderer apponentBattlerRenderer;
+        public SpriteRenderer opponentBattlerRenderer;
         public Slider currentBattlerHealthDisplay;
-        public Slider apponentHealthDisplay;
+        public Slider opponentHealthDisplay;
         public TextMeshProUGUI[] moveTexts;
         public TextMeshProUGUI currentBattlerNameDisplay;
-        public TextMeshProUGUI apponentBattlerNameDisplay;
+        public TextMeshProUGUI opponentBattlerNameDisplay;
 
         public Battle battle;
 
@@ -32,16 +32,16 @@ namespace PokemonGame.Battle
             UpdateBattlerButtons();
         }
 
-        public void UpdateBattlerButtons()
+        private void UpdateBattlerButtons()
         {
-            for (int i = 0; i < battlerDisplays.Length; i++)
+            foreach (var text in battlerDisplays)
             {
-                battlerDisplays[i].transform.parent.gameObject.SetActive(false);
+                text.transform.parent.gameObject.SetActive(false);
             }
 
             for (int i = 0; i < battle.playerParty.party.Count; i++)
             {
-                if (battle.playerParty.party[i].name == "")
+                if (!battle.playerParty.party[i])
                 {
                     battlerDisplays[i].transform.parent.gameObject.SetActive(false);
                 }
@@ -68,12 +68,12 @@ namespace PokemonGame.Battle
 
         public void ShowUI(bool showUIBool)
         {
-            PlayerUIHolder.SetActive(showUIBool);
+            playerUIHolder.SetActive(showUIBool);
         }
 
         public void SwitchBattler()
         {
-            PlayerUIHolder.SetActive(true);
+            playerUIHolder.SetActive(true);
             healthDisplays.SetActive(false);
             moveButtons.SetActive(false);
             miscButtons.SetActive(false);
@@ -84,7 +84,7 @@ namespace PokemonGame.Battle
 
         public void SwitchBattlerBecauseOfDeath()
         {
-            PlayerUIHolder.SetActive(true);
+            playerUIHolder.SetActive(true);
             healthDisplays.SetActive(false);
             moveButtons.SetActive(false);
             miscButtons.SetActive(false);
@@ -101,6 +101,7 @@ namespace PokemonGame.Battle
             changeBattlerDisplay.SetActive(false);
             battle.currentBattlerIndex = partyID;
             battle.playerParty.party[battle.currentBattlerIndex] = battle.playerParty.party[partyID];
+            Back();
             battle.currentTurn = TurnStatus.Showing;
             UpdateBattlerButtons();
             UpdateBattlerSprites();
@@ -118,39 +119,39 @@ namespace PokemonGame.Battle
             UpdateBattlerButtons();
         }
 
-        public void UpdateBattlerTexts()
+        private void UpdateBattlerTexts()
         {
             currentBattlerNameDisplay.text = battle.playerParty.party[battle.currentBattlerIndex].name;
-            apponentBattlerNameDisplay.text = battle.apponentParty.party[battle.apponentBattlerIndex].name;
+            opponentBattlerNameDisplay.text = battle.opponentParty.party[battle.opponentBattlerIndex].name;
         }
 
-        public void UpdateBattlerSprites()
+        private void UpdateBattlerSprites()
         {
             currentBattlerRenderer.sprite = battle.playerParty.party[battle.currentBattlerIndex].texture;
-            apponentBattlerRenderer.sprite = battle.apponentParty.party[battle.apponentBattlerIndex].texture;
+            opponentBattlerRenderer.sprite = battle.opponentParty.party[battle.opponentBattlerIndex].texture;
         }
 
-        public void UpdateBattlerMoveDisplays()
+        private void UpdateBattlerMoveDisplays()
         {
-            for (int i = 0; i < moveTexts.Length; i++)
+            foreach (var text in moveTexts)
             {
-                moveTexts[i].transform.parent.gameObject.SetActive(false);
+                text.transform.parent.gameObject.SetActive(false);
             }
 
-            for (int i = 0; i < battle.playerParty.party[battle.currentBattlerIndex].moves.Length; i++)
+            for (var i = 0; i < battle.playerParty.party[battle.currentBattlerIndex].moves.Length; i++)
             {
                 if (battle.playerParty.party[battle.currentBattlerIndex].moves[i])
                 {
                     moveTexts[i].transform.parent.gameObject.SetActive(true);
-                    moveTexts[i].text = battle.playerParty.party[battle.currentBattlerIndex].moves[i].name;
+                    moveTexts[i].text = battle.playerParty.party[battle.currentBattlerIndex].moves[i].name;   
                 }
             }
         }
 
         public void UpdateHealthDisplays()
         {
-            apponentHealthDisplay.maxValue = battle.apponentParty.party[battle.apponentBattlerIndex].maxHealth;
-            apponentHealthDisplay.value = battle.apponentParty.party[battle.apponentBattlerIndex].currentHealth;
+            opponentHealthDisplay.maxValue = battle.opponentParty.party[battle.opponentBattlerIndex].maxHealth;
+            opponentHealthDisplay.value = battle.opponentParty.party[battle.opponentBattlerIndex].currentHealth;
 
             currentBattlerHealthDisplay.maxValue = battle.playerParty.party[battle.currentBattlerIndex].maxHealth;
             currentBattlerHealthDisplay.value = battle.playerParty.party[battle.currentBattlerIndex].currentHealth;

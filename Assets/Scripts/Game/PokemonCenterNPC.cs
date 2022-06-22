@@ -10,33 +10,28 @@ namespace PokemonGame.Game
         [SerializeField] private BattlerTemplate bulbasaur;
         [SerializeField] private BattlerTemplate squirtle;
         
-        public override void CallTag(string TagKey, string TagValue)
+        public override void CallTag(string tagKey, string tagValue)
         {
-            switch (TagKey)
+            switch (tagKey)
             {
                 case "chosenPokemon":
-                    Debug.Log("About to choose a pokemon");
-                    ChosePokemon(TagValue);
+                    ChosePokemon(tagValue);
                     break;
             }
-            
-            base.CallTag(TagKey, TagValue);
         }
 
-        private void ChosePokemon(string TagValue)
+        private void ChosePokemon(string tagValue)
         {
-            Debug.Log("Chosen Pokemon is: " + TagValue);
-            Battler battler = ScriptableObject.CreateInstance<Battler>();;
-            switch (TagValue)
+            switch (tagValue)
             {
                 case "Charmander": 
-                    PartyManager.Singleton.AddPokemon(Battler.Init(charmander, 5, null, "Charmander", null, null, null, null, true));
+                    PartyManager.singleton.AddPokemon(Battler.Init(charmander, 5, null, "Charmander", null, null, null, null, true));
                     break;
                 case "Squirtle":
-                    PartyManager.Singleton.AddPokemon(Battler.Init(squirtle, 5, null, "Squirtle", null, null, null, null, true));
+                    PartyManager.singleton.AddPokemon(Battler.Init(squirtle, 5, null, "Squirtle", null, null, null, null, true));
                     break;
                 case "Bulbasaur":
-                    PartyManager.Singleton.AddPokemon(Battler.Init(bulbasaur, 5, null, "Bulbasaur", null, null, null, null, true));
+                    PartyManager.singleton.AddPokemon(Battler.Init(bulbasaur, 5, null, "Bulbasaur", null, null, null, null, true));
                     break;
             }
         }

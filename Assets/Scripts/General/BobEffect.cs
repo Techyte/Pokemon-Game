@@ -6,19 +6,18 @@ namespace PokemonGame
     {
         public float bobIntensity;
         public float bobSpeed;
-        float orignY;
+        float _orignY;
 
         private void Start()
         {
-            orignY = transform.position.y;
+            _orignY = transform.position.y;
         }
 
         void Update()
         {
             Vector3 newPos = transform.position;
-            newPos = transform.position;
             newPos.y = Mathf.Sin(Time.time * bobSpeed) * bobIntensity;
-            newPos.y += orignY;
+            newPos.y += _orignY;
 
             transform.position = newPos;
         }

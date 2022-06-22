@@ -13,11 +13,11 @@ namespace PokemonGame
 
             if (GUILayout.Button("Add Status Effect"))
             {
-                allEffects.effects.Add(allEffects.EffectToAdd.name, allEffects.EffectToAdd);
+                AllStatusEffects.effects.Add(allEffects.effectToAdd.name, allEffects.effectToAdd);
             }
             if (Application.isPlaying)
             {
-                foreach (var p in allEffects.effects)
+                foreach (var p in AllStatusEffects.effects)
                 {
                     EditorGUILayout.LabelField(p.Key + ": " + p.Value);
                 }

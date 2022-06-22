@@ -4,7 +4,7 @@ namespace PokemonGame.Battle
 {
     public enum TurnStatus
     {
-        Chosing,
+        Choosing,
         Showing,
         Ending
     }
@@ -12,24 +12,24 @@ namespace PokemonGame.Battle
     public class Battle : MonoBehaviour
     {
         [Header("UI:")]
-        public GameObject PlayerUIHolder;
-        [SerializeField] private BattleUIManager UIManager;
+        public GameObject playerUIHolder;
+        [SerializeField] private BattleUIManager uiManager;
 
         [Space]
         [Header("Assignments")]
         public int currentBattlerIndex;
 
-        public int apponentBattlerIndex;
+        public int opponentBattlerIndex;
 
         [Space]
         [Header("Other Readouts")]
-        public TurnStatus currentTurn = TurnStatus.Chosing;
+        public TurnStatus currentTurn = TurnStatus.Choosing;
         public Party playerParty;
-        public Party apponentParty;
+        public Party opponentParty;
 
-        EnemyAI enemyAI;
+        private EnemyAI _enemyAI;
 
-        private Move playerMoveToDo;
+        private Move _playerMoveToDo;
         public Move enemyMoveToDo;
         public bool playerHasChosenAttack;
         [SerializeField]private bool hasDoneChoosingUpdate;
@@ -41,16 +41,16 @@ namespace PokemonGame.Battle
             Cursor.visible = true;
 
             playerParty = LoaderInfo.playerParty;
-            apponentParty = LoaderInfo.apponentParty;
-            enemyAI = LoaderInfo.enemyAI;
+            opponentParty = LoaderInfo.opponentParty;
+            _enemyAI = LoaderInfo.enemyAI;
 
             BattleManager.ClearLoader();
 
             currentBattlerIndex = 0;
 
-            apponentBattlerIndex = 0;
+            opponentBattlerIndex = 0;
 
-            apponentParty.party[apponentBattlerIndex].currentHealth = apponentParty.party[apponentBattlerIndex].maxHealth;
+            opponentParty.party[opponentBattlerIndex].currentHealth = opponentParty.party[opponentBattlerIndex].maxHealth;
             playerParty.party[currentBattlerIndex].currentHealth = playerParty.party[currentBattlerIndex].maxHealth;
         }
 
@@ -69,11 +69,11 @@ namespace PokemonGame.Battle
                 case TurnStatus.Showing:
                     TurnShowing();
                     break;
-                case TurnStatus.Chosing:
+                case TurnStatus.Choosing:
                     if (!hasDoneChoosingUpdate)
                     {
-                        UIManager.ShowUI(true);
-                        enemyAI.aiMethod(apponentParty.party[apponentBattlerIndex], apponentParty, this);
+                        uiManager.ShowUI(true);
+                        _enemyAI.aiMethod(opponentParty.party[opponentBattlerIndex], opponentParty, this);
                         hasDoneChoosingUpdate = true;
                     }
                     break;
@@ -84,7 +84,7 @@ namespace PokemonGame.Battle
         {
             if (!hasShowedMoves)
             {
-                UIManager.ShowUI(false);
+                uiManager.ShowUI(false);
                 DoMoves();
                 hasShowedMoves = true;
                 playerHasChosenAttack = false;
@@ -94,25 +94,25 @@ namespace PokemonGame.Battle
 
         private void TurnEnding()
         {
-            UIManager.ShowUI(false);
+            uiManager.ShowUI(false);
             hasDoneChoosingUpdate = false;
             hasShowedMoves = false;
             playerHasChosenAttack = false;
             DoStatusEffects();
-            currentTurn = TurnStatus.Chosing;
+            currentTurn = TurnStatus.Choosing;
         }
 
         private void DoStatusEffects()
         {
-            apponentParty.party[apponentBattlerIndex].statusEffect.effect(apponentParty.party[apponentBattlerIndex]);
+            opponentParty.party[opponentBattlerIndex].statusEffect.effect(opponentParty.party[opponentBattlerIndex]);
 
             playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
-            UIManager.UpdateHealthDisplays();
+            uiManager.UpdateHealthDisplays();
         }
 
         public void ChooseMove(int moveID)
         {
-            playerMoveToDo = playerParty.party[currentBattlerIndex].moves[moveID];
+            _playerMoveToDo = playerParty.party[currentBattlerIndex].moves[moveID];
             playerHasChosenAttack = true;
         }
 
@@ -120,112 +120,101 @@ namespace PokemonGame.Battle
         {
             //You can add any animation calls for attacking here
 
-            if (playerMoveToDo != null)
+            if (_playerMoveToDo != null)
             {
 
-                if (playerMoveToDo.category == MoveCategory.Status)
+                if (_playerMoveToDo.category == MoveCategory.Status)
                 {
-                    playerMoveToDo.moveMethod(apponentParty.party[apponentBattlerIndex]);
+                    _playerMoveToDo.moveMethod(opponentParty.party[opponentBattlerIndex]);
                 }
                 else
                 {
-                    float damageToDo = CalculateDamage(playerMoveToDo, playerParty.party[currentBattlerIndex], apponentParty.party[apponentBattlerIndex]);
-                    apponentParty.party[apponentBattlerIndex].currentHealth -= (int)damageToDo;
+                    double damageToDo = CalculateDamage(_playerMoveToDo, playerParty.party[currentBattlerIndex], opponentParty.party[opponentBattlerIndex]);
+                    opponentParty.party[opponentBattlerIndex].currentHealth -= (int)damageToDo;
                 }
 
-                if (apponentParty.party[apponentBattlerIndex].currentHealth <= 0)
+                if (opponentParty.party[opponentBattlerIndex].currentHealth <= 0)
                 {
-                    apponentParty.party[apponentBattlerIndex].isFainted = true;
+                    opponentParty.party[opponentBattlerIndex].isFainted = true;
                 }
             }
 
             CheckForWinCondition();
 
-            UIManager.UpdateHealthDisplays();
+            uiManager.UpdateHealthDisplays();
         }
 
-        private float CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
+        private double CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
         {
-            float finalDamage;
-
-            for (int i = 0; i < move.type.cantHit.Length; i++)
+            foreach (var hType in move.type.cantHit)
             {
-                if (move.type.cantHit[i] == battlerBeingAttacked.primaryType || move.type.cantHit[i] == battlerBeingAttacked.secondaryType)
+                if (hType == battlerBeingAttacked.primaryType || hType == battlerBeingAttacked.secondaryType)
                 {
                     Debug.Log(move.type + " can't hit that battler");
                     return 0;
                 }
             }
 
-            float TYPE = 1;
-            for (int i = 0; i < move.type.strongAgainst.Length; i++)
+            double type = 1;
+
+            foreach (var hType in move.type.strongAgainst)
             {
-                if (move.type.strongAgainst[i] == battlerBeingAttacked.primaryType || move.type.strongAgainst[i] == battlerBeingAttacked.secondaryType)
+                if (hType == battlerBeingAttacked.primaryType || hType == battlerBeingAttacked.secondaryType)
                 {
-                    TYPE = 1.5f;
+                    type = 1.5f;
                 }
             }
 
-            for (int i = 0; i < move.type.weakAgainst.Length; i++)
+            foreach (var hType in move.type.weakAgainst)
             {
-                if (move.type.weakAgainst[i] == battlerBeingAttacked.primaryType || move.type.weakAgainst[i] == battlerBeingAttacked.secondaryType)
+                if (hType == battlerBeingAttacked.primaryType || hType == battlerBeingAttacked.secondaryType)
                 {
                     //Debug.Log(move.type + " is weak against " + move.type.weakAgainst[i]);
-                    if (TYPE == 1.5f)
+                    if (type == 1.5)
                     {
-                        TYPE = 1;
+                        type = 1;
                     }
                     else
                     {
-                        TYPE = .5f;
+                        type = .5f;
                     }
                 }
             }
 
-            float STAB = 1;
+            int stab = 1;
             if (move.type == battlerThatUsed.primaryType)
             {
-                STAB = 2;
+                stab = 2;
             }
 
             if (move.type == battlerThatUsed.secondaryType)
             {
-                if (TYPE == 2)
+                if (type == 2)
                 {
-                    TYPE += 2;
+                    type += 2;
                 }
                 else
                 {
-                    TYPE = 2;
+                    type = 2;
                 }
             }
 
-            float damage = 1;
+            //Damage calculation is correct
+            double damage = move.category == MoveCategory.Physical
+                ? ((2 * battlerThatUsed.level / 5 + 2) * move.damage *
+                    (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * stab * type
+                : ((2 * battlerThatUsed.level / 5 + 2) * move.damage *
+                    (battlerThatUsed.specialAttack / battlerBeingAttacked.specialDefense) / 50 + 2) * stab * type;
 
-            //Damage calculation is corect
+            float randomness = Mathf.RoundToInt(Random.Range(.8f * (float)damage, (float)damage * 1.2f));
+            damage = randomness;
 
-            switch (move.category)
-            {
-                case MoveCategory.Physical:
-                    damage = ((2 * battlerThatUsed.level / 5 + 2) * move.damage * (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * STAB * TYPE;
-                    break;
-                case MoveCategory.Special:
-                    damage = ((2 * battlerThatUsed.level / 5 + 2) * move.damage * (battlerThatUsed.specialAttack / battlerBeingAttacked.specialDefense) / 50 + 2) * STAB * TYPE;
-                    break;
-            }
-
-            float RANDOMNESS = 0;
-            RANDOMNESS = Mathf.RoundToInt(Random.Range(.8f * damage, damage * 1.2f));
-            damage = RANDOMNESS;
-
-            finalDamage = damage;
-
-            return finalDamage;
+            return damage;
         }
 
         private void DoMoves()
         {
-            if(apponentParty.party[apponentBattlerIndex].speed > playerParty.party[currentBattlerIndex].speed)
+            if(opponentParty.party[opponentBattlerIndex].speed > playerParty.party[currentBattlerIndex].speed)
             {
                 //Enemy is faster
                 DoEnemyMove();
@@ -238,7 +227,7 @@ namespace PokemonGame.Battle
                 DoEnemyMove();
             }
 
-            UIManager.UpdateHealthDisplays();
+            uiManager.UpdateHealthDisplays();
         }
 
         public void DoMoveOnPlayer(Move move)
@@ -252,87 +241,87 @@ namespace PokemonGame.Battle
 
             if (enemyMoveToDo.category == MoveCategory.Status)
             {
-                enemyMoveToDo.moveMethod(apponentParty.party[currentBattlerIndex]);
+                enemyMoveToDo.moveMethod(opponentParty.party[currentBattlerIndex]);
             }
             else
             {
-                float damageToDo = CalculateDamage(enemyMoveToDo, apponentParty.party[apponentBattlerIndex], playerParty.party[currentBattlerIndex]);
+                double damageToDo = CalculateDamage(enemyMoveToDo, opponentParty.party[opponentBattlerIndex], playerParty.party[currentBattlerIndex]);
                 playerParty.party[currentBattlerIndex].currentHealth -= (int)damageToDo;
             }
 
             if (playerParty.party[currentBattlerIndex].currentHealth <= 0)
             {
                 playerParty.party[currentBattlerIndex].isFainted = true;
-                UIManager.SwitchBattlerBecauseOfDeath();
+                uiManager.SwitchBattlerBecauseOfDeath();
             }
 
             CheckForWinCondition();
 
-            UIManager.UpdateHealthDisplays();
+            uiManager.UpdateHealthDisplays();
         }
 
-        public void EndBattle()
+        private void EndBattle()
         {
             //Debug.Log("Ending Battle");
 
-            string playerPath = Application.persistentDataPath + "/party.json";
-            string aponentPath = Application.persistentDataPath + "/apponentTestParty.json";
+            var playerPath = Application.persistentDataPath + "/party.json";
+            var opponentPath = Application.persistentDataPath + "/opponentTestParty.json";
 
             SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
-            SaveAndLoad<Party>.SaveJson(apponentParty, aponentPath);
+            SaveAndLoad<Party>.SaveJson(opponentParty, opponentPath);
 
-            BattleManager.LoadScene(null, null, null, 0);
+            BattleManager.LoadScene(SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath), null, 0);
         }
 
         private void CheckForWinCondition()
         {
-            int playerFaintedPokemon = 0;
-            int playerPartyCount = 0;
+            var playerFaintedPokemon = 0;
+            var playerPartyCount = 0;
 
-            for (int i = 0; i < playerParty.party.Count; i++)
+            foreach (var partyPokemon in playerParty.party)
             {
-                if (playerParty.party[i].name != "")
+                if (partyPokemon)
                 {
                     playerPartyCount++;
                 }
             }
 
-            for (int i = 0; i < playerParty.party.Count; i++)
+            foreach (var partyPokemon in playerParty.party)
             {
-                if (playerParty.party[i].isFainted)
-                {
-                    playerFaintedPokemon++;
-                }
+                if (partyPokemon)
+                    if (partyPokemon.isFainted)
+                        playerFaintedPokemon++;
             }
 
             if (playerFaintedPokemon == playerPartyCount)
             {
-                Debug.Log("Battle ended because player lost all pokemon");
+                GameWorldData.fromBattle = true;
+                GameWorldData.isDefeated = false;
                 EndBattle();
             }
 
             int enemyFaintedPokemon = 0;
             int enemyPartyCount = 0;
 
-            for (int i = 0; i < apponentParty.party.Count; i++)
+            foreach (var partyPokemon in opponentParty.party)
             {
-                if (apponentParty.party[i].name != "")
+                if (partyPokemon)
                 {
                     enemyPartyCount++;
                 }
             }
 
-            for (int i = 0; i < apponentParty.party.Count; i++)
+            foreach (var partyPokemon in opponentParty.party)
             {
-                if (apponentParty.party[i].isFainted)
-                {
-                    enemyFaintedPokemon++;
-                }
+                if(partyPokemon)
+                    if (partyPokemon.isFainted)
+                        enemyFaintedPokemon++;
             }
 
             if (enemyFaintedPokemon == enemyPartyCount)
             {
-                //Debug.Log("Battle ended because enemy lost all pokemon");
+                GameWorldData.fromBattle = true;
+                GameWorldData.isDefeated = true;
                 EndBattle();
             }
         }

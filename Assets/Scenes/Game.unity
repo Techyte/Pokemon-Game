@@ -335,7 +335,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66647904}
-  m_LocalRotation: {x: 0.117014244, y: 0.000000015351503, z: -0.0000000018056442,
+  m_LocalRotation: {x: 0.117014244, y: -0.000000015351503, z: 0.0000000018056442,
     w: 0.99313027}
   m_LocalPosition: {x: 0, y: 3.3333335, z: -18}
   m_LocalScale: {x: 1, y: 0.45564398, z: 1.45399}
@@ -443,230 +443,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 499915d9c65bd8c4193d57ca076d10c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPartyTemplate:
-  - {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3, type: 2}
-  - {fileID: 11400000, guid: db309f2b3aa1fb047b0aa64dcd5d8d4c, type: 2}
-  npcStarterPokemon:
-  - {fileID: 11400000, guid: f98dd2fa32827594da82f4b72db0840f, type: 2}
   allStatusEffects: {fileID: 11400000, guid: 74ea5cd36e1708040a14f2334a0c701c, type: 2}
   allMoves: {fileID: 11400000, guid: 081d4d866f9aa8c42be06c885cd5d61d, type: 2}
-  allAis: {fileID: 11400000, guid: f4b7bfc0899c1db4593d2a9eed24bbe0, type: 2}
   playerParty:
     party:
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-  apponentParty:
+    - {fileID: 11400000, guid: 40eaa6905a489264cbadb3aaa3b0d0ae, type: 2}
+    - {fileID: 11400000, guid: deb5abf0f82e25c439b24bcb8d176209, type: 2}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  opponentParty:
     party:
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves: []
-  Ember: {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
-  Tackle: {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
-  Toxic: {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}
-  RazorLeaf: {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
+    - {fileID: 11400000, guid: 67de8baebbb284748bd6845d44a070ef, type: 2}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   agent: {fileID: 76501326}
   ai: {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}
   isDefeated: 0
-  player: {fileID: 240114718}
   playerSpawnPos: {fileID: 1374968386}
 --- !u!4 &76501324
 Transform:
@@ -922,12 +719,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 240114714}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 420305256}
   - {fileID: 66647907}
+  - {fileID: 1779794882}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -945,6 +743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 240114722}
   cam: {fileID: 66647907}
+  groundDetectorPos: {fileID: 1779794882}
   normalSpeed: 6
   canMove: 1
   speed: 0
@@ -1357,7 +1156,6 @@ Transform:
   m_Children:
   - {fileID: 1294914034}
   - {fileID: 2096774880}
-  - {fileID: 1004417565}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1468,7 +1266,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 496338215}
-  m_LocalRotation: {x: 0.2277846, y: 0.000000030901372, z: -1.4408384e-10, w: 0.97371155}
+  m_LocalRotation: {x: 0.2277846, y: -0.000000030901372, z: 1.4408384e-10, w: 0.97371155}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1513,7 +1311,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9024652, y: 1}
+    m_SensorSize: {x: 1.918919, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2189,75 +1987,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 799809910}
   m_CullTransparentMesh: 1
---- !u!1001 &801919104
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 469552227}
-    m_Modifications:
-    - target: {fileID: 3231623555529086736, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_Name
-      value: Initializer
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.14904213
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.42685986
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.13156128
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: abd0a87497357cb4b88c47d7698f1f25, type: 3}
 --- !u!1 &960600132
 GameObject:
   m_ObjectHideFlags: 0
@@ -2335,12 +2064,6 @@ Transform:
   m_Father: {fileID: 76501324}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1004417565 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3231623555529086739, guid: abd0a87497357cb4b88c47d7698f1f25,
-    type: 3}
-  m_PrefabInstance: {fileID: 801919104}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1034511677
 GameObject:
   m_ObjectHideFlags: 0
@@ -2869,7 +2592,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9024652, y: 1}
+    m_SensorSize: {x: 1.918919, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -3210,6 +2933,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1766178560}
   m_CullTransparentMesh: 1
+--- !u!1 &1779794881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1779794882}
+  m_Layer: 0
+  m_Name: GroundDetectorPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1779794882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779794881}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 240114718}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1849623538
 GameObject:
   m_ObjectHideFlags: 3
@@ -3234,7 +2988,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1849623538}
-  m_LocalRotation: {x: 0.24545825, y: 0.000000026968603, z: -6.160277e-10, w: 0.9694072}
+  m_LocalRotation: {x: 0.24545825, y: -0.000000026968603, z: 6.160277e-10, w: 0.9694072}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3279,7 +3033,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9024652, y: 1}
+    m_SensorSize: {x: 1.918919, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -3410,7 +3164,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2132932083}
-  m_LocalRotation: {x: 0.21008259, y: 0.000000023162745, z: 3.1303093e-10, w: 0.9776837}
+  m_LocalRotation: {x: 0.21008259, y: -0.000000023162745, z: -3.1303093e-10, w: 0.9776837}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3455,7 +3209,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9024652, y: 1}
+    m_SensorSize: {x: 1.918919, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -3484,7 +3238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa73ff7a419fccf4bb53e91703100db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelName: Poke Center
+  levelName: Poke Center
 --- !u!4 &81158075914857542
 Transform:
   m_ObjectHideFlags: 0
@@ -3553,7 +3307,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f7980bcbd74ff1a49aa1f7c1bd5e8502, type: 2}
+  - {fileID: 2100000, guid: 6f901c340fdf6254b9fec3b125de02f6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

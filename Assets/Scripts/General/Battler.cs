@@ -8,10 +8,10 @@ namespace PokemonGame
     [Serializable]
     public class Battler : ScriptableObject
     {
-        private BattlerTemplate oldSource;
+        private BattlerTemplate _oldSource;
         public BattlerTemplate source;
 
-        private int oldLevel;
+        private int _oldLevel;
         public int level;
 
         public new string name;
@@ -32,20 +32,31 @@ namespace PokemonGame
 
         public Move[] moves;
 
+        [SerializeField]
+
         private void OnValidate()
         {
-            if (oldLevel != level || oldSource != source)
+            if (!statusEffect)
+                statusEffect = AllStatusEffects.effects["Healthy"];
+            
+            if (_oldLevel != level)
             {
                 UpdateStats();
             }
 
-            oldSource = source;
-            oldLevel = level;
+            if (_oldSource != source)
+            {
+                UpdateStats();
+                UpdateSource();
+            }
+
+            _oldSource = source;
+            _oldLevel = level;
 
             if (currentHealth > maxHealth)
                 currentHealth = maxHealth;
         }
-
+        
         private void UpdateStats()
         {
             if(!source) return;
@@ -58,7 +69,14 @@ namespace PokemonGame
             speed = Mathf.FloorToInt(0.01f * (2 * source.baseSpeed + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
         }
 
-        public static Battler Init(BattlerTemplate source, int level, StatusEffect statusEffect, string name, Move move1, Move move2, Move move3, Move move4, bool autoAsignHealth)
+        private void UpdateSource()
+        {
+            primaryType = source.primaryType;
+            secondaryType = source.secondaryType;
+            texture = source.texture;
+        }
+
+        public static Battler Init(BattlerTemplate source, int level, StatusEffect statusEffect, string name, Move move1, Move move2, Move move3, Move move4, bool autoAssignHealth)
         {
             Battler returnBattler = CreateInstance<Battler>();
             returnBattler.source = source;
@@ -75,7 +93,7 @@ namespace PokemonGame
             returnBattler.moves[2] = move3;
             returnBattler.moves[3] = move4;
 
-            if (autoAsignHealth)
+            if (autoAssignHealth)
                 returnBattler.currentHealth = returnBattler.maxHealth;
             
             returnBattler.UpdateStats();

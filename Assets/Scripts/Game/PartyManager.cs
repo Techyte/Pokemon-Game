@@ -6,7 +6,7 @@ namespace PokemonGame.Battle
     {
         private static PartyManager _singleton;
 
-        public static PartyManager Singleton
+        public static PartyManager singleton
         {
             get => _singleton;
             private set
@@ -25,7 +25,7 @@ namespace PokemonGame.Battle
 
         private void Awake()
         {
-            _singleton = this;
+            singleton = this;
         }
 
         public void AddPokemon(Battler battlerToAdd)

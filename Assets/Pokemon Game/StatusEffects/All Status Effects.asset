@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3000e441a13033147ad80c3ef3380053, type: 3}
   m_Name: All Status Effects
   m_EditorClassIdentifier: 
-  _keys:
-  - Poisoned
+  keys:
   - Healthy
-  _values:
-  - {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
+  - Poisoned
+  values:
   - {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
-  MoveToAdd: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
+  - {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
+  effectToAdd: {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}

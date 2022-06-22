@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c34158a6a1ace4da0180135a1a41b4, type: 3}
+  m_Name: Enemy Bulbasaur
+  m_EditorClassIdentifier: 
+  source: {fileID: 11400000, guid: f98dd2fa32827594da82f4b72db0840f, type: 2}
+  level: 5
+  name: Bulbasaur
+  maxHealth: 20
+  currentHealth: 0
+  exp: 0
+  attack: 10
+  defense: 10
+  specialAttack: 12
+  specialDefense: 12
+  speed: 10
+  texture: {fileID: 21300000, guid: 172c0180b1b30a44ab24fa8d177bfb43, type: 3}
+  isFainted: 0
+  statusEffect: {fileID: 0}
+  primaryType: {fileID: 11400000, guid: 16677bacbe9d55246878c477b58016ba, type: 2}
+  secondaryType: {fileID: 0}
+  moves:
+  - {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
+  - {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
+  - {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
+  - {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}

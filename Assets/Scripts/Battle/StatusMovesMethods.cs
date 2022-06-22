@@ -2,13 +2,12 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
-    public class StatusMovesMethods
+    [CreateAssetMenu(fileName = "New Status Move Methods", menuName = "All/New Status Move Mehods")]
+    public class StatusMovesMethods : ScriptableObject
     {
-        public static AllStatusEffects allStatusEffects;
-
         public void Toxic(Battler target)
         {
-            target.statusEffect = allStatusEffects.effects["Poisoned"];
+            target.statusEffect = AllStatusEffects.effects["Poisoned"];
             Debug.Log("Used Toxic on " + target.name);
         }
 

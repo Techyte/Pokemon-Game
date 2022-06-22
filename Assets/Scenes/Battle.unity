@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 134080511}
   - component: {fileID: 134080510}
   m_Layer: 5
-  m_Name: ApponentBatterName
+  m_Name: OpponentBatterName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1021,7 +1021,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack With Primary Move
+  m_text: Attack With Second Move
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1671,7 +1671,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack With Primary Move
+  m_text: Attack With Third Move
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2266,7 +2266,7 @@ GameObject:
   - component: {fileID: 795133519}
   - component: {fileID: 795133520}
   m_Layer: 0
-  m_Name: ApponentBattlerDisplay
+  m_Name: OpponentBattlerDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2426,7 +2426,7 @@ GameObject:
   - component: {fileID: 912497051}
   - component: {fileID: 912497052}
   m_Layer: 5
-  m_Name: ApponentBattlerHealthDisplay
+  m_Name: OpponentBattlerHealthDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2857,141 +2857,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 592654492e978f04b9ae60b7ba10994d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerUIHolder: {fileID: 583115924}
-  UIManager: {fileID: 1038033301}
+  playerUIHolder: {fileID: 583115924}
+  uiManager: {fileID: 1038033301}
   currentBattlerIndex: 0
-  apponentBattlerIndex: 0
+  opponentBattlerIndex: 0
   currentTurn: 0
   playerParty:
     party: []
-  apponentParty:
-    party:
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-    - source: {fileID: 0}
-      name: 
-      maxHealth: 0
-      currentHealth: 0
-      level: 0
-      exp: 0
-      attack: 0
-      defense: 0
-      specialAttack: 0
-      specialDefense: 0
-      speed: 0
-      texture: {fileID: 0}
-      isFainted: 0
-      statusEffect: {fileID: 0}
-      primaryType: {fileID: 0}
-      secondaryType: {fileID: 0}
-      moves:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
+  opponentParty:
+    party: []
   enemyMoveToDo: {fileID: 0}
   playerHasChosenAttack: 0
   hasDoneChoosingUpdate: 0
@@ -3023,7 +2897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04aeb2d4f80f4c644a885c70d951681a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerUIHolder: {fileID: 583115924}
+  playerUIHolder: {fileID: 583115924}
   moveButtons: {fileID: 1313120826}
   healthDisplays: {fileID: 1971165366}
   changeBattlerDisplay: {fileID: 337073833}
@@ -3037,16 +2911,16 @@ MonoBehaviour:
   - {fileID: 1096175102}
   - {fileID: 2120369956}
   currentBattlerRenderer: {fileID: 1027051802}
-  apponentBattlerRenderer: {fileID: 795133518}
+  opponentBattlerRenderer: {fileID: 795133518}
   currentBattlerHealthDisplay: {fileID: 432099178}
-  apponentHealthDisplay: {fileID: 912497052}
+  opponentHealthDisplay: {fileID: 912497052}
   moveTexts:
   - {fileID: 1418304265}
   - {fileID: 316355925}
   - {fileID: 478171705}
   - {fileID: 1436893733}
   currentBattlerNameDisplay: {fileID: 1821323010}
-  apponentBattlerNameDisplay: {fileID: 134080510}
+  opponentBattlerNameDisplay: {fileID: 134080510}
   battle: {fileID: 1038033299}
 --- !u!1 &1096175100
 GameObject:
@@ -4062,7 +3936,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack With Primary Move
+  m_text: Attack With First Move
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4332,7 +4206,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack With Primary Move
+  m_text: Attack With Fourth Move
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

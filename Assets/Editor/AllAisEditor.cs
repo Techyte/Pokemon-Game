@@ -11,9 +11,9 @@ namespace PokemonGame
             base.OnInspectorGUI();
             AllAis allAis = (AllAis)target;
 
-            if (GUILayout.Button("Add Status Effect"))
+            if (GUILayout.Button("Add AI"))
             {
-                allAis.ais.Add(allAis.AIToAdd.name, allAis.AIToAdd);
+                allAis.ais.Add(allAis.aiToAdd.name, allAis.aiToAdd);
             }
             if (Application.isPlaying)
             {

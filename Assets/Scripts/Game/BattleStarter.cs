@@ -6,21 +6,19 @@ namespace PokemonGame.Game
 {
     public class BattleStarter : MonoBehaviour
     {
-        public BattlerTemplate[] playerPartyTemplate;
-        public BattlerTemplate[] npcStarterPokemon;
         public AllStatusEffects allStatusEffects;
         public AllMoves allMoves;
         public Party playerParty;
-        public Party apponentParty;
+        public Party opponentParty;
 
         public NavMeshAgent agent;
 
         public EnemyAI ai;
 
-        private bool hasStartedwalking;
+        private bool _hasStartedWalking;
         public bool isDefeated;
+        private bool _hasTalkedDefeatedText;
 
-        [SerializeField] private Transform player;
         [SerializeField] private Transform playerSpawnPos;
 
         private void Start()
@@ -31,13 +29,12 @@ namespace PokemonGame.Game
 
         public void Defeated()
         {
-            Debug.Log("I have been defeated");
+            _hasTalkedDefeatedText = true;
         }
 
         private void Update()
         {
-            RaycastHit hit;
-            if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+            if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out RaycastHit hit, Mathf.Infinity))
             {
                 if (!isDefeated)
                 {
@@ -49,62 +46,31 @@ namespace PokemonGame.Game
                         hit.transform.gameObject.GetComponent<Player>().LookAtTrainer(transform.position);
                     }
 
-                    Invoke("HasStartedWalkingSetter", .1f);
-
-                    if (agent.velocity.magnitude < 0.15f && hasStartedwalking)
+                    Invoke(nameof(HasStartedWalkingSetter), .1f);
+                    
+                    if (agent.velocity.magnitude < 0.15f && _hasStartedWalking)
                     {
                         LoadBattle();
                     }
                 }
                 else
                 {
-                    hit.transform.gameObject.GetComponent<PlayerMovement>().canMove = true;
+                    if(isDefeated && !_hasTalkedDefeatedText)
+                        Defeated();
                 }
             }
         }
 
         private void HasStartedWalkingSetter()
         {
-            hasStartedwalking = true;
+            _hasStartedWalking = true;
         }
 
-        public void LoadBattle()
+        private void LoadBattle()
         {
-            playerParty.party[0] = Battler.Init(
-                playerPartyTemplate[0],
-                5,
-                allStatusEffects.effects["Healthy"],
-                playerPartyTemplate[0].name,
-                allMoves.moves["Ember"],
-                allMoves.moves["Tackle"],
-                allMoves.moves["Toxic"],
-                null,
-                true);
-
-            playerParty.party[1] = Battler.Init(
-                playerPartyTemplate[1],
-                5,
-                allStatusEffects.effects["Healthy"],
-                playerPartyTemplate[1].name,
-                allMoves.moves["Tackle"],
-                allMoves.moves["Toxic"],
-                null,
-                null,
-                true);
-
-            apponentParty.party[0] = Battler.Init(
-                npcStarterPokemon[0],
-                5,
-                allStatusEffects.effects["Healthy"],
-                npcStarterPokemon[0].name,
-                allMoves.moves["Tackle"],
-                allMoves.moves["RazorLeaf"],
-                null,
-                null,
-                true);
-
             GameWorldData.playerTransform = playerSpawnPos.position;
-            BattleManager.LoadScene(playerParty, apponentParty, ai, 1);
+            GameWorldData.battleStarterName = name;
+            BattleManager.LoadScene(playerParty, opponentParty, ai, 1);
         }
     }
 }

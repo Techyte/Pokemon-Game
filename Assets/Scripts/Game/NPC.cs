@@ -1,4 +1,3 @@
-using UnityEngine;
 using PokemonGame.Dialogue;
 
 namespace PokemonGame.Game
