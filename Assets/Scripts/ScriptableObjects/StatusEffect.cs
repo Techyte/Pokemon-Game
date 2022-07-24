@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace PokemonGame.Battle
@@ -7,8 +8,28 @@ namespace PokemonGame.Battle
     {
         public new string name;
 
-        public delegate void Effect(Battler target);
-        public Effect effect;
+        public void Effect(object sender, StatusEffectEventArgs e)
+        {
+            try
+            {
+                effect.Invoke(sender, e);
+            }
+            catch
+            {
+                Debug.LogWarning($"{name}s effect does not have a function associated with it");
+            }
+        }
+        
+        public event EventHandler<StatusEffectEventArgs> effect;
     }
 
+    public class StatusEffectEventArgs : EventArgs
+    {
+        public StatusEffectEventArgs(Battler battler)
+        {
+            this.battler = battler;
+        }
+        
+        public Battler battler;
+    }
 }

@@ -38,25 +38,7 @@ namespace PokemonGame
 
         private void OnValidate()
         {
-            foreach (var item in effects)
-            {
-                string name = item.Key;
-                effects[name].effect = GetByNameEffect(typeof(StatusEffectsMethods), effects[name].name);
-            }
-        }
-
-        private StatusEffect.Effect GetByNameEffect(object target, string methodName)
-        {
-            MethodInfo method = target.GetType()
-                .GetMethod(methodName,
-                    BindingFlags.Public
-                    | BindingFlags.Instance
-                    | BindingFlags.FlattenHierarchy);
-
-            // Insert appropriate check for method == null here
-
-            return (StatusEffect.Effect)Delegate.CreateDelegate
-                (typeof(StatusEffect.Effect), target, method);
+            effects["Healthy"].effect += StatusEffectsMethods.Healthy;
         }
     }
 

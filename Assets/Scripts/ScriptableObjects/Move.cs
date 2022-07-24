@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace PokemonGame
@@ -10,8 +11,19 @@ namespace PokemonGame
         public int damage;
         public MoveCategory category;
 
-        public delegate void MoveMethod(Battler target);
-        public MoveMethod moveMethod;
+        public void MoveMethod(object sender, MoveMethodEventArgs e)
+        {
+            try
+            {
+                moveMethod.Invoke(sender, e);
+            }
+            catch
+            {
+                Debug.LogWarning($"{name}s effect does not have a function associated with it");
+            }
+        }
+        
+        public event EventHandler<MoveMethodEventArgs> moveMethod;
     }
 
     public enum MoveCategory
@@ -19,6 +31,16 @@ namespace PokemonGame
         Physical,
         Special,
         Status
+    }
+
+    public class MoveMethodEventArgs : EventArgs
+    {
+        public MoveMethodEventArgs(Battler target)
+        {
+            this.target = target;
+        }
+        
+        public Battler target;
     }
 
 }

@@ -5,25 +5,25 @@ namespace PokemonGame.Battle
     [CreateAssetMenu(fileName = "New Status Move Methods", menuName = "All/New Status Move Mehods")]
     public class StatusMovesMethods : ScriptableObject
     {
-        public void Toxic(Battler target)
+        public static void Toxic(object sender, MoveMethodEventArgs e)
         {
-            target.statusEffect = AllStatusEffects.effects["Poisoned"];
-            Debug.Log("Used Toxic on " + target.name);
+            e.target.statusEffect = AllStatusEffects.effects["Poisoned"];
+            Debug.Log("Used Toxic on " + e.target.name);
         }
 
-        public void Ember(Battler target)
+        public static void Ember(object sender, MoveMethodEventArgs e)
         {
-            Debug.Log("Used Ember on " + target.name);
+            Debug.Log("Used Ember on " + e.target.name);
         }
 
-        public void RazorLeaf(Battler target)
+        public static void RazorLeaf(object sender, MoveMethodEventArgs e)
         {
-            Debug.Log("Used Razor Leaf on " + target.name);
+            Debug.Log("Used Razor Leaf on " + e.target.name);
         }
 
-        public void Tackle(Battler target)
+        public static void Tackle(object sender, MoveMethodEventArgs e)
         {
-            Debug.Log("Used Tackle Leaf on " + target.name);
+            Debug.Log("Used Tackle Leaf on " + e.target.name);
         }
     }
 }

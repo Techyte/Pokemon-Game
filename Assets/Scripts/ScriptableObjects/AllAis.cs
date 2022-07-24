@@ -38,25 +38,7 @@ namespace PokemonGame
 
         private void OnValidate()
         {
-            foreach (var item in ais)
-            {
-                string name = item.Key;
-                ais[name].aiMethod = GetByNameAI(typeof(EnemyAIMethods), ais[name].name);
-            }
-        }
-
-        private EnemyAI.AIMethod GetByNameAI(object target, string methodName)
-        {
-            MethodInfo method = target.GetType()
-                .GetMethod(methodName,
-                    BindingFlags.Public
-                    | BindingFlags.Instance
-                    | BindingFlags.FlattenHierarchy);
-
-            // Insert appropriate check for method == null here
-
-            return (EnemyAI.AIMethod)Delegate.CreateDelegate
-                (typeof(EnemyAI.AIMethod), target, method);
+            ais["DefaultAI"].aiMethod += EnemyAIMethods.DefaultAI;
         }
     }
 

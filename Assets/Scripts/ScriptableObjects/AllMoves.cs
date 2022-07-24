@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using System.Reflection;
 using PokemonGame.Battle;
 
 namespace PokemonGame
@@ -38,26 +37,7 @@ namespace PokemonGame
 
         private void OnValidate()
         {
-            foreach (var item in moves)
-            {
-                string name = item.Key;
-                moves[name].moveMethod = GetByNameMove(typeof(StatusMovesMethods), moves[name].name);
-            }
-        }
-
-        private Move.MoveMethod GetByNameMove(object target, string methodName)
-        {
-            MethodInfo method = target.GetType()
-                .GetMethod(methodName,
-                    BindingFlags.Public
-                    | BindingFlags.Instance
-                    | BindingFlags.FlattenHierarchy);
-
-
-            // Insert appropriate check for method == null here
-
-            return (Move.MoveMethod)Delegate.CreateDelegate
-                (typeof(Move.MoveMethod), target, method);
+            moves["Ember"].moveMethod += StatusMovesMethods.Ember;
         }
     }
 

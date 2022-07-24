@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace PokemonGame.Battle
 {
@@ -11,6 +13,27 @@ namespace PokemonGame.Battle
 
     public class Battle : MonoBehaviour
     {
+        private static Battle _singleton;
+        public static Battle Singleton
+        {
+            get => _singleton;
+            private set
+            {
+                if (_singleton == null)
+                    _singleton = value;
+                else if (_singleton != value)
+                {
+                    Debug.Log($"{nameof(Battle)} instance already exists, destroying duplicate!");
+                    Destroy(value);
+                }
+            }
+        }
+
+        private void Awake()
+        {
+            Singleton = this;
+        }
+
         [Header("UI:")]
         public GameObject playerUIHolder;
         [SerializeField] private BattleUIManager uiManager;
@@ -40,11 +63,11 @@ namespace PokemonGame.Battle
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            playerParty = LoaderInfo.playerParty;
-            opponentParty = LoaderInfo.opponentParty;
-            _enemyAI = LoaderInfo.enemyAI;
+            playerParty = (Party)LoaderInfo.vars[0];
+            opponentParty = (Party)LoaderInfo.vars[1];
+            _enemyAI = (EnemyAI)LoaderInfo.vars[2];
 
-            BattleManager.ClearLoader();
+            SceneLoader.ClearLoader();
 
             currentBattlerIndex = 0;
 
@@ -73,7 +96,8 @@ namespace PokemonGame.Battle
                     if (!hasDoneChoosingUpdate)
                     {
                         uiManager.ShowUI(true);
-                        _enemyAI.aiMethod(opponentParty.party[opponentBattlerIndex], opponentParty, this);
+                        _enemyAI.AIMethod(this,
+                            new AIMethodEventArgs(opponentParty.party[opponentBattlerIndex], opponentParty));
                         hasDoneChoosingUpdate = true;
                     }
                     break;
@@ -89,6 +113,7 @@ namespace PokemonGame.Battle
                 hasShowedMoves = true;
                 playerHasChosenAttack = false;
                 currentTurn = TurnStatus.Ending;
+                Debug.Log(playerParty.party[currentBattlerIndex].currentHealth);
             }
         }
 
@@ -104,9 +129,12 @@ namespace PokemonGame.Battle
 
         private void DoStatusEffects()
         {
-            opponentParty.party[opponentBattlerIndex].statusEffect.effect(opponentParty.party[opponentBattlerIndex]);
+            opponentParty.party[opponentBattlerIndex].statusEffect.Effect(this, new StatusEffectEventArgs(
+                    opponentParty.party[opponentBattlerIndex]));
 
-            playerParty.party[currentBattlerIndex].statusEffect.effect(playerParty.party[currentBattlerIndex]);
+            playerParty.party[currentBattlerIndex].statusEffect.Effect(this, new StatusEffectEventArgs(
+                    playerParty.party[currentBattlerIndex]));
+            
             uiManager.UpdateHealthDisplays();
         }
 
@@ -125,7 +153,8 @@ namespace PokemonGame.Battle
 
                 if (_playerMoveToDo.category == MoveCategory.Status)
                 {
-                    _playerMoveToDo.moveMethod(opponentParty.party[opponentBattlerIndex]);
+                    _playerMoveToDo.MoveMethod(this,
+                        new MoveMethodEventArgs(opponentParty.party[opponentBattlerIndex]));
                 }
                 else
                 {
@@ -230,6 +259,11 @@ namespace PokemonGame.Battle
             uiManager.UpdateHealthDisplays();
         }
 
+        public void SetEnemyMove(int moveId)
+        {
+            enemyMoveToDo = opponentParty.party[opponentBattlerIndex].moves[moveId];
+        }
+
         public void DoMoveOnPlayer(Move move)
         {
             enemyMoveToDo = move;
@@ -241,7 +275,7 @@ namespace PokemonGame.Battle
 
             if (enemyMoveToDo.category == MoveCategory.Status)
             {
-                enemyMoveToDo.moveMethod(opponentParty.party[currentBattlerIndex]);
+                enemyMoveToDo.MoveMethod(this, new MoveMethodEventArgs(opponentParty.party[currentBattlerIndex]));
             }
             else
             {
@@ -270,7 +304,9 @@ namespace PokemonGame.Battle
             SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
             SaveAndLoad<Party>.SaveJson(opponentParty, opponentPath);
 
-            BattleManager.LoadScene(SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath), null, 0);
+            object[] vars = { SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath) };
+
+            SceneLoader.LoadScene(0, vars);
         }
 
         private void CheckForWinCondition()
@@ -295,6 +331,8 @@ namespace PokemonGame.Battle
 
             if (playerFaintedPokemon == playerPartyCount)
             {
+                Debug.Log("Battle ended because player lost all battlers");
+                
                 GameWorldData.fromBattle = true;
                 GameWorldData.isDefeated = false;
                 EndBattle();
@@ -320,6 +358,8 @@ namespace PokemonGame.Battle
 
             if (enemyFaintedPokemon == enemyPartyCount)
             {
+                Debug.Log("Battle ended because enemy lost all battlers");
+                
                 GameWorldData.fromBattle = true;
                 GameWorldData.isDefeated = true;
                 EndBattle();

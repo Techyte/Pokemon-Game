@@ -70,7 +70,8 @@ namespace PokemonGame.Game
         {
             GameWorldData.playerTransform = playerSpawnPos.position;
             GameWorldData.battleStarterName = name;
-            BattleManager.LoadScene(playerParty, opponentParty, ai, 1);
+            object[] vars = { playerParty, opponentParty, ai};
+            SceneLoader.LoadScene(1, vars);
         }
     }
 }

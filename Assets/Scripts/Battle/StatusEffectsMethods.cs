@@ -2,15 +2,14 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
-    [CreateAssetMenu(fileName = "New Status Effect Methods", menuName = "All/New Status Effect Mehods")]
-    public class StatusEffectsMethods : ScriptableObject
+    public class StatusEffectsMethods
     {
-        public void Healthy(Battler target)
+        public static void Healthy(object sender, StatusEffectEventArgs args)
         {
             //Debug.Log(target.name + " was healthy");
         }
 
-        public void Poisoned(Battler target)
+        public static void Poisoned(Battler target)
         {
             target.currentHealth -= target.maxHealth / 16;
 
