@@ -16,3 +16,18 @@ MonoBehaviour:
   type: {fileID: 11400000, guid: 16677bacbe9d55246878c477b58016ba, type: 2}
   damage: 22
   category: 0
+  MoveMethodEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 3fb6cec06db9e3f4ea1acd585f43df7c, type: 2}
+        m_TargetAssemblyTypeName: PokemonGame.Battle.StatusMovesMethods, Assembly-CSharp
+        m_MethodName: RazorLeaf
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

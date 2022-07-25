@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace PokemonGame.Battle
 {
@@ -8,19 +9,19 @@ namespace PokemonGame.Battle
     {
         public new string name;
 
-        public void AIMethod(object sender, AIMethodEventArgs e)
+        public UnityEvent<AIMethodEventArgs> AIMethodEvent;
+
+        public void AIMethod(AIMethodEventArgs e)
         {
             try
             {
-                aiMethod.Invoke(sender, e);
+                AIMethodEvent.Invoke(e);
             }
             catch
             {
                 Debug.LogWarning($"{name}s effect does not have a function associated with it");
             }
         }
-        
-        public event EventHandler<AIMethodEventArgs> aiMethod;
     }
 
     public class AIMethodEventArgs : EventArgs

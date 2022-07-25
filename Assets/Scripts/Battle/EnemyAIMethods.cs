@@ -5,7 +5,7 @@ namespace PokemonGame.Battle
     [CreateAssetMenu(fileName = "New Enemy AI Methods", menuName = "All/New Enemy AI Methods")]
     public class EnemyAIMethods : ScriptableObject
     {
-        public static void DefaultAI(object sender, AIMethodEventArgs e)
+        public void DefaultAI(AIMethodEventArgs e)
         {
             int moveCount = 0;
             for (int i = 0; i < e.battlerToUse.moves.Length; i++)

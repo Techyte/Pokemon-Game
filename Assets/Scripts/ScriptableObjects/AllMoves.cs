@@ -37,7 +37,7 @@ namespace PokemonGame
 
         private void OnValidate()
         {
-            moves["Ember"].moveMethod += StatusMovesMethods.Ember;
+            //moves["Ember"].moveMethod += StatusMovesMethods.Ember;
         }
     }
 

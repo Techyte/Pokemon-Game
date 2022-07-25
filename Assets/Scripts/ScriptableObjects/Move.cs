@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace PokemonGame
 {
@@ -11,19 +12,19 @@ namespace PokemonGame
         public int damage;
         public MoveCategory category;
 
-        public void MoveMethod(object sender, MoveMethodEventArgs e)
+        public UnityEvent<MoveMethodEventArgs> MoveMethodEvent;
+
+        public void MoveMethod(MoveMethodEventArgs e)
         {
             try
             {
-                moveMethod.Invoke(sender, e);
+                MoveMethodEvent.Invoke(e);
             }
             catch
             {
                 Debug.LogWarning($"{name}s effect does not have a function associated with it");
             }
         }
-        
-        public event EventHandler<MoveMethodEventArgs> moveMethod;
     }
 
     public enum MoveCategory

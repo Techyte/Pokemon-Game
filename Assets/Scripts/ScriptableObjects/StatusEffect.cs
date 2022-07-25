@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace PokemonGame.Battle
 {
@@ -8,19 +9,19 @@ namespace PokemonGame.Battle
     {
         public new string name;
 
-        public void Effect(object sender, StatusEffectEventArgs e)
+        public UnityEvent<StatusEffectEventArgs> EffectEvent;
+
+        public void Effect(StatusEffectEventArgs e)
         {
             try
             {
-                effect.Invoke(sender, e);
+                EffectEvent.Invoke(e);
             }
             catch
             {
                 Debug.LogWarning($"{name}s effect does not have a function associated with it");
             }
         }
-        
-        public event EventHandler<StatusEffectEventArgs> effect;
     }
 
     public class StatusEffectEventArgs : EventArgs

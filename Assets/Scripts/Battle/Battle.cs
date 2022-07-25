@@ -96,8 +96,7 @@ namespace PokemonGame.Battle
                     if (!hasDoneChoosingUpdate)
                     {
                         uiManager.ShowUI(true);
-                        _enemyAI.AIMethod(this,
-                            new AIMethodEventArgs(opponentParty.party[opponentBattlerIndex], opponentParty));
+                        _enemyAI.AIMethod(new AIMethodEventArgs(opponentParty.party[opponentBattlerIndex], opponentParty));
                         hasDoneChoosingUpdate = true;
                     }
                     break;
@@ -129,10 +128,10 @@ namespace PokemonGame.Battle
 
         private void DoStatusEffects()
         {
-            opponentParty.party[opponentBattlerIndex].statusEffect.Effect(this, new StatusEffectEventArgs(
+            opponentParty.party[opponentBattlerIndex].statusEffect.Effect(new StatusEffectEventArgs(
                     opponentParty.party[opponentBattlerIndex]));
 
-            playerParty.party[currentBattlerIndex].statusEffect.Effect(this, new StatusEffectEventArgs(
+            playerParty.party[currentBattlerIndex].statusEffect.Effect(new StatusEffectEventArgs(
                     playerParty.party[currentBattlerIndex]));
             
             uiManager.UpdateHealthDisplays();
@@ -153,8 +152,7 @@ namespace PokemonGame.Battle
 
                 if (_playerMoveToDo.category == MoveCategory.Status)
                 {
-                    _playerMoveToDo.MoveMethod(this,
-                        new MoveMethodEventArgs(opponentParty.party[opponentBattlerIndex]));
+                    _playerMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentParty.party[opponentBattlerIndex]));
                 }
                 else
                 {
@@ -275,7 +273,7 @@ namespace PokemonGame.Battle
 
             if (enemyMoveToDo.category == MoveCategory.Status)
             {
-                enemyMoveToDo.MoveMethod(this, new MoveMethodEventArgs(opponentParty.party[currentBattlerIndex]));
+                enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentParty.party[currentBattlerIndex]));
             }
             else
             {
