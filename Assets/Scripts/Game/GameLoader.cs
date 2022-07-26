@@ -1,3 +1,4 @@
+using System.Linq;
 using PokemonGame.Game;
 using UnityEngine;
 
@@ -9,23 +10,16 @@ namespace PokemonGame.Battle
     
         private void Start()
         {
-            LoadGame();
+            if(SceneLoader.vars.Count == 0) return;
+            LoadGameFromBattle();
         }
 
-        private void LoadGame()
+        private void LoadGameFromBattle()
         {
-            player.position = GameWorldData.playerTransform;
-            if(GameWorldData.fromBattle)
-                GameObject.Find(GameWorldData.battleStarterName).GetComponent<BattleStarter>().isDefeated = GameWorldData.isDefeated;
-            GameWorldData.fromBattle = false;
+            player.position = (Vector3) SceneLoader.vars[0];
+            if((bool)SceneLoader.vars[1])
+                GameObject.Find((string) SceneLoader.vars[2]).GetComponent<BattleStarter>().isDefeated = (bool) SceneLoader.vars[3];
+            SceneLoader.ClearLoader();
         }
     }
-
-    public static class GameWorldData
-    {
-        public static Vector3 playerTransform;
-        public static bool fromBattle;
-        public static string battleStarterName;
-        public static bool isDefeated;
-    }   
 }

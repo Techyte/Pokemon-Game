@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -58,14 +57,20 @@ namespace PokemonGame.Battle
         [SerializeField]private bool hasDoneChoosingUpdate;
         [SerializeField]private bool hasShowedMoves;
 
+        private Vector3 playerSpawnPos;
+        private string opponentName;
+
         private void Start()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            playerParty = (Party)LoaderInfo.vars[0];
-            opponentParty = (Party)LoaderInfo.vars[1];
-            _enemyAI = (EnemyAI)LoaderInfo.vars[2];
+            playerParty = (Party)SceneLoader.vars[0];
+            opponentParty = (Party)SceneLoader.vars[1];
+            _enemyAI = (EnemyAI)SceneLoader.vars[2];
+
+            playerSpawnPos = (Vector3)SceneLoader.vars[3];
+            opponentName = (string)SceneLoader.vars[4];
 
             SceneLoader.ClearLoader();
 
@@ -330,9 +335,9 @@ namespace PokemonGame.Battle
             if (playerFaintedPokemon == playerPartyCount)
             {
                 Debug.Log("Battle ended because player lost all battlers");
-                
-                GameWorldData.fromBattle = true;
-                GameWorldData.isDefeated = false;
+
+                SceneLoader.vars[1] = true;
+                SceneLoader.vars[3] = false;
                 EndBattle();
             }
 
@@ -358,8 +363,8 @@ namespace PokemonGame.Battle
             {
                 Debug.Log("Battle ended because enemy lost all battlers");
                 
-                GameWorldData.fromBattle = true;
-                GameWorldData.isDefeated = true;
+                SceneLoader.vars[1] = true;
+                SceneLoader.vars[3] = true;
                 EndBattle();
             }
         }

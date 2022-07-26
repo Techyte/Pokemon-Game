@@ -6,26 +6,22 @@ namespace PokemonGame
 {
     public static class SceneLoader
     {
+        public static List<object> vars = new List<object>();
         public static void LoadScene(int sceneIndex, object[] vars)
         {
-            LoaderInfo.vars = vars.ToList();
+            SceneLoader.vars = vars.ToList();
             SceneManager.LoadScene(sceneIndex);
         }
 
         public static void LoadScene(int sceneIndex, List<object> vars)
         {
-            LoaderInfo.vars = vars;
+            SceneLoader.vars = vars;
             SceneManager.LoadScene(sceneIndex);
         }
 
         public static void ClearLoader()
         {
-            LoaderInfo.vars.Clear();
+            vars.Clear();
         }
-    }
-
-    public static class LoaderInfo
-    {
-        public static List<object> vars;
     }
 }

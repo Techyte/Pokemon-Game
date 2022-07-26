@@ -16,7 +16,7 @@ MonoBehaviour:
   level: 5
   name: Charmander
   maxHealth: 19
-  currentHealth: 0
+  currentHealth: 19
   exp: 0
   attack: 11
   defense: 10

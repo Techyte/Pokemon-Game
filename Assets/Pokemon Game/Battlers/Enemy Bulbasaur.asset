@@ -16,7 +16,7 @@ MonoBehaviour:
   level: 5
   name: Bulbasaur
   maxHealth: 20
-  currentHealth: 0
+  currentHealth: 13
   exp: 0
   attack: 10
   defense: 10
@@ -25,7 +25,7 @@ MonoBehaviour:
   speed: 10
   texture: {fileID: 21300000, guid: 172c0180b1b30a44ab24fa8d177bfb43, type: 3}
   isFainted: 0
-  statusEffect: {fileID: 0}
+  statusEffect: {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
   primaryType: {fileID: 11400000, guid: 16677bacbe9d55246878c477b58016ba, type: 2}
   secondaryType: {fileID: 0}
   moves:

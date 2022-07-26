@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace PokemonGame
 {
-    [CreateAssetMenu(order = 0, fileName = "New Battler", menuName = "Pokemon Game/New Battler")]
     [Serializable]
     public class Battler : ScriptableObject
     {
@@ -31,8 +30,6 @@ namespace PokemonGame
         public Type secondaryType;
 
         public Move[] moves;
-
-        [SerializeField]
 
         private void OnValidate()
         {
@@ -79,6 +76,7 @@ namespace PokemonGame
         public static Battler Init(BattlerTemplate source, int level, StatusEffect statusEffect, string name, Move move1, Move move2, Move move3, Move move4, bool autoAssignHealth)
         {
             Battler returnBattler = CreateInstance<Battler>();
+            
             returnBattler.source = source;
             returnBattler.level = level;
             returnBattler.name = name;
@@ -99,6 +97,16 @@ namespace PokemonGame
             returnBattler.UpdateStats();
 
             returnBattler.texture = source.texture;
+            
+            return returnBattler;
+        }
+        
+        public static Battler CreateCoppy(Battler battler)
+        {
+            Battler returnBattler = Init(battler.source, battler.level, battler.statusEffect, battler.name,
+                battler.moves[0], battler.moves[1], battler.moves[2], battler.moves[3], false);
+
+            returnBattler.currentHealth = battler.currentHealth;
             
             return returnBattler;
         }

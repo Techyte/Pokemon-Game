@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using PokemonGame.Battle;
 
 namespace PokemonGame
 {
@@ -33,11 +32,6 @@ namespace PokemonGame
 
             for (int i = 0; i != Math.Min(keys.Count, values.Count); i++)
                 moves.Add(keys[i], values[i]);
-        }
-
-        private void OnValidate()
-        {
-            //moves["Ember"].moveMethod += StatusMovesMethods.Ember;
         }
     }
 

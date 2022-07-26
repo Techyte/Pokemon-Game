@@ -68,9 +68,25 @@ namespace PokemonGame.Game
 
         private void LoadBattle()
         {
-            GameWorldData.playerTransform = playerSpawnPos.position;
-            GameWorldData.battleStarterName = name;
-            object[] vars = { playerParty, opponentParty, ai};
+            for (int i = 0; i < playerParty.party.Count; i++)
+            {
+                if (playerParty.party[i])
+                {
+                    Battler replacementBattler = Battler.CreateCoppy(playerParty.party[i]);
+                    playerParty.party[i] = replacementBattler;   
+                }
+            }
+            
+            for (int i = 0; i < opponentParty.party.Count; i++)
+            {
+                if (opponentParty.party[i])
+                {
+                    Battler replacementBattler = Battler.CreateCoppy(opponentParty.party[i]);
+                    opponentParty.party[i] = replacementBattler;   
+                }
+            }
+            
+            object[] vars = { playerParty, opponentParty, ai, playerSpawnPos.position, name};
             SceneLoader.LoadScene(1, vars);
         }
     }

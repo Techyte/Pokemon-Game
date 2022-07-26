@@ -16,7 +16,7 @@ MonoBehaviour:
   level: 5
   name: Squirtle
   maxHealth: 20
-  currentHealth: 0
+  currentHealth: 20
   exp: 0
   attack: 10
   defense: 12
@@ -25,7 +25,7 @@ MonoBehaviour:
   speed: 10
   texture: {fileID: 21300000, guid: 608e4d377eeb8674d956108a10a6343d, type: 3}
   isFainted: 0
-  statusEffect: {fileID: 0}
+  statusEffect: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
   primaryType: {fileID: 11400000, guid: e96a8bed7870822469f0947b19e4e57d, type: 2}
   secondaryType: {fileID: 0}
   moves:
