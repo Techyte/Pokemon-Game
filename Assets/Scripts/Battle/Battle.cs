@@ -117,7 +117,6 @@ namespace PokemonGame.Battle
                 hasShowedMoves = true;
                 playerHasChosenAttack = false;
                 currentTurn = TurnStatus.Ending;
-                Debug.Log(playerParty.party[currentBattlerIndex].currentHealth);
             }
         }
 
@@ -291,13 +290,15 @@ namespace PokemonGame.Battle
                 playerParty.party[currentBattlerIndex].isFainted = true;
                 uiManager.SwitchBattlerBecauseOfDeath();
             }
+            
+            Debug.Log(playerParty.party[currentBattlerIndex].currentHealth);
 
             CheckForWinCondition();
 
             uiManager.UpdateHealthDisplays();
         }
 
-        private void EndBattle()
+        private void EndBattle(bool isDefeated)
         {
             //Debug.Log("Ending Battle");
 
@@ -307,7 +308,7 @@ namespace PokemonGame.Battle
             SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
             SaveAndLoad<Party>.SaveJson(opponentParty, opponentPath);
 
-            object[] vars = { SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath) };
+            object[] vars = { SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath), playerSpawnPos, true, opponentName, isDefeated };
 
             SceneLoader.LoadScene(0, vars);
         }
@@ -336,9 +337,7 @@ namespace PokemonGame.Battle
             {
                 Debug.Log("Battle ended because player lost all battlers");
 
-                SceneLoader.vars[1] = true;
-                SceneLoader.vars[3] = false;
-                EndBattle();
+                EndBattle(true);
             }
 
             int enemyFaintedPokemon = 0;
@@ -363,9 +362,7 @@ namespace PokemonGame.Battle
             {
                 Debug.Log("Battle ended because enemy lost all battlers");
                 
-                SceneLoader.vars[1] = true;
-                SceneLoader.vars[3] = true;
-                EndBattle();
+                EndBattle(true);
             }
         }
     }

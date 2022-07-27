@@ -32,6 +32,11 @@ namespace PokemonGame.Battle
         {
             playerParty.party.Add(battlerToAdd);
         }
+
+        public void UpdatePlayerParty(Party party)
+        {
+            playerParty = party;
+        }
         
         private void Start()
         {

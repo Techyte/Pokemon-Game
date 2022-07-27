@@ -1,4 +1,3 @@
-using System.Linq;
 using PokemonGame.Game;
 using UnityEngine;
 
@@ -16,9 +15,11 @@ namespace PokemonGame.Battle
 
         private void LoadGameFromBattle()
         {
-            player.position = (Vector3) SceneLoader.vars[0];
-            if((bool)SceneLoader.vars[1])
-                GameObject.Find((string) SceneLoader.vars[2]).GetComponent<BattleStarter>().isDefeated = (bool) SceneLoader.vars[3];
+            //PartyManager.singleton.UpdatePlayerParty((Party) SceneLoader.vars[0]);
+            
+            player.position = (Vector3) SceneLoader.vars[2];
+            if((bool)SceneLoader.vars[3])
+                GameObject.Find((string) SceneLoader.vars[4]).GetComponent<BattleStarter>().isDefeated = (bool) SceneLoader.vars[5];
             SceneLoader.ClearLoader();
         }
     }
