@@ -138,7 +138,7 @@ namespace PokemonGame.Battle
                 text.transform.parent.gameObject.SetActive(false);
             }
 
-            for (var i = 0; i < battle.playerParty.party[battle.currentBattlerIndex].moves.Length; i++)
+            for (var i = 0; i < battle.playerParty.party[battle.currentBattlerIndex].moves.Count; i++)
             {
                 if (battle.playerParty.party[battle.currentBattlerIndex].moves[i])
                 {

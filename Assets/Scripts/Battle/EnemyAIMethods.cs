@@ -8,7 +8,7 @@ namespace PokemonGame.Battle
         public void DefaultAI(AIMethodEventArgs e)
         {
             int moveCount = 0;
-            for (int i = 0; i < e.battlerToUse.moves.Length; i++)
+            for (int i = 0; i < e.battlerToUse.moves.Count; i++)
             {
                 if (e.battlerToUse.moves[i] != null)
                 {
@@ -19,7 +19,6 @@ namespace PokemonGame.Battle
             int moveToDo = Random.Range(0, moveCount);
 
             Battle.Singleton.enemyMoveToDo = e.battlerToUse.moves[moveToDo];
-            //Battle.Singleton.SetEnemyMove(moveToDo);
         }
     }
 }

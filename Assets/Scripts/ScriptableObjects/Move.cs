@@ -14,6 +14,10 @@ namespace PokemonGame
 
         public UnityEvent<MoveMethodEventArgs> MoveMethodEvent;
 
+        /// <summary>
+        /// Calls the associated function in StatusMoveMethods.cs
+        /// </summary>
+        /// <param name="e">The MoveMethodArgs that can be used to store additional information to be parsed onto the method</param>
         public void MoveMethod(MoveMethodEventArgs e)
         {
             try

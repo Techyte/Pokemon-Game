@@ -72,7 +72,7 @@ namespace PokemonGame.Game
             {
                 if (playerParty.party[i])
                 {
-                    Battler replacementBattler = Battler.CreateCoppy(playerParty.party[i]);
+                    Battler replacementBattler = Battler.CreateCopy(playerParty.party[i]);
                     playerParty.party[i] = replacementBattler;   
                 }
             }
@@ -81,7 +81,7 @@ namespace PokemonGame.Game
             {
                 if (opponentParty.party[i])
                 {
-                    Battler replacementBattler = Battler.CreateCoppy(opponentParty.party[i]);
+                    Battler replacementBattler = Battler.CreateCopy(opponentParty.party[i]);
                     opponentParty.party[i] = replacementBattler;   
                 }
             }

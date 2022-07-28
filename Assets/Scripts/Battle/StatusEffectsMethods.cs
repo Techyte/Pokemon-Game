@@ -7,14 +7,14 @@ namespace PokemonGame.Battle
     {
         public void Healthy(StatusEffectEventArgs args)
         {
-            Debug.Log(args.battler.name + " was healthy");
+            //Debug.Log(args.battler.name + " was healthy");
         }
 
         public void Poisoned(StatusEffectEventArgs args)
         {
-            args.battler.currentHealth -= args.battler.maxHealth / 16;
+            args.battler.TakeDamage(args.battler.maxHealth / 16);
 
-            Debug.Log(args.battler.name + " was hurt by poison");
+            //Debug.Log(args.battler.name + " was hurt by poison");
         }
     }
 }

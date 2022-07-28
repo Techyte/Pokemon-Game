@@ -78,8 +78,8 @@ namespace PokemonGame.Battle
 
             opponentBattlerIndex = 0;
 
-            opponentParty.party[opponentBattlerIndex].currentHealth = opponentParty.party[opponentBattlerIndex].maxHealth;
-            playerParty.party[currentBattlerIndex].currentHealth = playerParty.party[currentBattlerIndex].maxHealth;
+            opponentParty.party[opponentBattlerIndex].UpdateHealth(opponentParty.party[opponentBattlerIndex].maxHealth);
+            playerParty.party[currentBattlerIndex].UpdateHealth(playerParty.party[currentBattlerIndex].maxHealth);
         }
 
         private void Update()
@@ -112,9 +112,9 @@ namespace PokemonGame.Battle
         {
             if (!hasShowedMoves)
             {
+                hasShowedMoves = true;
                 uiManager.ShowUI(false);
                 DoMoves();
-                hasShowedMoves = true;
                 playerHasChosenAttack = false;
                 currentTurn = TurnStatus.Ending;
             }
@@ -138,6 +138,7 @@ namespace PokemonGame.Battle
             playerParty.party[currentBattlerIndex].statusEffect.Effect(new StatusEffectEventArgs(
                     playerParty.party[currentBattlerIndex]));
             
+            CheckForWinCondition();
             uiManager.UpdateHealthDisplays();
         }
 
@@ -153,29 +154,24 @@ namespace PokemonGame.Battle
 
             if (_playerMoveToDo != null)
             {
-
                 if (_playerMoveToDo.category == MoveCategory.Status)
                 {
                     _playerMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentParty.party[opponentBattlerIndex]));
                 }
                 else
                 {
-                    double damageToDo = CalculateDamage(_playerMoveToDo, playerParty.party[currentBattlerIndex], opponentParty.party[opponentBattlerIndex]);
-                    opponentParty.party[opponentBattlerIndex].currentHealth -= (int)damageToDo;
-                }
-
-                if (opponentParty.party[opponentBattlerIndex].currentHealth <= 0)
-                {
-                    opponentParty.party[opponentBattlerIndex].isFainted = true;
+                    int damageToDo = CalculateDamage(_playerMoveToDo, playerParty.party[currentBattlerIndex], opponentParty.party[opponentBattlerIndex]);
+                    Debug.Log($"{opponentParty.party[opponentBattlerIndex].currentHealth} - {Mathf.RoundToInt(damageToDo)} = {opponentParty.party[opponentBattlerIndex].currentHealth - Mathf.RoundToInt(damageToDo)}");
+                    opponentParty.party[opponentBattlerIndex].TakeDamage(Mathf.RoundToInt(damageToDo));
                 }
             }
-
+            
             CheckForWinCondition();
 
             uiManager.UpdateHealthDisplays();
         }
 
-        private double CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
+        private int CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
         {
             foreach (var hType in move.type.cantHit)
             {
@@ -186,7 +182,7 @@ namespace PokemonGame.Battle
                 }
             }
 
-            double type = 1;
+            float type = 1;
 
             foreach (var hType in move.type.strongAgainst)
             {
@@ -231,13 +227,13 @@ namespace PokemonGame.Battle
             }
 
             //Damage calculation is correct
-            double damage = move.category == MoveCategory.Physical
-                ? ((2 * battlerThatUsed.level / 5 + 2) * move.damage *
-                    (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * stab * type
-                : ((2 * battlerThatUsed.level / 5 + 2) * move.damage *
-                    (battlerThatUsed.specialAttack / battlerBeingAttacked.specialDefense) / 50 + 2) * stab * type;
+            int damage = move.category == MoveCategory.Physical
+                ? Mathf.RoundToInt(((2 * battlerThatUsed.level / 5 + 2) * move.damage *
+                    (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * stab * type)
+                : Mathf.RoundToInt(((2 * battlerThatUsed.level / 5 + 2) * move.damage *
+                    (battlerThatUsed.specialAttack / battlerBeingAttacked.specialDefense) / 50 + 2) * stab * type);
 
-            float randomness = Mathf.RoundToInt(Random.Range(.8f * (float)damage, (float)damage * 1.2f));
+            int randomness = Mathf.RoundToInt(Random.Range(.8f * damage, damage * 1.2f));
             damage = randomness;
 
             return damage;
@@ -245,30 +241,20 @@ namespace PokemonGame.Battle
 
         private void DoMoves()
         {
-            if(opponentParty.party[opponentBattlerIndex].speed > playerParty.party[currentBattlerIndex].speed)
-            {
-                //Enemy is faster
-                DoEnemyMove();
-                DoPlayerMove();
-            }
-            else
+            if(playerParty.party[currentBattlerIndex].speed > opponentParty.party[opponentBattlerIndex].speed)
             {
                 //Player is faster
                 DoPlayerMove();
                 DoEnemyMove();
             }
+            else
+            {
+                //Enemy is faster
+                DoEnemyMove();
+                DoPlayerMove();
+            }
 
             uiManager.UpdateHealthDisplays();
-        }
-
-        public void SetEnemyMove(int moveId)
-        {
-            enemyMoveToDo = opponentParty.party[opponentBattlerIndex].moves[moveId];
-        }
-
-        public void DoMoveOnPlayer(Move move)
-        {
-            enemyMoveToDo = move;
         }
 
         private void DoEnemyMove()
@@ -281,18 +267,15 @@ namespace PokemonGame.Battle
             }
             else
             {
-                double damageToDo = CalculateDamage(enemyMoveToDo, opponentParty.party[opponentBattlerIndex], playerParty.party[currentBattlerIndex]);
-                playerParty.party[currentBattlerIndex].currentHealth -= (int)damageToDo;
+                float damageToDo = CalculateDamage(enemyMoveToDo, opponentParty.party[opponentBattlerIndex], playerParty.party[currentBattlerIndex]);
+                playerParty.party[currentBattlerIndex].TakeDamage(Mathf.RoundToInt(damageToDo));
             }
 
-            if (playerParty.party[currentBattlerIndex].currentHealth <= 0)
+            if (playerParty.party[currentBattlerIndex].isFainted)
             {
-                playerParty.party[currentBattlerIndex].isFainted = true;
                 uiManager.SwitchBattlerBecauseOfDeath();
             }
             
-            Debug.Log(playerParty.party[currentBattlerIndex].currentHealth);
-
             CheckForWinCondition();
 
             uiManager.UpdateHealthDisplays();
