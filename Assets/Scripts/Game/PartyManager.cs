@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
+    /// <summary>
+    /// Manages the players party
+    /// </summary>
     public class PartyManager : MonoBehaviour
     {
         private static PartyManager _singleton;
@@ -28,11 +31,19 @@ namespace PokemonGame.Battle
             singleton = this;
         }
 
-        public void AddPokemon(Battler battlerToAdd)
+        /// <summary>
+        /// Add a battler to the player party
+        /// </summary>
+        /// <param name="battlerToAdd">The battler that you add to the party</param>
+        public void AddBattler(Battler battlerToAdd)
         {
             playerParty.party.Add(battlerToAdd);
         }
 
+        /// <summary>
+        /// Change the player party without simply adding one
+        /// </summary>
+        /// <param name="party">The new party</param>
         public void UpdatePlayerParty(Party party)
         {
             playerParty = party;

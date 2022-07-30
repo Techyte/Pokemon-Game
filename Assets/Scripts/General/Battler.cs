@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace PokemonGame
 {
+    /// <summary>
+    /// The class that contains all the information for a battler
+    /// </summary>
     [Serializable]
     public class Battler : ScriptableObject
     {

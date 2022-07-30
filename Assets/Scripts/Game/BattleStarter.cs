@@ -4,6 +4,9 @@ using UnityEngine.AI;
 
 namespace PokemonGame.Game
 {
+    /// <summary>
+    /// Initiates a battle based on certain inspector parameters 
+    /// </summary>
     public class BattleStarter : MonoBehaviour
     {
         public AllStatusEffects allStatusEffects;
@@ -27,6 +30,9 @@ namespace PokemonGame.Game
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.white, 100);
         }
 
+        /// <summary>
+        /// Triggers the defeated dialogue
+        /// </summary>
         public void Defeated()
         {
             _hasTalkedDefeatedText = true;

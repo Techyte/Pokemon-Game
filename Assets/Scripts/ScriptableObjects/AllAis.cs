@@ -5,6 +5,9 @@ using PokemonGame.Battle;
 
 namespace PokemonGame
 {
+    /// <summary>
+    /// A collection of every ai in the game
+    /// </summary>
     [CreateAssetMenu(fileName = "New All Ais", menuName = "All/New All Ais")]
     public class AllAis : ScriptableObject, ISerializationCallbackReceiver
     {

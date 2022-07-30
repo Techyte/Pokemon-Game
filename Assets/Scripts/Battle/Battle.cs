@@ -10,6 +10,9 @@ namespace PokemonGame.Battle
         Ending
     }
 
+    /// <summary>
+    /// The main class that manages battles
+    /// </summary>
     public class Battle : MonoBehaviour
     {
         private static Battle _singleton;

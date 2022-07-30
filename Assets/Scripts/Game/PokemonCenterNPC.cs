@@ -10,6 +10,11 @@ namespace PokemonGame.Game
         [SerializeField] private BattlerTemplate bulbasaur;
         [SerializeField] private BattlerTemplate squirtle;
         
+        /// <summary>
+        /// Call a dialogue tag
+        /// </summary>
+        /// <param name="tagKey">The tag key</param>
+        /// <param name="tagValue">The tag value</param>
         public override void CallTag(string tagKey, string tagValue)
         {
             switch (tagKey)
@@ -25,13 +30,13 @@ namespace PokemonGame.Game
             switch (tagValue)
             {
                 case "Charmander": 
-                    PartyManager.singleton.AddPokemon(Battler.Init(charmander, 5, null, "Charmander", null, null, null, null, true));
+                    PartyManager.singleton.AddBattler(Battler.Init(charmander, 5, null, "Charmander", null, null, null, null, true));
                     break;
                 case "Squirtle":
-                    PartyManager.singleton.AddPokemon(Battler.Init(squirtle, 5, null, "Squirtle", null, null, null, null, true));
+                    PartyManager.singleton.AddBattler(Battler.Init(squirtle, 5, null, "Squirtle", null, null, null, null, true));
                     break;
                 case "Bulbasaur":
-                    PartyManager.singleton.AddPokemon(Battler.Init(bulbasaur, 5, null, "Bulbasaur", null, null, null, null, true));
+                    PartyManager.singleton.AddBattler(Battler.Init(bulbasaur, 5, null, "Bulbasaur", null, null, null, null, true));
                     break;
             }
         }

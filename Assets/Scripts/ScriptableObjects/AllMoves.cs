@@ -4,6 +4,9 @@ using System;
 
 namespace PokemonGame
 {
+    /// <summary>
+    /// A collection of every move in the game
+    /// </summary>
     [CreateAssetMenu(fileName = "New All Moves", menuName = "All/New All Moves")]
     public class AllMoves : ScriptableObject, ISerializationCallbackReceiver
     {

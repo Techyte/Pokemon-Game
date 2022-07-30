@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
+    /// <summary>
+    /// Contains all of the logic for every move
+    /// </summary>
     [CreateAssetMenu(fileName = "New Status Move Methods", menuName = "All/New Status Move Mehods")]
     public class StatusMovesMethods : ScriptableObject
     {

@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
+    /// <summary>
+    /// Contains all of the logic for every AI
+    /// </summary>
     [CreateAssetMenu(fileName = "New Enemy AI Methods", menuName = "All/New Enemy AI Methods")]
     public class EnemyAIMethods : ScriptableObject
     {

@@ -5,6 +5,9 @@ using PokemonGame.Battle;
 
 namespace PokemonGame
 {
+    /// <summary>
+    /// A collection of every status effect in the game
+    /// </summary>
     [CreateAssetMenu(fileName = "New All Status Effects", menuName = "All/New All Status Effects")]
     public class AllStatusEffects : ScriptableObject, ISerializationCallbackReceiver
     {

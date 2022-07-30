@@ -13,7 +13,7 @@ namespace PokemonGame
             _orignY = transform.position.y;
         }
 
-        void Update()
+        private void Update()
         {
             Vector3 newPos = transform.position;
             newPos.y = Mathf.Sin(Time.time * bobSpeed) * bobIntensity;

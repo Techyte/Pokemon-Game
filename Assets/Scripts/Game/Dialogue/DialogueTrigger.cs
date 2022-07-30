@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace PokemonGame.Dialogue
 {
+    /// <summary>
+    /// Can be extended by a class to create something that triggers dialogue
+    /// </summary>
     public class DialogueTrigger : MonoBehaviour
     {
         [Header("Visual Cue")]
