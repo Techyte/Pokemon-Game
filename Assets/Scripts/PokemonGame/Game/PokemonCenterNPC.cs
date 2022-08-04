@@ -14,6 +14,8 @@ namespace PokemonGame.Game
         [SerializeField] private BattlerTemplate charmander;
         [SerializeField] private BattlerTemplate bulbasaur;
         [SerializeField] private BattlerTemplate squirtle;
+
+        [SerializeField] private TextAsset TextAsset;
         
         private void Update()
         {
@@ -22,7 +24,7 @@ namespace PokemonGame.Game
                 visualCue.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    StartDialogue();
+                    StartDialogue(TextAsset);
                 }
             }
             else

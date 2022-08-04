@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PokemonGame.Battle;
 using PokemonGame.Dialogue;
@@ -24,9 +25,15 @@ namespace PokemonGame.Game
         public bool isDefeated;
         private bool _hasTalkedDefeatedText;
 
+        private bool hasFinishedStartText;
+
         [SerializeField] private Transform playerSpawnPos;
         
         public int battlerId;
+
+        [SerializeField] private TextAsset StatBattleText;
+
+        private bool hasStartedTalkingStartText;
 
         private void OnValidate()
         {
@@ -51,6 +58,8 @@ namespace PokemonGame.Game
         private void Start()
         {
             agent = gameObject.GetComponent<NavMeshAgent>();
+
+            DialogueFinished += StartingDialogueEnded;
         }
 
         /// <summary>
@@ -80,10 +89,16 @@ namespace PokemonGame.Game
 
                         Invoke(nameof(HasStartedWalkingSetter), .1f);
                     
-                        if (agent.velocity.magnitude < 0.15f && _hasStartedWalking)
+                        if (agent.velocity.magnitude < 0.15f && _hasStartedWalking && !hasStartedTalkingStartText)
+                        {
+                            StartDialogue(StatBattleText);
+                            hasStartedTalkingStartText = true;
+                        }
+
+                        if (hasFinishedStartText)
                         {
                             LoadBattle();
-                        }   
+                        }
                     }
                 }
                 else
@@ -92,6 +107,11 @@ namespace PokemonGame.Game
                         Defeated();
                 }
             }
+        }
+
+        private void StartingDialogueEnded(object sender, EventArgs args)
+        {
+            hasFinishedStartText = true;
         }
 
         private void HasStartedWalkingSetter()
