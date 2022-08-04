@@ -6,9 +6,48 @@ namespace PokemonGame.Game
 {
     public class PokemonCenterNPC : DialogueTrigger
     {
+        [Header("Visual Cue")]
+        [SerializeField] private GameObject visualCue;
+
+        [SerializeField] private bool playerInRange;
+        
         [SerializeField] private BattlerTemplate charmander;
         [SerializeField] private BattlerTemplate bulbasaur;
         [SerializeField] private BattlerTemplate squirtle;
+        
+        private void Update()
+        {
+            if (playerInRange)
+            {
+                visualCue.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    StartDialogue();
+                }
+            }
+            else
+            {
+                visualCue.SetActive(false);
+            }
+        }
+
+        private void Awake()
+        {
+            playerInRange = false;
+            visualCue.SetActive(false);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject.CompareTag("Player"))
+                playerInRange = true;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if(other.gameObject.CompareTag("Player"))
+                playerInRange = false;
+        }
         
         /// <summary>
         /// Call a dialogue tag

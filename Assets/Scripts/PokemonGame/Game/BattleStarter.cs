@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
-using Ink.Parsed;
 using PokemonGame.Battle;
+using PokemonGame.Dialogue;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,7 +9,7 @@ namespace PokemonGame.Game
     /// <summary>
     /// Initiates a battle based on certain inspector parameters 
     /// </summary>
-    public class BattleStarter : MonoBehaviour
+    public class BattleStarter : DialogueTrigger
     {
         public AllStatusEffects allStatusEffects;
         public AllMoves allMoves;

@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace PokemonGame.Dialogue
 {
+    /// <summary>
+    /// Manages all dialogue in the game, if dialogue is wanted in a scene, must have an instance inside of said scene
+    /// </summary>
     public class DialogueManager : MonoBehaviour
     {
         [SerializeField] private GameObject dialoguePanel;
@@ -81,6 +84,7 @@ namespace PokemonGame.Dialogue
             dialogueIsPlaying = false;
             dialoguePanel.SetActive(false);
             dialogueTextDisplay.text = "";
+            currentTrigger.EndDialogue();
         }
 
         private void ContinueStory()
