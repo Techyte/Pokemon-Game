@@ -38,6 +38,7 @@ namespace PokemonGame.Battle
 
         [Header("UI:")]
         public GameObject playerUIHolder;
+        
         [SerializeField] private BattleUIManager uiManager;
 
         [Space]
@@ -48,41 +49,44 @@ namespace PokemonGame.Battle
 
         [Space]
         [Header("Other Readouts")]
-        public TurnStatus currentTurn = TurnStatus.Choosing;
-        public Party playerParty;
-        public Party opponentParty;
-
-        private EnemyAI _enemyAI;
-
-        private Move _playerMoveToDo;
+        [SerializeField] public TurnStatus currentTurn = TurnStatus.Choosing;
+        
+        [SerializeField] public Party playerParty;
+        
+        [SerializeField] public Party opponentParty;
+        
+        [SerializeField] private EnemyAI _enemyAI;
+        
+        [SerializeField] private Move _playerMoveToDo;
+        
         public Move enemyMoveToDo;
-        public bool playerHasChosenAttack;
-        [SerializeField]private bool hasDoneChoosingUpdate;
-        [SerializeField]private bool hasShowedMoves;
+        
+        [SerializeField] private bool playerHasChosenAttack;
+        
+        [SerializeField] private bool hasDoneChoosingUpdate;
+        
+        [SerializeField] private bool hasShowedMoves;
+        
 
         private Vector3 playerSpawnPos;
-        private string opponentName;
+        private int opponentId;
 
         private void Start()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
+            //Loads relevant info like the opponent and player party
             playerParty = (Party)SceneLoader.vars[0];
             opponentParty = (Party)SceneLoader.vars[1];
             _enemyAI = (EnemyAI)SceneLoader.vars[2];
-
             playerSpawnPos = (Vector3)SceneLoader.vars[3];
-            opponentName = (string)SceneLoader.vars[4];
+            opponentId = (int)SceneLoader.vars[4];
 
             SceneLoader.ClearLoader();
 
             currentBattlerIndex = 0;
-
             opponentBattlerIndex = 0;
-
-            opponentParty.party[opponentBattlerIndex].UpdateHealth(opponentParty.party[opponentBattlerIndex].maxHealth);
-            playerParty.party[currentBattlerIndex].UpdateHealth(playerParty.party[currentBattlerIndex].maxHealth);
         }
 
         private void Update()
@@ -141,10 +145,11 @@ namespace PokemonGame.Battle
             playerParty.party[currentBattlerIndex].statusEffect.Effect(new StatusEffectEventArgs(
                     playerParty.party[currentBattlerIndex]));
             
-            CheckForWinCondition();
             uiManager.UpdateHealthDisplays();
+            CheckForWinCondition();
         }
 
+        //Public method used by the move UI buttons
         public void ChooseMove(int moveID)
         {
             _playerMoveToDo = playerParty.party[currentBattlerIndex].moves[moveID];
@@ -155,7 +160,7 @@ namespace PokemonGame.Battle
         {
             //You can add any animation calls for attacking here
 
-            if (_playerMoveToDo != null)
+            if (_playerMoveToDo)
             {
                 if (_playerMoveToDo.category == MoveCategory.Status)
                 {
@@ -164,18 +169,17 @@ namespace PokemonGame.Battle
                 else
                 {
                     int damageToDo = CalculateDamage(_playerMoveToDo, playerParty.party[currentBattlerIndex], opponentParty.party[opponentBattlerIndex]);
-                    Debug.Log($"{opponentParty.party[opponentBattlerIndex].currentHealth} - {Mathf.RoundToInt(damageToDo)} = {opponentParty.party[opponentBattlerIndex].currentHealth - Mathf.RoundToInt(damageToDo)}");
                     opponentParty.party[opponentBattlerIndex].TakeDamage(Mathf.RoundToInt(damageToDo));
                 }
             }
-            
-            CheckForWinCondition();
 
             uiManager.UpdateHealthDisplays();
+            CheckForWinCondition();
         }
 
         private int CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
         {
+            //Checking to see if the move is capable of hitting the opponent battler
             foreach (var hType in move.type.cantHit)
             {
                 if (hType == battlerBeingAttacked.primaryType || hType == battlerBeingAttacked.secondaryType)
@@ -187,49 +191,46 @@ namespace PokemonGame.Battle
 
             float type = 1;
 
-            foreach (var hType in move.type.strongAgainst)
+            //Calculating type disadvantages
+            foreach (var weakType in move.type.weakAgainst)
             {
-                if (hType == battlerBeingAttacked.primaryType || hType == battlerBeingAttacked.secondaryType)
+                if (weakType == battlerBeingAttacked.primaryType)
                 {
-                    type = 1.5f;
+                    type /= 2;
+                }
+                if (weakType == battlerBeingAttacked.secondaryType)
+                {
+                    type /= 2;
                 }
             }
 
-            foreach (var hType in move.type.weakAgainst)
+            //Calculating type advantages
+            foreach (var strongType in move.type.strongAgainst)
             {
-                if (hType == battlerBeingAttacked.primaryType || hType == battlerBeingAttacked.secondaryType)
+                if (strongType == battlerBeingAttacked.primaryType)
                 {
-                    //Debug.Log(move.type + " is weak against " + move.type.weakAgainst[i]);
-                    if (type == 1.5)
-                    {
-                        type = 1;
-                    }
-                    else
-                    {
-                        type = .5f;
-                    }
+                    type *= 2;
+                }
+                if (strongType == battlerBeingAttacked.secondaryType)
+                {
+                    type *= 2;
                 }
             }
 
+            //Failsafe
+            if (type > 4)
+                type = 4;
+            if (type < .25f)
+                type = .25f;
+
+            //STAB =  Same type attack bonus
             int stab = 1;
             if (move.type == battlerThatUsed.primaryType)
             {
                 stab = 2;
             }
 
-            if (move.type == battlerThatUsed.secondaryType)
-            {
-                if (type == 2)
-                {
-                    type += 2;
-                }
-                else
-                {
-                    type = 2;
-                }
-            }
-
-            //Damage calculation is correct
+            //Damage calculation is correct (took me way to long to get it right) source: https://bulbapedia.bulbagarden.net/wiki/Damage#Generation_II
             int damage = move.category == MoveCategory.Physical
                 ? Mathf.RoundToInt(((2 * battlerThatUsed.level / 5 + 2) * move.damage *
                     (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * stab * type)
@@ -256,8 +257,6 @@ namespace PokemonGame.Battle
                 DoEnemyMove();
                 DoPlayerMove();
             }
-
-            uiManager.UpdateHealthDisplays();
         }
 
         private void DoEnemyMove()
@@ -286,68 +285,54 @@ namespace PokemonGame.Battle
 
         private void EndBattle(bool isDefeated)
         {
-            //Debug.Log("Ending Battle");
-
             var playerPath = Application.persistentDataPath + "/party.json";
             var opponentPath = Application.persistentDataPath + "/opponentTestParty.json";
 
             SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
             SaveAndLoad<Party>.SaveJson(opponentParty, opponentPath);
 
-            object[] vars = { SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath), playerSpawnPos, true, opponentName, isDefeated };
+            object[] vars = { SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath), playerSpawnPos, true, opponentId, isDefeated };
 
             SceneLoader.LoadScene(0, vars);
         }
 
         private void CheckForWinCondition()
         {
+            //Counting how many fainted batlers in the players party
             var playerFaintedPokemon = 0;
             var playerPartyCount = 0;
-
             foreach (var partyPokemon in playerParty.party)
             {
                 if (partyPokemon)
                 {
                     playerPartyCount++;
-                }
-            }
-
-            foreach (var partyPokemon in playerParty.party)
-            {
-                if (partyPokemon)
                     if (partyPokemon.isFainted)
                         playerFaintedPokemon++;
+                }
             }
-
+            
             if (playerFaintedPokemon == playerPartyCount)
             {
                 Debug.Log("Battle ended because player lost all battlers");
-
                 EndBattle(true);
             }
 
+            //Counting how many fainted batlers in the opponent party
             int enemyFaintedPokemon = 0;
             int enemyPartyCount = 0;
-
             foreach (var partyPokemon in opponentParty.party)
             {
                 if (partyPokemon)
                 {
                     enemyPartyCount++;
-                }
-            }
-
-            foreach (var partyPokemon in opponentParty.party)
-            {
-                if(partyPokemon)
                     if (partyPokemon.isFainted)
                         enemyFaintedPokemon++;
+                }
             }
 
             if (enemyFaintedPokemon == enemyPartyCount)
             {
                 Debug.Log("Battle ended because enemy lost all battlers");
-                
                 EndBattle(true);
             }
         }

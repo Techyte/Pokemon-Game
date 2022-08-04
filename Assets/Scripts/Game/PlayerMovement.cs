@@ -17,6 +17,7 @@ namespace PokemonGame.Game
         private float _turnSmoothVelocity;
         public bool canMove = true;
         [SerializeField] float speed;
+        public bool battleStarterHasStartedWalking;
         private void Start()
         {
             speed = normalSpeed;
@@ -26,7 +27,14 @@ namespace PokemonGame.Game
 
         void Update()
         {
-            canMove = !DialogueManager.GetInstance().dialogueIsPlaying;
+            if (!battleStarterHasStartedWalking)
+            {
+                canMove = !DialogueManager.GetInstance().dialogueIsPlaying;   
+            }
+            else
+            {
+                canMove = false;
+            }
             if (canMove)
             {
                 Cursor.lockState = CursorLockMode.Locked;

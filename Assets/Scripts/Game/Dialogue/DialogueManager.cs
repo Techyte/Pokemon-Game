@@ -3,7 +3,6 @@ using TMPro;
 using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.EventSystems;
 
 namespace PokemonGame.Dialogue
 {
@@ -24,9 +23,7 @@ namespace PokemonGame.Dialogue
         private void Awake()
         {
             if(instance != null)
-            {
                 Debug.LogWarning("Found more than one Dialogue Manager in the scene!");
-            }
             instance = this;
         }
 
@@ -40,13 +37,9 @@ namespace PokemonGame.Dialogue
             bool hasChoices;
 
             if (currentChoices > 0)
-            {
                 hasChoices = true;
-            }
             else
-            {
                 hasChoices = false;
-            }
 
             if (Input.GetKeyDown(KeyCode.Space) && !hasChoices)
             {

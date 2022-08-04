@@ -45,7 +45,6 @@ namespace PokemonGame
         public void TakeDamage(int damage)
         {
             currentHealth -= damage;
-            Debug.Log(damage);
             if (currentHealth <= 0)
                 isFainted = true;
         }

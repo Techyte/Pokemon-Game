@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using Ink.Parsed;
 using PokemonGame.Battle;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,11 +26,32 @@ namespace PokemonGame.Game
         private bool _hasTalkedDefeatedText;
 
         [SerializeField] private Transform playerSpawnPos;
+        
+        public int battlerId;
+
+        private void OnValidate()
+        {
+            Register();
+        }
+
+        private void Awake()
+        {
+            Register();
+        }
+
+        private void Register()
+        {
+            if (battlerId == 0)
+            {
+                int newBattlerId = BattleStarterRegister.battleStarters.Count+1;
+                BattleStarterRegister.battleStarters.Add(this);
+                battlerId = newBattlerId;   
+            }
+        }
 
         private void Start()
         {
             agent = gameObject.GetComponent<NavMeshAgent>();
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward), Color.white, 100);
         }
 
         /// <summary>
@@ -40,23 +64,27 @@ namespace PokemonGame.Game
 
         private void Update()
         {
+            //Detecting when the player goes in front of the battle starter
             if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out RaycastHit hit, Mathf.Infinity))
             {
                 if (!isDefeated)
                 {
-                    hit.transform.gameObject.GetComponent<PlayerMovement>().canMove = false;
-                    agent.destination = hit.transform.position;
-
-                    if (hit.transform.gameObject.GetComponent<Player>() != null)
+                    Player player = hit.transform.gameObject.GetComponent<Player>();
+                    if (player)
                     {
-                        hit.transform.gameObject.GetComponent<Player>().LookAtTrainer(transform.position);
-                    }
+                        PlayerMovement playerMovement = hit.transform.gameObject.GetComponent<PlayerMovement>();
 
-                    Invoke(nameof(HasStartedWalkingSetter), .1f);
+                        playerMovement.battleStarterHasStartedWalking = true;
+                        agent.destination = hit.transform.position;
+
+                        player.LookAtTrainer(transform.position);
+
+                        Invoke(nameof(HasStartedWalkingSetter), .1f);
                     
-                    if (agent.velocity.magnitude < 0.15f && _hasStartedWalking)
-                    {
-                        LoadBattle();
+                        if (agent.velocity.magnitude < 0.15f && _hasStartedWalking)
+                        {
+                            LoadBattle();
+                        }   
                     }
                 }
                 else
@@ -92,8 +120,13 @@ namespace PokemonGame.Game
                 }
             }
             
-            object[] vars = { playerParty, opponentParty, ai, playerSpawnPos.position, name};
+            object[] vars = { playerParty, opponentParty, ai, playerSpawnPos.position, battlerId};
             SceneLoader.LoadScene(1, vars);
         }
+    }
+
+    public class BattleStarterRegister
+    {
+        public static List<BattleStarter> battleStarters = new List<BattleStarter>();
     }
 }
