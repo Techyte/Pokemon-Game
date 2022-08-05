@@ -1,4 +1,3 @@
-using PokemonGame.Battle;
 using PokemonGame.Dialogue;
 using UnityEngine;
 

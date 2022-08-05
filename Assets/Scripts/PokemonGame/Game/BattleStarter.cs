@@ -31,7 +31,8 @@ namespace PokemonGame.Game
         
         public int battlerId;
 
-        [SerializeField] private TextAsset StatBattleText;
+        [SerializeField] private TextAsset StartBattleText;
+        [SerializeField] private TextAsset DefeatedBattleText;
 
         private bool hasStartedTalkingStartText;
 
@@ -67,7 +68,9 @@ namespace PokemonGame.Game
         /// </summary>
         public void Defeated()
         {
-            _hasTalkedDefeatedText = true;
+            isDefeated = true;
+            DialogueFinished -= StartingDialogueEnded;
+            StartDialogue(DefeatedBattleText);
         }
 
         private void Update()
@@ -91,7 +94,7 @@ namespace PokemonGame.Game
                     
                         if (agent.velocity.magnitude < 0.15f && _hasStartedWalking && !hasStartedTalkingStartText)
                         {
-                            StartDialogue(StatBattleText);
+                            StartDialogue(StartBattleText);
                             hasStartedTalkingStartText = true;
                         }
 
@@ -100,11 +103,6 @@ namespace PokemonGame.Game
                             LoadBattle();
                         }
                     }
-                }
-                else
-                {
-                    if(isDefeated && !_hasTalkedDefeatedText)
-                        Defeated();
                 }
             }
         }

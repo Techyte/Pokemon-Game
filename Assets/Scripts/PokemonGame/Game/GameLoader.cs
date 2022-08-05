@@ -1,7 +1,6 @@
-using PokemonGame.Game;
 using UnityEngine;
 
-namespace PokemonGame.Battle
+namespace PokemonGame.Game
 {
     public class GameLoader : MonoBehaviour
     {
@@ -25,7 +24,10 @@ namespace PokemonGame.Battle
                 {
                     if (starter.battlerId == (int)SceneLoader.vars[4])
                     {
-                        starter.isDefeated = (bool)SceneLoader.vars[5];
+                        if ((bool)SceneLoader.vars[5])
+                        {
+                            starter.Defeated();
+                        }
                     }
                 }
             }

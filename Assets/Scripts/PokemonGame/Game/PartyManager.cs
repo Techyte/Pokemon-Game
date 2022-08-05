@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PokemonGame.Battle
+namespace PokemonGame.Game
 {
     /// <summary>
     /// Manages the players party
