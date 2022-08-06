@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace PokemonGame
+namespace PokemonGame.ScriptableObjects
 {
     /// <summary>
     /// A move that is used in battles to fight

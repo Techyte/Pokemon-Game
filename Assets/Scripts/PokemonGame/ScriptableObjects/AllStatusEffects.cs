@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using PokemonGame.Battle;
 
-namespace PokemonGame
+namespace PokemonGame.ScriptableObjects
 {
     /// <summary>
     /// A collection of every status effect in the game

@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using PokemonGame.Battle;
 using PokemonGame.Dialogue;
+using PokemonGame.ScriptableObjects;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -58,7 +60,7 @@ namespace PokemonGame.Game
 
         private void Start()
         {
-            agent = gameObject.GetComponent<NavMeshAgent>();
+            agent = GetComponent<NavMeshAgent>();
 
             DialogueFinished += StartingDialogueEnded;
         }
@@ -70,6 +72,12 @@ namespace PokemonGame.Game
         {
             isDefeated = true;
             DialogueFinished -= StartingDialogueEnded;
+            StartCoroutine(test());
+        }
+
+        private IEnumerator test()
+        {
+            yield return new WaitForEndOfFrame();
             StartDialogue(DefeatedBattleText);
         }
 

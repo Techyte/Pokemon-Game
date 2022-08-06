@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PokemonGame
+namespace PokemonGame.ScriptableObjects
 {
     [CreateAssetMenu(order = 3, fileName = "New Type", menuName ="Pokemon Game/New Type")]
     public class Type : ScriptableObject

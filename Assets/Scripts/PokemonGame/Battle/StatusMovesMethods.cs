@@ -1,4 +1,5 @@
 using UnityEngine;
+using PokemonGame.ScriptableObjects;
 
 namespace PokemonGame.Battle
 {

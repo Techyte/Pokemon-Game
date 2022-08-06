@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PokemonGame
+namespace PokemonGame.ScriptableObjects
 {
     [CreateAssetMenu(order = 1, fileName = "New Battler Template", menuName = "Pokemon Game/New Battler Template")]
     public class BattlerTemplate : ScriptableObject

@@ -19,8 +19,8 @@ namespace PokemonGame.Game
             player.position = (Vector3) SceneLoader.vars[2];
             if ((bool)SceneLoader.vars[3])
             {
-                BattleStarter[] starters = (BattleStarter[]) FindObjectsOfType(typeof(BattleStarter)); //returns Object[]
-                foreach (var starter in starters)
+                BattleStarter[] starters = FindObjectsOfType<BattleStarter>();
+                foreach (BattleStarter starter in starters)
                 {
                     if (starter.battlerId == (int)SceneLoader.vars[4])
                     {

@@ -91,6 +91,7 @@ namespace PokemonGame.Dialogue
         {
             if (currentStory.canContinue)
             {
+                Debug.Log("Staring dialogue");
                 dialogueTextDisplay.text = currentStory.Continue();
                 DisplayChoices();
 
@@ -98,6 +99,7 @@ namespace PokemonGame.Dialogue
             }
             else
             {
+                Debug.Log("Ending dialogue");
                 StartCoroutine(ExitDialogueMode());
             }
         }

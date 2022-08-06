@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace PokemonGame.Battle
+namespace PokemonGame.ScriptableObjects
 {
     [CreateAssetMenu(order = 5, fileName = "New AI", menuName = "Pokemon Game/New AI")]
     public class EnemyAI : ScriptableObject

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace PokemonGame.Battle
+namespace PokemonGame.ScriptableObjects
 {
     [CreateAssetMenu(order = 4, fileName = "New Status Effect", menuName = "Pokemon Game/New Status Effect")]
     public class StatusEffect : ScriptableObject

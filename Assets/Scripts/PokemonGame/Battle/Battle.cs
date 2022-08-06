@@ -1,3 +1,4 @@
+using PokemonGame.ScriptableObjects;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

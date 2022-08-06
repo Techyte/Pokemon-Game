@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-namespace PokemonGame
+namespace PokemonGame.ScriptableObjects
 {
     /// <summary>
     /// A collection of every move in the game

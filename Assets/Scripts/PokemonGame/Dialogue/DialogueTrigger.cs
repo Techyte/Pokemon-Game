@@ -37,7 +37,7 @@ namespace PokemonGame.Dialogue
             remove
             {
                 _DialogueFinished -= value;
-                DialogueFinishedHandlerMethods++;
+                DialogueFinishedHandlerMethods--;
             }
         }
 
