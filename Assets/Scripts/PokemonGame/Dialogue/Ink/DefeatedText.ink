@@ -1,6 +1,6 @@
 Gah!!!
 You won!
-I cant't beleive it!
+I cant believe it!
 Actually I can.
 Anyway,
 Bye!

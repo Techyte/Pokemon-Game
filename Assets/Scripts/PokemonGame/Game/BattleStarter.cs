@@ -23,7 +23,6 @@ namespace PokemonGame.Game
 
         public EnemyAI ai;
 
-        private bool _hasStartedWalking;
         public bool isDefeated;
         private bool _hasTalkedDefeatedText;
 
@@ -36,11 +35,13 @@ namespace PokemonGame.Game
         [SerializeField] private TextAsset StartBattleText;
         [SerializeField] private TextAsset DefeatedBattleText;
 
-        private bool hasStartedTalkingStartText;
+        private GameLoader _gameLoader;
 
         private void OnValidate()
         {
             Register();
+            if (!_gameLoader)
+                _gameLoader = FindObjectOfType<GameLoader>();
         }
 
         private void Awake()
@@ -72,15 +73,18 @@ namespace PokemonGame.Game
         {
             isDefeated = true;
             DialogueFinished -= StartingDialogueEnded;
-            StartCoroutine(test());
+            StartCoroutine(StartDefeatedDialogue());
         }
 
-        private IEnumerator test()
+        private IEnumerator StartDefeatedDialogue()
         {
             yield return new WaitForEndOfFrame();
             StartDialogue(DefeatedBattleText);
+            _gameLoader.player.LookAtTrainer(transform.position);
         }
 
+        private bool hasStartedWalking;
+        private bool hasStartedTalkingStartText;
         private void Update()
         {
             //Detecting when the player goes in front of the battle starter
@@ -91,24 +95,33 @@ namespace PokemonGame.Game
                     Player player = hit.transform.gameObject.GetComponent<Player>();
                     if (player)
                     {
-                        PlayerMovement playerMovement = hit.transform.gameObject.GetComponent<PlayerMovement>();
-
-                        playerMovement.battleStarterHasStartedWalking = true;
-                        agent.destination = hit.transform.position;
-
-                        player.LookAtTrainer(transform.position);
-
-                        Invoke(nameof(HasStartedWalkingSetter), .1f);
-                    
-                        if (agent.velocity.magnitude < 0.15f && _hasStartedWalking && !hasStartedTalkingStartText)
+                        if(hit.transform.position.x == transform.position.x)
                         {
-                            StartDialogue(StartBattleText);
-                            hasStartedTalkingStartText = true;
-                        }
+                            PlayerMovement playerMovement = hit.transform.gameObject.GetComponent<PlayerMovement>();
 
-                        if (hasFinishedStartText)
-                        {
-                            LoadBattle();
+                            playerMovement.battleStarterHasStartedWalking = true;
+                            agent.destination = hit.transform.position;
+
+                            player.LookAtTrainer(transform.position);
+
+                            if (agent.velocity.magnitude > 0.15f)
+                            {
+                                hasStartedWalking = true;
+                            }
+
+                            if (hasStartedWalking)
+                            {
+                                if (agent.velocity.magnitude < 0.15f && !hasStartedTalkingStartText)
+                                {
+                                    StartDialogue(StartBattleText);
+                                    hasStartedTalkingStartText = true;
+                                }   
+                            }
+
+                            if (hasFinishedStartText)
+                            {
+                                LoadBattle();
+                            }   
                         }
                     }
                 }
@@ -118,11 +131,6 @@ namespace PokemonGame.Game
         private void StartingDialogueEnded(object sender, EventArgs args)
         {
             hasFinishedStartText = true;
-        }
-
-        private void HasStartedWalkingSetter()
-        {
-            _hasStartedWalking = true;
         }
 
         private void LoadBattle()
