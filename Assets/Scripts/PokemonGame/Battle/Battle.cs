@@ -38,8 +38,6 @@ namespace PokemonGame.Battle
         }
 
         [Header("UI:")]
-        public GameObject playerUIHolder;
-        
         [SerializeField] private BattleUIManager uiManager;
 
         [Space]
@@ -52,9 +50,9 @@ namespace PokemonGame.Battle
         [Header("Other Readouts")]
         [SerializeField] public TurnStatus currentTurn = TurnStatus.Choosing;
         
-        [SerializeField] public Party playerParty;
+        public Party playerParty;
         
-        [SerializeField] public Party opponentParty;
+        public Party opponentParty;
         
         [SerializeField] private EnemyAI _enemyAI;
         
@@ -67,8 +65,25 @@ namespace PokemonGame.Battle
         [SerializeField] private bool hasDoneChoosingUpdate;
         
         [SerializeField] private bool hasShowedMoves;
-        
 
+        private Battler playerCurrentBattler
+        {
+            get
+            {
+                return playerParty.party[currentBattlerIndex];
+            }
+        }
+        
+        private Battler opponentCurrentBattler
+        {
+            get
+            {
+                return opponentParty.party[opponentBattlerIndex];
+            }
+        }
+
+
+        private Vector3 opponentSpawnPos;
         private Vector3 playerSpawnPos;
         private int opponentId;
 
@@ -83,6 +98,7 @@ namespace PokemonGame.Battle
             _enemyAI = (EnemyAI)SceneLoader.vars[2];
             playerSpawnPos = (Vector3)SceneLoader.vars[3];
             opponentId = (int)SceneLoader.vars[4];
+            opponentSpawnPos = (Vector3)SceneLoader.vars[5];
 
             SceneLoader.ClearLoader();
 
@@ -109,7 +125,7 @@ namespace PokemonGame.Battle
                     if (!hasDoneChoosingUpdate)
                     {
                         uiManager.ShowUI(true);
-                        _enemyAI.AIMethod(new AIMethodEventArgs(opponentParty.party[opponentBattlerIndex], opponentParty));
+                        _enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
                         hasDoneChoosingUpdate = true;
                     }
                     break;
@@ -140,11 +156,11 @@ namespace PokemonGame.Battle
 
         private void DoStatusEffects()
         {
-            opponentParty.party[opponentBattlerIndex].statusEffect.Effect(new StatusEffectEventArgs(
-                    opponentParty.party[opponentBattlerIndex]));
+            opponentCurrentBattler.statusEffect.Effect(new StatusEffectEventArgs(
+                opponentCurrentBattler));
 
-            playerParty.party[currentBattlerIndex].statusEffect.Effect(new StatusEffectEventArgs(
-                    playerParty.party[currentBattlerIndex]));
+            playerCurrentBattler.statusEffect.Effect(new StatusEffectEventArgs(
+                playerCurrentBattler));
             
             uiManager.UpdateHealthDisplays();
             CheckForWinCondition();
@@ -153,7 +169,7 @@ namespace PokemonGame.Battle
         //Public method used by the move UI buttons
         public void ChooseMove(int moveID)
         {
-            _playerMoveToDo = playerParty.party[currentBattlerIndex].moves[moveID];
+            _playerMoveToDo = playerCurrentBattler.moves[moveID];
             playerHasChosenAttack = true;
         }
 
@@ -165,12 +181,12 @@ namespace PokemonGame.Battle
             {
                 if (_playerMoveToDo.category == MoveCategory.Status)
                 {
-                    _playerMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentParty.party[opponentBattlerIndex]));
+                    _playerMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler));
                 }
                 else
                 {
-                    int damageToDo = CalculateDamage(_playerMoveToDo, playerParty.party[currentBattlerIndex], opponentParty.party[opponentBattlerIndex]);
-                    opponentParty.party[opponentBattlerIndex].TakeDamage(Mathf.RoundToInt(damageToDo));
+                    int damageToDo = CalculateDamage(_playerMoveToDo, playerCurrentBattler, opponentCurrentBattler);
+                    opponentCurrentBattler.TakeDamage(Mathf.RoundToInt(damageToDo));
                 }
             }
 
@@ -246,7 +262,7 @@ namespace PokemonGame.Battle
 
         private void DoMoves()
         {
-            if(playerParty.party[currentBattlerIndex].speed > opponentParty.party[opponentBattlerIndex].speed)
+            if(playerCurrentBattler.speed > opponentCurrentBattler.speed)
             {
                 //Player is faster
                 DoPlayerMove();
@@ -266,15 +282,15 @@ namespace PokemonGame.Battle
 
             if (enemyMoveToDo.category == MoveCategory.Status)
             {
-                enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentParty.party[currentBattlerIndex]));
+                enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler));
             }
             else
             {
-                float damageToDo = CalculateDamage(enemyMoveToDo, opponentParty.party[opponentBattlerIndex], playerParty.party[currentBattlerIndex]);
-                playerParty.party[currentBattlerIndex].TakeDamage(Mathf.RoundToInt(damageToDo));
+                float damageToDo = CalculateDamage(enemyMoveToDo, opponentCurrentBattler, playerCurrentBattler);
+                playerCurrentBattler.TakeDamage(Mathf.RoundToInt(damageToDo));
             }
 
-            if (playerParty.party[currentBattlerIndex].isFainted)
+            if (playerCurrentBattler.isFainted)
             {
                 uiManager.SwitchBattlerBecauseOfDeath();
             }
@@ -292,7 +308,7 @@ namespace PokemonGame.Battle
             SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
             SaveAndLoad<Party>.SaveJson(opponentParty, opponentPath);
 
-            object[] vars = { SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath), playerSpawnPos, true, opponentId, isDefeated };
+            object[] vars = { SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath), playerSpawnPos, true, opponentId, isDefeated, opponentSpawnPos };
 
             SceneLoader.LoadScene(0, vars);
         }

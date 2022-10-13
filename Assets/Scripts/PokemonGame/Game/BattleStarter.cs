@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using PokemonGame.Dialogue;
 using PokemonGame.ScriptableObjects;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,13 +15,24 @@ namespace PokemonGame.Game
     {
         public AllStatusEffects allStatusEffects;
         public AllMoves allMoves;
+        
         public Party playerParty;
+        
+        /// <summary>
+        /// The party that the battleStarter load's into the battle for the player to fight
+        /// </summary>
         public Party opponentParty;
 
         public NavMeshAgent agent;
 
+        /// <summary>
+        /// The ai that the battleStarter load's into the battle for the player to fight
+        /// </summary>
         public EnemyAI ai;
 
+        /// <summary>
+        /// Is the battleStarter defeated
+        /// </summary>
         public bool isDefeated;
         private bool _hasTalkedDefeatedText;
 
@@ -30,6 +40,9 @@ namespace PokemonGame.Game
 
         [SerializeField] private Transform playerSpawnPos;
         
+        /// <summary>
+        /// Id of the battleStarter
+        /// </summary>
         public int battlerId;
 
         [SerializeField] private TextAsset StartBattleText;
@@ -53,8 +66,8 @@ namespace PokemonGame.Game
         {
             if (battlerId == 0)
             {
-                int newBattlerId = BattleStarterRegister.battleStarters.Count+1;
-                BattleStarterRegister.battleStarters.Add(this);
+                int newBattlerId = BattleStarterRegister.BattleStarters.Count+1;
+                BattleStarterRegister.BattleStarters.Add(this);
                 battlerId = newBattlerId;   
             }
         }
@@ -85,45 +98,39 @@ namespace PokemonGame.Game
 
         private bool hasStartedWalking;
         private bool hasStartedTalkingStartText;
-        private void Update()
+
+        /// <summary>
+        /// Starts the battle starting sequence
+        /// </summary>
+        /// <param name="player">The player that walked in front of the battleStarter</param>
+        public void StartBattleSequence(Player player)
         {
-            //Detecting when the player goes in front of the battle starter
-            if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out RaycastHit hit, Mathf.Infinity))
+            if(!isDefeated)
             {
-                if (!isDefeated)
+                PlayerMovement playerMovement = player.transform.gameObject.GetComponent<PlayerMovement>();
+
+                playerMovement.battleStarterHasStartedWalking = true;
+                agent.destination = player.transform.position;
+
+                player.LookAtTrainer(transform.position);
+
+                if (agent.velocity.magnitude > 0.15f)
                 {
-                    Player player = hit.transform.gameObject.GetComponent<Player>();
-                    if (player)
+                    hasStartedWalking = true;
+                }
+
+                if (hasStartedWalking)
+                {
+                    if (agent.velocity.magnitude < 0.15f && !hasStartedTalkingStartText)
                     {
-                        if(hit.transform.position.x == transform.position.x)
-                        {
-                            PlayerMovement playerMovement = hit.transform.gameObject.GetComponent<PlayerMovement>();
-
-                            playerMovement.battleStarterHasStartedWalking = true;
-                            agent.destination = hit.transform.position;
-
-                            player.LookAtTrainer(transform.position);
-
-                            if (agent.velocity.magnitude > 0.15f)
-                            {
-                                hasStartedWalking = true;
-                            }
-
-                            if (hasStartedWalking)
-                            {
-                                if (agent.velocity.magnitude < 0.15f && !hasStartedTalkingStartText)
-                                {
-                                    StartDialogue(StartBattleText);
-                                    hasStartedTalkingStartText = true;
-                                }   
-                            }
-
-                            if (hasFinishedStartText)
-                            {
-                                LoadBattle();
-                            }   
-                        }
+                        StartDialogue(StartBattleText);
+                        hasStartedTalkingStartText = true;
                     }
+                }
+
+                if (hasFinishedStartText)
+                {
+                    LoadBattle();
                 }
             }
         }
@@ -153,13 +160,16 @@ namespace PokemonGame.Game
                 }
             }
             
-            object[] vars = { playerParty, opponentParty, ai, playerSpawnPos.position, battlerId};
+            object[] vars = { playerParty, opponentParty, ai, playerSpawnPos.position, battlerId, transform.position};
             SceneLoader.LoadScene(1, vars);
         }
     }
 
-    public class BattleStarterRegister
+    /// <summary>
+    /// The register that holds all battle starters
+    /// </summary>
+    public static class BattleStarterRegister
     {
-        public static List<BattleStarter> battleStarters = new List<BattleStarter>();
+        public static readonly List<BattleStarter> BattleStarters = new List<BattleStarter>();
     }
 }

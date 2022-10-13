@@ -27,6 +27,7 @@ namespace PokemonGame.Game
                         if ((bool)SceneLoader.vars[5])
                         {
                             starter.Defeated();
+                            starter.transform.position = (Vector3)SceneLoader.vars[6];
                         }
                     }
                 }
