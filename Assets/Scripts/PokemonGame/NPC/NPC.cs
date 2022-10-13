@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace PokemonGame.NPCs
 {
+    /// <summary>
+    /// Base class of all NPCs, contains functionality for detecting the player nearby and having an OnPlayerInteract() override method
+    /// </summary>
     public class NPC : DialogueTrigger
     {
         [Header("Visual Cue")]
@@ -27,6 +30,9 @@ namespace PokemonGame.NPCs
             }
         }
 
+        /// <summary>
+        /// Called when the player interacts with the NPC
+        /// </summary>
         public virtual void OnPlayerInteracted()
         {
             
