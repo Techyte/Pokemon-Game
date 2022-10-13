@@ -41,6 +41,10 @@ namespace PokemonGame.Dialogue
             }
         }
 
+        /// <summary>
+        /// Starts and INK Dialogue sequence from a text asset
+        /// </summary>
+        /// <param name="inkJson">The text asset that the dialogue sequence draws from</param>
         protected void StartDialogue(TextAsset inkJson)
         {
             if (!DialogueManager.GetInstance().dialogueIsPlaying)
@@ -54,6 +58,9 @@ namespace PokemonGame.Dialogue
             }
         }
 
+        /// <summary>
+        /// Ends the dialogue and calls the Dialogue Finished event
+        /// </summary>
         public void EndDialogue()
         {
             if (DialogueFinishedHandlerMethods!=0)
@@ -62,6 +69,11 @@ namespace PokemonGame.Dialogue
             }
         }
 
+        /// <summary>
+        /// Inheritors override this to handle tags
+        /// </summary>
+        /// <param name="TagKey">The tag key</param>
+        /// <param name="TagValue">The tag value</param>
         public virtual void CallTag(string TagKey, string TagValue)
         {
             

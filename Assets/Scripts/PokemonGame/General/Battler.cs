@@ -14,29 +14,81 @@ namespace PokemonGame
     public class Battler : ScriptableObject
     {
         private BattlerTemplate _oldSource;
+        /// <summary>
+        /// The source that the battler uses to determine base stats 
+        /// </summary>
         public BattlerTemplate source;
 
         private int _oldLevel;
+        /// <summary>
+        /// The level is what determines stats and if the battler respects the player
+        /// </summary>
         public int level;
 
+        /// <summary>
+        /// The name of the battler, unlike batter templates this can be changed for nicknames
+        /// </summary>
         public new string name;
+        /// <summary>
+        /// The maximum health of the battler
+        /// </summary>
         public int maxHealth;
 
+        /// <summary>
+        /// The current health of the battler
+        /// </summary>
         public int currentHealth;
         
+        /// <summary>
+        /// The current amount of experience points the battler has in progressing through its current level
+        /// </summary>
         public int exp;
+        /// <summary>
+        /// The attack statistic for the battler
+        /// </summary>
         public int attack;
+        /// <summary>
+        /// The defense statistic for the battler
+        /// </summary>
         public int defense;
+        /// <summary>
+        /// The special attack statistic for the battler
+        /// </summary>
         public int specialAttack;
+        /// <summary>
+        /// The special defence statistic for the battler
+        /// </summary>
         public int specialDefense;
+        /// <summary>
+        /// The speed statistic for the battler
+        /// </summary>
         public int speed;
+        /// <summary>
+        /// The sprite that the battler uses
+        /// </summary>
+        
         public Sprite texture;
+        /// <summary>
+        /// Is the battler fainted
+        /// </summary>
         public bool isFainted;
+        /// <summary>
+        /// The current status effect that the batter has
+        /// </summary>
         public StatusEffect statusEffect;
 
+        /// <summary>
+        /// The primary type of the battler
+        /// </summary>
         public Type primaryType;
+        /// <summary>
+        /// The secondary type of the battler
+        /// </summary>
         public Type secondaryType;
 
+        /// <summary>
+        /// The list of moves that the battler has
+        /// </summary>
         public List<Move> moves;
 
         /// <summary>
@@ -96,7 +148,7 @@ namespace PokemonGame
         {
             if(!source) return;
             
-            maxHealth = Mathf.FloorToInt(0.01f * (2 * source.baseHealth + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + level + 10;
+            //maxHealth = Mathf.FloorToInt(0.01f * (2 * source.baseHealth + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + level + 10;
             attack = Mathf.FloorToInt(0.01f * (2 * source.baseAttack + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
             defense = Mathf.FloorToInt(0.01f * (2 * source.baseDefense + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
             specialAttack = Mathf.FloorToInt(0.01f * (2 * source.baseSpecialAttack + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
@@ -156,7 +208,7 @@ namespace PokemonGame
         /// <summary>
         /// Creates an exact copy of the battler it is given
         /// </summary>
-        /// <param name="battler">The battler to replicate</param>
+        /// <param name="battler">The battler to duplicate</param>
         /// <returns>The copied battler</returns>
         public static Battler CreateCopy(Battler battler)
         {

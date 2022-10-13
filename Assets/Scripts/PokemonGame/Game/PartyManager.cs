@@ -18,7 +18,6 @@ namespace PokemonGame.Game
                     _singleton = value;
                 else if (_singleton != value)
                 {
-                    Debug.Log($"{nameof(PartyManager)} instance already exists, destroying duplicate!");
                     Destroy(value);
                 }
             }

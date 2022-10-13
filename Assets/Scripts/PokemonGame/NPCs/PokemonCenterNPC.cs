@@ -1,61 +1,22 @@
-using PokemonGame.Dialogue;
+using PokemonGame.Game;
 using UnityEngine;
 using PokemonGame.ScriptableObjects;
 
-namespace PokemonGame.Game
+namespace PokemonGame.NPCs
 {
-    public class PokemonCenterNPC : DialogueTrigger
+    public class PokemonCenterNPC : NPC
     {
-        [Header("Visual Cue")]
-        [SerializeField] private GameObject visualCue;
-
-        [SerializeField] private bool playerInRange;
-        
         [SerializeField] private BattlerTemplate charmander;
         [SerializeField] private BattlerTemplate bulbasaur;
         [SerializeField] private BattlerTemplate squirtle;
 
         [SerializeField] private TextAsset TextAsset;
-        
-        private void Update()
+
+        public override void OnPlayerInteracted()
         {
-            if (playerInRange)
-            {
-                visualCue.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    StartDialogue(TextAsset);
-                }
-            }
-            else
-            {
-                visualCue.SetActive(false);
-            }
+            StartDialogue(TextAsset);
         }
 
-        private void Awake()
-        {
-            playerInRange = false;
-            visualCue.SetActive(false);
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if(other.gameObject.CompareTag("Player"))
-                playerInRange = true;
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if(other.gameObject.CompareTag("Player"))
-                playerInRange = false;
-        }
-        
-        /// <summary>
-        /// Call a dialogue tag
-        /// </summary>
-        /// <param name="tagKey">The tag key</param>
-        /// <param name="tagValue">The tag value</param>
         public override void CallTag(string tagKey, string tagValue)
         {
             switch (tagKey)
