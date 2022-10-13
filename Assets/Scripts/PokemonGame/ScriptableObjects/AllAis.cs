@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using PokemonGame.Battle;
 
 namespace PokemonGame.ScriptableObjects
 {
@@ -14,7 +13,10 @@ namespace PokemonGame.ScriptableObjects
         public List<string> keys = new List<string>();
         public List<EnemyAI> values = new List<EnemyAI>();
 
-        public Dictionary<string, EnemyAI> ais = new Dictionary<string, EnemyAI>();
+        /// <summary>
+        /// The list of every ai
+        /// </summary>
+        public static Dictionary<string, EnemyAI> ais = new Dictionary<string, EnemyAI>();
 
         public EnemyAI aiToAdd;
 
@@ -38,5 +40,4 @@ namespace PokemonGame.ScriptableObjects
                 ais.Add(keys[i], values[i]);
         }
     }
-
 }

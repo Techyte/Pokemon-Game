@@ -1,13 +1,13 @@
 using PokemonGame.Game;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
+using PokemonGame;
 
 namespace PokemonGame.NPCs
 {
     public class ItemNPC : NPC
     {
         [SerializeField] private TextAsset TextAsset;
-        [SerializeField] private Item itemToGive;
 
         public override void OnPlayerInteracted()
         {
@@ -19,7 +19,7 @@ namespace PokemonGame.NPCs
             switch (TagKey)
             {
                 case "giveItem":
-                    InventoryManager.singleton.Add(itemToGive);
+                    Bag.singleton.Add(AllItems.items[TagValue]);
                     break;
             }
         }

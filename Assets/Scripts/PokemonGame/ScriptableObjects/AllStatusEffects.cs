@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using PokemonGame.Battle;
 
 namespace PokemonGame.ScriptableObjects
 {
@@ -14,6 +13,9 @@ namespace PokemonGame.ScriptableObjects
         public List<string> keys = new List<string>();
         public List<StatusEffect> values = new List<StatusEffect>();
 
+        /// <summary>
+        /// The list of every status effect
+        /// </summary>
         public static Dictionary<string, StatusEffect> effects = new Dictionary<string, StatusEffect>();
 
         public StatusEffect effectToAdd;

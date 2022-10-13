@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace PokemonGame.Game
 {
-    public class InventoryManager : MonoBehaviour
+    public class Bag : MonoBehaviour
     {
-        private static InventoryManager _singleton;
+        private static Bag _singleton;
 
-        public static InventoryManager singleton
+        public static Bag singleton
         {
             get => _singleton;
             private set

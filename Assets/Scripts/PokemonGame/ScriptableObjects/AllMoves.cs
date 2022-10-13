@@ -13,7 +13,10 @@ namespace PokemonGame.ScriptableObjects
         public List<string> keys = new List<string>();
         public List<Move> values = new List<Move>();
 
-        public Dictionary<string, Move> moves = new Dictionary<string, Move>();
+        /// <summary>
+        /// The list of every move
+        /// </summary>
+        public static Dictionary<string, Move> moves = new Dictionary<string, Move>();
 
         public Move moveToAdd;
 
