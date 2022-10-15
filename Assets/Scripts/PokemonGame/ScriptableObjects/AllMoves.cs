@@ -20,6 +20,24 @@ namespace PokemonGame.ScriptableObjects
 
         public Move moveToAdd;
 
+        /// <summary>
+        /// Attempts to get a move from the register and handles errors
+        /// </summary>
+        /// <param name="MoveName">The name of the move that you want to fetch</param>
+        /// <param name="move">tThe outputted move</param>
+        public static bool GetMove(string MoveName, out Move move)
+        {
+            move = null;
+            if (moves.TryGetValue(MoveName, out Move moveToReturn))
+            {
+                move = moveToReturn;
+                return true;
+            }
+            
+            Debug.LogWarning("Move was not present in the register");
+            return false;
+        }
+
         public void OnBeforeSerialize()
         {
             keys.Clear();

@@ -118,7 +118,12 @@ namespace PokemonGame
         private void OnValidate()
         {
             if (!statusEffect)
-                statusEffect = AllStatusEffects.effects["Healthy"];
+            {
+                if (AllStatusEffects.GetEffect("Healthy", out StatusEffect gotEffect))
+                {
+                    statusEffect = gotEffect;
+                }
+            }
             
             if (_oldLevel != level)
             {

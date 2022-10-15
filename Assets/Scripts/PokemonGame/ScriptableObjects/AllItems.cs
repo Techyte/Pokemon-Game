@@ -20,6 +20,25 @@ namespace PokemonGame.ScriptableObjects
 
         public Item itemToAdd;
 
+        /// <summary>
+        /// Attempts to get an item from the register and handles errors
+        /// </summary>
+        /// <param name="ItemName">The name of the item that you want to fetch</param>
+        /// <param name="item">tThe outputted item</param>
+        /// <returns></returns>
+        public static bool GetItem(string ItemName, out Item item)
+        {
+            item = null;
+            if (items.TryGetValue(ItemName, out Item itemToReturn))
+            {
+                item = itemToReturn;
+                return true;
+            }
+            
+            Debug.LogWarning("Item was not present in the register");
+            return false;
+        }
+
         public void OnBeforeSerialize()
         {
             keys.Clear();

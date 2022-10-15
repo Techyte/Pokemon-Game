@@ -1,7 +1,6 @@
 using PokemonGame.Game;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
-using PokemonGame;
 
 namespace PokemonGame.NPCs
 {
@@ -19,7 +18,11 @@ namespace PokemonGame.NPCs
             switch (TagKey)
             {
                 case "giveItem":
-                    Bag.singleton.Add(AllItems.items[TagValue]);
+                    string[] secondaryValues = TagValue.Split('.');
+                    if (AllItems.GetItem(secondaryValues[0], out Item item))
+                    {
+                        Bag.singleton.Add(item, int.Parse(secondaryValues[1]));
+                    }
                     break;
             }
         }

@@ -20,6 +20,24 @@ namespace PokemonGame.ScriptableObjects
 
         public EnemyAI aiToAdd;
 
+        /// <summary>
+        /// Attempts to get an ai from the register and handles errors
+        /// </summary>
+        /// <param name="AiName">The name of the ai that you want to fetch</param>
+        /// <param name="ai">tThe outputted ai</param>
+        public static bool GetAi(string AiName, out EnemyAI ai)
+        {
+            ai = null;
+            if (ais.TryGetValue(AiName, out EnemyAI aiToReturn))
+            {
+                ai = aiToReturn;
+                return true;
+            }
+            
+            Debug.LogWarning("Ai was not present in the register");
+            return false;
+        }
+
         public void OnBeforeSerialize()
         {
             keys.Clear();

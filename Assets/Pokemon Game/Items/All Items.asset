@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b7ddfa54afa414e854209b6fec02c15, type: 3}
-  m_Name: New All Items
+  m_Name: All Items
   m_EditorClassIdentifier: 
   keys:
   - PokeBall

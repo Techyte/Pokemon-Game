@@ -36,10 +36,11 @@ namespace PokemonGame.Game
             {
                 canMove = false;
             }
+            
             if (canMove)
-            {
+            {/*
                 Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                Cursor.visible = false;*/
 
                 float horizontal = Input.GetAxis("Horizontal");
                 float vertical = Input.GetAxis("Vertical");
@@ -56,9 +57,9 @@ namespace PokemonGame.Game
                 }
             }
             else
-            {
+            {/*
                 Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                Cursor.visible = true;*/
             }
 
             if (Physics.Raycast(groundDetectorPos.position, transform.TransformDirection(Vector3.down), out RaycastHit hit, Mathf.Infinity, ground))

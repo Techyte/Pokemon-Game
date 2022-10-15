@@ -1,11 +1,12 @@
+#if UNITY_EDITOR
+using PokemonGame.ScriptableObjects;
 using UnityEditor;
 using UnityEngine;
-using PokemonGame.ScriptableObjects;
 
-namespace PokemonGame
+namespace PokemonGame.Editor
 {
     [CustomEditor(typeof(AllStatusEffects))]
-    public class AllStatusEffectEditor : Editor
+    public class AllStatusEffectEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
@@ -35,3 +36,4 @@ namespace PokemonGame
     }
 
 }
+#endif

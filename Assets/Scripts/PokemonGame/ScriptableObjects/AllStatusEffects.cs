@@ -20,6 +20,24 @@ namespace PokemonGame.ScriptableObjects
 
         public StatusEffect effectToAdd;
 
+        /// <summary>
+        /// Attempts to get an effect from the register and handles errors
+        /// </summary>
+        /// <param name="EffectName">The name of the effect that you want to fetch</param>
+        /// <param name="effect">tThe outputted effect</param>
+        public static bool GetEffect(string EffectName, out StatusEffect effect)
+        {
+            effect = null;
+            if (effects.TryGetValue(EffectName, out StatusEffect effectToReturn))
+            {
+                effect = effectToReturn;
+                return true;
+            }
+            
+            Debug.LogWarning("Effect was not present in the register");
+            return false;
+        }
+
         public void OnBeforeSerialize()
         {
             keys.Clear();

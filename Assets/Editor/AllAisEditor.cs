@@ -1,11 +1,12 @@
+#if UNITY_EDITOR
+using PokemonGame.ScriptableObjects;
 using UnityEditor;
 using UnityEngine;
-using PokemonGame.ScriptableObjects;
 
-namespace PokemonGame
+namespace PokemonGame.Editor
 {
     [CustomEditor(typeof(AllAis))]
-    public class AllAisEditor : Editor
+    public class AllAisEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
@@ -34,3 +35,4 @@ namespace PokemonGame
         }
     }
 }
+#endif
