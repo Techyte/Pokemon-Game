@@ -8,7 +8,7 @@ namespace PokemonGame.ScriptableObjects
     /// A collection of every ai in the game
     /// </summary>
     [CreateAssetMenu(fileName = "New All Ais", menuName = "All/New All Ais")]
-    public class AllAis : ScriptableObject, ISerializationCallbackReceiver
+    public class AllAis : ScriptableObject
     {
         public List<string> keys = new List<string>();
         public List<EnemyAI> values = new List<EnemyAI>();
@@ -38,19 +38,7 @@ namespace PokemonGame.ScriptableObjects
             return false;
         }
 
-        public void OnBeforeSerialize()
-        {
-            keys.Clear();
-            values.Clear();
-
-            foreach (var kvp in ais)
-            {
-                keys.Add(kvp.Key);
-                values.Add(kvp.Value);
-            }
-        }
-
-        public void OnAfterDeserialize()
+        private void OnValidate()
         {
             ais = new Dictionary<string, EnemyAI>();
 

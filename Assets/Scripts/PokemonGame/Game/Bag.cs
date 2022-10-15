@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using PokemonGame.Dialogue;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PokemonGame.Game
 {
@@ -27,20 +28,55 @@ namespace PokemonGame.Game
         [Space]
         [SerializeField] private GameObject BagObject;
         [SerializeField] private PlayerMovement _movement;
+        [SerializeField] private GameObject itemDisplayerHolder;
+        [SerializeField] private GameObject itemDisplayGameObject;
 
         [SerializeField] private bool bagState;
+
+        private ItemType _currentSortingType;
+        
+        [SerializeField] private List<Item> items = new List<Item>();
 
         private void Awake()
         {
             singleton = this;
             DontDestroyOnLoad(this);
         }
-        
-        private List<Item> items;
 
-        private void Start()
+        /// <summary>
+        /// Changes the item type that the player wants to look at
+        /// </summary>
+        /// <param name="newType">The index of the type you want to filter</param>
+        public void ChangeCurrentSortingItem(int newType)
         {
-            items = new List<Item>();
+            _currentSortingType = (ItemType)newType;
+            UpdateBagUI();
+        }
+
+        private void UpdateBagUI()
+        { 
+            foreach (ItemDisplay child in itemDisplayerHolder.transform.GetComponentsInChildren<ItemDisplay>()) {
+                Destroy(child.gameObject);
+            }
+
+            List<Item> sortedItems = new List<Item>();
+            foreach (Item item in items)
+            {
+                if (item.type == _currentSortingType)
+                {
+                    sortedItems.Add(item);
+                }
+            }
+
+            foreach (Item itemToShow in sortedItems)
+            {
+                ItemDisplay display = Instantiate(itemDisplayGameObject, Vector3.zero, Quaternion.identity,
+                    itemDisplayerHolder.transform).GetComponent<ItemDisplay>();
+
+                display.NameText.text = itemToShow.name;
+                display.TextureImage.sprite = itemToShow.sprite;
+                display.DescriptionText.text = itemToShow.description;
+            }
         }
 
         private void Update()
@@ -49,9 +85,6 @@ namespace PokemonGame.Game
             {
                 ToggleBag();
             }
-            
-            Debug.Log(Cursor.visible);
-            Debug.Log(Cursor.lockState);
         }
 
         private void ToggleBag()
@@ -63,8 +96,7 @@ namespace PokemonGame.Game
             Cursor.visible = bagState;
             Cursor.lockState = bagState ? CursorLockMode.None : CursorLockMode.Locked;
             
-            Debug.Log("Opened bag");
-            
+            UpdateBagUI();
         }
 
         /// <summary>

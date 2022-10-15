@@ -19,6 +19,7 @@ namespace PokemonGame.Game
         [SerializeField] float speed;
         public bool battleStarterHasStartedWalking;
         [SerializeField] private LayerMask ground;
+        
         private void Start()
         {
             speed = normalSpeed;
@@ -26,21 +27,17 @@ namespace PokemonGame.Game
             Cursor.visible = false;
         }
 
-        void Update()
+        private void Update()
         {
-            if (!battleStarterHasStartedWalking)
-            {
-                canMove = !DialogueManager.GetInstance().dialogueIsPlaying;   
-            }
-            else
+            if (battleStarterHasStartedWalking)
             {
                 canMove = false;
             }
             
             if (canMove)
-            {/*
+            {
                 Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;*/
+                Cursor.visible = false;
 
                 float horizontal = Input.GetAxis("Horizontal");
                 float vertical = Input.GetAxis("Vertical");
@@ -55,11 +52,6 @@ namespace PokemonGame.Game
                     Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
                     controller.Move( speed * Time.deltaTime * moveDirection.normalized);
                 }
-            }
-            else
-            {/*
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;*/
             }
 
             if (Physics.Raycast(groundDetectorPos.position, transform.TransformDirection(Vector3.down), out RaycastHit hit, Mathf.Infinity, ground))

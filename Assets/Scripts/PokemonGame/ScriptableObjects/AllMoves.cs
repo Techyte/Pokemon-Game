@@ -8,7 +8,7 @@ namespace PokemonGame.ScriptableObjects
     /// A collection of every move in the game
     /// </summary>
     [CreateAssetMenu(fileName = "New All Moves", menuName = "All/New All Moves")]
-    public class AllMoves : ScriptableObject, ISerializationCallbackReceiver
+    public class AllMoves : ScriptableObject
     {
         public List<string> keys = new List<string>();
         public List<Move> values = new List<Move>();
@@ -38,19 +38,7 @@ namespace PokemonGame.ScriptableObjects
             return false;
         }
 
-        public void OnBeforeSerialize()
-        {
-            keys.Clear();
-            values.Clear();
-
-            foreach (var kvp in moves)
-            {
-                keys.Add(kvp.Key);
-                values.Add(kvp.Value);
-            }
-        }
-
-        public void OnAfterDeserialize()
+        private void OnValidate()
         {
             moves = new Dictionary<string, Move>();
 

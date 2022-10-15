@@ -3,6 +3,7 @@ using TMPro;
 using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
+using PokemonGame.Game;
 
 namespace PokemonGame.Dialogue
 {
@@ -22,6 +23,8 @@ namespace PokemonGame.Dialogue
         private static DialogueManager instance;
 
         public DialogueTrigger currentTrigger;
+
+        [SerializeField] private PlayerMovement _movement;
 
         private void Awake()
         {
@@ -50,6 +53,10 @@ namespace PokemonGame.Dialogue
             }
         }
 
+        /// <summary>
+        /// Get the Instance of the dialogue manager
+        /// </summary>
+        /// <returns>The dialogue manager instance</returns>
         public static DialogueManager GetInstance()
         {
             return instance;
@@ -68,8 +75,13 @@ namespace PokemonGame.Dialogue
             }
         }
 
+        /// <summary>
+        /// Starts a new conversation
+        /// </summary>
+        /// <param name="inkJson">The TextAsset with the information about the conversation</param>
         public void EnterDialogueMode(TextAsset inkJson)
         {
+            _movement.canMove = false;
             currentStory = new Story(inkJson.text);
             dialogueIsPlaying = true;
             dialoguePanel.SetActive(true);
@@ -81,6 +93,7 @@ namespace PokemonGame.Dialogue
         {
             yield return new WaitForSeconds(0.2f);
 
+            _movement.canMove = true;
             dialogueIsPlaying = false;
             dialoguePanel.SetActive(false);
             dialogueTextDisplay.text = "";
@@ -142,6 +155,10 @@ namespace PokemonGame.Dialogue
             }
         }
 
+        /// <summary>
+        /// Makes the choice that the player wants using the index of the choice
+        /// </summary>
+        /// <param name="choiceIndex">The choicer index of the player wants to make</param>
         public void MakeChoice(int choiceIndex)
         {
             currentStory.ChooseChoiceIndex(choiceIndex);

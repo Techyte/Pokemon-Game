@@ -8,7 +8,7 @@ namespace PokemonGame.ScriptableObjects
     /// A collection of every status effect in the game
     /// </summary>
     [CreateAssetMenu(fileName = "New All Status Effects", menuName = "All/New All Status Effects")]
-    public class AllStatusEffects : ScriptableObject, ISerializationCallbackReceiver
+    public class AllStatusEffects : ScriptableObject
     {
         public List<string> keys = new List<string>();
         public List<StatusEffect> values = new List<StatusEffect>();
@@ -38,19 +38,7 @@ namespace PokemonGame.ScriptableObjects
             return false;
         }
 
-        public void OnBeforeSerialize()
-        {
-            keys.Clear();
-            values.Clear();
-
-            foreach (var kvp in effects)
-            {
-                keys.Add(kvp.Key);
-                values.Add(kvp.Value);
-            }
-        }
-
-        public void OnAfterDeserialize()
+        private void OnValidate()
         {
             effects = new Dictionary<string, StatusEffect>();
 

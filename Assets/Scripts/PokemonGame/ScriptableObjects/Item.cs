@@ -8,12 +8,13 @@ namespace PokemonGame.ScriptableObjects
         public new string name;
         public Sprite sprite;
         public ItemType type;
+        public string description;
     }
 }
 
-public enum ItemType
+public enum ItemType : int
 {
-    Item,
+    Item = 1,
     PokeBall,
     BattleItem,
     Medicine,

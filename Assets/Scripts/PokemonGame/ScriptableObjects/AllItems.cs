@@ -8,7 +8,7 @@ namespace PokemonGame.ScriptableObjects
     /// A collection of every item in the game
     /// </summary>
     [CreateAssetMenu(fileName = "New All Items", menuName = "All/New All Items")]
-    public class AllItems : ScriptableObject, ISerializationCallbackReceiver
+    public class AllItems : ScriptableObject
     {
         public List<string> keys = new List<string>();
         public List<Item> values = new List<Item>();
@@ -39,19 +39,7 @@ namespace PokemonGame.ScriptableObjects
             return false;
         }
 
-        public void OnBeforeSerialize()
-        {
-            keys.Clear();
-            values.Clear();
-
-            foreach (var kvp in items)
-            {
-                keys.Add(kvp.Key);
-                values.Add(kvp.Value);
-            }
-        }
-
-        public void OnAfterDeserialize()
+        private void OnValidate()
         {
             items = new Dictionary<string, Item>();
 
