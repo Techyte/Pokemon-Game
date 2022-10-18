@@ -15,22 +15,13 @@ namespace PokemonGame.Editor
 
             if (GUILayout.Button("Add Move"))
             {
-                if(!AllMoves.moves.TryGetValue(allMoves.moveToAdd.name, out Move move))
-                {
-                    AllMoves.moves.Add(allMoves.moveToAdd.name, allMoves.moveToAdd);
-                }
-                else
-                {
-                    Debug.LogWarning("Item is already in the list, please do not try and add it again");
-                }
+                allMoves.AddMove(allMoves.moveToAdd);
+                
                 allMoves.moveToAdd = null;
             }
-            if (Application.isPlaying)
+            foreach (var p in allMoves.moves)
             {
-                foreach (var p in AllMoves.moves)
-                {
-                    EditorGUILayout.LabelField(p.Key + ": " + p.Value);
-                }
+                EditorGUILayout.LabelField(p.Key + ": " + p.Value);
             }
         }
     }

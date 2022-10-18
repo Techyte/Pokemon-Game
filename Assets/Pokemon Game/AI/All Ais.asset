@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe9d1ce3fbc8ef45960db0b5dafca50, type: 3}
   m_Name: All Ais
   m_EditorClassIdentifier: 
-  keys:
+  _keys:
   - DefaultAI
-  values:
+  _values:
   - {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}
-  aiToAdd: {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}
+  aiToAdd: {fileID: 0}

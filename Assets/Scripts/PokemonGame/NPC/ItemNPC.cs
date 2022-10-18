@@ -19,12 +19,18 @@ namespace PokemonGame.NPCs
             {
                 case "giveItem":
                     string[] secondaryValues = TagValue.Split('.');
-                    if (AllItems.GetItem(secondaryValues[0], out Item item))
+                    if (Registry.GetAllItesmReference().GetItem(secondaryValues[0], out Item item))
                     {
                         Bag.singleton.Add(item, int.Parse(secondaryValues[1]));
                     }
+                    Debug.Log(Registry.GetAllItesmReference().items.Count);
                     break;
             }
+        }
+
+        private void Start()
+        {
+            Debug.Log(Registry.GetAllItesmReference().items.Count);
         }
     }
 }

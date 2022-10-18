@@ -15,22 +15,13 @@ namespace PokemonGame.Editor
 
             if (GUILayout.Button("Add Status Effect"))
             {
-                if(!AllStatusEffects.effects.TryGetValue(allEffects.effectToAdd.name, out StatusEffect effect))
-                {
-                    AllStatusEffects.effects.Add(allEffects.effectToAdd.name, allEffects.effectToAdd);
-                }
-                else
-                {
-                    Debug.LogWarning("Item is already in the list, please do not try and add it again");
-                }
+                allEffects.AddEffect(allEffects.effectToAdd);
+                
                 allEffects.effectToAdd = null;
             }
-            if (Application.isPlaying)
+            foreach (var p in allEffects.effects)
             {
-                foreach (var p in AllStatusEffects.effects)
-                {
-                    EditorGUILayout.LabelField(p.Key + ": " + p.Value);
-                }
+                EditorGUILayout.LabelField(p.Key + ": " + p.Value);
             }
         }
     }

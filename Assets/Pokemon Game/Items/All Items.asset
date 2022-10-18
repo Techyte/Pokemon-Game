@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b7ddfa54afa414e854209b6fec02c15, type: 3}
   m_Name: All Items
   m_EditorClassIdentifier: 
-  keys:
+  _keys:
   - PokeBall
-  values:
+  _values:
   - {fileID: 11400000, guid: 4779e5b97aa16e04da00e68e83f3fa23, type: 2}
   itemToAdd: {fileID: 0}

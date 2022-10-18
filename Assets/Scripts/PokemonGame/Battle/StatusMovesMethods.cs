@@ -11,7 +11,7 @@ namespace PokemonGame.Battle
     {
         public void Toxic(MoveMethodEventArgs e)
         {
-            e.target.statusEffect = AllStatusEffects.effects["Poisoned"];
+            e.target.statusEffect = Registry.GetAllStatusEffectsReference().effects["Poisoned"];
             Debug.Log("Used Toxic on " + e.target.name);
         }
 

@@ -15,22 +15,13 @@ namespace PokemonGame.Editor
 
             if (GUILayout.Button("Add AI"))
             {
-                if(!AllAis.ais.TryGetValue(allAis.aiToAdd.name, out EnemyAI ai))
-                {
-                    AllAis.ais.Add(allAis.aiToAdd.name, allAis.aiToAdd);
-                }
-                else
-                {
-                    Debug.LogWarning("Item is already in the list, please do not try and add it again");
-                }
+                allAis.AddMove(allAis.aiToAdd);
+                
                 allAis.aiToAdd = null;
             }
-            if (Application.isPlaying)
+            foreach (var p in allAis.ais)
             {
-                foreach (var p in AllAis.ais)
-                {
-                    EditorGUILayout.LabelField(p.Key + ": " + p.Value);
-                }
+                EditorGUILayout.LabelField(p.Key + ": " + p.Value);
             }
         }
     }

@@ -119,7 +119,7 @@ namespace PokemonGame
         {
             if (!statusEffect)
             {
-                if (AllStatusEffects.GetEffect("Healthy", out StatusEffect gotEffect))
+                if (Registry.GetAllStatusEffectsReference().GetEffect("Healthy", out StatusEffect gotEffect))
                 {
                     statusEffect = gotEffect;
                 }

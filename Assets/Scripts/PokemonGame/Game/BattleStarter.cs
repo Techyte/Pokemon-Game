@@ -13,9 +13,6 @@ namespace PokemonGame.Game
     /// </summary>
     public class BattleStarter : DialogueTrigger
     {
-        public AllStatusEffects allStatusEffects;
-        public AllMoves allMoves;
-        
         public Party playerParty;
         
         /// <summary>
