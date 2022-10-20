@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PokemonGame.Dialogue;
 using PokemonGame.ScriptableObjects;
@@ -35,7 +36,7 @@ namespace PokemonGame.Game
 
         private ItemType _currentSortingType;
         
-        [SerializeField] private List<Item> items = new List<Item>();
+        [SerializeField] private Dictionary<Item, BagItemData> items = new Dictionary<Item, BagItemData>();
 
         private void Awake()
         {
@@ -59,23 +60,24 @@ namespace PokemonGame.Game
                 Destroy(child.gameObject);
             }
 
-            List<Item> sortedItems = new List<Item>();
-            foreach (Item item in items)
+            List<BagItemData> sortedItems = new List<BagItemData>();
+            foreach (BagItemData item in items.Values)
             {
-                if (item.type == _currentSortingType)
+                if (item.item.type == _currentSortingType)
                 {
                     sortedItems.Add(item);
                 }
             }
 
-            foreach (Item itemToShow in sortedItems)
+            foreach (BagItemData itemToShow in sortedItems)
             {
                 ItemDisplay display = Instantiate(itemDisplayGameObject, Vector3.zero, Quaternion.identity,
                     itemDisplayerHolder.transform).GetComponent<ItemDisplay>();
 
-                display.NameText.text = itemToShow.name;
-                display.TextureImage.sprite = itemToShow.sprite;
-                display.DescriptionText.text = itemToShow.description;
+                Debug.Log(itemToShow.amount);
+                display.NameText.text = itemToShow.item.name + " " + "x" +itemToShow.amount;
+                display.TextureImage.sprite = itemToShow.item.sprite;
+                display.DescriptionText.text = itemToShow.item.description;
             }
         }
 
@@ -108,8 +110,32 @@ namespace PokemonGame.Game
         {
             for (int i = 0; i < amount; i++)
             {
-                items.Add(itemToAdd);   
+                bool wasFound = false;
+                foreach (BagItemData itemData in items.Values)
+                {
+                    if (itemData.item == itemToAdd)
+                    {
+                        itemData.amount++;
+                        wasFound = true;
+                    }
+                }
+                if(!wasFound)
+                {
+                    items.Add(itemToAdd, new BagItemData(itemToAdd));
+                }
             }
+        }
+    }
+
+    public class BagItemData
+    {
+        public readonly Item item;
+        public int amount;
+
+        public BagItemData(Item item)
+        {
+            this.item = item;
+            amount = 1;
         }
     }
 }
