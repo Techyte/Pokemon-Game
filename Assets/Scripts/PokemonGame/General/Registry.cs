@@ -3,23 +3,23 @@ using UnityEngine;
 
 public class Registry
 {
-    public static AllItems GetAllItesmReference()
+    public static AllItems GetAllItemsReference()
     {
-        return Resources.FindObjectsOfTypeAll<AllItems>()[0];
+        return Resources.Load<AllItems>("Pokemon Game/Items/All Items");
     }
     
     public static AllAis GetAllAismReference()
     {
-        return Resources.FindObjectsOfTypeAll<AllAis>()[0];
+        return Resources.Load<AllAis>("Pokemon Game/Ais/All Ais");
     }
     
     public static AllMoves GetAllMovesReference()
     {
-        return Resources.FindObjectsOfTypeAll<AllMoves>()[0];
+        return Resources.Load<AllMoves>("Pokemon Game/Moves/All Moves");
     }
     
     public static AllStatusEffects GetAllStatusEffectsReference()
     {
-        return Resources.FindObjectsOfTypeAll<AllStatusEffects>()[0];
+        return Resources.Load<AllStatusEffects>("Pokemon Game/Status Effects/All Status Effects");
     }
 }

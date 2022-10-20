@@ -25,6 +25,5 @@ namespace PokemonGame.Editor
             }
         }
     }
-
 }
 #endif
