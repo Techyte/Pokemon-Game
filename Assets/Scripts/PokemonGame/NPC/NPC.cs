@@ -1,5 +1,6 @@
 using PokemonGame.Dialogue;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace PokemonGame.NPCs
 {

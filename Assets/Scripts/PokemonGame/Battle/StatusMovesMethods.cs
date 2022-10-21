@@ -1,3 +1,4 @@
+using PokemonGame.Game;
 using UnityEngine;
 using PokemonGame.ScriptableObjects;
 
@@ -11,7 +12,10 @@ namespace PokemonGame.Battle
     {
         public void Toxic(MoveMethodEventArgs e)
         {
-            e.target.statusEffect = Registry.GetAllStatusEffectsReference().effects["Poisoned"];
+            if (Registry.GetStatusEffect("Poisoned", out StatusEffect effect))
+            {
+                e.target.statusEffect = effect;   
+            }
             Debug.Log("Used Toxic on " + e.target.name);
         }
 

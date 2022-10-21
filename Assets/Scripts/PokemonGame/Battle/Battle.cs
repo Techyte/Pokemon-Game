@@ -66,21 +66,9 @@ namespace PokemonGame.Battle
         
         [SerializeField] private bool hasShowedMoves;
 
-        private Battler playerCurrentBattler
-        {
-            get
-            {
-                return playerParty.party[currentBattlerIndex];
-            }
-        }
-        
-        private Battler opponentCurrentBattler
-        {
-            get
-            {
-                return opponentParty.party[opponentBattlerIndex];
-            }
-        }
+        private Battler playerCurrentBattler => playerParty.party[currentBattlerIndex];
+
+        private Battler opponentCurrentBattler => opponentParty.party[opponentBattlerIndex];
 
 
         private Vector3 opponentSpawnPos;
@@ -274,6 +262,9 @@ namespace PokemonGame.Battle
                 DoEnemyMove();
                 DoPlayerMove();
             }
+
+            enemyMoveToDo = null;
+            _playerMoveToDo = null;
         }
 
         private void DoEnemyMove()
@@ -282,7 +273,7 @@ namespace PokemonGame.Battle
 
             if (enemyMoveToDo.category == MoveCategory.Status)
             {
-                enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler));
+                enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(playerCurrentBattler));
             }
             else
             {

@@ -1,30 +1,13 @@
-using System;
 using System.Collections.Generic;
 using PokemonGame.Dialogue;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace PokemonGame.Game
 {
     public class Bag : MonoBehaviour
     {
-        private static Bag _singleton;
-
-        public static Bag singleton
-        {
-            get => _singleton;
-            private set
-            {
-                if (_singleton == null)
-                    _singleton = value;
-                else if (_singleton != value)
-                {
-                    Destroy(value);
-                }
-            }
-        }
-
         [SerializeField] private KeyCode bagKey;
         [Space]
         [SerializeField] private GameObject BagObject;
@@ -36,12 +19,19 @@ namespace PokemonGame.Game
 
         private ItemType _currentSortingType;
         
-        [SerializeField] private Dictionary<Item, BagItemData> items = new Dictionary<Item, BagItemData>();
+        private static Dictionary<Item, BagItemData> items = new Dictionary<Item, BagItemData>();
 
         private void Awake()
         {
-            singleton = this;
-            DontDestroyOnLoad(this);
+            SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
+        }
+
+        private void SceneManagerOnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            if (SceneManager.GetActiveScene().name != "Battle")
+            {
+                _movement = FindObjectOfType<PlayerMovement>();
+            }
         }
 
         /// <summary>
@@ -74,7 +64,6 @@ namespace PokemonGame.Game
                 ItemDisplay display = Instantiate(itemDisplayGameObject, Vector3.zero, Quaternion.identity,
                     itemDisplayerHolder.transform).GetComponent<ItemDisplay>();
 
-                Debug.Log(itemToShow.amount);
                 display.NameText.text = itemToShow.item.name + " " + "x" +itemToShow.amount;
                 display.TextureImage.sprite = itemToShow.item.sprite;
                 display.DescriptionText.text = itemToShow.item.description;
@@ -83,7 +72,7 @@ namespace PokemonGame.Game
 
         private void Update()
         {
-            if (Input.GetKeyDown(bagKey) && !DialogueManager.GetInstance().dialogueIsPlaying)
+            if (Input.GetKeyDown(bagKey) && !DialogueManager.instance.dialogueIsPlaying)
             {
                 ToggleBag();
             }
@@ -106,7 +95,7 @@ namespace PokemonGame.Game
         /// </summary>
         /// <param name="itemToAdd">The item to be added</param>
         /// <param name="amount">Amount of items to add</param>
-        public void Add(Item itemToAdd, int amount)
+        public static void Add(Item itemToAdd, int amount)
         {
             for (int i = 0; i < amount; i++)
             {

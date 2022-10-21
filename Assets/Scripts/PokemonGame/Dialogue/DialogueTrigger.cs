@@ -47,10 +47,10 @@ namespace PokemonGame.Dialogue
         /// <param name="inkJson">The text asset that the dialogue sequence draws from</param>
         protected void StartDialogue(TextAsset inkJson)
         {
-            if (!DialogueManager.GetInstance().dialogueIsPlaying)
+            if (!DialogueManager.instance.dialogueIsPlaying)
             {
-                DialogueManager.GetInstance().currentTrigger = this;
-                DialogueManager.GetInstance().EnterDialogueMode(inkJson);
+                DialogueManager.instance.currentTrigger = this;
+                DialogueManager.instance.EnterDialogueMode(inkJson);
                 if (DialogueCalledHandlerMethods!=0)
                 {
                     _DialogueWasCalled.Invoke(gameObject, EventArgs.Empty);     

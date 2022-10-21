@@ -4,6 +4,7 @@ using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
 using PokemonGame.Game;
+using UnityEngine.SceneManagement;
 
 namespace PokemonGame.Dialogue
 {
@@ -12,6 +13,8 @@ namespace PokemonGame.Dialogue
     /// </summary>
     public class DialogueManager : MonoBehaviour
     {
+        public static DialogueManager instance;
+        
         [SerializeField] private GameObject dialoguePanel;
         [SerializeField] private TextMeshProUGUI dialogueTextDisplay;
         [SerializeField] private GameObject[] choices;
@@ -20,17 +23,25 @@ namespace PokemonGame.Dialogue
         private TextMeshProUGUI[] choicesText;
         public bool dialogueIsPlaying { get; private set; }
 
-        private static DialogueManager instance;
-
         public DialogueTrigger currentTrigger;
 
         [SerializeField] private PlayerMovement _movement;
 
+        private bool isInBattle => SceneManager.GetActiveScene().name == "Battle";
+        
         private void Awake()
         {
-            if(instance != null)
-                Debug.LogWarning("Found more than one Dialogue Manager in the scene!");
             instance = this;
+            
+            SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
+        }
+
+        private void SceneManagerOnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            if (SceneManager.GetActiveScene().name != "Battle")
+            {
+                _movement = FindObjectOfType<PlayerMovement>();
+            }
         }
 
         private void Update()
@@ -53,15 +64,6 @@ namespace PokemonGame.Dialogue
             }
         }
 
-        /// <summary>
-        /// Get the Instance of the dialogue manager
-        /// </summary>
-        /// <returns>The dialogue manager instance</returns>
-        public static DialogueManager GetInstance()
-        {
-            return instance;
-        }
-
         private void Start()
         {
             dialogueIsPlaying = false;
@@ -81,7 +83,10 @@ namespace PokemonGame.Dialogue
         /// <param name="inkJson">The TextAsset with the information about the conversation</param>
         public void EnterDialogueMode(TextAsset inkJson)
         {
-            _movement.canMove = false;
+            if(!isInBattle)
+                _movement.canMove = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             currentStory = new Story(inkJson.text);
             dialogueIsPlaying = true;
             dialoguePanel.SetActive(true);
@@ -93,7 +98,10 @@ namespace PokemonGame.Dialogue
         {
             yield return new WaitForSeconds(0.2f);
 
-            _movement.canMove = true;
+            if(!isInBattle)
+                _movement.canMove = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             dialogueIsPlaying = false;
             dialoguePanel.SetActive(false);
             dialogueTextDisplay.text = "";

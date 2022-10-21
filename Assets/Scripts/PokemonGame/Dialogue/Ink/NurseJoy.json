@@ -1,0 +1,1 @@
+﻿{"inkVersion":20,"root":[["^Do you want me to heal all your pokemon?","\n","ev","str","^Yes","/str","/ev",{"*":"0.c-0","flg":4},"ev","str","^No","/str","/ev",{"*":"0.c-1","flg":4},{"c-0":["\n",{"#":"Heal:pokemon"},"^Healed!","\n",{"->":"0.g-0"},{"#f":5}],"c-1":["\n","^Bye!","\n",{"->":"0.g-0"},{"#f":5}],"g-0":["done",{"#f":5}]}],"done",{"#f":1}],"listDefs":{}}

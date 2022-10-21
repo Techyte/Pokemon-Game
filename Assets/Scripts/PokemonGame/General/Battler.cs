@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PokemonGame.Game;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 using Type = PokemonGame.ScriptableObjects.Type;
@@ -119,7 +120,7 @@ namespace PokemonGame
         {
             if (!statusEffect)
             {
-                if (Registry.GetAllStatusEffectsReference().GetEffect("Healthy", out StatusEffect gotEffect))
+                if (Registry.GetStatusEffect("Healthy", out StatusEffect gotEffect))
                 {
                     statusEffect = gotEffect;
                 }
@@ -159,6 +160,7 @@ namespace PokemonGame
             specialAttack = Mathf.FloorToInt(0.01f * (2 * source.baseSpecialAttack + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
             specialDefense = Mathf.FloorToInt(0.01f * (2 * source.baseSpecialDefense + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
             speed = Mathf.FloorToInt(0.01f * (2 * source.baseSpeed + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
+            maxHealth = Mathf.FloorToInt(0.01f * (2 * source.baseHealth + 15 + Mathf.FloorToInt(0.25f * 15)) * level) + 5;
         }
 
         //Updates the source of the battler
@@ -218,7 +220,7 @@ namespace PokemonGame
         public static Battler CreateCopy(Battler battler)
         {
             Battler returnBattler = Init(battler.source, battler.level, battler.statusEffect, battler.name,
-                battler.moves[0], battler.moves[1], battler.moves[2], battler.moves[3], false);
+                battler.moves[0], battler.moves[1], battler.moves[2], battler.moves[3], true);
 
             returnBattler.currentHealth = battler.currentHealth;
             
