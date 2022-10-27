@@ -38,7 +38,8 @@ namespace PokemonGame.Dialogue
 
         private void SceneManagerOnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
-            if (SceneManager.GetActiveScene().name != "Battle")
+            string name = SceneManager.GetActiveScene().name;
+            if (name != "Battle" || name == "Boot")
             {
                 _movement = FindObjectOfType<PlayerMovement>();
             }

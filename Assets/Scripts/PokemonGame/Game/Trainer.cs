@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using PokemonGame.Dialogue;
 using PokemonGame.ScriptableObjects;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,24 +11,24 @@ namespace PokemonGame.Game
     /// <summary>
     /// Initiates a battle based on certain inspector parameters 
     /// </summary>
-    public class BattleStarter : DialogueTrigger
+    public class Trainer : DialogueTrigger
     {
         public Party playerParty;
         
         /// <summary>
-        /// The party that the battleStarter load's into the battle for the player to fight
+        /// The party that the trainer load's into the battle for the player to fight
         /// </summary>
         public Party opponentParty;
 
         public NavMeshAgent agent;
 
         /// <summary>
-        /// The ai that the battleStarter load's into the battle for the player to fight
+        /// The ai that the trainer load's into the battle for the player to fight
         /// </summary>
         public EnemyAI ai;
 
         /// <summary>
-        /// Is the battleStarter defeated
+        /// Is the trainer defeated
         /// </summary>
         public bool isDefeated;
         private bool _hasTalkedDefeatedText;
@@ -40,32 +40,37 @@ namespace PokemonGame.Game
         /// <summary>
         /// Id of the battleStarter
         /// </summary>
-        public int battlerId;
+        public int id;
 
         [SerializeField] private TextAsset StartBattleText;
         [SerializeField] private TextAsset DefeatedBattleText;
 
         private GameLoader _gameLoader;
 
+        private bool _hasRecentlyDefeated;
+        private Vector3 _defeatedNewPos;
+
         private void OnValidate()
         {
-            Register();
             if (!_gameLoader)
                 _gameLoader = FindObjectOfType<GameLoader>();
-        }
-
-        private void Awake()
-        {
+            EditorUtility.SetDirty(gameObject);
             Register();
         }
 
         private void Register()
         {
-            if (battlerId == 0)
+            if (!Application.isPlaying) return;
+            
+            if (TrainerRegister.GetBattleStarter(id) == null)
             {
-                int newBattlerId = BattleStarterRegister.BattleStarters.Count+1;
-                BattleStarterRegister.BattleStarters.Add(this);
-                battlerId = newBattlerId;   
+                id = TrainerRegister.AddBattleStarter(this);
+            }
+            else
+            {
+                TrainerInfo info = TrainerRegister.GetBattleStarter(id);
+                isDefeated = info.isDefeated;
+                transform.position = info.position;
             }
         }
 
@@ -74,16 +79,41 @@ namespace PokemonGame.Game
             agent = GetComponent<NavMeshAgent>();
 
             DialogueFinished += StartingDialogueEnded;
+            
+            GetData();
+        }
+
+        private void GetData()
+        {
+            Debug.Log("Got data");
+            if (TrainerRegister.GetBattleStarter(id) != null)
+            {
+                Debug.Log("Was not null");
+                transform.position = TrainerRegister.GetBattleStarter(id).position;
+                isDefeated = TrainerRegister.GetBattleStarter(id).isDefeated;
+
+                if (_hasRecentlyDefeated)
+                {
+                    Debug.Log("Has recently defeated");
+                    isDefeated = true;
+                    DialogueFinished -= StartingDialogueEnded;
+                    transform.position = _defeatedNewPos;
+                    StartCoroutine(StartDefeatedDialogue());
+                    Debug.Log(TrainerRegister.GetBattleStarter(id));
+                    TrainerRegister.GetBattleStarter(id).UpdatePosition(_defeatedNewPos);
+                    TrainerRegister.GetBattleStarter(id).UpdateIsDefeated(isDefeated);
+                }
+            }
         }
 
         /// <summary>
         /// Triggers the defeated dialogue
         /// </summary>
-        public void Defeated()
+        public void Defeated(Vector3 newPos)
         {
-            isDefeated = true;
-            DialogueFinished -= StartingDialogueEnded;
-            StartCoroutine(StartDefeatedDialogue());
+            Debug.Log("Defeated");
+            _hasRecentlyDefeated = true;
+            _defeatedNewPos = newPos;
         }
 
         private IEnumerator StartDefeatedDialogue()
@@ -157,16 +187,8 @@ namespace PokemonGame.Game
                 }
             }
             
-            object[] vars = { playerParty, opponentParty, ai, playerSpawnPos.position, battlerId, transform.position};
-            SceneLoader.LoadScene(1, vars);
+            object[] vars = { playerParty, opponentParty, ai, playerSpawnPos.position, id, transform.position};
+            SceneLoader.LoadScene("Battle", vars);
         }
-    }
-
-    /// <summary>
-    /// The register that holds all battle starters
-    /// </summary>
-    public static class BattleStarterRegister
-    {
-        public static readonly List<BattleStarter> BattleStarters = new List<BattleStarter>();
     }
 }

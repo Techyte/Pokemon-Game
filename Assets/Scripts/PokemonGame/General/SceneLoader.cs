@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace PokemonGame
@@ -21,8 +22,7 @@ namespace PokemonGame
         /// <param name="vars">The variables to load the scene with</param>
         public static void LoadScene(int sceneIndex, object[] vars)
         {
-            //Debug.Log($"Loading level: {sceneIndex}");
-            
+            ClearLoader();
             SceneLoader.vars = vars.ToList();
             SceneManager.LoadScene(sceneIndex);
         }
@@ -34,10 +34,20 @@ namespace PokemonGame
         /// <param name="vars">The variables to load the scene with</param>
         public static void LoadScene(int sceneIndex, List<object> vars)
         {
-            //Debug.Log($"Loading level: {sceneIndex}");
-
             SceneLoader.vars = vars;
             SceneManager.LoadScene(sceneIndex);
+        }
+
+        public static void LoadScene(string sceneName, List<object> vars)
+        {
+            SceneLoader.vars = vars;
+            SceneManager.LoadScene(sceneName);
+        }
+
+        public static void LoadScene(string sceneName, object[] vars)
+        {
+            SceneLoader.vars = vars.ToList();
+            SceneManager.LoadScene(sceneName);
         }
 
         /// <summary>

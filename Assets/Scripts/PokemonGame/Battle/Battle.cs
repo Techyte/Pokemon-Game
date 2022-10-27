@@ -86,6 +86,7 @@ namespace PokemonGame.Battle
             _enemyAI = (EnemyAI)SceneLoader.vars[2];
             playerSpawnPos = (Vector3)SceneLoader.vars[3];
             opponentId = (int)SceneLoader.vars[4];
+            Debug.Log(opponentId);
             opponentSpawnPos = (Vector3)SceneLoader.vars[5];
 
             SceneLoader.ClearLoader();
@@ -301,12 +302,12 @@ namespace PokemonGame.Battle
 
             object[] vars = { SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath), playerSpawnPos, true, opponentId, isDefeated, opponentSpawnPos };
 
-            SceneLoader.LoadScene(0, vars);
+            SceneLoader.LoadScene("Game", vars);
         }
 
         private void CheckForWinCondition()
         {
-            //Counting how many fainted batlers in the players party
+            //Counting how many fainted battlers in the players party
             var playerFaintedPokemon = 0;
             var playerPartyCount = 0;
             foreach (var partyPokemon in playerParty.party)
@@ -325,7 +326,7 @@ namespace PokemonGame.Battle
                 EndBattle(true);
             }
 
-            //Counting how many fainted batlers in the opponent party
+            //Counting how many fainted battlers in the opponent party
             int enemyFaintedPokemon = 0;
             int enemyPartyCount = 0;
             foreach (var partyPokemon in opponentParty.party)

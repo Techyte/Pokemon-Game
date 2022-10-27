@@ -9,6 +9,7 @@ namespace PokemonGame
 
         private void OnTriggerEnter(Collider other)
         {
+            SceneLoader.ClearLoader();
             SceneManager.LoadScene(levelName);
         }
     }
