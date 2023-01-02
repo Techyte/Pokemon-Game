@@ -70,10 +70,13 @@ namespace PokemonGame.Battle
 
         private Battler opponentCurrentBattler => opponentParty.party[opponentBattlerIndex];
 
+        
+        private string _opponentName;
 
-        private Vector3 opponentSpawnPos;
-        private Vector3 playerSpawnPos;
-        private int opponentId;
+        private Vector3 _playerPos;
+
+        private Vector3 _opponentPosition;
+        private Quaternion _opponentRotation;
 
         private void Start()
         {
@@ -84,10 +87,10 @@ namespace PokemonGame.Battle
             playerParty = (Party)SceneLoader.vars[0];
             opponentParty = (Party)SceneLoader.vars[1];
             _enemyAI = (EnemyAI)SceneLoader.vars[2];
-            playerSpawnPos = (Vector3)SceneLoader.vars[3];
-            opponentId = (int)SceneLoader.vars[4];
-            Debug.Log(opponentId);
-            opponentSpawnPos = (Vector3)SceneLoader.vars[5];
+            _opponentName = (string)SceneLoader.vars[3];
+            _opponentPosition = (Vector3)SceneLoader.vars[4];
+            _opponentRotation = (Quaternion)SceneLoader.vars[5];
+            _playerPos = (Vector3)SceneLoader.vars[6];
 
             SceneLoader.ClearLoader();
 
@@ -294,13 +297,7 @@ namespace PokemonGame.Battle
 
         private void EndBattle(bool isDefeated)
         {
-            var playerPath = Application.persistentDataPath + "/party.json";
-            var opponentPath = Application.persistentDataPath + "/opponentTestParty.json";
-
-            SaveAndLoad<Party>.SaveJson(playerParty, playerPath);
-            SaveAndLoad<Party>.SaveJson(opponentParty, opponentPath);
-
-            object[] vars = { SaveAndLoad<Party>.LoadJson(playerPath), SaveAndLoad<Party>.LoadJson(opponentPath), playerSpawnPos, true, opponentId, isDefeated, opponentSpawnPos };
+            object[] vars = { playerParty, _opponentName, _opponentPosition, _opponentRotation, isDefeated, _playerPos };
 
             SceneLoader.LoadScene("Game", vars);
         }

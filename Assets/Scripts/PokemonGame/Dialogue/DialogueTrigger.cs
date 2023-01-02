@@ -8,38 +8,10 @@ namespace PokemonGame.Dialogue
     /// </summary>
     public class DialogueTrigger : MonoBehaviour
     {
-        private int DialogueCalledHandlerMethods;
-        private event EventHandler _DialogueWasCalled;
-        public event EventHandler DialogueWasCalled
-        {
-            add
-            {
-                _DialogueWasCalled += value;
-                DialogueCalledHandlerMethods++;
+        public bool dialogueIsRunning;
 
-            }
-            remove
-            {
-                _DialogueWasCalled -= value;
-                DialogueCalledHandlerMethods--;
-            }
-        }
-
-        private int DialogueFinishedHandlerMethods;
-        private event EventHandler _DialogueFinished;
-        public event EventHandler DialogueFinished
-        {
-            add
-            {
-                _DialogueFinished += value;
-                DialogueFinishedHandlerMethods++;
-            }
-            remove
-            {
-                _DialogueFinished -= value;
-                DialogueFinishedHandlerMethods--;
-            }
-        }
+        protected event EventHandler DialogueWasCalled;
+        protected event EventHandler DialogueFinished;
 
         /// <summary>
         /// Starts and INK Dialogue sequence from a text asset
@@ -49,12 +21,9 @@ namespace PokemonGame.Dialogue
         {
             if (!DialogueManager.instance.dialogueIsPlaying)
             {
-                DialogueManager.instance.currentTrigger = this;
-                DialogueManager.instance.EnterDialogueMode(inkJson);
-                if (DialogueCalledHandlerMethods!=0)
-                {
-                    _DialogueWasCalled.Invoke(gameObject, EventArgs.Empty);     
-                } 
+                DialogueManager.instance.EnterDialogueMode(inkJson, this);
+                DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
+                dialogueIsRunning = true;
             }
         }
 
@@ -63,10 +32,8 @@ namespace PokemonGame.Dialogue
         /// </summary>
         public void EndDialogue()
         {
-            if (DialogueFinishedHandlerMethods!=0)
-            {
-                _DialogueFinished.Invoke(gameObject, EventArgs.Empty);   
-            }
+            DialogueFinished?.Invoke(gameObject, EventArgs.Empty);
+            dialogueIsRunning = false;
         }
 
         /// <summary>

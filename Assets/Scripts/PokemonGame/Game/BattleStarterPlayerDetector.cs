@@ -1,4 +1,5 @@
 using PokemonGame.Game;
+using PokemonGame.Game.Trainers;
 using UnityEngine;
 
 public class BattleStarterPlayerDetector : MonoBehaviour
@@ -14,7 +15,7 @@ public class BattleStarterPlayerDetector : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            trainer.StartBattleSequence(other.GetComponent<Player>());
+            trainer.StartBattleStartSequence(other.GetComponent<Player>());
         }
     }
 }

@@ -1,3 +1,4 @@
+using PokemonGame.Game.Trainers;
 using UnityEngine;
 
 namespace PokemonGame.Game
@@ -8,35 +9,28 @@ namespace PokemonGame.Game
     
         private void Awake()
         {
-            if(SceneLoader.vars.Count == 0) return;
-            LoadGameFromBattle();
+            if(SceneLoader.sceneLoadedFrom == "Battle")
+            {
+                LoadGameFromBattle();
+            }
         }
 
         private void LoadGameFromBattle()
         {
-            //PartyManager.singleton.UpdatePlayerParty((Party) SceneLoader.vars[0]);
-            
-            
-            player.transform.position = (Vector3) SceneLoader.vars[2];
-            if ((bool)SceneLoader.vars[3])
+            string trainerName = (string)SceneLoader.vars[1];
+            Vector3 newPos = (Vector3)SceneLoader.vars[2];
+            Quaternion newRot = (Quaternion)SceneLoader.vars[3];
+            bool isDefeated = (bool)SceneLoader.vars[4];
+            Vector3 playerPos = (Vector3)SceneLoader.vars[5];
+                
+            if (isDefeated)
             {
-                Trainer[] starters = FindObjectsOfType<Trainer>();
-                foreach (Trainer trainer in starters)
-                {
-                    Debug.Log("Found a starter");
-                    if (trainer.id == (int)SceneLoader.vars[4])
-                    {
-                        Debug.Log("Found a starter with the id");
-                        if ((bool)SceneLoader.vars[5])
-                        {
-                            Debug.Log("Was defeated");
-                            trainer.Defeated((Vector3)SceneLoader.vars[6]);
-                        }
-                    }
-                }
+                TrainerRegister.SetInfoWith(trainerName, true);
+
+                GameObject.Find(trainerName).GetComponent<Trainer>().Defeated(newPos, newRot);
+
+                player.transform.position = playerPos;
             }
-            SceneLoader.ClearLoader();
-            Debug.Log("Loaded");
         }
     }
 }

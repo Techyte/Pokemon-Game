@@ -1,14 +1,13 @@
 using PokemonGame.Game;
 using UnityEngine;
-using PokemonGame.ScriptableObjects;
 
-namespace PokemonGame.NPCs
+namespace PokemonGame.NPC
 {
-    public class PokemonCenterNPC : NPC
+    public class PokemonCenterNPC : Base.NPC
     {
         [SerializeField] private TextAsset TextAsset;
 
-        public override void OnPlayerInteracted()
+        protected override void OnPlayerInteracted()
         {
             StartDialogue(TextAsset);
         }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using TMPro;
 using Ink.Runtime;
@@ -8,6 +9,18 @@ using UnityEngine.SceneManagement;
 
 namespace PokemonGame.Dialogue
 {
+    public class DialogueStartedEventArgs : EventArgs
+    {
+        public DialogueTrigger trigger;
+        public TextAsset textAsset;
+
+        public DialogueStartedEventArgs(DialogueTrigger trigger, TextAsset textAsset)
+        {
+            this.trigger = trigger;
+            this.textAsset = textAsset;
+        }
+    }
+    
     /// <summary>
     /// Manages all dialogue in the game, if dialogue is wanted in a scene, must have an instance inside of said scene
     /// </summary>
@@ -26,6 +39,8 @@ namespace PokemonGame.Dialogue
         public DialogueTrigger currentTrigger;
 
         [SerializeField] private PlayerMovement _movement;
+
+        public event EventHandler<DialogueStartedEventArgs> DialogueStarted;
 
         private bool isInBattle => SceneManager.GetActiveScene().name == "Battle";
         
@@ -82,8 +97,11 @@ namespace PokemonGame.Dialogue
         /// Starts a new conversation
         /// </summary>
         /// <param name="inkJson">The TextAsset with the information about the conversation</param>
-        public void EnterDialogueMode(TextAsset inkJson)
+        public void EnterDialogueMode(TextAsset inkJson, DialogueTrigger trigger)
         {
+            DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(trigger, inkJson));
+            
+            currentTrigger = trigger;
             if(!isInBattle)
                 _movement.canMove = false;
             Cursor.lockState = CursorLockMode.None;

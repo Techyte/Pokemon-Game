@@ -14,6 +14,8 @@ namespace PokemonGame
         /// The list of variables that you loaded the scene with
         /// </summary>
         public static List<object> vars = new List<object>();
+
+        public static string sceneLoadedFrom;
         
         /// <summary>
         /// Loads a scene from the sceneIndex param and what ever arguments you give it
@@ -23,6 +25,7 @@ namespace PokemonGame
         public static void LoadScene(int sceneIndex, object[] vars)
         {
             ClearLoader();
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
             SceneLoader.vars = vars.ToList();
             SceneManager.LoadScene(sceneIndex);
         }
@@ -34,18 +37,24 @@ namespace PokemonGame
         /// <param name="vars">The variables to load the scene with</param>
         public static void LoadScene(int sceneIndex, List<object> vars)
         {
+            ClearLoader();
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
             SceneLoader.vars = vars;
             SceneManager.LoadScene(sceneIndex);
         }
 
         public static void LoadScene(string sceneName, List<object> vars)
         {
+            ClearLoader();
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
             SceneLoader.vars = vars;
             SceneManager.LoadScene(sceneName);
         }
 
         public static void LoadScene(string sceneName, object[] vars)
         {
+            ClearLoader();
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
             SceneLoader.vars = vars.ToList();
             SceneManager.LoadScene(sceneName);
         }
@@ -56,6 +65,7 @@ namespace PokemonGame
         public static void ClearLoader()
         {
             vars.Clear();
+            sceneLoadedFrom = null;
         }
     }
 }

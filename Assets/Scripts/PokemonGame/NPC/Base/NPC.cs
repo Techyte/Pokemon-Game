@@ -1,8 +1,7 @@
 using PokemonGame.Dialogue;
 using UnityEngine;
-using UnityEngine.Scripting;
 
-namespace PokemonGame.NPCs
+namespace PokemonGame.NPC.Base
 {
     /// <summary>
     /// Base class of all NPCs, contains functionality for detecting the player nearby and having an OnPlayerInteract() override method
@@ -34,7 +33,7 @@ namespace PokemonGame.NPCs
         /// <summary>
         /// Called when the player interacts with the NPC
         /// </summary>
-        public virtual void OnPlayerInteracted()
+        protected virtual void OnPlayerInteracted()
         {
             
         }

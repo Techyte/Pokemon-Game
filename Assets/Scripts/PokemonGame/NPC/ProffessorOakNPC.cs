@@ -2,9 +2,9 @@ using PokemonGame.Game;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 
-namespace PokemonGame.NPCs
+namespace PokemonGame.NPC
 {
-    public class ProffessorOakNPC : NPC
+    public class ProffessorOakNPC : Base.NPC
     {
         [SerializeField] private BattlerTemplate charmander;
         [SerializeField] private BattlerTemplate bulbasaur;
@@ -12,7 +12,7 @@ namespace PokemonGame.NPCs
         
         [SerializeField] private TextAsset TextAsset;
         
-        public override void OnPlayerInteracted()
+        protected override void OnPlayerInteracted()
         {
             StartDialogue(TextAsset);
         }

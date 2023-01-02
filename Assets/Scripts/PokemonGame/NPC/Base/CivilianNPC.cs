@@ -1,12 +1,12 @@
 using UnityEngine;
 
-namespace PokemonGame.NPCs
+namespace PokemonGame.NPC.Base
 {
     public class CivilianNPC : NPC
     {
         [SerializeField] private TextAsset TextAsset;
 
-        public override void OnPlayerInteracted()
+        protected override void OnPlayerInteracted()
         {
             StartDialogue(TextAsset);
         }
