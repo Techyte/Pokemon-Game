@@ -5,7 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - TrainerStopWalking
-  - Trainer
   layers:
   - Default
   - TransparentFX

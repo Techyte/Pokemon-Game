@@ -77,7 +77,7 @@ namespace PokemonGame.Battle
 
         private Vector3 _opponentPosition;
         private Quaternion _opponentRotation;
-        
+
         private void Start()
         {
             Cursor.lockState = CursorLockMode.None;
@@ -173,7 +173,7 @@ namespace PokemonGame.Battle
             {
                 if (_playerMoveToDo.category == MoveCategory.Status)
                 {
-                    _playerMoveToDo.MoveMethod();
+                    _playerMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler));
                 }
                 else
                 {
@@ -277,7 +277,7 @@ namespace PokemonGame.Battle
 
             if (enemyMoveToDo.category == MoveCategory.Status)
             {
-                enemyMoveToDo.MoveMethod();
+                enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(playerCurrentBattler));
             }
             else
             {
