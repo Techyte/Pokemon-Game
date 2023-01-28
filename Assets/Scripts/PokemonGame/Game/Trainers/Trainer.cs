@@ -94,6 +94,7 @@ namespace PokemonGame.Game.Trainers
         {
             if (isWalking)
             {
+                Debug.Log("Walking");
                 transform.position = Vector3.Lerp(transform.position, target, walkSpeed * Time.deltaTime);
             }
         }
@@ -104,17 +105,19 @@ namespace PokemonGame.Game.Trainers
         /// <param name="player">The player that walked in front of the battleStarter</param>
         public void StartBattleStartSequence(Player player)
         {
-            Debug.Log("Starting Sequence");
+            Debug.Log("Player walked in front");
             if(!isDefeated && !isWalking && !hasFinishedWalking)
             {
                 target = player.transform.position;
+                player.LookAtTrainer(transform.position);
+                player.GetComponent<PlayerMovement>().canMove = false;
                 isWalking = true;
             }
         }
 
         public void StartBattle()
         {
-            if(!isDefeated)
+            if(!isDefeated && isWalking )
             {
                 isWalking = false;
                 hasFinishedWalking = true;
@@ -148,6 +151,7 @@ namespace PokemonGame.Game.Trainers
                 }
             }
             
+            DialogueFinished -= StartingDialogueEnded;
             object[] vars = { playerParty, opponentParty, ai, gameObject.name, transform.position, transform.rotation, player.transform.position};
             SceneLoader.LoadScene("Battle", vars);
         }

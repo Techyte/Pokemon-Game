@@ -51,11 +51,7 @@ namespace PokemonGame.Game.Trainers
         {
             if(_trainerRegistry.ContainsKey(trainer.name)) return;
             
-            Debug.Log("Registering");
-            
             _trainerRegistry.Add(trainer.name, false);
-            
-            Debug.Log(_trainerRegistry.Count);
         }
     } 
 }

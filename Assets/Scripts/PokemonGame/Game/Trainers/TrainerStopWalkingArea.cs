@@ -5,10 +5,9 @@ public class TrainerStopWalkingArea : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        Trainer trainer = other.GetComponent<Trainer>();
-
-        if (trainer)
+        if (other.CompareTag("Trainer"))
         {
+            Trainer trainer = other.GetComponent<Trainer>();
             trainer.StartBattle();
         }
     }
