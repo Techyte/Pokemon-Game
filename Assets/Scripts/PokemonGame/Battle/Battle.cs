@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -75,22 +76,17 @@ namespace PokemonGame.Battle
 
         private Vector3 _playerPos;
 
-        private Vector3 _opponentPosition;
-        private Quaternion _opponentRotation;
-
         private void Start()
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
             //Loads relevant info like the opponent and player party
-            playerParty = (Party)SceneLoader.vars[0];
-            opponentParty = (Party)SceneLoader.vars[1];
-            _enemyAI = (EnemyAI)SceneLoader.vars[2];
-            _opponentName = (string)SceneLoader.vars[3];
-            _opponentPosition = (Vector3)SceneLoader.vars[4];
-            _opponentRotation = (Quaternion)SceneLoader.vars[5];
-            _playerPos = (Vector3)SceneLoader.vars[6];
+            playerParty = (Party)SceneLoader.GetVariable("playerParty");
+            opponentParty = (Party)SceneLoader.GetVariable("opponentParty");
+            _enemyAI = (EnemyAI)SceneLoader.GetVariable("enemyAI");
+            _opponentName = (string)SceneLoader.GetVariable("opponentName");
+            _playerPos = (Vector3)SceneLoader.GetVariable("playerPosition");
 
             SceneLoader.ClearLoader();
 
@@ -297,7 +293,12 @@ namespace PokemonGame.Battle
 
         private void EndBattle(bool isDefeated)
         {
-            object[] vars = { playerParty, _opponentName, _opponentPosition, _opponentRotation, isDefeated, _playerPos };
+            Dictionary<string, object> vars = new Dictionary<string, object>();
+            
+            vars.Add("playerParty", playerParty);
+            vars.Add("trainerName", _opponentName);
+            vars.Add("playerPos", _playerPos);
+            vars.Add("isDefeated", isDefeated);
 
             SceneLoader.LoadScene("Game", vars);
         }

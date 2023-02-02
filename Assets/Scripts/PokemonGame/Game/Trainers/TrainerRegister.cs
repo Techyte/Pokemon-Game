@@ -8,54 +8,30 @@ namespace PokemonGame.Game.Trainers
     /// </summary>
     public class TrainerRegister
     {
-        private static Dictionary<string, bool> _trainerRegistry  = new Dictionary<string, bool>();
+        private static List<Trainer> _defeatedTrainers = new List<Trainer>();
 
         /// <summary>
-        /// Gets a trainer with the same name as what you provide
+        /// Gets whether the trainer is in the list of defeated trainer
         /// </summary>
-        /// <param name="name">The name of the trainer you want to get</param>
+        /// <param name="trainer">The trainer that you want to test for</param>
         /// <returns></returns>
-        public static bool GetIsDefeatedDataFrom(string name)
+        public static bool IsDefeated(Trainer trainer)
         {
-            Debug.Log(_trainerRegistry.Count);
-            if (_trainerRegistry.TryGetValue(name, out bool isDefeated))
+            if (_defeatedTrainers.Contains(trainer))
             {
-                return isDefeated;
+                return true;
             }
-            Debug.Log("Could not find a trainer with that id");
+
             return false;
         }
 
         /// <summary>
-        /// Sets info about a trainer in the registry
+        /// Adds the trainer to the list of defeated trainers
         /// </summary>
-        /// <param name="name">The name of the trainer you want to modify</param>
-        /// <param name="info">The new information about the trainer</param>
-        public static void SetInfoWith(string name, bool isDefeated)
+        /// <param name="trainer">The trainer that was defeated</param>
+        public static void Defeated(Trainer trainer)
         {
-            if (_trainerRegistry.ContainsKey(name))
-            {
-                _trainerRegistry[name] = isDefeated;
-            }
-            else
-            {
-                Debug.LogWarning("Trainer with that Id does not exist");
-            }
-        }
-
-        /// <summary>
-        /// Registers a trainer with the registry so it can be loaded and modified
-        /// </summary>
-        /// <param name="trainer">The trainer you want to register</param>
-        public static void RegisterTrainer(Trainer trainer)
-        {
-            if(_trainerRegistry.ContainsKey(trainer.name)) return;
-            
-            Debug.Log("Registering");
-            
-            _trainerRegistry.Add(trainer.name, false);
-            
-            Debug.Log(_trainerRegistry.Count);
+            _defeatedTrainers.Add(trainer);
         }
     } 
 }

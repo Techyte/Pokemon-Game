@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using PokemonGame.Dialogue;
+using System.Collections.Generic;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,7 +10,7 @@ namespace PokemonGame.Game.Trainers
     /// <summary>
     /// Initiates a battle based on certain inspector parameters 
     /// </summary>
-    public class Trainer : DialogueTrigger
+    public class Trainer : NPC.Base.NPC
     {
         public Party playerParty;
         
@@ -33,69 +33,57 @@ namespace PokemonGame.Game.Trainers
         private bool _hasTalkedDefeatedText;
 
         [SerializeField] private Player player;
-        [SerializeField] private float walkSpeed;
 
-        [SerializeField] private TextAsset StartBattleText;
-        [SerializeField] private TextAsset DefeatedBattleText;
+        [SerializeField] private TextAsset startBattleText;
+        [SerializeField] private TextAsset defeatedBattleText;
+        [SerializeField] private TextAsset idleDialogue;
 
         private GameLoader _gameLoader;
 
+        private bool _isPlayingIdleDialogue;
+        
         private void OnValidate()
         {
             if (!_gameLoader)
                 _gameLoader = FindObjectOfType<GameLoader>();
             if (!player)
                 player = GameObject.Find("Player").GetComponent<Player>();
-        }
-
-        private void Register()
-        {
-            TrainerRegister.RegisterTrainer(this);
+            if (!agent)
+                agent = GetComponent<NavMeshAgent>();
         }
 
         private void Awake()
         {
-            Register();
-            isDefeated = TrainerRegister.GetIsDefeatedDataFrom(gameObject.name);
+            isDefeated = TrainerRegister.IsDefeated(this);
         }
 
         private void Start()
         {
-            agent = GetComponent<NavMeshAgent>();
-
             if(isDefeated) return;
-            DialogueFinished += StartingDialogueEnded;
+            DialogueFinished += DialogueEnded;
         }
-
+        
         /// <summary>
         /// Triggers the defeated dialogue
         /// </summary>
-        public void Defeated(Vector3 newPos, Quaternion newRot)
+        public void Defeated()
         {
-            Debug.Log("Defeated");
             isDefeated = true;
-            transform.position = newPos;
-            transform.rotation = newRot;
-
+            
+            TrainerRegister.Defeated(this);
+            
             StartCoroutine(StartDefeatedDialogue());
         }
 
         private IEnumerator StartDefeatedDialogue()
         {
             yield return new WaitForEndOfFrame();
-            StartDialogue(DefeatedBattleText);
+            StartDialogue(defeatedBattleText);
         }
 
-        private bool isWalking;
-        private Vector3 target;
-        private bool hasFinishedWalking;
-        
-        private void Update()
+        protected override void OnPlayerInteracted()
         {
-            if (isWalking)
-            {
-                transform.position = Vector3.Lerp(transform.position, target, walkSpeed * Time.deltaTime);
-            }
+            StartDialogue(idleDialogue);
         }
 
         /// <summary>
@@ -104,28 +92,31 @@ namespace PokemonGame.Game.Trainers
         /// <param name="player">The player that walked in front of the battleStarter</param>
         public void StartBattleStartSequence(Player player)
         {
-            Debug.Log("Starting Sequence");
-            if(!isDefeated && !isWalking && !hasFinishedWalking)
-            {
-                target = player.transform.position;
-                isWalking = true;
-            }
+            StartBattle();
         }
 
         public void StartBattle()
         {
-            if(!isDefeated)
+            if (!isDefeated)
             {
-                isWalking = false;
-                hasFinishedWalking = true;
-                
-                StartDialogue(StartBattleText);
+                StartDialogue(startBattleText);
             }
         }
 
-        private void StartingDialogueEnded(object sender, EventArgs args)
+        private void DialogueEnded(object sender, EventArgs args)
         {
-            LoadBattle();
+            if(!isDefeated)
+            {
+                LoadBattle();
+            }
+            else if(_isPlayingIdleDialogue)
+            {
+                _isPlayingIdleDialogue = false;
+            }
+            else
+            {
+                interactable = true;
+            }
         }
 
         private void LoadBattle()
@@ -148,7 +139,14 @@ namespace PokemonGame.Game.Trainers
                 }
             }
             
-            object[] vars = { playerParty, opponentParty, ai, gameObject.name, transform.position, transform.rotation, player.transform.position};
+            Dictionary<string, object> vars = new Dictionary<string, object>();
+            
+            vars.Add("playerParty", playerParty);
+            vars.Add("opponentParty", opponentParty);
+            vars.Add("enemyAI", ai);
+            vars.Add("opponentName", gameObject.name);
+            vars.Add("playerPosition", player.transform.position);
+            
             SceneLoader.LoadScene("Battle", vars);
         }
     }

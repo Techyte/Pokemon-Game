@@ -13,7 +13,7 @@ namespace PokemonGame
         /// <summary>
         /// The list of variables that you loaded the scene with
         /// </summary>
-        public static List<object> vars = new List<object>();
+        public static Dictionary<string, object> vars = new Dictionary<string, object>();
 
         public static string sceneLoadedFrom;
         
@@ -22,20 +22,7 @@ namespace PokemonGame
         /// </summary>
         /// <param name="sceneIndex">The scene index to load</param>
         /// <param name="vars">The variables to load the scene with</param>
-        public static void LoadScene(int sceneIndex, object[] vars)
-        {
-            ClearLoader();
-            sceneLoadedFrom = SceneManager.GetActiveScene().name;
-            SceneLoader.vars = vars.ToList();
-            SceneManager.LoadScene(sceneIndex);
-        }
-
-        /// <summary>
-        /// Loads a scene from the sceneIndex param and what ever arguments you give it
-        /// </summary>
-        /// <param name="sceneIndex">The scene index to load</param>
-        /// <param name="vars">The variables to load the scene with</param>
-        public static void LoadScene(int sceneIndex, List<object> vars)
+        public static void LoadScene(int sceneIndex, Dictionary<string, object> vars)
         {
             ClearLoader();
             sceneLoadedFrom = SceneManager.GetActiveScene().name;
@@ -43,19 +30,11 @@ namespace PokemonGame
             SceneManager.LoadScene(sceneIndex);
         }
 
-        public static void LoadScene(string sceneName, List<object> vars)
+        public static void LoadScene(string sceneName, Dictionary<string, object> vars)
         {
             ClearLoader();
             sceneLoadedFrom = SceneManager.GetActiveScene().name;
             SceneLoader.vars = vars;
-            SceneManager.LoadScene(sceneName);
-        }
-
-        public static void LoadScene(string sceneName, object[] vars)
-        {
-            ClearLoader();
-            sceneLoadedFrom = SceneManager.GetActiveScene().name;
-            SceneLoader.vars = vars.ToList();
             SceneManager.LoadScene(sceneName);
         }
 
@@ -66,6 +45,17 @@ namespace PokemonGame
         {
             vars.Clear();
             sceneLoadedFrom = null;
+        }
+
+        public static object GetVariable(string variableName)
+        {
+            if (vars.TryGetValue(variableName, out object var))
+            {
+                return var;
+            }
+            
+            Debug.LogWarning("Could not find a variable with that name, returning null");
+            return null;
         }
     }
 }

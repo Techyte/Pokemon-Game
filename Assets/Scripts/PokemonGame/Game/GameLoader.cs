@@ -17,18 +17,14 @@ namespace PokemonGame.Game
 
         private void LoadGameFromBattle()
         {
-            string trainerName = (string)SceneLoader.vars[1];
-            Vector3 newPos = (Vector3)SceneLoader.vars[2];
-            Quaternion newRot = (Quaternion)SceneLoader.vars[3];
-            bool isDefeated = (bool)SceneLoader.vars[4];
-            Vector3 playerPos = (Vector3)SceneLoader.vars[5];
+            string trainerName = (string)SceneLoader.GetVariable("trainerName");
+            Vector3 playerPos = (Vector3)SceneLoader.GetVariable("playerPos");
+            bool isDefeated = (bool)SceneLoader.GetVariable("isDefeated");
                 
             if (isDefeated)
             {
-                TrainerRegister.SetInfoWith(trainerName, true);
-
-                GameObject.Find(trainerName).GetComponent<Trainer>().Defeated(newPos, newRot);
-
+                GameObject.Find(trainerName).GetComponent<Trainer>().Defeated();
+                
                 player.transform.position = playerPos;
             }
         }

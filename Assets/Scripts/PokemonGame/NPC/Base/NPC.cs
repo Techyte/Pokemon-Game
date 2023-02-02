@@ -12,21 +12,37 @@ namespace PokemonGame.NPC.Base
         [SerializeField] private GameObject visualCue;
         [Space]
 
-        [SerializeField] private bool playerInRange;
+        [Header("Interactable")]
+        public bool interactable = true;
+
+        private bool _playerInRange;
         
         private void Update()
         {
-            if (playerInRange)
+            if(interactable)
             {
-                visualCue.SetActive(true);
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (_playerInRange)
                 {
-                    OnPlayerInteracted();
+                    visualCue.SetActive(true);
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        OnPlayerInteracted();
+                    }
+                }
+                else
+                {
+                    visualCue.SetActive(false);
                 }
             }
-            else
+        }
+
+        private void OnValidate()
+        {
+            Debug.Log("validate");
+            if (visualCue == null)
             {
-                visualCue.SetActive(false);
+                Debug.Log("interact cue not there");
+                visualCue = Instantiate(Resources.Load<GameObject>(@"Pokemon Game\NPC\Interact Cue"), transform);
             }
         }
 
@@ -40,20 +56,30 @@ namespace PokemonGame.NPC.Base
 
         private void Awake()
         {
-            playerInRange = false;
+            _playerInRange = false;
             visualCue.SetActive(false);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.CompareTag("Player"))
-                playerInRange = true;
+            if(interactable)
+            {
+                if (other.gameObject.CompareTag("Player"))
+                {
+                    _playerInRange = true;
+                }
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if(other.gameObject.CompareTag("Player"))
-                playerInRange = false;
+            if(interactable)
+            {
+                if (other.gameObject.CompareTag("Player"))
+                {
+                    _playerInRange = false;
+                }
+            }
         }
     }
 }
