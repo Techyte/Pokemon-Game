@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -30,41 +29,4 @@ namespace PokemonGame
             return JsonUtility.FromJson<Type>(File.ReadAllText(path));
         }
     }
-
-    /// <summary>
-    /// A collection of 6 <see cref="Battler"/>s
-    /// </summary>
-    [System.Serializable]
-    public class Party
-    {
-        /// <summary>
-        /// The actual list of battlers
-        /// </summary>
-        public List<Battler> party
-        {
-            get
-            {
-                return PartyList;
-            }
-            set
-            {
-                PartyList = value;
-                
-                if(PartyList.Count > 6)
-                {
-                    for (int i = 0; i < PartyList.Count; i++)
-                    {
-                        if (i > 6)
-                            PartyList.Remove(PartyList[i]);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Do not touch this through code, only used for displaying that party in the inspector
-        /// </summary>
-        public List<Battler> PartyList;
-    }
-
 }

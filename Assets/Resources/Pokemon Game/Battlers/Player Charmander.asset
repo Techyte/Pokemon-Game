@@ -15,8 +15,8 @@ MonoBehaviour:
   source: {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3, type: 2}
   level: 5
   name: Charmander
-  maxHealth: 19
-  currentHealth: 19
+  maxHealth: 9
+  currentHealth: 9
   exp: 0
   attack: 11
   defense: 10
@@ -24,8 +24,8 @@ MonoBehaviour:
   specialDefense: 10
   speed: 12
   texture: {fileID: 21300000, guid: 7474906acb369644c90c292e5efd482b, type: 3}
-  isFainted: 0
-  statusEffect: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
+  isFainted: 1
+  statusEffect: {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
   primaryType: {fileID: 11400000, guid: 2a85514d25185dc4b9be8cdaec17c0d0, type: 2}
   secondaryType: {fileID: 0}
   moves:

@@ -1,4 +1,4 @@
-namespace PokemonGame.Game.Trainers
+namespace PokemonGame.Trainers
 {
     using UnityEngine;
 

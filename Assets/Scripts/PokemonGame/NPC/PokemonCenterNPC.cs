@@ -1,4 +1,5 @@
 using PokemonGame.Game;
+using PokemonGame.Game.Party;
 using UnityEngine;
 
 namespace PokemonGame.NPC
@@ -28,7 +29,7 @@ namespace PokemonGame.NPC
             switch (tagValue)
             {
                 case "Heal": 
-                    PartyManager.HealAll();
+                    PartyManager.Instance.HealAll();
                     break;
             }
         }

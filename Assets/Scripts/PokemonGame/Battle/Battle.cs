@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using PokemonGame.Game.Party;
 using PokemonGame.General;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
@@ -68,9 +69,9 @@ namespace PokemonGame.Battle
         
         [SerializeField] private bool hasShowedMoves;
 
-        private Battler playerCurrentBattler => playerParty.party[currentBattlerIndex];
+        private Battler playerCurrentBattler => playerParty[currentBattlerIndex];
 
-        private Battler opponentCurrentBattler => opponentParty.party[opponentBattlerIndex];
+        private Battler opponentCurrentBattler => opponentParty[opponentBattlerIndex];
 
         
         private string _opponentName;
@@ -84,7 +85,8 @@ namespace PokemonGame.Battle
             Cursor.visible = true;
 
             //Loads relevant info like the opponent and player party
-            playerParty = (Party)SceneLoader.GetVariable("playerParty");
+            Debug.Log("First");
+            playerParty = PartyManager.Instance.GetParty();
             opponentParty = (Party)SceneLoader.GetVariable("opponentParty");
             enemyAI = (EnemyAI)SceneLoader.GetVariable("enemyAI");
             _opponentName = (string)SceneLoader.GetVariable("opponentName");
@@ -313,12 +315,13 @@ namespace PokemonGame.Battle
             //Counting how many fainted battlers in the players party
             var playerFaintedPokemon = 0;
             var playerPartyCount = 0;
-            foreach (var partyPokemon in playerParty.party)
+
+            for (int i = 0; i < playerParty.Count; i++)
             {
-                if (partyPokemon)
+                if (playerParty[i])
                 {
                     playerPartyCount++;
-                    if (partyPokemon.isFainted)
+                    if (playerParty[i].isFainted)
                         playerFaintedPokemon++;
                 }
             }
@@ -332,12 +335,13 @@ namespace PokemonGame.Battle
             //Counting how many fainted battlers in the opponent party
             int enemyFaintedPokemon = 0;
             int enemyPartyCount = 0;
-            foreach (var partyPokemon in opponentParty.party)
+
+            for (int i = 0; i < opponentParty.Count; i++)
             {
-                if (partyPokemon)
+                if (opponentParty[i])
                 {
                     enemyPartyCount++;
-                    if (partyPokemon.isFainted)
+                    if (opponentParty[i].isFainted)
                         enemyFaintedPokemon++;
                 }
             }

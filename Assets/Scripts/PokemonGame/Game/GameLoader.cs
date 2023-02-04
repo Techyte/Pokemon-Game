@@ -1,4 +1,5 @@
-using PokemonGame.Game.Trainers;
+using PokemonGame.Game.Party;
+using PokemonGame.Trainers;
 using PokemonGame.General;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace PokemonGame.Game
 
         private void LoadGameFromBattle()
         {
+            PartyManager.Instance.UpdatePlayerParty((Party.Party)SceneLoader.GetVariable("playerParty"));
             string trainerName = (string)SceneLoader.GetVariable("trainerName");
             Vector3 playerPos = (Vector3)SceneLoader.GetVariable("playerPos");
             Quaternion playerRotation = (Quaternion)SceneLoader.GetVariable("playerRotation");

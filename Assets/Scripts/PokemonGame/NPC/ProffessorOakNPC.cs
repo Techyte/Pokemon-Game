@@ -1,4 +1,5 @@
 using PokemonGame.Game;
+using PokemonGame.Game.Party;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 
@@ -23,13 +24,13 @@ namespace PokemonGame.NPC
             switch (tagKey)
             {
                 case "Charmander": 
-                    PartyManager.AddBattler(Battler.Init(charmander, 5, null, "Charmander", null, null, null, null, true));
+                    PartyManager.Instance.AddBattler(Battler.Init(charmander, 5, null, "Charmander", null, null, null, null, true));
                     break;
                 case "Squirtle":
-                    PartyManager.AddBattler(Battler.Init(squirtle, 5, null, "Squirtle", null, null, null, null, true));
+                    PartyManager.Instance.AddBattler(Battler.Init(squirtle, 5, null, "Squirtle", null, null, null, null, true));
                     break;
                 case "Bulbasaur":
-                    PartyManager.AddBattler(Battler.Init(bulbasaur, 5, null, "Bulbasaur", null, null, null, null, true));
+                    PartyManager.Instance.AddBattler(Battler.Init(bulbasaur, 5, null, "Bulbasaur", null, null, null, null, true));
                     break;
             }
         }

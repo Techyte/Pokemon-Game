@@ -39,27 +39,27 @@ namespace PokemonGame.Battle
                 text.transform.parent.gameObject.SetActive(false);
             }
 
-            for (int i = 0; i < battle.playerParty.party.Count; i++)
+            for (int i = 0; i < battle.playerParty.Count; i++)
             {
-                if (!battle.playerParty.party[i])
+                if (!battle.playerParty[i])
                 {
                     battlerDisplays[i].transform.parent.gameObject.SetActive(false);
                 }
                 else
                 {
                     battlerDisplays[i].transform.parent.gameObject.SetActive(true);
-                    battlerDisplays[i].text = battle.playerParty.party[i].name;
-                    battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = !battle.playerParty.party[i].isFainted;
+                    battlerDisplays[i].text = battle.playerParty[i].name;
+                    battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = !battle.playerParty[i].isFainted;
 
                     if (i == battle.currentBattlerIndex)
                     {
-                        battlerDisplays[i].text = battle.playerParty.party[i].name + " is selected";
+                        battlerDisplays[i].text = battle.playerParty[i].name + " is selected";
                         battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
                     }
 
-                    if (battle.playerParty.party[i].isFainted)
+                    if (battle.playerParty[i].isFainted)
                     {
-                        battlerDisplays[i].text = battle.playerParty.party[i].name + " is fainted";
+                        battlerDisplays[i].text = battle.playerParty[i].name + " is fainted";
                         battlerDisplays[i].transform.parent.GetComponent<Button>().interactable = false;
                     }
                 }
@@ -100,7 +100,7 @@ namespace PokemonGame.Battle
             miscButtons.SetActive(true);
             changeBattlerDisplay.SetActive(false);
             battle.currentBattlerIndex = partyID;
-            battle.playerParty.party[battle.currentBattlerIndex] = battle.playerParty.party[partyID];
+            battle.playerParty[battle.currentBattlerIndex] = battle.playerParty[partyID];
             Back();
             battle.currentTurn = TurnStatus.Showing;
             UpdateBattlerButtons();
@@ -121,14 +121,15 @@ namespace PokemonGame.Battle
 
         private void UpdateBattlerTexts()
         {
-            currentBattlerNameDisplay.text = battle.playerParty.party[battle.currentBattlerIndex].name;
-            opponentBattlerNameDisplay.text = battle.opponentParty.party[battle.opponentBattlerIndex].name;
+            currentBattlerNameDisplay.text = battle.playerParty[battle.currentBattlerIndex].name;
+            opponentBattlerNameDisplay.text = battle.opponentParty[battle.opponentBattlerIndex].name;
         }
 
         private void UpdateBattlerSprites()
         {
-            currentBattlerRenderer.sprite = battle.playerParty.party[battle.currentBattlerIndex].texture;
-            opponentBattlerRenderer.sprite = battle.opponentParty.party[battle.opponentBattlerIndex].texture;
+            Debug.Log("Second");
+            currentBattlerRenderer.sprite = battle.playerParty[battle.currentBattlerIndex].texture;
+            opponentBattlerRenderer.sprite = battle.opponentParty[battle.opponentBattlerIndex].texture;
         }
 
         private void UpdateBattlerMoveDisplays()
@@ -138,23 +139,23 @@ namespace PokemonGame.Battle
                 text.transform.parent.gameObject.SetActive(false);
             }
 
-            for (var i = 0; i < battle.playerParty.party[battle.currentBattlerIndex].moves.Count; i++)
+            for (var i = 0; i < battle.playerParty[battle.currentBattlerIndex].moves.Count; i++)
             {
-                if (battle.playerParty.party[battle.currentBattlerIndex].moves[i])
+                if (battle.playerParty[battle.currentBattlerIndex].moves[i])
                 {
                     moveTexts[i].transform.parent.gameObject.SetActive(true);
-                    moveTexts[i].text = battle.playerParty.party[battle.currentBattlerIndex].moves[i].name;   
+                    moveTexts[i].text = battle.playerParty[battle.currentBattlerIndex].moves[i].name;   
                 }
             }
         }
 
         public void UpdateHealthDisplays()
         {
-            opponentHealthDisplay.maxValue = battle.opponentParty.party[battle.opponentBattlerIndex].maxHealth;
-            opponentHealthDisplay.value = battle.opponentParty.party[battle.opponentBattlerIndex].currentHealth;
+            opponentHealthDisplay.maxValue = battle.opponentParty[battle.opponentBattlerIndex].maxHealth;
+            opponentHealthDisplay.value = battle.opponentParty[battle.opponentBattlerIndex].currentHealth;
 
-            currentBattlerHealthDisplay.maxValue = battle.playerParty.party[battle.currentBattlerIndex].maxHealth;
-            currentBattlerHealthDisplay.value = battle.playerParty.party[battle.currentBattlerIndex].currentHealth;
+            currentBattlerHealthDisplay.maxValue = battle.playerParty[battle.currentBattlerIndex].maxHealth;
+            currentBattlerHealthDisplay.value = battle.playerParty[battle.currentBattlerIndex].currentHealth;
         }
     }
 

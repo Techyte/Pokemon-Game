@@ -8,6 +8,8 @@ namespace PokemonGame.Game
 {
     public class Bag : MonoBehaviour
     {
+        public static Bag Instance;
+        
         [SerializeField] private KeyCode bagKey;
         [Space]
         [SerializeField] private GameObject bagObject;
@@ -19,10 +21,12 @@ namespace PokemonGame.Game
 
         private ItemType _currentSortingType;
         
-        private static Dictionary<Item, BagItemData> _items = new Dictionary<Item, BagItemData>();
+        private Dictionary<Item, BagItemData> _items = new Dictionary<Item, BagItemData>();
 
         private void Awake()
         {
+            Instance = this;
+            
             SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
         }
 
@@ -95,7 +99,7 @@ namespace PokemonGame.Game
         /// </summary>
         /// <param name="itemToAdd">The item to be added</param>
         /// <param name="amount">Amount of items to add</param>
-        public static void Add(Item itemToAdd, int amount)
+        public void Add(Item itemToAdd, int amount)
         {
             for (int i = 0; i < amount; i++)
             {

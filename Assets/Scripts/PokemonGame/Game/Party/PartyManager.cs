@@ -1,36 +1,55 @@
-namespace PokemonGame.Game
+using System;
+using UnityEngine;
+
+namespace PokemonGame.Game.Party
 {
     /// <summary>
     /// Manages the players party
     /// </summary>
-    public static class PartyManager
+    public class PartyManager : MonoBehaviour
     {
-        private static Party _playerParty;
+        public static PartyManager Instance;
+        
+        [SerializeField] private Party _playerParty;
+
+        private void Awake()
+        {
+            Instance = this;
+            for (int i = 0; i < _playerParty.Count; i++)
+            {
+                _playerParty[i] = Battler.CreateCopy(_playerParty[i]);
+            }
+        }
 
         /// <summary>
         /// Add a battler to the player party
         /// </summary>
         /// <param name="battlerToAdd">The battler that you add to the party</param>
-        public static void AddBattler(Battler battlerToAdd)
+        public void AddBattler(Battler battlerToAdd)
         {
-            _playerParty.party.Add(battlerToAdd);
+            _playerParty.Add(battlerToAdd);
         }
 
         /// <summary>
         /// Change the player party without simply adding one
         /// </summary>
         /// <param name="party">The new party</param>
-        public static void UpdatePlayerParty(Party party)
+        public void UpdatePlayerParty(Party party)
         {
             _playerParty = party;
         }
 
-        public static void HealAll()
+        public void HealAll()
         {
-            foreach (var battler in _playerParty.party)
+            for (int i = 0; i < _playerParty.Count; i++)
             {
-                battler.currentHealth = battler.maxHealth;
+                _playerParty[i].currentHealth = _playerParty[i].maxHealth;
             }
+        }
+
+        public Party GetParty()
+        {
+            return _playerParty;
         }
     }   
 }

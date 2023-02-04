@@ -22,7 +22,7 @@ namespace PokemonGame.NPC
                     string[] secondaryValues = tagValue.Split('.');
                     if (Registry.GetItem(secondaryValues[0], out Item item))
                     {
-                        Bag.Add(item, int.Parse(secondaryValues[1]));
+                        Bag.Instance.Add(item, int.Parse(secondaryValues[1]));
                     }
                     break;
             }

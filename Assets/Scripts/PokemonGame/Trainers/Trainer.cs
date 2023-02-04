@@ -5,16 +5,16 @@ using PokemonGame.General;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
+using PokemonGame.Game.Party;
+using PokemonGame.Game;
 
-namespace PokemonGame.Game.Trainers
+namespace PokemonGame.Trainers
 {
     /// <summary>
     /// Initiates a battle based on certain inspector parameters 
     /// </summary>
     public class Trainer : NPC.Base.NPC
     {
-        public Party playerParty;
-        
         /// <summary>
         /// The party that the trainer load's into the battle for the player to fight
         /// </summary>
@@ -123,27 +123,17 @@ namespace PokemonGame.Game.Trainers
 
         private void LoadBattle()
         {
-            for (int i = 0; i < playerParty.party.Count; i++)
+            for (int i = 0; i < opponentParty.Count; i++)
             {
-                if (playerParty.party[i])
+                if (opponentParty[i])
                 {
-                    Battler replacementBattler = Battler.CreateCopy(playerParty.party[i]);
-                    playerParty.party[i] = replacementBattler;   
-                }
-            }
-            
-            for (int i = 0; i < opponentParty.party.Count; i++)
-            {
-                if (opponentParty.party[i])
-                {
-                    Battler replacementBattler = Battler.CreateCopy(opponentParty.party[i]);
-                    opponentParty.party[i] = replacementBattler;   
+                    Battler replacementBattler = Battler.CreateCopy(opponentParty[i]);
+                    opponentParty[i] = replacementBattler;   
                 }
             }
             
             Dictionary<string, object> vars = new Dictionary<string, object>
             {
-                { "playerParty", playerParty },
                 { "opponentParty", opponentParty },
                 { "enemyAI", ai },
                 { "opponentName", gameObject.name },
