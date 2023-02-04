@@ -1,2 +1,2 @@
-# A Pokemon Game
- A pokemon game engine designes to allow you to create a pokemon-style game from scratch. Once complete will have full documentation and an online guide on how to get started. This will be distributed via a unity package and will contain some unity 'scenes' that will need to be configured
+# A Pokemon Game Engine
+A Unity Plugin that will allow whover is using it to create a Pokemon Style game with ease, it will feature a fully implemented battle, party, npc, custom scene loading, item, and general quality of life systems.
