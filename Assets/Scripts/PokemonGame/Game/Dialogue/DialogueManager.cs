@@ -31,14 +31,14 @@ namespace PokemonGame.Dialogue
         [SerializeField] private GameObject dialoguePanel;
         [SerializeField] private TextMeshProUGUI dialogueTextDisplay;
         [SerializeField] private GameObject[] choices;
-        [SerializeField] private int currentChoices;
-        private Story currentStory;
-        private TextMeshProUGUI[] choicesText;
+        [SerializeField] private int currentChoicesAmount;
+        private Story _currentStory;
+        private TextMeshProUGUI[] _choicesText;
         public bool dialogueIsPlaying { get; private set; }
 
         public DialogueTrigger currentTrigger;
 
-        [SerializeField] private PlayerMovement _movement;
+        [SerializeField] private PlayerMovement movement;
 
         public event EventHandler<DialogueStartedEventArgs> DialogueStarted;
 
@@ -56,7 +56,7 @@ namespace PokemonGame.Dialogue
             string name = SceneManager.GetActiveScene().name;
             if (name != "Battle" || name == "Boot")
             {
-                _movement = FindObjectOfType<PlayerMovement>();
+                movement = FindObjectOfType<PlayerMovement>();
             }
         }
 
@@ -65,14 +65,9 @@ namespace PokemonGame.Dialogue
             if (!dialogueIsPlaying)
                 return;
 
-            currentChoices = currentStory.currentChoices.Count;
+            currentChoicesAmount = _currentStory.currentChoices.Count;
 
-            bool hasChoices;
-
-            if (currentChoices > 0)
-                hasChoices = true;
-            else
-                hasChoices = false;
+            var hasChoices = currentChoicesAmount > 0;
 
             if (Input.GetKeyDown(KeyCode.Space) && !hasChoices)
             {
@@ -84,11 +79,11 @@ namespace PokemonGame.Dialogue
         {
             dialogueIsPlaying = false;
             dialoguePanel.SetActive(false);
-            choicesText = new TextMeshProUGUI[choices.Length];
+            _choicesText = new TextMeshProUGUI[choices.Length];
             int index = 0;
             foreach (GameObject choice in choices)
             {
-                choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
+                _choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
                 index++;
             }
         }
@@ -97,16 +92,17 @@ namespace PokemonGame.Dialogue
         /// Starts a new conversation
         /// </summary>
         /// <param name="inkJson">The TextAsset with the information about the conversation</param>
+        /// <param name="trigger">The DialogueTrigger that triggered this conversation</param>
         public void EnterDialogueMode(TextAsset inkJson, DialogueTrigger trigger)
         {
             DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(trigger, inkJson));
             
             currentTrigger = trigger;
             if(!isInBattle)
-                _movement.canMove = false;
+                movement.canMove = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            currentStory = new Story(inkJson.text);
+            _currentStory = new Story(inkJson.text);
             dialogueIsPlaying = true;
             dialoguePanel.SetActive(true);
 
@@ -118,7 +114,7 @@ namespace PokemonGame.Dialogue
             yield return new WaitForSeconds(0.2f);
 
             if(!isInBattle)
-                _movement.canMove = true;
+                movement.canMove = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             dialogueIsPlaying = false;
@@ -129,16 +125,28 @@ namespace PokemonGame.Dialogue
 
         private void ContinueStory()
         {
-            if (currentStory.canContinue)
+            StopAllCoroutines();
+            
+            if (_currentStory.canContinue)
             {
-                dialogueTextDisplay.text = currentStory.Continue();
-                DisplayChoices();
+                StartCoroutine(DisplayText(_currentStory.Continue()));
+                StartCoroutine(DisplayChoices());
 
-                HandleTags(currentStory.currentTags);
+                HandleTags(_currentStory.currentTags);
             }
             else
             {
                 StartCoroutine(ExitDialogueMode());
+            }
+        }
+
+        private IEnumerator DisplayText(string nextSentence)
+        {
+            dialogueTextDisplay.text = "";
+            foreach (char letter in nextSentence)
+            {
+                dialogueTextDisplay.text += letter;
+                yield return null;
             }
         }
 
@@ -158,9 +166,9 @@ namespace PokemonGame.Dialogue
             }
         }
 
-        private void DisplayChoices()
+        private IEnumerator DisplayChoices()
         {
-            List<Choice> currentChoices = currentStory.currentChoices;
+            List<Choice> currentChoices = _currentStory.currentChoices;
 
             if (currentChoices.Count > choices.Length)
             {
@@ -172,13 +180,14 @@ namespace PokemonGame.Dialogue
             foreach(Choice choice in currentChoices)
             {
                 choices[index].gameObject.SetActive(true);
-                choicesText[index].text = choice.text;
+                _choicesText[index].text = choice.text;
                 index++;
             }
 
             for(int i = index; i < choices.Length; i++)
             {
                 choices[i].gameObject.SetActive(false);
+                yield return null;
             }
         }
 
@@ -188,7 +197,7 @@ namespace PokemonGame.Dialogue
         /// <param name="choiceIndex">The choicer index of the player wants to make</param>
         public void MakeChoice(int choiceIndex)
         {
-            currentStory.ChooseChoiceIndex(choiceIndex);
+            _currentStory.ChooseChoiceIndex(choiceIndex);
             ContinueStory();
         }
     }

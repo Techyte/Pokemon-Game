@@ -4,11 +4,12 @@ namespace PokemonGame.NPC.Base
 {
     public class CivilianNPC : NPC
     {
-        [SerializeField] private TextAsset TextAsset;
+        [SerializeField] private TextAsset textAsset;
 
         protected override void OnPlayerInteracted()
         {
-            StartDialogue(TextAsset);
+            StartDialogue(textAsset);
+            base.OnPlayerInteracted();
         }
     }
 }

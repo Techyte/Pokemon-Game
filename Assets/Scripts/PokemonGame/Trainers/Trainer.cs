@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using PokemonGame.General;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.AI;
@@ -59,7 +60,7 @@ namespace PokemonGame.Game.Trainers
 
         private void Start()
         {
-            if(isDefeated) return;
+            interactable = isDefeated;
             DialogueFinished += DialogueEnded;
         }
         
@@ -84,13 +85,13 @@ namespace PokemonGame.Game.Trainers
         protected override void OnPlayerInteracted()
         {
             StartDialogue(idleDialogue);
+            base.OnPlayerInteracted();
         }
 
         /// <summary>
         /// Starts the battle starting sequence
         /// </summary>
-        /// <param name="player">The player that walked in front of the battleStarter</param>
-        public void StartBattleStartSequence(Player player)
+        public void StartBattleStartSequence()
         {
             StartBattle();
         }
@@ -99,6 +100,7 @@ namespace PokemonGame.Game.Trainers
         {
             if (!isDefeated)
             {
+                player.LookAtTarget(transform.position);
                 StartDialogue(startBattleText);
             }
         }
@@ -139,14 +141,16 @@ namespace PokemonGame.Game.Trainers
                 }
             }
             
-            Dictionary<string, object> vars = new Dictionary<string, object>();
-            
-            vars.Add("playerParty", playerParty);
-            vars.Add("opponentParty", opponentParty);
-            vars.Add("enemyAI", ai);
-            vars.Add("opponentName", gameObject.name);
-            vars.Add("playerPosition", player.transform.position);
-            
+            Dictionary<string, object> vars = new Dictionary<string, object>
+            {
+                { "playerParty", playerParty },
+                { "opponentParty", opponentParty },
+                { "enemyAI", ai },
+                { "opponentName", gameObject.name },
+                { "playerPosition", player.transform.position },
+                { "playerRotation", player.targetRot }
+            };
+
             SceneLoader.LoadScene("Battle", vars);
         }
     }

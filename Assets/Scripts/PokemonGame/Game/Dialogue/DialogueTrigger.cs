@@ -39,9 +39,9 @@ namespace PokemonGame.Dialogue
         /// <summary>
         /// Inheritors override this to handle tags
         /// </summary>
-        /// <param name="TagKey">The tag key</param>
-        /// <param name="TagValue">The tag value</param>
-        public virtual void CallTag(string TagKey, string TagValue)
+        /// <param name="tagKey">The tag key</param>
+        /// <param name="tagValue">The tag value</param>
+        public virtual void CallTag(string tagKey, string tagValue)
         {
             
         }

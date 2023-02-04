@@ -3,9 +3,9 @@ namespace PokemonGame.Game
     /// <summary>
     /// Manages the players party
     /// </summary>
-    public class PartyManager
+    public static class PartyManager
     {
-        private static Party playerParty;
+        private static Party _playerParty;
 
         /// <summary>
         /// Add a battler to the player party
@@ -13,7 +13,7 @@ namespace PokemonGame.Game
         /// <param name="battlerToAdd">The battler that you add to the party</param>
         public static void AddBattler(Battler battlerToAdd)
         {
-            playerParty.party.Add(battlerToAdd);
+            _playerParty.party.Add(battlerToAdd);
         }
 
         /// <summary>
@@ -22,12 +22,12 @@ namespace PokemonGame.Game
         /// <param name="party">The new party</param>
         public static void UpdatePlayerParty(Party party)
         {
-            playerParty = party;
+            _playerParty = party;
         }
 
         public static void HealAll()
         {
-            foreach (var battler in playerParty.party)
+            foreach (var battler in _playerParty.party)
             {
                 battler.currentHealth = battler.maxHealth;
             }

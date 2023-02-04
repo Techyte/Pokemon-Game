@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace PokemonGame
+namespace PokemonGame.General
 {
     public class LevelLoader : MonoBehaviour
     {

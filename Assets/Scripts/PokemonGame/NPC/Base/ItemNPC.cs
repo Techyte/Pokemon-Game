@@ -6,19 +6,20 @@ namespace PokemonGame.NPC
 {
     public class ItemNPC : Base.NPC
     {
-        [SerializeField] private TextAsset TextAsset;
+        [SerializeField] private TextAsset textAsset;
 
         protected override void OnPlayerInteracted()
         {
-            StartDialogue(TextAsset);
+            StartDialogue(textAsset);
+            base.OnPlayerInteracted();
         }
 
-        public override void CallTag(string TagKey, string TagValue)
+        public override void CallTag(string tagKey, string tagValue)
         {
-            switch (TagKey)
+            switch (tagKey)
             {
                 case "giveItem":
-                    string[] secondaryValues = TagValue.Split('.');
+                    string[] secondaryValues = tagValue.Split('.');
                     if (Registry.GetItem(secondaryValues[0], out Item item))
                     {
                         Bag.Add(item, int.Parse(secondaryValues[1]));

@@ -10,16 +10,16 @@ namespace PokemonGame.Game
     {
         [SerializeField] private KeyCode bagKey;
         [Space]
-        [SerializeField] private GameObject BagObject;
-        [SerializeField] private PlayerMovement _movement;
-        [SerializeField] private GameObject itemDisplayerHolder;
+        [SerializeField] private GameObject bagObject;
+        [SerializeField] private PlayerMovement movement;
+        [SerializeField] private GameObject itemDisplayHolder;
         [SerializeField] private GameObject itemDisplayGameObject;
 
         [SerializeField] private bool bagState;
 
         private ItemType _currentSortingType;
         
-        private static Dictionary<Item, BagItemData> items = new Dictionary<Item, BagItemData>();
+        private static Dictionary<Item, BagItemData> _items = new Dictionary<Item, BagItemData>();
 
         private void Awake()
         {
@@ -30,7 +30,7 @@ namespace PokemonGame.Game
         {
             if (SceneManager.GetActiveScene().name != "Battle")
             {
-                _movement = FindObjectOfType<PlayerMovement>();
+                movement = FindObjectOfType<PlayerMovement>();
             }
         }
 
@@ -46,12 +46,12 @@ namespace PokemonGame.Game
 
         private void UpdateBagUI()
         { 
-            foreach (ItemDisplay child in itemDisplayerHolder.transform.GetComponentsInChildren<ItemDisplay>()) {
+            foreach (ItemDisplay child in itemDisplayHolder.transform.GetComponentsInChildren<ItemDisplay>()) {
                 Destroy(child.gameObject);
             }
 
             List<BagItemData> sortedItems = new List<BagItemData>();
-            foreach (BagItemData item in items.Values)
+            foreach (BagItemData item in _items.Values)
             {
                 if (item.item.type == _currentSortingType)
                 {
@@ -62,7 +62,7 @@ namespace PokemonGame.Game
             foreach (BagItemData itemToShow in sortedItems)
             {
                 ItemDisplay display = Instantiate(itemDisplayGameObject, Vector3.zero, Quaternion.identity,
-                    itemDisplayerHolder.transform).GetComponent<ItemDisplay>();
+                    itemDisplayHolder.transform).GetComponent<ItemDisplay>();
 
                 display.NameText.text = itemToShow.item.name + " " + "x" +itemToShow.amount;
                 display.TextureImage.sprite = itemToShow.item.sprite;
@@ -82,8 +82,8 @@ namespace PokemonGame.Game
         {
             bagState = !bagState;
             
-            _movement.canMove = !bagState;
-            BagObject.SetActive(bagState);
+            movement.canMove = !bagState;
+            bagObject.SetActive(bagState);
             Cursor.visible = bagState;
             Cursor.lockState = bagState ? CursorLockMode.None : CursorLockMode.Locked;
             
@@ -100,7 +100,7 @@ namespace PokemonGame.Game
             for (int i = 0; i < amount; i++)
             {
                 bool wasFound = false;
-                foreach (BagItemData itemData in items.Values)
+                foreach (BagItemData itemData in _items.Values)
                 {
                     if (itemData.item == itemToAdd)
                     {
@@ -110,7 +110,7 @@ namespace PokemonGame.Game
                 }
                 if(!wasFound)
                 {
-                    items.Add(itemToAdd, new BagItemData(itemToAdd));
+                    _items.Add(itemToAdd, new BagItemData(itemToAdd));
                 }
             }
         }

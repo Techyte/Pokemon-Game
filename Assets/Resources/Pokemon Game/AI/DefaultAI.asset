@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultAI
   m_EditorClassIdentifier: 
   name: DefaultAI
-  AIMethodEvent:
+  aIMethodEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: c1323aee68c18a643b2cfc130a46749a, type: 2}

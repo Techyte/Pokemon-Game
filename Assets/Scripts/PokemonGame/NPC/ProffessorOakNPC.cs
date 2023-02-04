@@ -10,16 +10,17 @@ namespace PokemonGame.NPC
         [SerializeField] private BattlerTemplate bulbasaur;
         [SerializeField] private BattlerTemplate squirtle;
         
-        [SerializeField] private TextAsset TextAsset;
+        [SerializeField] private TextAsset textAsset;
         
         protected override void OnPlayerInteracted()
         {
-            StartDialogue(TextAsset);
+            StartDialogue(textAsset);
+            base.OnPlayerInteracted();
         }
         
-        public override void CallTag(string TagKey, string TagValue)
+        public override void CallTag(string tagKey, string tagValue)
         {
-            switch (TagKey)
+            switch (tagKey)
             {
                 case "Charmander": 
                     PartyManager.AddBattler(Battler.Init(charmander, 5, null, "Charmander", null, null, null, null, true));

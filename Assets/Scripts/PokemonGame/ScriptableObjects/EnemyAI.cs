@@ -9,13 +9,13 @@ namespace PokemonGame.ScriptableObjects
     {
         public new string name;
 
-        public UnityEvent<AIMethodEventArgs> AIMethodEvent;
+        public UnityEvent<AIMethodEventArgs> aIMethodEvent;
 
         public void AIMethod(AIMethodEventArgs e)
         {
             try
             {
-                AIMethodEvent.Invoke(e);
+                aIMethodEvent.Invoke(e);
             }
             catch
             {

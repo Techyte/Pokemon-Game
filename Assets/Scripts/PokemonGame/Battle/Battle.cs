@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using PokemonGame.General;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -55,9 +56,9 @@ namespace PokemonGame.Battle
         
         public Party opponentParty;
         
-        [SerializeField] private EnemyAI _enemyAI;
+        [SerializeField] private EnemyAI enemyAI;
         
-        [SerializeField] private Move _playerMoveToDo;
+        [SerializeField] private Move playerMoveToDo;
         
         public Move enemyMoveToDo;
         
@@ -75,6 +76,7 @@ namespace PokemonGame.Battle
         private string _opponentName;
 
         private Vector3 _playerPos;
+        private Quaternion _playerRotation;
 
         private void Start()
         {
@@ -84,9 +86,10 @@ namespace PokemonGame.Battle
             //Loads relevant info like the opponent and player party
             playerParty = (Party)SceneLoader.GetVariable("playerParty");
             opponentParty = (Party)SceneLoader.GetVariable("opponentParty");
-            _enemyAI = (EnemyAI)SceneLoader.GetVariable("enemyAI");
+            enemyAI = (EnemyAI)SceneLoader.GetVariable("enemyAI");
             _opponentName = (string)SceneLoader.GetVariable("opponentName");
             _playerPos = (Vector3)SceneLoader.GetVariable("playerPosition");
+            _playerRotation = (Quaternion)SceneLoader.GetVariable("playerRotation");
 
             SceneLoader.ClearLoader();
 
@@ -113,7 +116,7 @@ namespace PokemonGame.Battle
                     if (!hasDoneChoosingUpdate)
                     {
                         uiManager.ShowUI(true);
-                        _enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
+                        enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
                         hasDoneChoosingUpdate = true;
                     }
                     break;
@@ -157,7 +160,7 @@ namespace PokemonGame.Battle
         //Public method used by the move UI buttons
         public void ChooseMove(int moveID)
         {
-            _playerMoveToDo = playerCurrentBattler.moves[moveID];
+            playerMoveToDo = playerCurrentBattler.moves[moveID];
             playerHasChosenAttack = true;
         }
 
@@ -165,15 +168,15 @@ namespace PokemonGame.Battle
         {
             //You can add any animation calls for attacking here
 
-            if (_playerMoveToDo)
+            if (playerMoveToDo)
             {
-                if (_playerMoveToDo.category == MoveCategory.Status)
+                if (playerMoveToDo.category == MoveCategory.Status)
                 {
-                    _playerMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler));
+                    playerMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler));
                 }
                 else
                 {
-                    int damageToDo = CalculateDamage(_playerMoveToDo, playerCurrentBattler, opponentCurrentBattler);
+                    int damageToDo = CalculateDamage(playerMoveToDo, playerCurrentBattler, opponentCurrentBattler);
                     opponentCurrentBattler.TakeDamage(Mathf.RoundToInt(damageToDo));
                 }
             }
@@ -264,7 +267,7 @@ namespace PokemonGame.Battle
             }
 
             enemyMoveToDo = null;
-            _playerMoveToDo = null;
+            playerMoveToDo = null;
         }
 
         private void DoEnemyMove()
@@ -293,12 +296,14 @@ namespace PokemonGame.Battle
 
         private void EndBattle(bool isDefeated)
         {
-            Dictionary<string, object> vars = new Dictionary<string, object>();
-            
-            vars.Add("playerParty", playerParty);
-            vars.Add("trainerName", _opponentName);
-            vars.Add("playerPos", _playerPos);
-            vars.Add("isDefeated", isDefeated);
+            Dictionary<string, object> vars = new Dictionary<string, object>
+            {
+                { "playerParty", playerParty },
+                { "trainerName", _opponentName },
+                { "playerPos", _playerPos },
+                { "playerRotation", _playerRotation },
+                { "isDefeated", isDefeated }
+            };
 
             SceneLoader.LoadScene("Game", vars);
         }

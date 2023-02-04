@@ -1,14 +1,13 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace PokemonGame.Game.Trainers
 {
     /// <summary>
     /// Class that manages trainers
     /// </summary>
-    public class TrainerRegister
+    public static class TrainerRegister
     {
-        private static List<Trainer> _defeatedTrainers = new List<Trainer>();
+        private static List<string> _defeatedTrainers = new List<string>();
 
         /// <summary>
         /// Gets whether the trainer is in the list of defeated trainer
@@ -17,7 +16,7 @@ namespace PokemonGame.Game.Trainers
         /// <returns></returns>
         public static bool IsDefeated(Trainer trainer)
         {
-            if (_defeatedTrainers.Contains(trainer))
+            if (_defeatedTrainers.Contains(trainer.name))
             {
                 return true;
             }
@@ -31,7 +30,7 @@ namespace PokemonGame.Game.Trainers
         /// <param name="trainer">The trainer that was defeated</param>
         public static void Defeated(Trainer trainer)
         {
-            _defeatedTrainers.Add(trainer);
+            _defeatedTrainers.Add(trainer.name);
         }
     } 
 }

@@ -12,9 +12,9 @@ namespace PokemonGame.Battle
         public void DefaultAI(AIMethodEventArgs e)
         {
             int moveCount = 0;
-            for (int i = 0; i < e.battlerToUse.moves.Count; i++)
+            foreach (var battler in e.battlerToUse.moves)
             {
-                if (e.battlerToUse.moves[i] != null)
+                if (battler != null)
                 {
                     moveCount++;
                 }

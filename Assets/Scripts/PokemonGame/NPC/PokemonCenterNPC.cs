@@ -5,11 +5,12 @@ namespace PokemonGame.NPC
 {
     public class PokemonCenterNPC : Base.NPC
     {
-        [SerializeField] private TextAsset TextAsset;
+        [SerializeField] private TextAsset textAsset;
 
         protected override void OnPlayerInteracted()
         {
-            StartDialogue(TextAsset);
+            StartDialogue(textAsset);
+            base.OnPlayerInteracted();
         }
 
         public override void CallTag(string tagKey, string tagValue)

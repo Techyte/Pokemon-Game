@@ -7,7 +7,7 @@ namespace PokemonGame.Battle
     /// <summary>
     /// Contains all of the logic for every move
     /// </summary>
-    [CreateAssetMenu(fileName = "New Status Move Methods", menuName = "All/New Status Move Mehods")]
+    [CreateAssetMenu(fileName = "New Status Move Methods", menuName = "All/New Status Move Methods")]
     public class StatusMovesMethods : ScriptableObject
     {
         public void Toxic(MoveMethodEventArgs e)

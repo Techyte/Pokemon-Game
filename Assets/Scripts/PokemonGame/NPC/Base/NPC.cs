@@ -1,4 +1,6 @@
+using System;
 using PokemonGame.Dialogue;
+using PokemonGame.Game;
 using UnityEngine;
 
 namespace PokemonGame.NPC.Base
@@ -16,7 +18,20 @@ namespace PokemonGame.NPC.Base
         public bool interactable = true;
 
         private bool _playerInRange;
-        
+        private Player _player;
+
+        private void Awake()
+        {
+            _playerInRange = false;
+            visualCue.SetActive(false);
+            DialogueFinished += StopPlayerLooking;
+        }
+
+        private void StopPlayerLooking(object o, EventArgs e)
+        {
+            _player.StopLooking();
+        }
+
         private void Update()
         {
             if(interactable)
@@ -38,7 +53,6 @@ namespace PokemonGame.NPC.Base
 
         private void OnValidate()
         {
-            Debug.Log("validate");
             if (visualCue == null)
             {
                 Debug.Log("interact cue not there");
@@ -51,13 +65,7 @@ namespace PokemonGame.NPC.Base
         /// </summary>
         protected virtual void OnPlayerInteracted()
         {
-            
-        }
-
-        private void Awake()
-        {
-            _playerInRange = false;
-            visualCue.SetActive(false);
+            _player.LookAtTarget(transform.position);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -67,6 +75,7 @@ namespace PokemonGame.NPC.Base
                 if (other.gameObject.CompareTag("Player"))
                 {
                     _playerInRange = true;
+                    _player = other.GetComponent<Player>();
                 }
             }
         }
@@ -78,6 +87,7 @@ namespace PokemonGame.NPC.Base
                 if (other.gameObject.CompareTag("Player"))
                 {
                     _playerInRange = false;
+                    _player = null;
                 }
             }
         }
