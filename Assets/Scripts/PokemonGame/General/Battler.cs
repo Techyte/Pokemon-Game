@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PokemonGame.Game;
+using PokemonGame.General;
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 using Type = PokemonGame.ScriptableObjects.Type;

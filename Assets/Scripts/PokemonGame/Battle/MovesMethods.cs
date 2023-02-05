@@ -1,4 +1,4 @@
-using PokemonGame.Game;
+using PokemonGame.General;
 using UnityEngine;
 using PokemonGame.ScriptableObjects;
 
@@ -7,8 +7,8 @@ namespace PokemonGame.Battle
     /// <summary>
     /// Contains all of the logic for every move
     /// </summary>
-    [CreateAssetMenu(fileName = "New Status Move Methods", menuName = "All/New Status Move Methods")]
-    public class StatusMovesMethods : ScriptableObject
+    [CreateAssetMenu(fileName = "New Moves Methods", menuName = "All/New Moves Methods")]
+    public class MovesMethods : ScriptableObject
     {
         public void Toxic(MoveMethodEventArgs e)
         {

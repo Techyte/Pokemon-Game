@@ -1,9 +1,9 @@
 using PokemonGame.ScriptableObjects;
 using UnityEngine;
 
-namespace PokemonGame.Game
+namespace PokemonGame.General
 {
-public class Registry
+public static class Registry
 {
     /// <summary>
     /// Gets an item from the items folder using the name you supply
