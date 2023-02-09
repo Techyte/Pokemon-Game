@@ -2,6 +2,7 @@ namespace PokemonGame.General
 {
     using UnityEngine;
     using UnityEngine.SceneManagement;
+    using Global;
 
     public class LevelLoader : MonoBehaviour
     {

@@ -4,6 +4,7 @@ namespace PokemonGame.Trainers
     using System.Collections;
     using System.Collections.Generic;
     using General;
+    using Global;
     using ScriptableObjects;
     using UnityEngine;
     using UnityEngine.AI;

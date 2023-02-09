@@ -1,4 +1,4 @@
-namespace PokemonGame.General
+namespace PokemonGame.Game
 {
     using UnityEngine;
     using UnityEngine.SceneManagement;

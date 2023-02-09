@@ -15,14 +15,7 @@ namespace PokemonGame.ScriptableObjects
 
         public void AIMethod(AIMethodEventArgs e)
         {
-            try
-            {
-                aIMethodEvent.Invoke(e);
-            }
-            catch
-            {
-                Debug.LogWarning($"{name}s effect does not have a function associated with it");
-            }
+            aIMethodEvent?.Invoke(e);
         }
     }
 

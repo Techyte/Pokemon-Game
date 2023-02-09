@@ -2,7 +2,7 @@ namespace PokemonGame.Game
 {
     using Party;
     using Trainers;
-    using General;
+    using Global;
     using UnityEngine;
 
     public class GameLoader : MonoBehaviour

@@ -24,14 +24,7 @@ namespace PokemonGame.ScriptableObjects
         /// <param name="e">The MoveMethodArgs that can be used to store additional information to be parsed onto the method</param>
         public void MoveMethod(MoveMethodEventArgs e)
         {
-            try
-            {
-                MoveMethodEvent.Invoke(e);
-            }
-            catch
-            {
-                Debug.LogWarning($"{name}s effect does not have a function associated with it");
-            }
+            MoveMethodEvent?.Invoke(e);
         }
     }
     

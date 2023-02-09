@@ -3,6 +3,7 @@ namespace PokemonGame.Battle
     using System.Collections.Generic;
     using Game.Party;
     using General;
+    using Global;
     using ScriptableObjects;
     using UnityEngine;
     using Random = UnityEngine.Random;
@@ -285,7 +286,7 @@ namespace PokemonGame.Battle
                 float damageToDo = CalculateDamage(enemyMoveToDo, opponentCurrentBattler, playerCurrentBattler);
                 playerCurrentBattler.TakeDamage(Mathf.RoundToInt(damageToDo));
             }
-
+            
             if (playerCurrentBattler.isFainted)
             {
                 uiManager.SwitchBattlerBecauseOfDeath();

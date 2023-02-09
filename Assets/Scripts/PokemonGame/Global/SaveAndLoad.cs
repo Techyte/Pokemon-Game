@@ -1,4 +1,4 @@
-namespace PokemonGame.General
+namespace PokemonGame.Global
 {
     using System.IO;
     using UnityEngine;

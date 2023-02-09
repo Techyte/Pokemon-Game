@@ -1,6 +1,6 @@
 namespace PokemonGame.Battle
 {
-    using General;
+    using Global;
     using UnityEngine;
     using ScriptableObjects;
 

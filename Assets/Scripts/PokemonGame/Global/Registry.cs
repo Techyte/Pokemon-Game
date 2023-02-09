@@ -1,4 +1,4 @@
-namespace PokemonGame.General
+namespace PokemonGame.Global
 {
     using ScriptableObjects;
     using UnityEngine;
@@ -23,7 +23,7 @@ namespace PokemonGame.General
                 }
             }
     
-            Debug.LogWarning("Could not find item, returning null");
+            Debug.LogWarning($"Could not find item {itemName}, returning null");
             foundItem = null;
             return false;
         }
@@ -46,7 +46,7 @@ namespace PokemonGame.General
                 }
             }
     
-            Debug.LogWarning("Could not find ai, returning null");
+            Debug.LogWarning($"Could not find ai {aiName}, returning null");
             foundAi = null;
             return foundAi;
         }
@@ -69,7 +69,7 @@ namespace PokemonGame.General
                 }
             }
     
-            Debug.LogWarning("Could not find move, returning null");
+            Debug.LogWarning($"Could not find move {moveName}, returning null");
             foundMove = null;
             return false;
         }
@@ -92,9 +92,31 @@ namespace PokemonGame.General
                 }
             }
     
-            Debug.LogWarning(effectName);
-            Debug.LogWarning("Could not find status effect, returning null");
+            Debug.LogWarning($"Could not find status effect {effectName}, returning null");
             foundEffect = null;
+            return false;
+        }
+        
+        /// <summary>
+        /// Gets a type from the type folder using the name you supply
+        /// </summary>
+        /// <param name="typeName">The name of the type you want to get</param>
+        /// <param name="foundType">The found type</param>
+        /// <returns>Whether the type was found</returns>
+        public static bool GetType(string typeName, out Type foundType)
+        {
+            Type[] types = Resources.LoadAll<Type>("Pokemon Game/Types");
+            foreach (var type in types)
+            {
+                if (type.name == typeName)
+                {
+                    foundType = type;
+                    return true;
+                }
+            }
+    
+            Debug.LogWarning($"Could not find type {typeName}, returning null");
+            foundType = null;
             return false;
         }
     }

@@ -1,11 +1,12 @@
 namespace PokemonGame.General
 {
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using ScriptableObjects;
-using UnityEngine;
-using Type = ScriptableObjects.Type;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using ScriptableObjects;
+    using UnityEngine;
+    using Type = ScriptableObjects.Type;
+    using Global;
 
     /// <summary>
     /// The class that contains all the information for a battler

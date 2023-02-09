@@ -1,3 +1,5 @@
+using System;
+
 namespace PokemonGame.Game.Party
 {
     using General;
@@ -8,10 +10,10 @@ namespace PokemonGame.Game.Party
     /// <summary>
     /// A collection of 6 <see cref="Battler"/>
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class Party
     {
-        public int Count => party.Count;
+        public int Count => PartyCount();
         
         /// <summary>
         /// The actual list of battlers
@@ -34,7 +36,53 @@ namespace PokemonGame.Game.Party
                             PartyList.Remove(PartyList[i]);
                     }
                 }
+                
+                CheckDefeatedStatus();
             }
+        }
+
+        public event EventHandler PartyAllDefeated;
+
+        // Experimental function, WIP DO NOT USE (COULD CAUSE STACK OVERFLOW LOL)
+        private void CheckDefeatedStatus()
+        {
+            if (DefeatedCount() == Count)
+            {
+                PartyAllDefeated?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private int DefeatedCount()
+        {
+            var partyCount = 0;
+
+            for (int i = 0; i < party.Count; i++)
+            {
+                if (party[i])
+                {
+                    if(party[i].isFainted)
+                    {
+                        partyCount++;
+                    }
+                }
+            }
+
+            return partyCount;
+        }
+
+        private int PartyCount()
+        {
+            var partyCount = 0;
+
+            for (int i = 0; i < party.Count; i++)
+            {
+                if (party[i])
+                {
+                    partyCount++;
+                }
+            }
+
+            return partyCount;
         }
 
         public void Add(Battler battlerToAdd)
@@ -45,7 +93,12 @@ namespace PokemonGame.Game.Party
         public Battler this[int i]
         {
             get => party[i];
-            set => party[i] = value;
+            set
+            {
+                party[i] = value;
+                Debug.Log("updating party");
+                CheckDefeatedStatus();
+            }
         }
         
         [SerializeField] private List<Battler> PartyList;
