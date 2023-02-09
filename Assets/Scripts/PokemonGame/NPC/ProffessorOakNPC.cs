@@ -1,11 +1,11 @@
-using PokemonGame.Game;
-using PokemonGame.Game.Party;
-using PokemonGame.ScriptableObjects;
-using UnityEngine;
-
 namespace PokemonGame.NPC
 {
-    public class ProffessorOakNPC : Base.NPC
+    using Game.Party;
+    using General;
+    using ScriptableObjects;
+    using UnityEngine;
+
+    public class ProffessorOakNPC : NPC
     {
         [SerializeField] private BattlerTemplate charmander;
         [SerializeField] private BattlerTemplate bulbasaur;
@@ -34,5 +34,5 @@ namespace PokemonGame.NPC
                     break;
             }
         }
-    }   
+    }
 }

@@ -1,7 +1,7 @@
-using UnityEngine;
-
-namespace PokemonGame
+namespace PokemonGame.General
 {
+    using UnityEngine;
+
     public class BobEffect : MonoBehaviour
     {
         public float bobIntensity;
@@ -22,5 +22,4 @@ namespace PokemonGame
             transform.position = newPos;
         }
     }
-
 }

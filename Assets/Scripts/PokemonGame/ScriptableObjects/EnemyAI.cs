@@ -1,10 +1,11 @@
-using System;
-using PokemonGame.Game.Party;
-using UnityEngine;
-using UnityEngine.Events;
-
 namespace PokemonGame.ScriptableObjects
 {
+    using System;
+    using Game.Party;
+    using General;
+    using UnityEngine;
+    using UnityEngine.Events;
+
     [CreateAssetMenu(order = 5, fileName = "New AI", menuName = "Pokemon Game/New AI")]
     public class EnemyAI : ScriptableObject
     {
@@ -36,5 +37,4 @@ namespace PokemonGame.ScriptableObjects
         public Battler battlerToUse;
         public Party usableParty;
     }
-
 }

@@ -1,9 +1,9 @@
-using PokemonGame.General;
-using UnityEngine;
-using PokemonGame.ScriptableObjects;
-
 namespace PokemonGame.Battle
 {
+    using General;
+    using UnityEngine;
+    using ScriptableObjects;
+
     /// <summary>
     /// Contains all of the logic for every move
     /// </summary>
@@ -33,5 +33,5 @@ namespace PokemonGame.Battle
         {
             Debug.Log("Used Tackle Leaf on " + e.target.name);
         }
-    }
+    }   
 }

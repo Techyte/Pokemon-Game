@@ -1,19 +1,19 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using PokemonGame.General;
-using PokemonGame.ScriptableObjects;
-using UnityEngine;
-using UnityEngine.AI;
-using PokemonGame.Game.Party;
-using PokemonGame.Game;
-
 namespace PokemonGame.Trainers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using General;
+    using ScriptableObjects;
+    using UnityEngine;
+    using UnityEngine.AI;
+    using Game.Party;
+    using Game;
+
     /// <summary>
     /// Initiates a battle based on certain inspector parameters 
     /// </summary>
-    public class Trainer : NPC.Base.NPC
+    public class Trainer : NPC.NPC
     {
         /// <summary>
         /// The party that the trainer load's into the battle for the player to fight

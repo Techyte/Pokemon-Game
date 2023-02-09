@@ -1,8 +1,9 @@
-using System;
-using UnityEngine;
-
 namespace PokemonGame.Game.Party
 {
+    using General;
+
+    using UnityEngine;
+
     /// <summary>
     /// Manages the players party
     /// </summary>

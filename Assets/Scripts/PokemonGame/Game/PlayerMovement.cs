@@ -1,7 +1,8 @@
-using UnityEngine;
-
 namespace PokemonGame.Game
 {
+
+    using UnityEngine;
+
     public class PlayerMovement : MonoBehaviour
     {
         [Header("Assigning")]

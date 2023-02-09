@@ -1,11 +1,10 @@
-using PokemonGame.Game;
-using PokemonGame.General;
-using PokemonGame.ScriptableObjects;
-using UnityEngine;
-
 namespace PokemonGame.NPC
 {
-    public class ItemNPC : Base.NPC
+    using General;
+    using ScriptableObjects;
+    using UnityEngine;
+
+    public class ItemNPC : NPC
     {
         [SerializeField] private TextAsset textAsset;
 

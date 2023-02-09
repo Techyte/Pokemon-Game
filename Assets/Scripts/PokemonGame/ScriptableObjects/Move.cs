@@ -1,9 +1,10 @@
-using System;
-using UnityEngine;
-using UnityEngine.Events;
-
 namespace PokemonGame.ScriptableObjects
 {
+    using System;
+    using General;
+    using UnityEngine;
+    using UnityEngine.Events;
+    
     /// <summary>
     /// A move that is used in battles to fight
     /// </summary>
@@ -14,9 +15,9 @@ namespace PokemonGame.ScriptableObjects
         public Type type;
         public int damage;
         public MoveCategory category;
-
+    
         public UnityEvent<MoveMethodEventArgs> MoveMethodEvent;
-
+    
         /// <summary>
         /// Calls the associated function in StatusMoveMethods.cs
         /// </summary>
@@ -33,7 +34,7 @@ namespace PokemonGame.ScriptableObjects
             }
         }
     }
-
+    
     /// <summary>
     /// The category of move, Physical, Special or Status
     /// </summary>
@@ -43,7 +44,7 @@ namespace PokemonGame.ScriptableObjects
         Special,
         Status
     }
-
+    
     /// <summary>
     /// Arguments that can be given to a MoveMethod to give it additional information
     /// </summary>
@@ -53,8 +54,7 @@ namespace PokemonGame.ScriptableObjects
         {
             this.target = target;
         }
-        
+            
         public Battler target;
     }
-
 }

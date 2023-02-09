@@ -1,8 +1,8 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-namespace PokemonGame.Game
+namespace PokemonGame.General
 {
+    using UnityEngine;
+    using UnityEngine.SceneManagement;
+
     public class Boot : MonoBehaviour
     {
         [SerializeField] private GameObject[] DontDestroyObjects;

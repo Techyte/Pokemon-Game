@@ -1,8 +1,8 @@
-using UnityEngine;
-using PathCreation;
-
-namespace PokemonGame
+namespace PokemonGame.General
 {
+    using UnityEngine;
+    using PathCreation;
+
     public class Follower : MonoBehaviour
     {
         public PathCreator pathCreator;
@@ -17,5 +17,4 @@ namespace PokemonGame
             transform.LookAt(Vector3.zero);
         }
     }
-
 }

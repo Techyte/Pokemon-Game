@@ -1,7 +1,7 @@
-using UnityEngine;
-
-namespace PokemonGame.NPC.Base
+namespace PokemonGame.NPC
 {
+    using UnityEngine;
+
     public class CivilianNPC : NPC
     {
         [SerializeField] private TextAsset textAsset;

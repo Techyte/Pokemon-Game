@@ -1,7 +1,7 @@
-using UnityEngine;
-
 namespace PokemonGame.ScriptableObjects
 {
+    using UnityEngine;
+
     [CreateAssetMenu(order = 3, fileName = "New Type", menuName ="Pokemon Game/New Type")]
     public class Type : ScriptableObject
     {
@@ -10,5 +10,4 @@ namespace PokemonGame.ScriptableObjects
         public Type[] cantHit;
         public Type[] weakAgainst;
     }
-
 }

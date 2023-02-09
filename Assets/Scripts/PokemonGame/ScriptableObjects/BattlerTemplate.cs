@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace PokemonGame.ScriptableObjects
 {
+    using System.Collections.Generic;
+    using UnityEngine;
+
     [CreateAssetMenu(order = 1, fileName = "New Battler Template", menuName = "Pokemon Game/New Battler Template")]
     public class BattlerTemplate : ScriptableObject
     {
@@ -20,5 +20,4 @@ namespace PokemonGame.ScriptableObjects
         public int baseSpecialDefense;
         public int baseSpeed;
     }
-
 }

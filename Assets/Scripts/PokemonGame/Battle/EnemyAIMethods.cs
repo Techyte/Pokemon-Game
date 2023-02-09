@@ -1,8 +1,8 @@
-using UnityEngine;
-using PokemonGame.ScriptableObjects;
-
 namespace PokemonGame.Battle
 {
+    using UnityEngine;
+    using ScriptableObjects;
+
     /// <summary>
     /// Contains all of the logic for every AI
     /// </summary>
@@ -24,5 +24,5 @@ namespace PokemonGame.Battle
 
             Battle.Singleton.enemyMoveToDo = e.battlerToUse.moves[moveToDo];
         }
-    }
+    }   
 }

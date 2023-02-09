@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using PokemonGame.Game.Party;
-using PokemonGame.General;
-using PokemonGame.ScriptableObjects;
-using UnityEngine;
-using Random = UnityEngine.Random;
-
 namespace PokemonGame.Battle
 {
+    using System.Collections.Generic;
+    using Game.Party;
+    using General;
+    using ScriptableObjects;
+    using UnityEngine;
+    using Random = UnityEngine.Random;
+
     public enum TurnStatus
     {
         Choosing,
@@ -352,5 +352,5 @@ namespace PokemonGame.Battle
                 EndBattle(true);
             }
         }
-    }
+    }   
 }

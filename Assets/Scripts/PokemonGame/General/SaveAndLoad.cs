@@ -1,8 +1,8 @@
-using System.IO;
-using UnityEngine;
-
-namespace PokemonGame
+namespace PokemonGame.General
 {
+    using System.IO;
+    using UnityEngine;
+
     /// <summary>
     /// A class for saving and loading data with json
     /// </summary>

@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
 namespace PokemonGame.General
 {
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.SceneManagement;
+    
     /// <summary>
     /// A custom scene loading class for loading scenes with data
     /// </summary>
@@ -13,9 +13,9 @@ namespace PokemonGame.General
         /// The list of variables that you loaded the scene with
         /// </summary>
         private static Dictionary<string, object> _vars = new Dictionary<string, object>();
-
+    
         public static string sceneLoadedFrom;
-        
+            
         /// <summary>
         /// Loads a scene from the sceneIndex param and what ever arguments you give it
         /// </summary>
@@ -28,7 +28,7 @@ namespace PokemonGame.General
             _vars = newVars;
             SceneManager.LoadScene(sceneIndex);
         }
-
+    
         public static void LoadScene(string sceneName, Dictionary<string, object> newVars)
         {
             ClearLoader();
@@ -36,7 +36,7 @@ namespace PokemonGame.General
             _vars = newVars;
             SceneManager.LoadScene(sceneName);
         }
-
+    
         /// <summary>
         /// Clears the scene loader arguments
         /// </summary>
@@ -45,14 +45,14 @@ namespace PokemonGame.General
             _vars.Clear();
             sceneLoadedFrom = null;
         }
-
+    
         public static object GetVariable(string variableName)
         {
             if (_vars.TryGetValue(variableName, out object var))
             {
                 return var;
             }
-            
+                
             Debug.LogWarning("Could not find a variable with that name, returning null");
             return null;
         }

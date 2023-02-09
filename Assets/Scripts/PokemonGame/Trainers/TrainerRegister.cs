@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace PokemonGame.Trainers
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Class that manages trainers
     /// </summary>

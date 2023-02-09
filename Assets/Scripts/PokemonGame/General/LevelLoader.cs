@@ -1,8 +1,8 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
 namespace PokemonGame.General
 {
+    using UnityEngine;
+    using UnityEngine.SceneManagement;
+
     public class LevelLoader : MonoBehaviour
     {
         [SerializeField] private string levelName;

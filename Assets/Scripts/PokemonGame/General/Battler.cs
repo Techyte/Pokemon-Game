@@ -1,13 +1,12 @@
+namespace PokemonGame.General
+{
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PokemonGame.General;
-using PokemonGame.ScriptableObjects;
+using ScriptableObjects;
 using UnityEngine;
-using Type = PokemonGame.ScriptableObjects.Type;
+using Type = ScriptableObjects.Type;
 
-namespace PokemonGame
-{
     /// <summary>
     /// The class that contains all the information for a battler
     /// </summary>

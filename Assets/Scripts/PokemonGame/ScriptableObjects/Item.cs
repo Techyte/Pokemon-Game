@@ -1,8 +1,8 @@
-using System.Diagnostics;
-using UnityEngine;
-
 namespace PokemonGame.ScriptableObjects
 {
+    using UnityEngine;
+
+
     [CreateAssetMenu(fileName = "New Item", menuName = "Pokemon Game/New Item")]
     public class Item : ScriptableObject
     {
@@ -11,17 +11,17 @@ namespace PokemonGame.ScriptableObjects
         public ItemType type;
         public string description;
     }
-}
 
-public enum ItemType : int
-{
-    Item = 1,
-    PokeBall,
-    BattleItem,
-    Medicine,
-    TM,
-    TR,
-    Berry,
-    KeyItem,
-    HeldItem,
+    public enum ItemType : int
+    {
+        Item = 1,
+        PokeBall,
+        BattleItem,
+        Medicine,
+        TM,
+        TR,
+        Berry,
+        KeyItem,
+        HeldItem,
+    }
 }

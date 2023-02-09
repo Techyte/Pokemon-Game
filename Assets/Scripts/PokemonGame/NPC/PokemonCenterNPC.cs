@@ -1,10 +1,9 @@
-using PokemonGame.Game;
-using PokemonGame.Game.Party;
-using UnityEngine;
-
 namespace PokemonGame.NPC
 {
-    public class PokemonCenterNPC : Base.NPC
+    using Game.Party;
+    using UnityEngine;
+
+    public class PokemonCenterNPC : NPC
     {
         [SerializeField] private TextAsset textAsset;
 

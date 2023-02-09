@@ -1,9 +1,10 @@
-using System;
-using UnityEngine;
-using UnityEngine.Events;
-
 namespace PokemonGame.ScriptableObjects
 {
+    using System;
+    using General;
+    using UnityEngine;
+    using UnityEngine.Events;
+
     [CreateAssetMenu(order = 4, fileName = "New Status Effect", menuName = "Pokemon Game/New Status Effect")]
     public class StatusEffect : ScriptableObject
     {
@@ -13,14 +14,7 @@ namespace PokemonGame.ScriptableObjects
 
         public void Effect(StatusEffectEventArgs e)
         {
-            try
-            {
-                EffectEvent.Invoke(e);
-            }
-            catch
-            {
-                Debug.LogWarning($"{name}s effect does not have a function associated with it");
-            }
+            EffectEvent?.Invoke(e);
         }
     }
 

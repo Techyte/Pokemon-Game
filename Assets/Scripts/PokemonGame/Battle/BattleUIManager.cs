@@ -1,9 +1,9 @@
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-
 namespace PokemonGame.Battle
 {
+    using UnityEngine;
+    using TMPro;
+    using UnityEngine.UI;   
+
     public class BattleUIManager : MonoBehaviour
     {
         public GameObject playerUIHolder;
@@ -158,5 +158,4 @@ namespace PokemonGame.Battle
             currentBattlerHealthDisplay.value = battle.playerParty[battle.currentBattlerIndex].currentHealth;
         }
     }
-
 }

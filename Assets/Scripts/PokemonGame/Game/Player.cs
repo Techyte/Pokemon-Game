@@ -1,7 +1,7 @@
-using UnityEngine;
-
 namespace PokemonGame.Game
 {
+    using UnityEngine;
+
     public class Player : MonoBehaviour
     {
         private Quaternion _target;

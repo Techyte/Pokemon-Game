@@ -18,5 +18,5 @@ namespace PokemonGame.Trainers
                 _trainer.StartBattleStartSequence();
             }
         }
-    }   
+    }
 }

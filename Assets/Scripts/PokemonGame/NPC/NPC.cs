@@ -1,10 +1,11 @@
-using System;
-using PokemonGame.Dialogue;
-using PokemonGame.Game;
-using UnityEngine;
-
-namespace PokemonGame.NPC.Base
+namespace PokemonGame.NPC
 {
+
+    using System;
+    using Dialogue;
+    using Game;
+    using UnityEngine;
+
     /// <summary>
     /// Base class of all NPCs, contains functionality for detecting the player nearby and having an OnPlayerInteract() override method
     /// </summary>

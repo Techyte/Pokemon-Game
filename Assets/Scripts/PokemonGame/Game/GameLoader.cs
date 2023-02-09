@@ -1,10 +1,10 @@
-using PokemonGame.Game.Party;
-using PokemonGame.Trainers;
-using PokemonGame.General;
-using UnityEngine;
-
 namespace PokemonGame.Game
 {
+    using Party;
+    using Trainers;
+    using General;
+    using UnityEngine;
+
     public class GameLoader : MonoBehaviour
     {
         public Player player;
@@ -33,5 +33,5 @@ namespace PokemonGame.Game
                 player.transform.rotation = playerRotation;
             }
         }
-    }
+    }    
 }

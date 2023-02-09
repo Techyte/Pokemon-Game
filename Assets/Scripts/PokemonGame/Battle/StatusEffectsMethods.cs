@@ -1,8 +1,8 @@
-using UnityEngine;
-using PokemonGame.ScriptableObjects;
-
 namespace PokemonGame.Battle
 {
+    using UnityEngine;
+    using ScriptableObjects;
+
     /// <summary>
     /// Contains all of the logic for every status effect
     /// </summary>
@@ -20,5 +20,5 @@ namespace PokemonGame.Battle
 
             //Debug.Log(args.battler.name + " was hurt by poison");
         }
-    }
+    }   
 }

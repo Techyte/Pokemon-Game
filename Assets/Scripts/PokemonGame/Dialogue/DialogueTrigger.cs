@@ -1,8 +1,8 @@
-using System;
-using UnityEngine;
-
 namespace PokemonGame.Dialogue
 {
+    using System;
+    using UnityEngine;
+
     /// <summary>
     /// Can be extended by a class to create something that triggers dialogue
     /// </summary>
@@ -45,5 +45,5 @@ namespace PokemonGame.Dialogue
         {
             
         }
-    }
+    }   
 }

@@ -1,10 +1,9 @@
-using System.Collections;
-using UnityEngine;
-
 namespace PokemonGame.Game.Party
 {
+    using General;
+
+    using UnityEngine;
     using System.Collections.Generic;
-    using PokemonGame;
 
     /// <summary>
     /// A collection of 6 <see cref="Battler"/>
@@ -50,5 +49,5 @@ namespace PokemonGame.Game.Party
         }
         
         [SerializeField] private List<Battler> PartyList;
-    }
+    }   
 }
