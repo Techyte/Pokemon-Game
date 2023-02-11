@@ -93,14 +93,39 @@ namespace PokemonGame.General
         public List<Move> moves;
 
         /// <summary>
+        /// Invoked when the battler takes damage
+        /// </summary>
+        public event EventHandler OnTookDamage;
+        /// <summary>
+        /// Invoked when the battler faints
+        /// </summary>
+        public event EventHandler OnFainted;
+        /// <summary>
+        /// Invoked when the battlers health updates (includes taking damage)
+        /// </summary>
+        public event EventHandler OnHealthUpdated;
+
+        /// <summary>
         /// Inflict damage onto the battler
         /// </summary>
         /// <param name="damage">The amount of damage to inflict</param>
         public void TakeDamage(int damage)
         {
             currentHealth -= damage;
+            
+            OnTookDamage?.Invoke(this, EventArgs.Empty);
+            OnHealthUpdated?.Invoke(this, EventArgs.Empty);
+            
             if (currentHealth <= 0)
-                isFainted = true;
+            {
+                Fainted();
+            }
+        }
+
+        private void Fainted()
+        {
+            isFainted = true;
+            OnFainted?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -112,7 +137,11 @@ namespace PokemonGame.General
             currentHealth = newHealth;
             
             if (currentHealth > maxHealth)
+            {
                 currentHealth = maxHealth;
+            }
+
+            OnHealthUpdated?.Invoke(this, EventArgs.Empty);
         }
 
         //Used for updating stats and such outside of runtime

@@ -43,7 +43,6 @@ namespace PokemonGame.Game.Party
 
         public event EventHandler PartyAllDefeated;
 
-        // Experimental function, WIP DO NOT USE (COULD CAUSE STACK OVERFLOW LOL)
         private void CheckDefeatedStatus()
         {
             if (DefeatedCount() == Count)
@@ -92,11 +91,14 @@ namespace PokemonGame.Game.Party
         
         public Battler this[int i]
         {
-            get => party[i];
+            get
+            {
+                CheckDefeatedStatus();
+                return party[i]; 
+            }
             set
             {
                 party[i] = value;
-                Debug.Log("updating party");
                 CheckDefeatedStatus();
             }
         }

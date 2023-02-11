@@ -1,3 +1,5 @@
+using PokemonGame.Battle;
+
 namespace PokemonGame.ScriptableObjects
 {
     using System;
@@ -43,11 +45,17 @@ namespace PokemonGame.ScriptableObjects
     /// </summary>
     public class MoveMethodEventArgs : EventArgs
     {
-        public MoveMethodEventArgs(Battler target)
+        public Battler target;
+        public Battler attacker;
+        public Move move;
+        public ExternalBattleData battleData;
+
+        public MoveMethodEventArgs(Battler attacker, Battler target, Move move, ExternalBattleData battleData)
         {
             this.target = target;
+            this.attacker = attacker;
+            this.move = move;
+            this.battleData = battleData;
         }
-            
-        public Battler target;
     }
 }

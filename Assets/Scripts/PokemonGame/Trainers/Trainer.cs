@@ -64,6 +64,18 @@ namespace PokemonGame.Trainers
             interactable = isDefeated;
             DialogueFinished += DialogueEnded;
         }
+
+        private void Update()
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
+            {
+                if (hit.transform.GetComponent<Player>())
+                {
+                    StartBattle();   
+                }
+            }
+        }
         
         /// <summary>
         /// Triggers the defeated dialogue
@@ -89,15 +101,7 @@ namespace PokemonGame.Trainers
             base.OnPlayerInteracted();
         }
 
-        /// <summary>
-        /// Starts the battle starting sequence
-        /// </summary>
-        public void StartBattleStartSequence()
-        {
-            StartBattle();
-        }
-
-        public void StartBattle()
+        private void StartBattle()
         {
             if (!isDefeated)
             {
