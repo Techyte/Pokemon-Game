@@ -17,7 +17,6 @@ namespace PokemonGame.Game
         private float _turnSmoothVelocity;
         public bool canMove = true;
         [SerializeField] float speed;
-        public bool battleStarterHasStartedWalking;
         [SerializeField] private LayerMask ground;
         
         private void Start()
@@ -29,11 +28,6 @@ namespace PokemonGame.Game
 
         private void Update()
         {
-            if (battleStarterHasStartedWalking)
-            {
-                canMove = false;
-            }
-            
             if (canMove)
             {
                 Cursor.lockState = CursorLockMode.Locked;

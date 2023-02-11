@@ -286,6 +286,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa73ff7a419fccf4bb53e91703100db9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loaderSetting: 1
+  test: 0
   levelName: Game
 --- !u!33 &725613367
 MeshFilter:
