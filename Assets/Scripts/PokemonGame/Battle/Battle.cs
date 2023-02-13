@@ -53,9 +53,9 @@ namespace PokemonGame.Battle
         [Header("Other Readouts")]
         [SerializeField] public TurnStatus currentTurn = TurnStatus.Choosing;
         
-        public Party playerParty;
+        public BattleParty playerParty;
         
-        public Party opponentParty;
+        public BattleParty opponentParty;
         
         [SerializeField] private EnemyAI enemyAI;
         
@@ -85,15 +85,12 @@ namespace PokemonGame.Battle
             Cursor.visible = true;
 
             //Loads relevant info like the opponent and player party
-            Debug.Log("First");
-            playerParty = PartyManager.Instance.GetParty();
-            opponentParty = (Party)SceneLoader.GetVariable("opponentParty");
+            playerParty = new BattleParty(PartyManager.Instance.GetParty());
+            opponentParty = new BattleParty((Party)SceneLoader.GetVariable("opponentParty"));
             enemyAI = (EnemyAI)SceneLoader.GetVariable("enemyAI");
             _opponentName = (string)SceneLoader.GetVariable("opponentName");
             _playerPos = (Vector3)SceneLoader.GetVariable("playerPosition");
             _playerRotation = (Quaternion)SceneLoader.GetVariable("playerRotation");
-
-            SceneLoader.ClearLoader();
 
             currentBattlerIndex = 0;
             opponentBattlerIndex = 0;

@@ -1,14 +1,23 @@
+using System;
+
 namespace PokemonGame.Game
 {
     using UnityEngine;
 
     public class Player : MonoBehaviour
     {
+        public static Player Instance;
+        
         private Quaternion _target;
         [SerializeField] private bool look;
 
         public Quaternion targetRot => _target;
-        
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
         public void LookAtTarget(Vector3 trainerPos)
         {
             look = true;

@@ -1,3 +1,5 @@
+using PokemonGame.Global;
+
 namespace PokemonGame.Game
 {
     using UnityEngine;
@@ -13,7 +15,7 @@ namespace PokemonGame.Game
             {
                 DontDestroyOnLoad(objectToNotDestroy);
             }
-            SceneManager.LoadScene(1);
+            SceneLoader.LoadScene(1);
         }
     }
 }

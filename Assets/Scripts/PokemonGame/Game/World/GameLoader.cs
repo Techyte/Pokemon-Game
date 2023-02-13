@@ -1,4 +1,4 @@
-namespace PokemonGame.Game
+namespace PokemonGame.Game.World
 {
     using Party;
     using Trainers;
@@ -19,7 +19,7 @@ namespace PokemonGame.Game
 
         private void LoadGameFromBattle()
         {
-            PartyManager.Instance.UpdatePlayerParty((Party.Party)SceneLoader.GetVariable("playerParty"));
+            PartyManager.Instance.UpdatePlayerParty((Party)SceneLoader.GetVariable("playerParty"));
             string trainerName = (string)SceneLoader.GetVariable("trainerName");
             Vector3 playerPos = (Vector3)SceneLoader.GetVariable("playerPos");
             Quaternion playerRotation = (Quaternion)SceneLoader.GetVariable("playerRotation");

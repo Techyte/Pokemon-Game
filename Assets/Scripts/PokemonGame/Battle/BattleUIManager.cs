@@ -127,7 +127,6 @@ namespace PokemonGame.Battle
 
         private void UpdateBattlerSprites()
         {
-            Debug.Log("Second");
             currentBattlerRenderer.sprite = battle.playerParty[battle.currentBattlerIndex].texture;
             opponentBattlerRenderer.sprite = battle.opponentParty[battle.opponentBattlerIndex].texture;
         }

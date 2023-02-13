@@ -28,6 +28,30 @@ namespace PokemonGame.Global
             _vars = newVars;
             SceneManager.LoadScene(sceneIndex);
         }
+
+        /// <summary>
+        /// Loads a a scene from the sceneIndex param
+        /// </summary>
+        /// <param name="sceneIndex">The index of the scene to load</param>
+        public static void LoadScene(int sceneIndex)
+        {
+            ClearLoader();
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
+            _vars = null;
+            SceneManager.LoadScene(sceneIndex);
+        }
+
+        /// <summary>
+        /// Loads a a scene from the name param
+        /// </summary>
+        /// <param name="sceneName">The name of the scene to load</param>
+        public static void LoadScene(string sceneName)
+        {
+            ClearLoader();
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
+            _vars = null;
+            SceneManager.LoadScene(sceneName);
+        }
     
         public static void LoadScene(string sceneName, Dictionary<string, object> newVars)
         {
@@ -40,9 +64,12 @@ namespace PokemonGame.Global
         /// <summary>
         /// Clears the scene loader arguments
         /// </summary>
-        public static void ClearLoader()
+        private static void ClearLoader()
         {
-            _vars.Clear();
+            if(_vars != null)
+            {
+                _vars.Clear();
+            }
             sceneLoadedFrom = null;
         }
     

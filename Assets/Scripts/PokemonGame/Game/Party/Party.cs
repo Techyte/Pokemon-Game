@@ -18,7 +18,7 @@ namespace PokemonGame.Game.Party
         /// <summary>
         /// The actual list of battlers
         /// </summary>
-        private List<Battler> party
+        public List<Battler> party
         {
             get
             {
@@ -37,21 +37,16 @@ namespace PokemonGame.Game.Party
                     }
                 }
                 
-                CheckDefeatedStatus();
+                OnSet();
             }
         }
 
-        public event EventHandler PartyAllDefeated;
-
-        private void CheckDefeatedStatus()
+        protected virtual void OnSet()
         {
-            if (DefeatedCount() == Count)
-            {
-                PartyAllDefeated?.Invoke(this, EventArgs.Empty);
-            }
+            
         }
 
-        private int DefeatedCount()
+        public int DefeatedCount()
         {
             var partyCount = 0;
 
@@ -89,17 +84,15 @@ namespace PokemonGame.Game.Party
             party.Add(battlerToAdd);
         }
         
-        public Battler this[int i]
+        public virtual Battler this[int i]
         {
             get
             {
-                CheckDefeatedStatus();
                 return party[i]; 
             }
             set
             {
                 party[i] = value;
-                CheckDefeatedStatus();
             }
         }
         

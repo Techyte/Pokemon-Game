@@ -10,6 +10,7 @@ namespace PokemonGame.Trainers
     using UnityEngine.AI;
     using Game.Party;
     using Game;
+    using Game.World;
 
     /// <summary>
     /// Initiates a battle based on certain inspector parameters 
