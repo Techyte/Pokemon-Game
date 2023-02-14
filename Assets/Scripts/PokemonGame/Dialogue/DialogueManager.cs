@@ -144,12 +144,24 @@ public class DialogueManager : MonoBehaviour
         foreach(string tag in currentTags)
         {
             string[] splitTag = tag.Split(':');
-            if(splitTag.Length != 2)
+
+            string tagKey = "";
+            string tagValue = "";
+            
+            if(splitTag.Length > 2)
             {
                 Debug.LogError("Tag could not be appropriately parsed: " + tag);
             }
-            string tagKey = splitTag[0].Trim();
-            string tagValue = splitTag[1].Trim();
+            else if(splitTag.Length == 2)
+            {
+                tagKey = splitTag[0].Trim();
+                tagValue = splitTag[1].Trim();
+            }
+            else
+            {
+                // only the key is provided
+                tagKey = tag;
+            }
             
             currentTrigger.CallTag(tagKey, tagValue);
         }

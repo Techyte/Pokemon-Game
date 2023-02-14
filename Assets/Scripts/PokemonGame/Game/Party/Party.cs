@@ -88,7 +88,7 @@ namespace PokemonGame.Game.Party
         {
             get
             {
-                return party[i]; 
+                return party[i];
             }
             set
             {

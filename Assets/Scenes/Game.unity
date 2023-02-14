@@ -289,7 +289,6 @@ GameObject:
   m_Component:
   - component: {fileID: 76501324}
   - component: {fileID: 76501325}
-  - component: {fileID: 76501326}
   - component: {fileID: 76501327}
   m_Layer: 0
   m_Name: Defult Trainer
@@ -328,28 +327,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 4.034911, z: 1}
   m_Center: {x: 0, y: 1.5174556, z: 0}
---- !u!195 &76501326
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 76501319}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 2
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0.5
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &76501327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,13 +342,11 @@ MonoBehaviour:
   dialogueIsRunning: 0
   visualCue: {fileID: 2133515391}
   interactable: 1
-  opponentParty:
+  isDefeated: 0
+  party:
     PartyList:
     - {fileID: 11400000, guid: 67de8baebbb284748bd6845d44a070ef, type: 2}
-  agent: {fileID: 76501326}
   ai: {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}
-  isDefeated: 0
-  player: {fileID: 240114723}
   startBattleText: {fileID: 4900000, guid: d268e5f53b2c6dc4885c2864a543fe5d, type: 3}
   defeatedBattleText: {fileID: 4900000, guid: 78cd7f157876e40479c1cafa86c3ed57, type: 3}
   idleDialogue: {fileID: 4900000, guid: a8b6c86ca6b31f84798e308d4fb9b0c9, type: 3}
@@ -992,7 +967,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 496338215}
-  m_LocalRotation: {x: 0.2277846, y: 0.000000047491902, z: -2.2625277e-10, w: 0.97371155}
+  m_LocalRotation: {x: 0.2277846, y: 0.00000004749191, z: -2.2625277e-10, w: 0.97371155}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2030,7 +2005,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1163373108}
   - component: {fileID: 1163373107}
-  - component: {fileID: 1163373106}
   - component: {fileID: 1163373105}
   - component: {fileID: 1163373104}
   m_Layer: 0
@@ -2068,38 +2042,14 @@ MonoBehaviour:
   dialogueIsRunning: 0
   visualCue: {fileID: 426591930}
   interactable: 1
-  opponentParty:
+  isDefeated: 0
+  party:
     PartyList:
     - {fileID: 11400000, guid: 67de8baebbb284748bd6845d44a070ef, type: 2}
-  agent: {fileID: 1163373106}
   ai: {fileID: 11400000, guid: fc19a02c92784704ca9a40e316ccc11e, type: 2}
-  isDefeated: 0
-  player: {fileID: 240114723}
   startBattleText: {fileID: 4900000, guid: d268e5f53b2c6dc4885c2864a543fe5d, type: 3}
   defeatedBattleText: {fileID: 4900000, guid: 78cd7f157876e40479c1cafa86c3ed57, type: 3}
   idleDialogue: {fileID: 4900000, guid: a8b6c86ca6b31f84798e308d4fb9b0c9, type: 3}
---- !u!195 &1163373106
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1163373103}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 2
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0.5
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!65 &1163373107
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2872,6 +2822,37 @@ MonoBehaviour:
   bulbasaur: {fileID: 11400000, guid: f98dd2fa32827594da82f4b72db0840f, type: 2}
   squirtle: {fileID: 11400000, guid: db309f2b3aa1fb047b0aa64dcd5d8d4c, type: 2}
   textAsset: {fileID: 4900000, guid: d3400d76c0011ea4cbf02e97ef1c8a72, type: 3}
+--- !u!1 &1587678843
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1587678844}
+  m_Layer: 0
+  m_Name: DefaultSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1587678844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587678843}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 6.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6183537294107637588}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1714974404
 GameObject:
   m_ObjectHideFlags: 0
@@ -2962,7 +2943,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1849623538}
-  m_LocalRotation: {x: 0.24545825, y: 0.000000040294942, z: -9.2511065e-10, w: 0.9694072}
+  m_LocalRotation: {x: 0.24545825, y: 0.00000004029495, z: -9.2511154e-10, w: 0.9694072}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3482,7 +3463,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2132932083}
-  m_LocalRotation: {x: 0.21008259, y: 0.000000019623974, z: 2.6255398e-10, w: 0.9776837}
+  m_LocalRotation: {x: 0.21008259, y: 0.00000003987569, z: 5.335066e-10, w: 0.9776837}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3709,7 +3690,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81158075914857543}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -670.75, y: -370.016, z: 265.14078}
+  m_LocalPosition: {x: 31.23, y: 1.23, z: 1.79}
   m_LocalScale: {x: 3.4113, y: 4.792708, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4017,11 +3998,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6183537294107637591}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 701.52, y: 371.56155, z: -263.13977}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 81158075914857542}
+  - {fileID: 1587678844}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4037,6 +4019,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6b5eeea69ab774f8f367f4e98fcef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDefaultRotation: 1
+  spawnPoint: {fileID: 1587678844}
 --- !u!1 &6183537294107637591
 GameObject:
   m_ObjectHideFlags: 0

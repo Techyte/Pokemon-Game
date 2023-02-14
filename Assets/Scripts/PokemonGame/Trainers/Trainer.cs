@@ -7,7 +7,6 @@ namespace PokemonGame.Trainers
     using Global;
     using ScriptableObjects;
     using UnityEngine;
-    using UnityEngine.AI;
     using Game.Party;
     using Game;
     using Game.World;
@@ -18,41 +17,37 @@ namespace PokemonGame.Trainers
     public class Trainer : NPC.NPC
     {
         /// <summary>
+        /// Is the trainer defeated
+        /// </summary>
+        [Space] [Header("Defeated")] public bool isDefeated;
+        
+        /// <summary>
         /// The party that the trainer load's into the battle for the player to fight
         /// </summary>
-        public Party opponentParty;
-
-        public NavMeshAgent agent;
+        [Space] [Header("Party")] public Party party;
 
         /// <summary>
         /// The ai that the trainer load's into the battle for the player to fight
         /// </summary>
-        public EnemyAI ai;
+        [Space] [Header("AI")] public EnemyAI ai;
 
-        /// <summary>
-        /// Is the trainer defeated
-        /// </summary>
-        public bool isDefeated;
-        private bool _hasTalkedDefeatedText;
-
-        [SerializeField] private Player player;
-
+        [Space]
+        [Header("Dialogue")]
         [SerializeField] private TextAsset startBattleText;
         [SerializeField] private TextAsset defeatedBattleText;
         [SerializeField] private TextAsset idleDialogue;
 
+        
         private GameLoader _gameLoader;
 
         private bool _isPlayingIdleDialogue;
+        
+        private bool _hasTalkedDefeatedText;
         
         private void OnValidate()
         {
             if (!_gameLoader)
                 _gameLoader = FindObjectOfType<GameLoader>();
-            if (!player)
-                player = GameObject.Find("Player").GetComponent<Player>();
-            if (!agent)
-                agent = GetComponent<NavMeshAgent>();
         }
 
         private void Awake()
@@ -106,7 +101,7 @@ namespace PokemonGame.Trainers
         {
             if (!isDefeated)
             {
-                player.LookAtTarget(transform.position);
+                Player.Instance.LookAtTarget(transform.position);
                 StartDialogue(startBattleText);
             }
         }
@@ -129,22 +124,22 @@ namespace PokemonGame.Trainers
 
         private void LoadBattle()
         {
-            for (int i = 0; i < opponentParty.Count; i++)
+            for (int i = 0; i < party.Count; i++)
             {
-                if (opponentParty[i])
+                if (party[i])
                 {
-                    Battler replacementBattler = Battler.CreateCopy(opponentParty[i]);
-                    opponentParty[i] = replacementBattler;   
+                    Battler replacementBattler = Battler.CreateCopy(party[i]);
+                    party[i] = replacementBattler;   
                 }
             }
             
             Dictionary<string, object> vars = new Dictionary<string, object>
             {
-                { "opponentParty", opponentParty },
+                { "opponentParty", party },
                 { "enemyAI", ai },
                 { "opponentName", gameObject.name },
-                { "playerPosition", player.transform.position },
-                { "playerRotation", player.targetRot }
+                { "playerPosition", Player.Instance.transform.position },
+                { "playerRotation", Player.Instance.targetRot }
             };
 
             SceneLoader.LoadScene("Battle", vars);

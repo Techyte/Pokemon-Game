@@ -8,10 +8,10 @@ namespace PokemonGame.Dialogue
     /// </summary>
     public class DialogueTrigger : MonoBehaviour
     {
-        public bool dialogueIsRunning;
+        [HideInInspector] public bool dialogueIsRunning;
 
-        protected event EventHandler DialogueWasCalled;
-        protected event EventHandler DialogueFinished;
+        public event EventHandler DialogueWasCalled;
+        public event EventHandler DialogueFinished;
 
         /// <summary>
         /// Starts and INK Dialogue sequence from a text asset

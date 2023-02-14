@@ -1,6 +1,6 @@
 Do you want me to heal all your pokemon?
 + [Yes]
-#Heal:pokemon
+#Heal
 Healed!
 + [No]
 Bye!

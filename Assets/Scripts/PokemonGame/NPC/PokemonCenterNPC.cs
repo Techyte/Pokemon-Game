@@ -17,16 +17,6 @@ namespace PokemonGame.NPC
         {
             switch (tagKey)
             {
-                case "chosenPokemon":
-                    ChosePokemon(tagValue);
-                    break;
-            }
-        }
-
-        private void ChosePokemon(string tagValue)
-        {
-            switch (tagValue)
-            {
                 case "Heal": 
                     PartyManager.Instance.HealAll();
                     break;

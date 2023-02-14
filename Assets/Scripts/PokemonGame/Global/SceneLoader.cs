@@ -79,8 +79,7 @@ namespace PokemonGame.Global
             {
                 return var;
             }
-                
-            Debug.LogWarning("Could not find a variable with that name, returning null");
+            
             return null;
         }
     }

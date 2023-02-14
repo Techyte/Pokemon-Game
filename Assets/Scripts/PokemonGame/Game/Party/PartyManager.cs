@@ -42,6 +42,8 @@ namespace PokemonGame.Game.Party
 
         public void HealAll()
         {
+            Debug.Log("healed all");
+            
             for (int i = 0; i < _playerParty.Count; i++)
             {
                 _playerParty[i].currentHealth = _playerParty[i].maxHealth;
