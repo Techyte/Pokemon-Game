@@ -919,6 +919,7 @@ MonoBehaviour:
   - {fileID: 453293117388818677}
   - {fileID: 453293116360056957}
   currentChoicesAmount: 0
+  globalsInkFile: {fileID: 4900000, guid: 16248ed7785da2b41ba3ed3f47c9c56a, type: 3}
   currentTrigger: {fileID: 0}
   movement: {fileID: 0}
 --- !u!1 &453293117054167458

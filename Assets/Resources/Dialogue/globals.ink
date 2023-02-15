@@ -1,0 +1,2 @@
+VAR starterChosen = ""
+VAR pokemon = ""

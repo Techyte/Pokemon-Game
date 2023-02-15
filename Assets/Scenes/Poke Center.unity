@@ -915,6 +915,7 @@ MonoBehaviour:
   visualCue: {fileID: 1296220515}
   interactable: 1
   textAsset: {fileID: 4900000, guid: d2d32b22c6df65045b0a11d690dc7b88, type: 3}
+  test: Test Pokemon
 --- !u!65 &2252375844865319966
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1533,6 +1534,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6b5eeea69ab774f8f367f4e98fcef2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useDefaultRotation: 1
+  spawnPoint: {fileID: 0}
 --- !u!4 &6183537295119243513
 Transform:
   m_ObjectHideFlags: 0
@@ -1908,7 +1911,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7329654792840125507}
-  m_LocalRotation: {x: 0.21008259, y: -0.00000003987569, z: -5.335066e-10, w: 0.9776837}
+  m_LocalRotation: {x: 0.21008259, y: 0.000000019623974, z: 2.6255398e-10, w: 0.9776837}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1986,7 +1989,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7329654793090591298}
-  m_LocalRotation: {x: 0.24545825, y: -0.000000040294942, z: 9.2511065e-10, w: 0.9694072}
+  m_LocalRotation: {x: 0.24545825, y: 0.000000040294942, z: -9.2511065e-10, w: 0.9694072}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2561,7 +2564,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7329654793416076439}
-  m_LocalRotation: {x: 0.2277846, y: -0.000000047491902, z: 2.2625277e-10, w: 0.97371155}
+  m_LocalRotation: {x: 0.2277846, y: 0.000000047491902, z: -2.2625277e-10, w: 0.97371155}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2693,7 +2696,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7329654793446661840}
-  m_LocalRotation: {x: 0.117014244, y: -0.000000032869593, z: 0.0000000038728154,
+  m_LocalRotation: {x: 0.117014244, y: 0.000000032869593, z: -0.0000000038728154,
     w: 0.99313027}
   m_LocalPosition: {x: 0, y: 3.3333335, z: -18}
   m_LocalScale: {x: 1, y: 0.45564398, z: 1.45399}

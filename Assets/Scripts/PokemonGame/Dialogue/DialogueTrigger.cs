@@ -45,5 +45,10 @@ namespace PokemonGame.Dialogue
         {
             
         }
+
+        public void SetDialogueVariable(string variableName, object value)
+        {
+            
+        }
     }   
 }

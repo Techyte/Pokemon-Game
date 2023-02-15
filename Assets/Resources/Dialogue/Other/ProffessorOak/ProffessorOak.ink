@@ -1,5 +1,8 @@
+INCLUDE ../../globals.ink
+
 Hello!
--> main
+
+{ starterChosen == "" : -> main | -> starterAlreadyChosen }
 
 === main ===
 Which pokemon do you choose?
@@ -13,6 +16,11 @@ Which pokemon do you choose?
  #chosenPokemon:Squirtle
 -> chosen("Squirtle")
 
-=== chosen(pokemon) ===
-You chose {pokemon}!
+=== chosen(pokemonName) ===
+~ starterChosen = pokemon
+You chose {pokemonName}!
+-> END
+
+=== starterAlreadyChosen ===
+You have already chose {starterChosen}!
 -> END
