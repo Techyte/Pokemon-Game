@@ -19,7 +19,7 @@ namespace PokemonGame.NPC
             base.OnPlayerInteracted();
         }
         
-        public override void CallTag(string tagKey, string tagValue)
+        public override void CallTag(string tagKey, string[] tagValues)
         {
             switch (tagKey)
             {

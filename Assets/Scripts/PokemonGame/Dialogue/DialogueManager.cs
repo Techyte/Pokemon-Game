@@ -24,6 +24,7 @@ namespace PokemonGame.Dialogue
         [SerializeField] private TextAsset globalsInkFile;
         private TextMeshProUGUI[] _choicesText;
         private DialogueVariables _dialogueVariables;
+        private DialogueMethods _dialogueMethods;
         
         public bool dialogueIsPlaying { get; private set; }
         public DialogueTrigger currentTrigger;
@@ -40,6 +41,7 @@ namespace PokemonGame.Dialogue
             SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
     
             _dialogueVariables = new DialogueVariables(globalsInkFile);
+            _dialogueMethods = new DialogueMethods();
         }
         
         private void SceneManagerOnSceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -152,7 +154,8 @@ namespace PokemonGame.Dialogue
     
                 string tagKey = "";
                 string tagValue = "";
-                
+                string[] tagValues = null;
+
                 if(splitTag.Length > 2)
                 {
                     Debug.LogError("Tag could not be appropriately parsed: " + tag);
@@ -161,14 +164,21 @@ namespace PokemonGame.Dialogue
                 {
                     tagKey = splitTag[0].Trim();
                     tagValue = splitTag[1].Trim();
+
+                    tagValues = tagValue.Split('.');
                 }
                 else
                 {
                     // only the key is provided
                     tagKey = tag;
                 }
+
+                if (currentTrigger.allowsGlobalTags)
+                {
+                    _dialogueMethods.HandleGlobalTag(tagKey, tagValues);
+                }
                 
-                currentTrigger.CallTag(tagKey, tagValue);
+                currentTrigger.CallTag(tagKey, tagValues);
             }
         }
         

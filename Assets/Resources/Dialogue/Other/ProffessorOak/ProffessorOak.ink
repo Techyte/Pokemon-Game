@@ -17,7 +17,7 @@ Which pokemon do you choose?
 -> chosen("Squirtle")
 
 === chosen(pokemonName) ===
-~ starterChosen = pokemon
+~ starterChosen = pokemonName
 You chose {pokemonName}!
 -> END
 

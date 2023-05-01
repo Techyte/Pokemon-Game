@@ -1,24 +1,17 @@
 using System.Collections.Generic;
-using PokemonGame.Dialogue;
 using PokemonGame.ScriptableObjects;
 using PokemonGame.Game;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace PokemonGame.General
 {
-    public class Bag : MonoBehaviour
+    public class Bag : MenuBase
     {
         public static Bag Instance;
         
-        [SerializeField] private KeyCode bagKey;
-        [Space]
-        [SerializeField] private GameObject bagObject;
-        [SerializeField] private PlayerMovement movement;
         [SerializeField] private GameObject itemDisplayHolder;
         [SerializeField] private GameObject itemDisplayGameObject;
         
-        [SerializeField] private bool bagState;
         private ItemType _currentSortingType;
         
         private Dictionary<Item, BagItemData> _items = new Dictionary<Item, BagItemData>();
@@ -26,16 +19,11 @@ namespace PokemonGame.General
         private void Awake()
         {
             Instance = this;
-            
-            SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
         }
-        
-        private void SceneManagerOnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+
+        private void OnEnable()
         {
-            if (SceneManager.GetActiveScene().name != "Battle")
-            {
-                movement = FindObjectOfType<PlayerMovement>();
-            }
+            UpdateBagUI();
         }
         
         /// <summary>
@@ -47,7 +35,7 @@ namespace PokemonGame.General
             _currentSortingType = (ItemType)newType;
             UpdateBagUI();
         }
-        
+
         private void UpdateBagUI()
         { 
             foreach (ItemDisplay child in itemDisplayHolder.transform.GetComponentsInChildren<ItemDisplay>()) {
@@ -71,26 +59,6 @@ namespace PokemonGame.General
                 display.TextureImage.sprite = itemToShow.item.sprite;
                 display.DescriptionText.text = itemToShow.item.description;
             }
-        }
-        
-        private void Update()
-        {
-            if (Input.GetKeyDown(bagKey) && !DialogueManager.instance.dialogueIsPlaying)
-            {
-                ToggleBag();
-            }
-        }
-        
-        private void ToggleBag()
-        {
-            bagState = !bagState;
-            
-            movement.canMove = !bagState;
-            bagObject.SetActive(bagState);
-            Cursor.visible = bagState;
-            Cursor.lockState = bagState ? CursorLockMode.None : CursorLockMode.Locked;
-            
-            UpdateBagUI();
         }
         
         /// <summary>

@@ -1,2 +1,1 @@
 VAR starterChosen = ""
-VAR pokemon = ""

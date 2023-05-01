@@ -1,11 +1,8 @@
+using UnityEngine;
+
 namespace PokemonGame.NPC
 {
-    using General;
-    using ScriptableObjects;
-    using UnityEngine;
-    using Global;
-
-    public class ItemNPC : NPC
+    public class DialogueNPC : NPC
     {
         [SerializeField] private TextAsset textAsset;
 
@@ -14,5 +11,5 @@ namespace PokemonGame.NPC
             StartDialogue(textAsset);
             base.OnPlayerInteracted();
         }
-    }
+    }   
 }

@@ -6,20 +6,20 @@ namespace PokemonGame.Battle
 
     public class BattleUIManager : MonoBehaviour
     {
-        public GameObject playerUIHolder;
-        public GameObject moveButtons;
-        public GameObject healthDisplays;
-        public GameObject changeBattlerDisplay;
-        public GameObject miscButtons;
-        public GameObject backButton;
-        public TextMeshProUGUI[] battlerDisplays;
-        public SpriteRenderer currentBattlerRenderer;
-        public SpriteRenderer opponentBattlerRenderer;
-        public Slider currentBattlerHealthDisplay;
-        public Slider opponentHealthDisplay;
-        public TextMeshProUGUI[] moveTexts;
-        public TextMeshProUGUI currentBattlerNameDisplay;
-        public TextMeshProUGUI opponentBattlerNameDisplay;
+        [SerializeField] private GameObject playerUIHolder;
+        [SerializeField] private GameObject moveButtons;
+        [SerializeField] private GameObject healthDisplays;
+        [SerializeField] private GameObject changeBattlerDisplay;
+        [SerializeField] private GameObject miscButtons;
+        [SerializeField] private GameObject backButton;
+        [SerializeField] private TextMeshProUGUI[] battlerDisplays;
+        [SerializeField] private SpriteRenderer currentBattlerRenderer;
+        [SerializeField] private SpriteRenderer opponentBattlerRenderer;
+        [SerializeField] private Slider currentBattlerHealthDisplay;
+        [SerializeField] private Slider opponentHealthDisplay;
+        [SerializeField] private TextMeshProUGUI[] moveTexts;
+        [SerializeField] private TextMeshProUGUI currentBattlerNameDisplay;
+        [SerializeField] private TextMeshProUGUI opponentBattlerNameDisplay;
 
         public Battle battle;
 

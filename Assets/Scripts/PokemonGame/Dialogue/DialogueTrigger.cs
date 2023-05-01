@@ -8,6 +8,7 @@ namespace PokemonGame.Dialogue
     /// </summary>
     public class DialogueTrigger : MonoBehaviour
     {
+        public bool allowsGlobalTags = true;
         [HideInInspector] public bool dialogueIsRunning;
 
         public event EventHandler DialogueWasCalled;
@@ -41,14 +42,14 @@ namespace PokemonGame.Dialogue
         /// </summary>
         /// <param name="tagKey">The tag key</param>
         /// <param name="tagValue">The tag value</param>
-        public virtual void CallTag(string tagKey, string tagValue)
+        public virtual void CallTag(string tagKey, string[] tagValues)
         {
             
         }
 
-        public void SetDialogueVariable(string variableName, object value)
+        public void SetDialogueVariable(string variableName, Ink.Runtime.Object value)
         {
-            
+            DialogueManager.instance.SetGlobalVariable(variableName, value);
         }
     }   
 }
