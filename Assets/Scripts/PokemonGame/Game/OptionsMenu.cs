@@ -15,8 +15,10 @@ namespace PokemonGame.Game
         [SerializeField] private bool state;
         [SerializeField] private GameObject menuObject;
         [SerializeField] private GameObject defaultMenuObject;
+        [SerializeField] private GameObject backButton;
 
-        [SerializeField] private MenuBase[] menuObjects;
+        [SerializeField] private GameObject[] menuObjects;
+        [SerializeField] private GameObject currentMenu;
 
         private void Awake()
         {
@@ -26,17 +28,17 @@ namespace PokemonGame.Game
         public void OpenSeparateMenu(int menuIndex)
         {
             defaultMenuObject.SetActive(false);
-            menuObjects[menuIndex].Open();
+            currentMenu = Instantiate(menuObjects[menuIndex], transform);
+            backButton.SetActive(true);
         }
 
         public void BackButton()
         {
             defaultMenuObject.SetActive(true);
             
-            for (int i = 0; i < menuObjects.Length; i++)
-            {
-                menuObjects[i].Close();
-            }
+            Destroy(currentMenu);
+            currentMenu = null;
+            backButton.SetActive(false);
         }
 
         private void SceneManagerOnSceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -58,6 +60,15 @@ namespace PokemonGame.Game
         private void ToggleMenu()
         {
             state = !state;
+
+            if (!state)
+            {
+                defaultMenuObject.SetActive(true);
+                backButton.SetActive(false);
+            
+                Destroy(currentMenu);
+                currentMenu = null;
+            }
             
             movement.canMove = !state;
             menuObject.SetActive(state);

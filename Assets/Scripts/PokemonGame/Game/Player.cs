@@ -1,5 +1,3 @@
-using System;
-
 namespace PokemonGame.Game
 {
     using UnityEngine;
@@ -45,6 +43,14 @@ namespace PokemonGame.Game
         {
             look = false;
             _target = transform.rotation;
+        }
+
+        public void SetPosRot(Vector3 position, Quaternion rotation)
+        {
+            Debug.Log(position);
+            transform.position = position;
+            Debug.Log(transform.position);
+            transform.rotation = rotation;
         }
     }
 }

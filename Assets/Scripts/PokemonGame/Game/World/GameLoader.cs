@@ -7,7 +7,7 @@ namespace PokemonGame.Game.World
 
     public class GameLoader : MonoBehaviour
     {
-        public Player player;
+        [SerializeField] private Party party;
     
         private void Awake()
         {
@@ -15,23 +15,26 @@ namespace PokemonGame.Game.World
             {
                 LoadGameFromBattle();
             }
+            else if (SceneLoader.sceneLoadedFrom == "Boot")
+            {
+                PartyManager.SetPlayerParty(party.Copy());
+            }
         }
 
         private void LoadGameFromBattle()
         {
-            PartyManager.Instance.UpdatePlayerParty((Party)SceneLoader.GetVariable("playerParty"));
-            string trainerName = (string)SceneLoader.GetVariable("trainerName");
-            Vector3 playerPos = (Vector3)SceneLoader.GetVariable("playerPos");
-            Quaternion playerRotation = (Quaternion)SceneLoader.GetVariable("playerRotation");
-            bool isDefeated = (bool)SceneLoader.GetVariable("isDefeated");
-                
+            PartyManager.SetPlayerParty(SceneLoader.GetVariable<Party>("playerParty"));
+            string trainerName = SceneLoader.GetVariable<string>("trainerName");
+            Vector3 playerPos = SceneLoader.GetVariable<Vector3>("playerPos");
+            Quaternion playerRotation = SceneLoader.GetVariable<Quaternion>("playerRotation");
+            bool isDefeated = SceneLoader.GetVariable<bool>("isDefeated");
+            
             if (isDefeated)
             {
                 GameObject.Find(trainerName).GetComponent<Trainer>().Defeated();
-                
-                player.transform.position = playerPos;
-                player.transform.rotation = playerRotation;
             }
+                
+            Player.Instance.SetPosRot(playerPos, playerRotation);
         }
     }    
 }

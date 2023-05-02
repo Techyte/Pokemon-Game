@@ -1,4 +1,4 @@
-using PokemonGame.General;
+using PokemonGame.Game;
 using PokemonGame.Global;
 using PokemonGame.ScriptableObjects;
 
@@ -13,7 +13,7 @@ namespace PokemonGame.Dialogue
                 case "giveItem":
                     if (Registry.GetItem(tagValues[0], out Item item))
                     {
-                        Bag.Instance.Add(item, int.Parse(tagValues[1]));
+                        Bag.Add(item, int.Parse(tagValues[1]));
                     }
                     break;
             }

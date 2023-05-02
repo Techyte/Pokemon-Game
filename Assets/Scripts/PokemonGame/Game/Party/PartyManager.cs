@@ -7,26 +7,15 @@ namespace PokemonGame.Game.Party
     /// <summary>
     /// Manages the players party
     /// </summary>
-    public class PartyManager : MonoBehaviour
+    public static class PartyManager
     {
-        public static PartyManager Instance;
-        
-        [SerializeField] private Party _playerParty;
-
-        private void Awake()
-        {
-            Instance = this;
-            for (int i = 0; i < _playerParty.Count; i++)
-            {
-                _playerParty[i] = Battler.CreateCopy(_playerParty[i]);
-            }
-        }
+        private static Party _playerParty;
 
         /// <summary>
         /// Add a battler to the player party
         /// </summary>
         /// <param name="battlerToAdd">The battler that you add to the party</param>
-        public void AddBattler(Battler battlerToAdd)
+        public static void AddBattler(Battler battlerToAdd)
         {
             _playerParty.Add(battlerToAdd);
         }
@@ -35,12 +24,12 @@ namespace PokemonGame.Game.Party
         /// Change the player party without simply adding one
         /// </summary>
         /// <param name="party">The new party</param>
-        public void UpdatePlayerParty(Party party)
+        public static void SetPlayerParty(Party party)
         {
             _playerParty = party;
         }
 
-        public void HealAll()
+        public static void HealAll()
         {
             Debug.Log("healed all");
             
@@ -50,7 +39,7 @@ namespace PokemonGame.Game.Party
             }
         }
 
-        public Party GetParty()
+        public static Party GetParty()
         {
             return _playerParty;
         }

@@ -85,12 +85,12 @@ namespace PokemonGame.Battle
             Cursor.visible = true;
 
             //Loads relevant info like the opponent and player party
-            playerParty = new BattleParty(PartyManager.Instance.GetParty());
-            opponentParty = new BattleParty((Party)SceneLoader.GetVariable("opponentParty"));
-            enemyAI = (EnemyAI)SceneLoader.GetVariable("enemyAI");
-            _opponentName = (string)SceneLoader.GetVariable("opponentName");
-            _playerPos = (Vector3)SceneLoader.GetVariable("playerPosition");
-            _playerRotation = (Quaternion)SceneLoader.GetVariable("playerRotation");
+            playerParty = new BattleParty(PartyManager.GetParty());
+            opponentParty = new BattleParty(SceneLoader.GetVariable<Party>("opponentParty"));
+            enemyAI = SceneLoader.GetVariable<EnemyAI>("enemyAI");
+            _opponentName = SceneLoader.GetVariable<string>("opponentName");
+            _playerPos = SceneLoader.GetVariable<Vector3>("playerPosition");
+            _playerRotation = SceneLoader.GetVariable<Quaternion>("playerRotation");
 
             currentBattlerIndex = 0;
             opponentBattlerIndex = 0;

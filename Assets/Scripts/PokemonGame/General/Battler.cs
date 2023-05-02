@@ -230,11 +230,11 @@ namespace PokemonGame.General
             returnBattler.moves[1] = move2;
             returnBattler.moves[2] = move3;
             returnBattler.moves[3] = move4;
+            
+            returnBattler.UpdateStats();
 
             if (autoAssignHealth)
                 returnBattler.currentHealth = returnBattler.maxHealth;
-            
-            returnBattler.UpdateStats();
 
             returnBattler.texture = source.texture;
             

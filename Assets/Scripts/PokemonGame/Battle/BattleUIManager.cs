@@ -102,7 +102,6 @@ namespace PokemonGame.Battle
             battle.currentBattlerIndex = partyID;
             battle.playerParty[battle.currentBattlerIndex] = battle.playerParty[partyID];
             Back();
-            battle.currentTurn = TurnStatus.Showing;
             UpdateBattlerButtons();
             UpdateBattlerSprites();
             UpdateBattlerMoveDisplays();

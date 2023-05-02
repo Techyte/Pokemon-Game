@@ -14,7 +14,7 @@ namespace PokemonGame.Game.World
         {
             if (SceneLoader.sceneLoadedFrom != "Battle" && SceneLoader.sceneLoadedFrom != "Boot")
             {
-                string loaderName = (string)SceneLoader.GetVariable("loaderName");
+                string loaderName = SceneLoader.GetVariable<string>("loaderName");
 
                 Transform spawnPointObject;
                 
@@ -38,7 +38,7 @@ namespace PokemonGame.Game.World
                     UseDefaultSpawn();
                 }
             }
-            else
+            else if(SceneLoader.sceneLoadedFrom == "Boot")
             {
                 UseDefaultSpawn();
             }

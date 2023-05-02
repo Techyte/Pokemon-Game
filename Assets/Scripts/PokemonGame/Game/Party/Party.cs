@@ -14,6 +14,20 @@ namespace PokemonGame.Game.Party
     public class Party
     {
         public int Count => PartyCount();
+
+        public Party(Party partyOrigin)
+        {
+            party = new List<Battler>();
+            for (int i = 0; i < partyOrigin.Count; i++)
+            {
+                party.Add(Battler.CreateCopy(partyOrigin[i]));
+            }
+        }
+
+        public Party()
+        {
+            party = new List<Battler>();
+        }
         
         /// <summary>
         /// The actual list of battlers
@@ -77,6 +91,11 @@ namespace PokemonGame.Game.Party
             }
 
             return partyCount;
+        }
+
+        public Party Copy()
+        {
+            return new Party(this);
         }
 
         public void Add(Battler battlerToAdd)

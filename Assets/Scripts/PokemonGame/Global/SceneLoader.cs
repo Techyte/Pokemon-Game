@@ -73,14 +73,14 @@ namespace PokemonGame.Global
             sceneLoadedFrom = null;
         }
     
-        public static object GetVariable(string variableName)
+        public static T GetVariable<T>(string variableName)
         {
             if (_vars.TryGetValue(variableName, out object var))
             {
-                return var;
+                return (T)var;
             }
             
-            return null;
+            return default;
         }
     }
 }

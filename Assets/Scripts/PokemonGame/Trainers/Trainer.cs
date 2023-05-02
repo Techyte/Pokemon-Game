@@ -10,11 +10,12 @@ namespace PokemonGame.Trainers
     using Game.Party;
     using Game;
     using Game.World;
+    using NPC;
 
     /// <summary>
     /// Initiates a battle based on certain inspector parameters 
     /// </summary>
-    public class Trainer : NPC.NPC
+    public class Trainer : NPC
     {
         /// <summary>
         /// Is the trainer defeated

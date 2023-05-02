@@ -6,7 +6,6 @@ namespace PokemonGame.NPC
     public class PokemonCenterNPC : NPC
     {
         [SerializeField] private TextAsset textAsset;
-        [SerializeField] private string test;
 
         protected override void OnPlayerInteracted()
         {
@@ -19,8 +18,7 @@ namespace PokemonGame.NPC
             switch (tagKey)
             {
                 case "Heal": 
-                    PartyManager.Instance.HealAll();
-                    //DialogueManager.instance.SetGlobalVariable("pokemon", test);
+                    PartyManager.HealAll();
                     break;
             }
         }
