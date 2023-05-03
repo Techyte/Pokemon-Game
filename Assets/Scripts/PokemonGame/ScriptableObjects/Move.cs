@@ -16,6 +16,7 @@ namespace PokemonGame.ScriptableObjects
         public new string name;
         public Type type;
         public int damage;
+        public int basePP;
         public MoveCategory category;
     
         public UnityEvent<MoveMethodEventArgs> MoveMethodEvent;
@@ -56,6 +57,18 @@ namespace PokemonGame.ScriptableObjects
             this.attacker = attacker;
             this.move = move;
             this.battleData = battleData;
+        }
+    }
+
+    public struct MovePPData
+    {
+        public int MaxPP;
+        public int CurrentPP;
+
+        public MovePPData(int maxPP, int currentPP)
+        {
+            MaxPP = maxPP;
+            CurrentPP = currentPP;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace PokemonGame.Game.Party
     {
         public event EventHandler PartyAllDefeated;
 
-        private void CheckDefeatedStatus()
+        public void CheckDefeatedStatus()
         {
             if (DefeatedCount() == Count)
             {

@@ -11,10 +11,7 @@ namespace PokemonGame.Dialogue
             switch (tagKey)
             {
                 case "giveItem":
-                    if (Registry.GetItem(tagValues[0], out Item item))
-                    {
-                        Bag.Add(item, int.Parse(tagValues[1]));
-                    }
+                    Bag.Add(Registry.GetItem(tagValues[0]), int.Parse(tagValues[1]));
                     break;
             }
         }

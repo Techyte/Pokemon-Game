@@ -27,13 +27,13 @@ namespace PokemonGame.NPC
                     switch (tagValues[0])
                     {
                         case "Charmander": 
-                            PartyManager.AddBattler(Battler.Init(charmander, 5, null, "Charmander", null, null, null, null, true));
+                            PartyManager.AddBattler(Battler.Init(charmander, 5, StatusEffect.Healthy, "Charmander", null, true));
                             break;
                         case "Squirtle":
-                            PartyManager.AddBattler(Battler.Init(squirtle, 5, null, "Squirtle", null, null, null, null, true));
+                            PartyManager.AddBattler(Battler.Init(squirtle, 5, StatusEffect.Healthy, "Squirtle", null, true));
                             break;
                         case "Bulbasaur":
-                            PartyManager.AddBattler(Battler.Init(bulbasaur, 5, null, "Bulbasaur", null, null, null, null, true));
+                            PartyManager.AddBattler(Battler.Init(bulbasaur, 5, StatusEffect.Healthy, "Bulbasaur", null, true));
                             break;   
                     }
                     break;

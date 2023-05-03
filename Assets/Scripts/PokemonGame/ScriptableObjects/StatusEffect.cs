@@ -1,3 +1,5 @@
+using PokemonGame.Global;
+
 namespace PokemonGame.ScriptableObjects
 {
     using System;
@@ -11,6 +13,23 @@ namespace PokemonGame.ScriptableObjects
         public new string name;
 
         public UnityEvent<StatusEffectEventArgs> EffectEvent;
+
+        /// <summary>
+        /// The default status effect
+        /// </summary>
+        public static StatusEffect Healthy => HealthyEffect();
+
+        private static StatusEffect HealthyEffect()
+        {
+            StatusEffect effect = Registry.GetStatusEffect("Healthy");
+            
+            if (effect)
+            {
+                return effect;
+            }
+            Debug.LogWarning("Can't find the healthy status effect, something has gone terribly wrong if you are seeing this message lol");
+            return null;
+        }
 
         public void Effect(StatusEffectEventArgs e)
         {

@@ -85,7 +85,7 @@ namespace PokemonGame.Battle
             Cursor.visible = true;
 
             //Loads relevant info like the opponent and player party
-            playerParty = new BattleParty(PartyManager.GetParty());
+            playerParty = new BattleParty(SceneLoader.GetVariable<Party>("playerParty"));
             opponentParty = new BattleParty(SceneLoader.GetVariable<Party>("opponentParty"));
             enemyAI = SceneLoader.GetVariable<EnemyAI>("enemyAI");
             _opponentName = SceneLoader.GetVariable<string>("opponentName");
@@ -176,6 +176,8 @@ namespace PokemonGame.Battle
             //You can add any animation calls for attacking here
 
             playerMoveToDo.MoveMethod(new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler, playerMoveToDo, ExternalBattleData.Construct(this)));
+            
+            playerParty.CheckDefeatedStatus();
 
             uiManager.UpdateHealthDisplays();
         }
@@ -204,6 +206,8 @@ namespace PokemonGame.Battle
             //You can add any animation calls for attacking here
 
             enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler, playerCurrentBattler, enemyMoveToDo, ExternalBattleData.Construct(this)));
+            
+            playerParty.CheckDefeatedStatus();
             
             if (playerCurrentBattler.isFainted)
             {

@@ -11,11 +11,15 @@ public class PartyMenu : MonoBehaviour
     {
         Party currentPlayerParty = PartyManager.GetParty();
         
-        for (int i = 0; i < currentPlayerParty.Count; i++)
+        if(currentPlayerParty != null)
         {
-            Battler currentBattler = currentPlayerParty[i];
-            MenuBattlerDisplay display = Instantiate(displayPrefab, partyDisplayPositions[i]);
-            display.Init(currentBattler.name, currentBattler.currentHealth, currentBattler.maxHealth, currentBattler.texture);
+            for (int i = 0; i < currentPlayerParty.Count; i++)
+            {
+                Battler currentBattler = currentPlayerParty[i];
+                MenuBattlerDisplay display = Instantiate(displayPrefab, partyDisplayPositions[i]);
+                display.Init(currentBattler.name, currentBattler.currentHealth, currentBattler.maxHealth,
+                    currentBattler.texture);
+            }
         }
     }
 }

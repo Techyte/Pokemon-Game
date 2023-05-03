@@ -47,9 +47,7 @@ namespace PokemonGame.Game
 
         public void SetPosRot(Vector3 position, Quaternion rotation)
         {
-            Debug.Log(position);
             transform.position = position;
-            Debug.Log(transform.position);
             transform.rotation = rotation;
         }
     }

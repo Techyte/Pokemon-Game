@@ -1,3 +1,6 @@
+using PokemonGame.Global;
+using PokemonGame.ScriptableObjects;
+
 namespace PokemonGame.Game.Party
 {
     using General;
@@ -36,6 +39,7 @@ namespace PokemonGame.Game.Party
             for (int i = 0; i < _playerParty.Count; i++)
             {
                 _playerParty[i].currentHealth = _playerParty[i].maxHealth;
+                _playerParty[i].statusEffect = StatusEffect.Healthy;
             }
         }
 

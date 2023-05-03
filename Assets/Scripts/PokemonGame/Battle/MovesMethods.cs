@@ -80,10 +80,7 @@ namespace PokemonGame.Battle
         
         public void Toxic(MoveMethodEventArgs e)
         {
-            if (Registry.GetStatusEffect("Poisoned", out StatusEffect effect))
-            {
-                e.target.statusEffect = effect;   
-            }
+            e.target.statusEffect = Registry.GetStatusEffect("Poisoned");
             Debug.Log("Used Toxic on " + e.target.name);
         }
 

@@ -93,6 +93,11 @@ namespace PokemonGame.General
         public List<Move> moves;
 
         /// <summary>
+        /// The pp information about this battlers moves
+        /// </summary>
+        public List<MovePPData> movePpInfos;
+
+        /// <summary>
         /// Invoked when the battler takes damage
         /// </summary>
         public event EventHandler OnTookDamage;
@@ -124,6 +129,7 @@ namespace PokemonGame.General
 
         private void Fainted()
         {
+            currentHealth = 0;
             isFainted = true;
             OnFainted?.Invoke(this, EventArgs.Empty);
         }
@@ -144,15 +150,31 @@ namespace PokemonGame.General
             OnHealthUpdated?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Trys to make the battler learn a move
+        /// </summary>
+        /// <param name="moveToLearn">The move you want the battler to learn</param>
+        /// <returns>Weather the battler was able to learn the move</returns>
+        public bool LearnMove(Move moveToLearn)
+        {
+            if (moves.Count < 4)
+            {
+                moves.Add(moveToLearn);
+                movePpInfos.Add(new MovePPData(moveToLearn.basePP, moveToLearn.basePP));
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         //Used for updating stats and such outside of runtime
         private void OnValidate()
         {
             if (!statusEffect)
             {
-                if (Registry.GetStatusEffect("Healthy", out StatusEffect gotEffect))
-                {
-                    statusEffect = gotEffect;
-                }
+                statusEffect = StatusEffect.Healthy;
             }
             
             if (_oldLevel != level)
@@ -213,7 +235,7 @@ namespace PokemonGame.General
         /// <param name="move4">Move that shows up fourth when battling</param>
         /// <param name="autoAssignHealth">Auto assign health to the <see cref="maxHealth"/> when creating</param>
         /// <returns>A battler that has been created using the parameters given</returns>
-        public static Battler Init(BattlerTemplate source, int level, StatusEffect statusEffect, string name, Move move1, Move move2, Move move3, Move move4, bool autoAssignHealth)
+        public static Battler Init(BattlerTemplate source, int level, StatusEffect statusEffect, string name, List<Move> moves, bool autoAssignHealth)
         {
             Battler returnBattler = CreateInstance<Battler>();
             
@@ -226,10 +248,11 @@ namespace PokemonGame.General
             returnBattler.primaryType = source.primaryType;
             returnBattler.secondaryType = source.secondaryType;
             returnBattler.moves = new Move[4].ToList();
-            returnBattler.moves[0] = move1;
-            returnBattler.moves[1] = move2;
-            returnBattler.moves[2] = move3;
-            returnBattler.moves[3] = move4;
+
+            foreach (var move in moves)
+            {
+                returnBattler.LearnMove(move);
+            }
             
             returnBattler.UpdateStats();
 
@@ -249,7 +272,7 @@ namespace PokemonGame.General
         public static Battler CreateCopy(Battler battler)
         {
             Battler returnBattler = Init(battler.source, battler.level, battler.statusEffect, battler.name,
-                battler.moves[0], battler.moves[1], battler.moves[2], battler.moves[3], true);
+                battler.moves, true);
 
             returnBattler.currentHealth = battler.currentHealth;
             

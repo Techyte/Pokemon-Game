@@ -1,3 +1,5 @@
+using PokemonGame.General;
+
 namespace PokemonGame.Global
 {
     using ScriptableObjects;
@@ -8,116 +10,92 @@ namespace PokemonGame.Global
         /// <summary>
         /// Gets an item from the items folder using the name you supply
         /// </summary>
-        /// <param name="itemName">The name of the item you want to get</param>
-        /// <param name="foundItem">The found item</param>
-        /// <returns>Whether the item was found</returns>
-        public static bool GetItem(string itemName, out Item foundItem)
+        /// <param name="itemName">The name of the item</param>
+        /// <returns>The item that was found</returns>
+        public static Item GetItem(string itemName)
         {
-            Item[] items = Resources.LoadAll<Item>("Pokemon Game/Items");
-            foreach (var item in items)
-            {
-                if (item.name == itemName)
-                {
-                    foundItem = item;
-                    return true;
-                }
-            }
-    
-            Debug.LogWarning($"Could not find item {itemName}, returning null");
-            foundItem = null;
-            return false;
+            return (Item)Get(itemName, "Item");
         }
         
         /// <summary>
         /// Gets an ai from the ais folder using the name you supply
         /// </summary>
-        /// <param name="aiName">The name of the ai you want to get</param>
-        /// <param name="foundAi">The found ai</param>
-        /// <returns>Whether the ai was found</returns>
-        public static bool GetAI(string aiName, out EnemyAI foundAi)
+        /// <param name="aiName">The name of the ai</param>
+        /// <returns>The AI that was found</returns>
+        public static EnemyAI GetAI(string aiName)
         {
-            EnemyAI[] ais = Resources.LoadAll<EnemyAI>("Pokemon Game/Ais");
-            foreach (var ai in ais)
-            {
-                if (ai.name == aiName)
-                {
-                    foundAi = ai;
-                    return true;
-                }
-            }
-    
-            Debug.LogWarning($"Could not find ai {aiName}, returning null");
-            foundAi = null;
-            return foundAi;
+            return (EnemyAI)Get(aiName, "AI");
         }
         
         /// <summary>
         /// Gets a move from the moves folder using the name you supply
         /// </summary>
-        /// <param name="moveName">The name of the move you want to get</param>
-        /// <param name="foundMove">The found move</param>
-        /// <returns>Whether the move was found</returns>
-        public static bool GetMove(string moveName, out Move foundMove)
+        /// <param name="moveName">The name of the move</param>
+        /// <returns>The move that was found</returns>
+        public static Move GetMove(string moveName)
         {
-            Move[] moves = Resources.LoadAll<Move>("Pokemon Game/Moves");
-            foreach (var move in moves)
-            {
-                if (move.name == moveName)
-                {
-                    foundMove = move;
-                    return true;
-                }
-            }
-    
-            Debug.LogWarning($"Could not find move {moveName}, returning null");
-            foundMove = null;
-            return false;
+            return (Move)Get(moveName, "Move");
         }
         
         /// <summary>
         /// Gets a status effect from the status effects folder using the name you supply
         /// </summary>
-        /// <param name="effectName">The name of the status effect you want to get</param>
-        /// <param name="foundEffect">The found status effect</param>
-        /// <returns>Whether the status effect was found</returns>
-        public static bool GetStatusEffect(string effectName, out StatusEffect foundEffect)
+        /// <param name="effectName">The name of the status effect</param>
+        /// <returns>The status effect that was found</returns>
+        public static StatusEffect GetStatusEffect(string effectName)
         {
-            StatusEffect[] effects = Resources.LoadAll<StatusEffect>("Pokemon Game/StatusEffects");
-            foreach (var effect in effects)
-            {
-                if (effect.name == effectName)
-                {
-                    foundEffect = effect;
-                    return true;
-                }
-            }
-    
-            Debug.LogWarning($"Could not find status effect {effectName}, returning null");
-            foundEffect = null;
-            return false;
+            return (StatusEffect)Get(effectName, "Status Effect");
         }
         
         /// <summary>
         /// Gets a type from the type folder using the name you supply
         /// </summary>
-        /// <param name="typeName">The name of the type you want to get</param>
-        /// <param name="foundType">The found type</param>
-        /// <returns>Whether the type was found</returns>
-        public static bool GetType(string typeName, out Type foundType)
+        /// <param name="typeName">The name of the type</param>
+        /// <returns>The type that was found</returns>
+        public static Type GetType(string typeName)
         {
-            Type[] types = Resources.LoadAll<Type>("Pokemon Game/Types");
-            foreach (var type in types)
+            return (Type)Get(typeName, "Type");
+        }
+        
+        /// <summary>
+        /// Gets a battler from the battlers folder using the name you supply
+        /// </summary>
+        /// <param name="battlerName">The name of the battler</param>
+        /// <returns>The battler that was found</returns>
+        public static Battler GetBattler(string battlerName)
+        {
+            return (Battler)Get(battlerName, "Battler");
+        }
+        
+        /// <summary>
+        /// Gets a battler from the battler templates folder using the name you supply
+        /// </summary>
+        /// <param name="battlerTemplateName">The name of the battler template</param>
+        /// <returns>The battler template that was found</returns>
+        public static BattlerTemplate GetBattlerTemplate(string battlerTemplateName)
+        {
+            return (BattlerTemplate)Get(battlerTemplateName, "Battler Template");
+        }
+
+        /// <summary>
+        /// Gets something from the registry using the name you provide
+        /// </summary>
+        /// <param name="name">The name of what you want to get</param>
+        /// <param name="fileToSearch">The name of the file inside 'Resources/Pokemon Game' that contains the type of scriptable object you are looking for</param>
+        /// <returns></returns>
+        public static ScriptableObject Get(string name, string fileToSearch)
+        {
+            ScriptableObject[] objs = Resources.LoadAll<ScriptableObject>($"Pokemon Game/{fileToSearch}");
+            foreach (var obj in objs)
             {
-                if (type.name == typeName)
+                if (obj.name == name)
                 {
-                    foundType = type;
-                    return true;
+                    return obj;
                 }
             }
     
-            Debug.LogWarning($"Could not find type {typeName}, returning null");
-            foundType = null;
-            return false;
+            Debug.LogWarning($"Could not find {fileToSearch}: {name}, returning null");
+            return null;
         }
     }
 }
