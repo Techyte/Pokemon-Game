@@ -17,7 +17,7 @@ namespace PokemonGame.Battle
             //Checking to see if the move is capable of hitting the opponent battler
             foreach (var hType in move.type.cantHit)
             {
-                if (hType == battlerBeingAttacked.primaryType || hType == battlerBeingAttacked.secondaryType)
+                if (hType == Type.FromBasic(battlerBeingAttacked.primaryType) || hType == Type.FromBasic(battlerBeingAttacked.secondaryType))
                 {
                     Debug.Log(move.type + " can't hit that battler");
                     return 0;
@@ -29,11 +29,11 @@ namespace PokemonGame.Battle
             //Calculating type disadvantages
             foreach (var weakType in move.type.weakAgainst)
             {
-                if (weakType == battlerBeingAttacked.primaryType)
+                if (weakType == Type.FromBasic(battlerBeingAttacked.primaryType))
                 {
                     type /= 2;
                 }
-                if (weakType == battlerBeingAttacked.secondaryType)
+                if (weakType == Type.FromBasic(battlerBeingAttacked.secondaryType))
                 {
                     type /= 2;
                 }
@@ -42,11 +42,11 @@ namespace PokemonGame.Battle
             //Calculating type advantages
             foreach (var strongType in move.type.strongAgainst)
             {
-                if (strongType == battlerBeingAttacked.primaryType)
+                if (strongType == Type.FromBasic(battlerBeingAttacked.primaryType))
                 {
                     type *= 2;
                 }
-                if (strongType == battlerBeingAttacked.secondaryType)
+                if (strongType == Type.FromBasic(battlerBeingAttacked.secondaryType))
                 {
                     type *= 2;
                 }
@@ -60,12 +60,13 @@ namespace PokemonGame.Battle
 
             //STAB =  Same type attack bonus
             int stab = 1;
-            if (move.type == battlerThatUsed.primaryType)
+            if (move.type == Type.FromBasic(battlerThatUsed.primaryType))
             {
                 stab = 2;
             }
 
             //Damage calculation is correct (took me way to long to get it right) source: https://bulbapedia.bulbagarden.net/wiki/Damage#Generation_II
+            //TODO: revisit this because it does not look quite right
             int damage = move.category == MoveCategory.Physical
                 ? Mathf.RoundToInt(((2 * battlerThatUsed.level / 5 + 2) * move.damage *
                     (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * stab * type)

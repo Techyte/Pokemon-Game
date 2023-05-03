@@ -7,8 +7,8 @@ namespace PokemonGame.ScriptableObjects
     public class BattlerTemplate : ScriptableObject
     {
         public new string name;
-        public Type primaryType;
-        public Type secondaryType;
+        public BasicType primaryType;
+        public BasicType secondaryType;
         public List<Move> moves;
         public Sprite texture;
         [Space]

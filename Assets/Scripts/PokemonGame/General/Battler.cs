@@ -81,11 +81,11 @@ namespace PokemonGame.General
         /// <summary>
         /// The primary type of the battler
         /// </summary>
-        public Type primaryType;
+        public BasicType primaryType;
         /// <summary>
         /// The secondary type of the battler
         /// </summary>
-        public Type secondaryType;
+        public BasicType secondaryType;
 
         /// <summary>
         /// The list of moves that the battler has
@@ -229,10 +229,7 @@ namespace PokemonGame.General
         /// <param name="level">The <see cref="level"/> of the new battler</param>
         /// <param name="statusEffect">The status effect that the new battler will have</param>
         /// <param name="name">The nickname of the new battler</param>
-        /// <param name="move1">Move that shows up first when battling</param>
-        /// <param name="move2">Move that shows up second when battling</param>
-        /// <param name="move3">Move that shows up third when battling</param>
-        /// <param name="move4">Move that shows up fourth when battling</param>
+        /// <param name="moves">Moves that the battler has</param>
         /// <param name="autoAssignHealth">Auto assign health to the <see cref="maxHealth"/> when creating</param>
         /// <returns>A battler that has been created using the parameters given</returns>
         public static Battler Init(BattlerTemplate source, int level, StatusEffect statusEffect, string name, List<Move> moves, bool autoAssignHealth)
@@ -247,12 +244,17 @@ namespace PokemonGame.General
             returnBattler.statusEffect = statusEffect;
             returnBattler.primaryType = source.primaryType;
             returnBattler.secondaryType = source.secondaryType;
-            returnBattler.moves = new Move[4].ToList();
+            returnBattler.moves = new List<Move>();
+            returnBattler.movePpInfos = new List<MovePPData>();
 
             foreach (var move in moves)
             {
-                returnBattler.LearnMove(move);
+                if(move != null)
+                {
+                    returnBattler.LearnMove(move);
+                }
             }
+            
             
             returnBattler.UpdateStats();
 

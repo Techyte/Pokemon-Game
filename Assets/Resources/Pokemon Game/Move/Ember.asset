@@ -15,6 +15,7 @@ MonoBehaviour:
   name: Ember
   type: {fileID: 11400000, guid: 2a85514d25185dc4b9be8cdaec17c0d0, type: 2}
   damage: 40
+  basePP: 25
   category: 1
   MoveMethodEvent:
     m_PersistentCalls:

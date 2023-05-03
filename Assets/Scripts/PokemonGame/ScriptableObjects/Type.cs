@@ -1,3 +1,5 @@
+using PokemonGame.Global;
+
 namespace PokemonGame.ScriptableObjects
 {
     using UnityEngine;
@@ -9,5 +11,38 @@ namespace PokemonGame.ScriptableObjects
         public Type[] strongAgainst;
         public Type[] cantHit;
         public Type[] weakAgainst;
+
+        public static Type FromBasic(BasicType basicType)
+        {
+            if (basicType != BasicType.None)
+            {
+                return Registry.GetType(basicType.ToString());
+            }
+
+            return null;
+        }
+    }
+
+    public enum BasicType
+    {
+        None,
+        Bug,
+        Dark,
+        Dragon,
+        Electric,
+        Fairy,
+        Fighting,
+        Fire,
+        Flying,
+        Ghost,
+        Grass,
+        Ground,
+        Ice,
+        Normal,
+        Poison,
+        Psychic,
+        Rock,
+        Steel,
+        Water
     }
 }

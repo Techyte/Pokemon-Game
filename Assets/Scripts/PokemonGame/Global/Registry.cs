@@ -76,7 +76,7 @@ namespace PokemonGame.Global
         {
             return (BattlerTemplate)Get(battlerTemplateName, "Battler Template");
         }
-
+        
         /// <summary>
         /// Gets something from the registry using the name you provide
         /// </summary>

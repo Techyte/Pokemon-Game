@@ -136,15 +136,17 @@ namespace PokemonGame.Trainers
 
             Party playerParty = PartyManager.GetParty();
 
-            Battler charmander = Registry.GetBattler("Charmander");
+            Battler charmander = Registry.GetBattler("Player Charmander");
 
             if (playerParty == null)
             {
+                Debug.Log("Player party does not exist");
                 playerParty = new Party();
                 
                 playerParty.Add(Battler.CreateCopy(charmander));
             }else if (playerParty.Count == 0)
             {
+                Debug.Log("Player party is at 0");
                 playerParty.Add(Battler.CreateCopy(charmander));
             }
             
