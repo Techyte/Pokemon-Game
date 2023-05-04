@@ -27,7 +27,17 @@ namespace PokemonGame.ScriptableObjects
         /// <param name="e">The MoveMethodArgs that can be used to store additional information to be parsed onto the method</param>
         public void MoveMethod(MoveMethodEventArgs e)
         {
-            MoveMethodEvent?.Invoke(e);
+            int PP = e.attacker.movePpInfos[e.moveIndex].CurrentPP;
+
+            if (PP > 0)
+            {
+                MoveMethodEvent?.Invoke(e);
+                e.attacker.movePpInfos[e.moveIndex].MoveWasUsed();
+            }
+            else
+            {
+                Debug.Log("Move out of PP");
+            }
         }
     }
     
@@ -48,19 +58,21 @@ namespace PokemonGame.ScriptableObjects
     {
         public Battler target;
         public Battler attacker;
+        public int moveIndex;
         public Move move;
         public ExternalBattleData battleData;
 
-        public MoveMethodEventArgs(Battler attacker, Battler target, Move move, ExternalBattleData battleData)
+        public MoveMethodEventArgs(Battler attacker, Battler target, int moveIndex, Move move, ExternalBattleData battleData)
         {
             this.target = target;
             this.attacker = attacker;
+            this.moveIndex = moveIndex;
             this.move = move;
             this.battleData = battleData;
         }
     }
 
-    public struct MovePPData
+    public class MovePPData
     {
         public int MaxPP;
         public int CurrentPP;
@@ -69,6 +81,16 @@ namespace PokemonGame.ScriptableObjects
         {
             MaxPP = maxPP;
             CurrentPP = currentPP;
+        }
+
+        public void MoveWasUsed()
+        {
+            CurrentPP--;
+        }
+
+        public void Restore()
+        {
+            CurrentPP = MaxPP;
         }
     }
 }

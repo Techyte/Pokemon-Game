@@ -1,1 +1,1 @@
-﻿{"inkVersion":20,"root":[["^Hello","\n","^I would like you to take this","\n","^It will help you","\n",{"#":"giveItem:PokeBall.20"},"^There you go!","\n",["done",{"#f":5,"#n":"g-0"}],null],"done",{"#f":1}],"listDefs":{}}
+﻿{"inkVersion":20,"root":[["^Hello","\n","^I would like you to take this","\n","^It will help you","\n",{"#":"giveItem:Poke Ball.20"},"^There you go!","\n",["done",{"#f":5,"#n":"g-0"}],null],"done",{"#f":1}],"listDefs":{}}

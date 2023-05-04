@@ -12,7 +12,7 @@ namespace PokemonGame.Battle
         public Party opponentParty;
         public Battler playerCurrentBattler => playerParty[currentBattlerIndex];
         public Battler opponentCurrentBattler => opponentParty[opponentBattlerIndex];
-        
+
         public static ExternalBattleData Construct(Battle battle)
         {
             ExternalBattleData data = new ExternalBattleData(battle.currentBattlerIndex, battle.opponentBattlerIndex,

@@ -1,6 +1,5 @@
 using PokemonGame.Game;
 using PokemonGame.Global;
-using PokemonGame.ScriptableObjects;
 
 namespace PokemonGame.Dialogue
 {

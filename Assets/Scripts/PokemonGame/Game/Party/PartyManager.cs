@@ -40,6 +40,10 @@ namespace PokemonGame.Game.Party
             {
                 _playerParty[i].currentHealth = _playerParty[i].maxHealth;
                 _playerParty[i].statusEffect = StatusEffect.Healthy;
+                for (int j = 0; j < _playerParty[i].movePpInfos.Count; j++)
+                {
+                    _playerParty[i].movePpInfos[j].Restore();
+                }
             }
         }
 

@@ -23,6 +23,7 @@ namespace PokemonGame.Battle
             int moveToDo = Random.Range(0, moveCount);
 
             Battle.Singleton.enemyMoveToDo = e.battlerToUse.moves[moveToDo];
+            Battle.Singleton.enemyMoveToDoIndex = moveToDo;
         }
     }   
 }

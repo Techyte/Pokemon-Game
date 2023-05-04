@@ -1022,7 +1022,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack With Second Move
+  m_text: Attack With Second Move 30/30
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1672,7 +1672,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack With Third Move
+  m_text: Attack With Third Move 30/30
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2862,13 +2862,10 @@ MonoBehaviour:
   currentBattlerIndex: 0
   opponentBattlerIndex: 0
   currentTurn: 0
-  playerParty:
-    PartyList: []
-  opponentParty:
-    PartyList: []
-  _enemyAI: {fileID: 0}
-  _playerMoveToDo: {fileID: 0}
+  enemyAI: {fileID: 0}
+  playerMoveToDo: {fileID: 0}
   enemyMoveToDo: {fileID: 0}
+  enemyMoveToDoIndex: 0
   playerHasChosenAttack: 0
   hasDoneChoosingUpdate: 0
   hasShowedMoves: 0
@@ -3869,7 +3866,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack With First Move
+  m_text: Attack With First Move 30/30
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4139,7 +4136,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack With Fourth Move
+  m_text: Attack With Fourth Move 30/30
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

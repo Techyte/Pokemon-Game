@@ -60,8 +60,10 @@ namespace PokemonGame.Battle
         [SerializeField] private EnemyAI enemyAI;
         
         [SerializeField] private Move playerMoveToDo;
+        private int playerMoveToDoIndex;
         
         public Move enemyMoveToDo;
+        public int enemyMoveToDoIndex;
         
         [SerializeField] private bool playerHasChosenAttack;
         
@@ -124,6 +126,7 @@ namespace PokemonGame.Battle
                     if (!hasDoneChoosingUpdate)
                     {
                         uiManager.ShowUI(true);
+                        uiManager.UpdateBattlerMoveDisplays();
                         enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
                         hasDoneChoosingUpdate = true;
                     }
@@ -168,6 +171,7 @@ namespace PokemonGame.Battle
         public void ChooseMove(int moveID)
         {
             playerMoveToDo = playerCurrentBattler.moves[moveID];
+            playerMoveToDoIndex = moveID;
             playerHasChosenAttack = true;
         }
 
@@ -175,7 +179,7 @@ namespace PokemonGame.Battle
         {
             //You can add any animation calls for attacking here
 
-            playerMoveToDo.MoveMethod(new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler, playerMoveToDo, ExternalBattleData.Construct(this)));
+            playerMoveToDo.MoveMethod(new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler, playerMoveToDoIndex, playerMoveToDo, ExternalBattleData.Construct(this)));
             
             playerParty.CheckDefeatedStatus();
 
@@ -205,7 +209,7 @@ namespace PokemonGame.Battle
         {
             //You can add any animation calls for attacking here
 
-            enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler, playerCurrentBattler, enemyMoveToDo, ExternalBattleData.Construct(this)));
+            enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler, playerCurrentBattler, enemyMoveToDoIndex, enemyMoveToDo, ExternalBattleData.Construct(this)));
             
             playerParty.CheckDefeatedStatus();
             

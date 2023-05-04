@@ -130,7 +130,7 @@ namespace PokemonGame.Battle
             opponentBattlerRenderer.sprite = battle.opponentParty[battle.opponentBattlerIndex].texture;
         }
 
-        private void UpdateBattlerMoveDisplays()
+        public void UpdateBattlerMoveDisplays()
         {
             foreach (var text in moveTexts)
             {
@@ -141,8 +141,15 @@ namespace PokemonGame.Battle
             {
                 if (battle.playerParty[battle.currentBattlerIndex].moves[i])
                 {
+                    int currentPP = battle.playerParty[battle.currentBattlerIndex].movePpInfos[i].CurrentPP;
+                    int maxPP = battle.playerParty[battle.currentBattlerIndex].movePpInfos[i].MaxPP;
+                    
                     moveTexts[i].transform.parent.gameObject.SetActive(true);
-                    moveTexts[i].text = battle.playerParty[battle.currentBattlerIndex].moves[i].name;   
+                    moveTexts[i].text = $"{battle.playerParty[battle.currentBattlerIndex].moves[i].name} {currentPP}/{maxPP}";
+                    if (currentPP <= 0)
+                    {
+                        moveTexts[i].transform.parent.GetComponent<Button>().interactable = false;
+                    }
                 }
             }
         }
