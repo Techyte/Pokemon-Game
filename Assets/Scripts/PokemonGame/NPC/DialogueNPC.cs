@@ -1,7 +1,6 @@
-using UnityEngine;
-
 namespace PokemonGame.NPC
 {
+    using UnityEngine;
     public class DialogueNPC : NPC
     {
         [SerializeField] private TextAsset textAsset;
