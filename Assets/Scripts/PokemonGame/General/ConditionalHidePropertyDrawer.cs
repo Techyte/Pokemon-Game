@@ -16,7 +16,7 @@
     
             bool wasEnabled = GUI.enabled;
             GUI.enabled = enabled;
-            if (!condHAtt.HideInInspector || enabled)
+            if (enabled)
             {
                 EditorGUI.PropertyField(position, property, label, true);
             }        
@@ -29,7 +29,7 @@
             ConditionalHideAttribute condHAtt = (ConditionalHideAttribute)attribute;
             bool enabled = GetConditionalHideAttributeResult(condHAtt, property);
     
-            if (!condHAtt.HideInInspector || enabled)
+            if (enabled)
             {
                 return EditorGUI.GetPropertyHeight(property, label);
             }
@@ -91,82 +91,11 @@
                 //Debug.LogWarning("Attempting to use a ConditionalHideAttribute but no matching SourcePropertyValue found in object: " + condHAtt.ConditionalSourceField);
             }
 
-            //handle secondary property
-            SerializedProperty sourcePropertyValue2 = null;
-            if (!property.isArray)
+            if (condHAtt.enumCheck)
             {
-                string propertyPath = property.propertyPath; //returns the property path of the property we want to apply the attribute to
-                string conditionPath = propertyPath.Replace(property.name, condHAtt.ConditionalSourceField2); //changes the path to the conditionalsource property path
-                sourcePropertyValue2 = property.serializedObject.FindProperty(conditionPath);
-    
-                //if the find failed->fall back to the old system
-                if (sourcePropertyValue2 == null)
+                if (condHAtt.enumCheckIndex == sourcePropertyValue.enumValueIndex)
                 {
-                    //original implementation (doens't work with nested serializedObjects)
-                    sourcePropertyValue2 = property.serializedObject.FindProperty(condHAtt.ConditionalSourceField2);
-                }
-            }
-            else
-            {
-                // original implementation(doens't work with nested serializedObjects) 
-                sourcePropertyValue2 = property.serializedObject.FindProperty(condHAtt.ConditionalSourceField2);
-            }
-                
-            //Combine the results
-            if (sourcePropertyValue2 != null)
-            {
-                bool prop2Enabled = CheckPropertyType(sourcePropertyValue2);
-                if (condHAtt.InverseCondition2) prop2Enabled = !prop2Enabled;
-    
-                if (condHAtt.UseOrLogic)
-                    enabled = enabled || prop2Enabled;
-                else
-                    enabled = enabled && prop2Enabled;
-            }
-            else
-            {
-                //Debug.LogWarning("Attempting to use a ConditionalHideAttribute but no matching SourcePropertyValue found in object: " + condHAtt.ConditionalSourceField);
-            }
-    
-            //Handle the unlimited property array
-            string[] conditionalSourceFieldArray = condHAtt.ConditionalSourceFields;
-            bool[] conditionalSourceFieldInverseArray = condHAtt.ConditionalSourceFieldInverseBools;
-            for (int index = 0; index < conditionalSourceFieldArray.Length; ++index)
-            {
-                SerializedProperty sourcePropertyValueFromArray = null;
-                if (!property.isArray)
-                {
-                    string propertyPath = property.propertyPath; //returns the property path of the property we want to apply the attribute to
-                    string conditionPath = propertyPath.Replace(property.name, conditionalSourceFieldArray[index]); //changes the path to the conditionalsource property path
-                    sourcePropertyValueFromArray = property.serializedObject.FindProperty(conditionPath);
-    
-                    //if the find failed->fall back to the old system
-                    if (sourcePropertyValueFromArray == null)
-                    {
-                        //original implementation (doens't work with nested serializedObjects)
-                        sourcePropertyValueFromArray = property.serializedObject.FindProperty(conditionalSourceFieldArray[index]);
-                    }
-                }
-                else
-                {
-                    // original implementation(doens't work with nested serializedObjects) 
-                    sourcePropertyValueFromArray = property.serializedObject.FindProperty(conditionalSourceFieldArray[index]);
-                }
-    
-                //Combine the results
-                if (sourcePropertyValueFromArray != null)
-                {
-                    bool propertyEnabled = CheckPropertyType(sourcePropertyValueFromArray);                
-                    if (conditionalSourceFieldInverseArray.Length>= (index+1) && conditionalSourceFieldInverseArray[index]) propertyEnabled = !propertyEnabled;
-    
-                    if (condHAtt.UseOrLogic)
-                        enabled = enabled || propertyEnabled;
-                    else
-                        enabled = enabled && propertyEnabled;
-                }
-                else
-                {
-                    //Debug.LogWarning("Attempting to use a ConditionalHideAttribute but no matching SourcePropertyValue found in object: " + condHAtt.ConditionalSourceField);
+                    enabled = true;
                 }
             }
 
@@ -184,7 +113,10 @@
                 case SerializedPropertyType.Boolean:
                     return sourcePropertyValue.boolValue;                
                 case SerializedPropertyType.ObjectReference:
-                    return sourcePropertyValue.objectReferenceValue != null;                
+                    return sourcePropertyValue.objectReferenceValue != null;
+                case SerializedPropertyType.Enum:
+                    // placeholder
+                    return false;
                 default:
                     Debug.LogError("Data type of the property used for conditional hiding [" + sourcePropertyValue.propertyType + "] is currently not supported");
                     return true;
