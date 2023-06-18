@@ -127,6 +127,13 @@ namespace PokemonGame.General
             }
         }
 
+        public void HealDamage(int amountToHeal)
+        {
+            currentHealth += amountToHeal;
+            
+            OnHealthUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
         private void Fainted()
         {
             currentHealth = 0;
@@ -157,7 +164,7 @@ namespace PokemonGame.General
         /// <returns>Weather the battler was able to learn the move</returns>
         public bool LearnMove(Move moveToLearn)
         {
-            if (moves.Count < 4)
+            if (moves.Count < 4 && CanLearn(moveToLearn))
             {
                 moves.Add(moveToLearn);
                 movePpInfos.Add(new MovePPData(moveToLearn.basePP, moveToLearn.basePP));
@@ -167,6 +174,11 @@ namespace PokemonGame.General
             {
                 return false;
             }
+        }
+
+        public bool CanLearn(Move moveToLearn)
+        {
+            return source.moves.Contains(moveToLearn);
         }
 
         //Used for updating stats and such outside of runtime

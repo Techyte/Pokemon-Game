@@ -11,6 +11,7 @@ namespace PokemonGame.ScriptableObjects
     public class StatusEffect : ScriptableObject
     {
         public new string name;
+        public Color colour;
 
         public UnityEvent<StatusEffectEventArgs> EffectEvent;
 

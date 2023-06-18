@@ -6,7 +6,6 @@ using UnityEngine.UI;
 namespace PokemonGame.Game
 {
     using UnityEngine;
-    using System;
 
     public class ItemGetNotificationManager : MonoBehaviour
     {

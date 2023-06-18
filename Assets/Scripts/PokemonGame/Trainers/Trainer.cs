@@ -40,8 +40,6 @@ namespace PokemonGame.Trainers
 
         
         private GameLoader _gameLoader;
-
-        private bool _isPlayingIdleDialogue;
         
         private bool _hasTalkedDefeatedText;
         
@@ -62,7 +60,7 @@ namespace PokemonGame.Trainers
             DialogueFinished += DialogueEnded;
         }
 
-        private void Update()
+        protected override void OverrideUpdate()
         {
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
@@ -113,10 +111,6 @@ namespace PokemonGame.Trainers
             {
                 LoadBattle();
             }
-            else if(_isPlayingIdleDialogue)
-            {
-                _isPlayingIdleDialogue = false;
-            }
             else
             {
                 interactable = true;
@@ -140,13 +134,11 @@ namespace PokemonGame.Trainers
 
             if (playerParty == null)
             {
-                Debug.Log("Player party does not exist");
                 playerParty = new Party();
                 
                 playerParty.Add(Battler.CreateCopy(charmander));
             }else if (playerParty.Count == 0)
             {
-                Debug.Log("Player party is at 0");
                 playerParty.Add(Battler.CreateCopy(charmander));
             }
             

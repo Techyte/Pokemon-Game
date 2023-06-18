@@ -34,6 +34,7 @@ namespace PokemonGame.Game
 
                     if (!wasFound)
                     {
+                        Debug.Log(itemToAdd.name);
                         _items.Add(itemToAdd, new BagItemData(itemToAdd));
                     }
                 }

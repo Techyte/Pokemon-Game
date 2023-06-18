@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Poisoned
   m_EditorClassIdentifier: 
   name: Poisoned
+  colour: {r: 0.5049739, g: 0, b: 1, a: 1}
   EffectEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 820a9e89ab1f1da4fa9b7845ecd852da, type: 2}
+      - m_Target: {fileID: 11400000, guid: 7901990cb4a4dd54280eac087b8d9b9c, type: 2}
         m_TargetAssemblyTypeName: PokemonGame.Battle.StatusEffectsMethods, Assembly-CSharp
         m_MethodName: Poisoned
         m_Mode: 0

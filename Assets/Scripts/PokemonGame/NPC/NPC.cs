@@ -50,6 +50,16 @@ namespace PokemonGame.NPC
                     visualCue.SetActive(false);
                 }
             }
+            else
+            {
+                visualCue.SetActive(false);
+            }
+            OverrideUpdate();
+        }
+
+        protected virtual void OverrideUpdate()
+        {
+            
         }
 
         private void OnValidate()

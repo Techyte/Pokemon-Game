@@ -19,7 +19,7 @@ namespace PokemonGame.Dialogue
                 case "heal":
                     PartyManager.HealAll();
                     break;
-                case "giveBattler":
+                case "givebattler":
                     BattlerTemplate template = Registry.GetBattlerTemplate(tagValues[0]);
                     Battler battler = Battler.Init(template, int.Parse(tagValues[1]), StatusEffect.Healthy,
                         template.name, new List<Move>(), true);

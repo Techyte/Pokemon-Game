@@ -14,6 +14,10 @@ namespace PokemonGame.Battle
     {
         private int CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked)
         {
+            //Damage calculation equation from: https://bulbapedia.bulbagarden.net/wiki/Damage#Generation_II
+            
+            int damage = 0;
+            
             //Checking to see if the move is capable of hitting the opponent battler
             foreach (var hType in move.type.cantHit)
             {
@@ -65,18 +69,51 @@ namespace PokemonGame.Battle
                 stab = 2;
             }
 
-            //Damage calculation is correct (took me way to long to get it right) source: https://bulbapedia.bulbagarden.net/wiki/Damage#Generation_II
-            //TODO: revisit this because it does not look quite right
-            int damage = move.category == MoveCategory.Physical
-                ? Mathf.RoundToInt(((2 * battlerThatUsed.level / 5 + 2) * move.damage *
-                    (battlerThatUsed.attack / battlerBeingAttacked.defense) / 50 + 2) * stab * type)
-                : Mathf.RoundToInt(((2 * battlerThatUsed.level / 5 + 2) * move.damage *
-                    (battlerThatUsed.specialAttack / battlerBeingAttacked.specialDefense) / 50 + 2) * stab * type);
+            int attack = 0;
+            int defense = 0;
+
+            int level = battlerThatUsed.attack;
+
+            int power = move.damage;
+
+            int item = 1;
+
+            int critical = 1;
+
+            int TK = 1;
+
+            int weather = 1;
+
+            // requires implementation of badges and gyms
+            int badge = 1;
+
+            int moveMod = 1;
+
+            int doubleDmg = 1;
+            
+            if (move.category == MoveCategory.Physical)
+            {
+                attack = battlerThatUsed.attack;
+                defense = battlerBeingAttacked.defense;
+            }
+            else if (move.category == MoveCategory.Special)
+            {
+                attack = battlerThatUsed.specialAttack;
+                defense = battlerThatUsed.specialDefense;
+            }
+
+            damage = Mathf.RoundToInt((((2 * level / 5 + 2) * power * (attack / defense) / 50) * item * critical + 2) * TK *
+                     weather * badge * stab * type * moveMod * doubleDmg);
 
             int randomness = Mathf.RoundToInt(Random.Range(.8f * damage, damage * 1.2f));
             damage = randomness;
 
             return damage;
+        }
+
+        private int CalculateDamage(MoveMethodEventArgs e)
+        {
+            return CalculateDamage(e.move, e.attacker, e.target);
         }
         
         public void Toxic(MoveMethodEventArgs e)
@@ -104,6 +141,18 @@ namespace PokemonGame.Battle
             Debug.Log("Used Tackle on " + e.target.name);
             int damage = CalculateDamage(e.move, e.attacker, e.target);
             e.target.TakeDamage(damage);
+        }
+
+        public void LeechLife(MoveMethodEventArgs e)
+        {
+            int damage = CalculateDamage(e);
+            e.target.TakeDamage(damage);
+            e.attacker.HealDamage(damage/2);
+        }
+
+        public void StringShot(MoveMethodEventArgs e)
+        {
+            
         }
     }   
 }
