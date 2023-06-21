@@ -43,8 +43,13 @@ namespace PokemonGame.Battle
         [Header("UI:")]
         [SerializeField] private BattleUIManager uiManager;
 
+        [Space] 
+        
+        [Header("Assignments")] 
+        [SerializeField] private ExperienceCalculator expCalculator;
+
         [Space]
-        [Header("Assignments")]
+        [Header("Main Readouts")]
         public int currentBattlerIndex;
 
         public int opponentBattlerIndex;
@@ -75,7 +80,9 @@ namespace PokemonGame.Battle
 
         private Battler opponentCurrentBattler => opponentParty[opponentBattlerIndex];
 
-        
+        public List<Battler> battlersThatParticipated;
+
+
         private string _opponentName;
 
         private Vector3 _playerPos;
@@ -105,6 +112,33 @@ namespace PokemonGame.Battle
             {
                 EndBattle(true);
             };
+
+            for (int i = 0; i < opponentParty.Count; i++)
+            {
+                int newI = i;
+                
+                opponentParty[newI].OnFainted += (sender, args) =>
+                {
+                    Debug.Log(opponentParty[newI]);
+                    
+                    BattlerFainted(args, opponentParty[newI]);
+                };
+            }
+            
+            // adds current battler to list of participating battlers
+            battlersThatParticipated.Add(playerCurrentBattler);
+        }
+
+        public void BattlerFainted(BattlerTookDamageArgs e, Battler defeated)
+        {
+            Debug.Log(defeated);
+            
+            int exp = expCalculator.GetExperienceFromDefeatingBattler(defeated, true, battlersThatParticipated.Count);
+
+            foreach (Battler battler in battlersThatParticipated)
+            {
+                battler.exp += exp;
+            }
         }
 
         private void Update()

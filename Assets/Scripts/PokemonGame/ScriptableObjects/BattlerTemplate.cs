@@ -19,5 +19,6 @@ namespace PokemonGame.ScriptableObjects
         public int baseSpecialAttack;
         public int baseSpecialDefense;
         public int baseSpeed;
+        public int baseExpYield;
     }
 }

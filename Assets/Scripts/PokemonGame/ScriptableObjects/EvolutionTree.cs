@@ -29,7 +29,6 @@ namespace PokemonGame.ScriptableObjects
         public Item item;
     
         public BattlerTemplate evolution;
-        public BattlerTemplate initial;
     }
 
     public enum EvolutionTriggerType{

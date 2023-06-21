@@ -25,3 +25,4 @@ MonoBehaviour:
   baseSpecialAttack: 60
   baseSpecialDefense: 50
   baseSpeed: 65
+  baseExpYield: 62

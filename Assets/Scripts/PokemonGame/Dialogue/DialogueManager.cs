@@ -124,12 +124,10 @@ namespace PokemonGame.Dialogue
         {
             StopAllCoroutines();
             
-            Debug.Log("story");
             if (_currentStory.canContinue)
             {
                 StartCoroutine(DisplayText(_currentStory.Continue()));
                 StartCoroutine(DisplayChoices());
-                Debug.Log("story");
                 HandleTags(_currentStory.currentTags);
             }
             else
@@ -150,7 +148,6 @@ namespace PokemonGame.Dialogue
         
         private void HandleTags(List<string> currentTags)
         {
-            Debug.Log("handling tags");
             foreach(string tag in currentTags)
             {
                 string[] splitTag = tag.Split(':');

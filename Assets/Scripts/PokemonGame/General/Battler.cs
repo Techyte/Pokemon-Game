@@ -1,12 +1,11 @@
+using PokemonGame.Battle;
+
 namespace PokemonGame.General
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using ScriptableObjects;
     using UnityEngine;
-    using Type = ScriptableObjects.Type;
-    using Global;
 
     /// <summary>
     /// The class that contains all the information for a battler
@@ -104,7 +103,7 @@ namespace PokemonGame.General
         /// <summary>
         /// Invoked when the battler faints
         /// </summary>
-        public event EventHandler OnFainted;
+        public event EventHandler<BattlerTookDamageArgs> OnFainted;
         /// <summary>
         /// Invoked when the battlers health updates (includes taking damage)
         /// </summary>
@@ -127,6 +126,23 @@ namespace PokemonGame.General
             }
         }
 
+        /// <summary>
+        /// Inflict damage onto the battler
+        /// </summary>
+        /// <param name="damage">The amount of damage to inflict</param>
+        public void TakeDamage(int damage, Battler source, List<Battler> battlersThatParticipated)
+        {
+            currentHealth -= damage;
+            
+            OnTookDamage?.Invoke(this, EventArgs.Empty);
+            OnHealthUpdated?.Invoke(this, EventArgs.Empty);
+            
+            if (currentHealth <= 0)
+            {
+                Fainted(source, battlersThatParticipated);
+            }
+        }
+
         public void HealDamage(int amountToHeal)
         {
             currentHealth += amountToHeal;
@@ -134,11 +150,24 @@ namespace PokemonGame.General
             OnHealthUpdated?.Invoke(this, EventArgs.Empty);
         }
 
+        public void GainExp(int amountToGain)
+        {
+            // TODO: all the fucking logic for carrying over exp and other shit like leveling up and evolving
+            exp += amountToGain;
+        }
+
+        private void Fainted(Battler source, List<Battler> battlersThatParticipated)
+        {
+            currentHealth = 0;
+            isFainted = true;
+            OnFainted?.Invoke(this, new BattlerTookDamageArgs(new BattlerDamageSource(source, battlersThatParticipated)));
+        }
+
         private void Fainted()
         {
             currentHealth = 0;
             isFainted = true;
-            OnFainted?.Invoke(this, EventArgs.Empty);
+            OnFainted?.Invoke(this, new BattlerTookDamageArgs(DamageSource.Empty));
         }
 
         /// <summary>

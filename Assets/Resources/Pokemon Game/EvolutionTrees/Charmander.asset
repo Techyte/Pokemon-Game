@@ -16,7 +16,12 @@ MonoBehaviour:
   - initial: {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3, type: 2}
     possibleEvolutions:
     - triggerType: 0
-      level: 0
+      level: 16
       item: {fileID: 0}
-      evolution: {fileID: 0}
-      initial: {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3, type: 2}
+      evolution: {fileID: 11400000, guid: 63eced4e48003204aa6d6f04f2b4efe3, type: 2}
+  - initial: {fileID: 11400000, guid: 63eced4e48003204aa6d6f04f2b4efe3, type: 2}
+    possibleEvolutions:
+    - triggerType: 0
+      level: 36
+      item: {fileID: 0}
+      evolution: {fileID: 11400000, guid: 75c56c60da9236d48bf971985640a860, type: 2}

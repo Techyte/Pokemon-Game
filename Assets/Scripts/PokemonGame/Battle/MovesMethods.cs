@@ -126,27 +126,27 @@ namespace PokemonGame.Battle
         {
             Debug.Log("Used Ember on " + e.target.name);
             int damage = CalculateDamage(e.move, e.attacker, e.target);
-            e.target.TakeDamage(damage);
+            e.target.TakeDamage(damage, e.attacker, e.battleData.battlersThatParticipated);
         }
 
         public void RazorLeaf(MoveMethodEventArgs e)
         {
             Debug.Log("Used Razor Leaf on " + e.target.name);
             int damage = CalculateDamage(e.move, e.attacker, e.target);
-            e.target.TakeDamage(damage);
+            e.target.TakeDamage(damage, e.attacker, e.battleData.battlersThatParticipated);
         }
 
         public void Tackle(MoveMethodEventArgs e)
         {
             Debug.Log("Used Tackle on " + e.target.name);
             int damage = CalculateDamage(e.move, e.attacker, e.target);
-            e.target.TakeDamage(damage);
+            e.target.TakeDamage(damage, e.attacker, e.battleData.battlersThatParticipated);
         }
 
         public void LeechLife(MoveMethodEventArgs e)
         {
             int damage = CalculateDamage(e);
-            e.target.TakeDamage(damage);
+            e.target.TakeDamage(damage, e.attacker, e.battleData.battlersThatParticipated);
             e.attacker.HealDamage(damage/2);
         }
 
