@@ -157,6 +157,7 @@ namespace PokemonGame.Battle
                     TurnShowing();
                     break;
                 case TurnStatus.Choosing:
+                    RunStartOfTurnStatusEffects();
                     if (!hasDoneChoosingUpdate)
                     {
                         uiManager.ShowUI(true);
@@ -186,19 +187,8 @@ namespace PokemonGame.Battle
             hasDoneChoosingUpdate = false;
             hasShowedMoves = false;
             playerHasChosenAttack = false;
-            DoStatusEffects();
+            RunEndOfTurnStatusEffects();
             currentTurn = TurnStatus.Choosing;
-        }
-
-        private void DoStatusEffects()
-        {
-            opponentCurrentBattler.statusEffect.Effect(new StatusEffectEventArgs(
-                opponentCurrentBattler));
-
-            playerCurrentBattler.statusEffect.Effect(new StatusEffectEventArgs(
-                playerCurrentBattler));
-            
-            uiManager.UpdateHealthDisplays();
         }
 
         //Public method used by the move UI buttons
@@ -209,8 +199,28 @@ namespace PokemonGame.Battle
             playerHasChosenAttack = true;
         }
 
+        public void AddParticipatedBattler(Battler battlerToParticipate)
+        {
+            if (!battlersThatParticipated.Contains(battlerToParticipate))
+            {
+                battlersThatParticipated.Add(battlerToParticipate);
+            }
+            else
+            {
+                //Debug.Log("this battler has also been noted down as participating");
+            }
+        }
+
         private void DoPlayerMove()
         {
+            foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
+            {
+                if (trigger.trigger == StatusEffectCaller.BeforeMove)
+                {
+                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
+                }
+            }
+            
             //You can add any animation calls for attacking here
 
             playerMoveToDo.MoveMethod(new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler, playerMoveToDoIndex, playerMoveToDo, ExternalBattleData.Construct(this)));
@@ -241,6 +251,14 @@ namespace PokemonGame.Battle
 
         private void DoEnemyMove()
         {
+            foreach (var trigger in opponentCurrentBattler.statusEffect.triggers)
+            {
+                if (trigger.trigger == StatusEffectCaller.BeforeMove)
+                {
+                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
+                }
+            }
+            
             //You can add any animation calls for attacking here
 
             enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler, playerCurrentBattler, enemyMoveToDoIndex, enemyMoveToDo, ExternalBattleData.Construct(this)));
@@ -253,6 +271,44 @@ namespace PokemonGame.Battle
             }
 
             uiManager.UpdateHealthDisplays();
+        }
+
+        private void RunEndOfTurnStatusEffects()
+        {
+            foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
+            {
+                if (trigger.trigger == StatusEffectCaller.EndOfTurn)
+                {
+                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
+                }
+            }
+            
+            foreach (var trigger in opponentCurrentBattler.statusEffect.triggers)
+            {
+                if (trigger.trigger == StatusEffectCaller.EndOfTurn)
+                {
+                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
+                }
+            }
+        }
+
+        private void RunStartOfTurnStatusEffects()
+        {
+            foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
+            {
+                if (trigger.trigger == StatusEffectCaller.StartOfTurn)
+                {
+                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
+                }
+            }
+            
+            foreach (var trigger in opponentCurrentBattler.statusEffect.triggers)
+            {
+                if (trigger.trigger == StatusEffectCaller.StartOfTurn)
+                {
+                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
+                }
+            }
         }
 
         private void EndBattle(bool isDefeated)

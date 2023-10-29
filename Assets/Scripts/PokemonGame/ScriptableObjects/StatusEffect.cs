@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PokemonGame.Global;
 
 namespace PokemonGame.ScriptableObjects
@@ -13,7 +14,7 @@ namespace PokemonGame.ScriptableObjects
         public new string name;
         public Color colour;
 
-        public UnityEvent<StatusEffectEventArgs> EffectEvent;
+        public List<StatusEventTrigger> triggers;
 
         /// <summary>
         /// The default status effect
@@ -31,11 +32,6 @@ namespace PokemonGame.ScriptableObjects
             Debug.LogWarning("Can't find the healthy status effect, something has gone terribly wrong if you are seeing this message lol");
             return null;
         }
-
-        public void Effect(StatusEffectEventArgs e)
-        {
-            EffectEvent?.Invoke(e);
-        }
     }
 
     public class StatusEffectEventArgs : EventArgs
@@ -46,5 +42,21 @@ namespace PokemonGame.ScriptableObjects
         }
         
         public Battler battler;
+    }
+
+    [Serializable]
+    public class StatusEventTrigger
+    {
+        public StatusEffectCaller trigger;
+        public UnityEvent<StatusEffectEventArgs> EffectEvent;
+    }
+
+    [Serializable]
+    public enum StatusEffectCaller
+    {
+        Passive,
+        StartOfTurn,
+        EndOfTurn,
+        BeforeMove
     }
 }

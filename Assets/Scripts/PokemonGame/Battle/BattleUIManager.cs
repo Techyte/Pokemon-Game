@@ -100,7 +100,7 @@ namespace PokemonGame.Battle
             miscButtons.SetActive(true);
             changeBattlerDisplay.SetActive(false);
             battle.currentBattlerIndex = partyID;
-            battle.battlersThatParticipated.Add(battle.playerParty[partyID]);
+            battle.AddParticipatedBattler(battle.playerParty[partyID]);
             Back();
             UpdateBattlerButtons();
             UpdateBattlerSprites();

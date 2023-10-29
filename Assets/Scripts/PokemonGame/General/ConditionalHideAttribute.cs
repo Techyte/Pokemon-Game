@@ -25,7 +25,7 @@
             this.ConditionalSourceField = conditionalSourceField;
             this.Inverse = false;
         }
-    
+
         public ConditionalHideAttribute(string conditionalSourceField, int enumCheckIndex)
         {
             this.ConditionalSourceField = conditionalSourceField;

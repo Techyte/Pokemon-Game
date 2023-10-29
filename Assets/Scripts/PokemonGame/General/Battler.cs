@@ -21,8 +21,8 @@ namespace PokemonGame.General
 
         private int _oldLevel;
         /// <summary>
-        /// The level is what determines stats and if the battler respects the player
         /// </summary>
+        /// The level is what determines stats and if the battler respects the player
         public int level;
 
         /// <summary>
@@ -110,6 +110,11 @@ namespace PokemonGame.General
         public event EventHandler OnHealthUpdated;
 
         /// <summary>
+        /// Has some status effect or some other thing said that this battler cannot do a move this turn
+        /// </summary>
+        public bool hasMoveBlock = false;
+
+        /// <summary>
         /// Inflict damage onto the battler
         /// </summary>
         /// <param name="damage">The amount of damage to inflict</param>
@@ -130,6 +135,8 @@ namespace PokemonGame.General
         /// Inflict damage onto the battler
         /// </summary>
         /// <param name="damage">The amount of damage to inflict</param>
+        /// <param name="source">The source type of the damage</param>
+        /// <param name="battlersThatParticipated">The list of battlers that participated in dealing the damage</param>
         public void TakeDamage(int damage, Battler source, List<Battler> battlersThatParticipated)
         {
             currentHealth -= damage;

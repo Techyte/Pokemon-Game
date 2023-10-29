@@ -1,3 +1,5 @@
+using PokemonGame.General;
+
 namespace PokemonGame.Dialogue
 {
     using System;
@@ -20,6 +22,7 @@ namespace PokemonGame.Dialogue
         [SerializeField] private TextMeshProUGUI dialogueTextDisplay;
         [SerializeField] private GameObject[] choices;
         [SerializeField] private int currentChoicesAmount;
+        [SerializeField] private int maxCharAmount;
         private Story _currentStory;
         [SerializeField] private TextAsset globalsInkFile;
         private TextMeshProUGUI[] _choicesText;
@@ -33,6 +36,9 @@ namespace PokemonGame.Dialogue
         public event EventHandler<DialogueStartedEventArgs> DialogueStarted;
         
         private bool isInBattle => SceneManager.GetActiveScene().name == "Battle";
+
+        private string[] tempNextLines;
+        private int currentTempIndex;
         
         private void Awake()
         {
@@ -59,6 +65,14 @@ namespace PokemonGame.Dialogue
                 return;
             currentChoicesAmount = _currentStory.currentChoices.Count;
             var hasChoices = currentChoicesAmount > 0;
+
+            if (tempNextLines != null)
+            {
+                if (currentTempIndex != tempNextLines.Length-1)
+                {
+                    hasChoices = false;
+                }
+            }
             
             if (Input.GetKeyDown(KeyCode.Space) && !hasChoices)
             {
@@ -123,16 +137,63 @@ namespace PokemonGame.Dialogue
         private void ContinueStory()
         {
             StopAllCoroutines();
-            
-            if (_currentStory.canContinue)
+
+            if (tempNextLines == null)
             {
-                StartCoroutine(DisplayText(_currentStory.Continue()));
-                StartCoroutine(DisplayChoices());
-                HandleTags(_currentStory.currentTags);
+                if (_currentStory.canContinue)
+                {
+                    string next = _currentStory.Continue();
+
+                    if (next.Length >= maxCharAmount)
+                    {
+                        string[] newNextLines = next.SplitIntoParts(maxCharAmount);
+                        
+                        Debug.Log(newNextLines[0]);
+
+                        tempNextLines = newNextLines;
+                        StartCoroutine(DisplayText(newNextLines[currentTempIndex]));
+                        HandleTags(_currentStory.currentTags);
+                    }
+                    else
+                    {
+                        StartCoroutine(DisplayText(next));
+                        StartCoroutine(DisplayChoices());
+                        HandleTags(_currentStory.currentTags);
+                    }   
+                }
+                else
+                {
+                    StartCoroutine(ExitDialogueMode());
+                }
             }
             else
             {
-                StartCoroutine(ExitDialogueMode());
+                if (currentTempIndex >= tempNextLines.Length - 1)
+                {
+                    // exhausted our leftovers
+                    tempNextLines = null;
+                    currentTempIndex = 0;
+                    
+                    if(_currentStory.canContinue)
+                    {
+                        StartCoroutine(DisplayText(_currentStory.Continue()));
+                        StartCoroutine(DisplayChoices());
+                        HandleTags(_currentStory.currentTags);
+                    }
+                    else
+                    {
+                        StartCoroutine(ExitDialogueMode());
+                    }
+                }
+                else
+                {
+                    currentTempIndex++;
+                    StartCoroutine(DisplayText(tempNextLines[currentTempIndex]));
+                    if(currentTempIndex == tempNextLines.Length-1)
+                    {
+                        StartCoroutine(DisplayChoices());
+                    }
+                }
             }
         }
         
