@@ -12,7 +12,7 @@ namespace PokemonGame.General
 
             double a = trainer ? 1.5 : 1;
 
-            // luckey egg
+            // lucky egg
             double e = 1;
 
             double s = noOfBattlersParticipated;

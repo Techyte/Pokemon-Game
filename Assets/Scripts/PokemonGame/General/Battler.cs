@@ -10,7 +10,7 @@ namespace PokemonGame.General
     /// <summary>
     /// The class that contains all the information for a battler
     /// </summary>
-    [Serializable]
+    [CreateAssetMenu(order = 7, fileName = "New Battler Prefab", menuName = "Pokemon Game/New Battler Prefab")]
     public class Battler : ScriptableObject
     {
         private BattlerTemplate _oldSource;

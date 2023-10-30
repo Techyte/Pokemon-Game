@@ -7,13 +7,13 @@ Hello!
 === main ===
 Which pokemon do you choose?
 +[Charmander]
- #chosenPokemon:Charmander
+ #givebattler:Charmander.5
 -> chosen("Charmander")
 +[Bulbasaur]
- #chosenPokemon:Bulbasaur
+ #givebattler:Bulbasaur.5
 -> chosen("Bulbasaur")
 +[Squirtle]
- #chosenPokemon:Squirtle
+ #givebattler:Squirtle.5
 -> chosen("Squirtle")
 
 === chosen(pokemonName) ===

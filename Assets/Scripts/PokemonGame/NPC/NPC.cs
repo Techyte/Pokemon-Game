@@ -1,3 +1,5 @@
+using PokemonGame.Global;
+
 namespace PokemonGame.NPC
 {
 
@@ -20,6 +22,15 @@ namespace PokemonGame.NPC
 
         private bool _playerInRange;
         private Player _player;
+
+        private void OnValidate()
+        {
+            if (visualCue == null)
+            {
+                Debug.Log("interact cue not there");
+                visualCue = Instantiate(Resources.Load<GameObject>(@"Pokemon Game\NPC\Interact Cue"), transform);
+            }
+        }
 
         private void Awake()
         {
@@ -60,15 +71,6 @@ namespace PokemonGame.NPC
         protected virtual void OverrideUpdate()
         {
             
-        }
-
-        private void OnValidate()
-        {
-            if (visualCue == null)
-            {
-                Debug.Log("interact cue not there");
-                visualCue = Instantiate(Resources.Load<GameObject>(@"Pokemon Game\NPC\Interact Cue"), transform);
-            }
         }
 
         /// <summary>

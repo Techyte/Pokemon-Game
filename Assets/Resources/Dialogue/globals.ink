@@ -1,1 +1,2 @@
 VAR starterChosen = ""
+VAR givenPokeball = ""
