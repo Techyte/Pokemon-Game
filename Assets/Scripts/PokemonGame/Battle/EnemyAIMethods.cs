@@ -11,19 +11,9 @@ namespace PokemonGame.Battle
     {
         public void DefaultAI(AIMethodEventArgs e)
         {
-            int moveCount = 0;
-            foreach (var battler in e.battlerToUse.moves)
-            {
-                if (battler != null)
-                {
-                    moveCount++;
-                }
-            }
+            int moveToDo = Random.Range(0, e.battlerToUse.moves.Count);
 
-            int moveToDo = Random.Range(0, moveCount);
-
-            Battle.Singleton.enemyMoveToDo = e.battlerToUse.moves[moveToDo];
-            Battle.Singleton.enemyMoveToDoIndex = moveToDo;
+            Battle.Singleton.enemyMoveToDo = e.battlerToUse.moves[0];
         }
     }   
 }

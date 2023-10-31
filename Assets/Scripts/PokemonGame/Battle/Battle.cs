@@ -68,7 +68,6 @@ namespace PokemonGame.Battle
         private int playerMoveToDoIndex;
         
         public Move enemyMoveToDo;
-        public int enemyMoveToDoIndex;
         
         [SerializeField] private bool playerHasChosenAttack;
         
@@ -261,7 +260,9 @@ namespace PokemonGame.Battle
             
             //You can add any animation calls for attacking here
 
-            enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler, playerCurrentBattler, enemyMoveToDoIndex, enemyMoveToDo, ExternalBattleData.Construct(this)));
+            int moveToDoIndex = GetIndexOfMoveOnCurrentEnemy(enemyMoveToDo);
+
+            enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler, playerCurrentBattler, moveToDoIndex, enemyMoveToDo, ExternalBattleData.Construct(this)));
             
             playerParty.CheckDefeatedStatus();
             
@@ -271,6 +272,34 @@ namespace PokemonGame.Battle
             }
 
             uiManager.UpdateHealthDisplays();
+        }
+
+        private int GetIndexOfMoveOnCurrentEnemy(Move move)
+        {
+            for (int i = 0; i < opponentCurrentBattler.moves.Count; i++)
+            {
+                if (opponentCurrentBattler.moves[i] == move)
+                {
+                    return i;
+                }
+            }
+
+            Debug.LogWarning($"Could not find move {move.name} on the current opponent battler");
+            return -1;
+        }
+        
+        private int GetIndexOfMoveOnCurrentPlayer(Move move)
+        {
+            for (int i = 0; i < playerCurrentBattler.moves.Count; i++)
+            {
+                if (playerCurrentBattler.moves[i] == move)
+                {
+                    return i;
+                }
+            }
+
+            Debug.LogWarning($"Could not find move {move.name} on the current player battler");
+            return -1;
         }
 
         private void RunEndOfTurnStatusEffects()

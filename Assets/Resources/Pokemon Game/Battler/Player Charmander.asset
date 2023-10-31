@@ -31,5 +31,6 @@ MonoBehaviour:
   moves:
   - {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
   - {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
+  - {fileID: 11400000, guid: 20feb6eebf69e2f438f8c3b2aa15ed27, type: 2}
   - {fileID: 0}
-  - {fileID: 0}
+  hasMoveBlock: 0

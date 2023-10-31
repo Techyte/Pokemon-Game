@@ -16,9 +16,9 @@ namespace PokemonGame.Battle
 
         public void Poisoned(StatusEffectEventArgs args)
         {
-            args.battler.TakeDamage(args.battler.maxHealth / 16);
+            args.battler.TakeDamage(1);
 
-            //Debug.Log(args.battler.name + " was hurt by poison");
+            Debug.Log(args.battler.name + " was hurt by poison");
         }
     }   
 }
