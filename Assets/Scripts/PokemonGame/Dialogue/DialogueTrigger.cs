@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace PokemonGame.Dialogue
 {
     using System;
@@ -14,18 +16,51 @@ namespace PokemonGame.Dialogue
         public event EventHandler DialogueWasCalled;
         public event EventHandler DialogueFinished;
 
+        private bool toldNotToStartYet;
+
         /// <summary>
-        /// Starts and INK Dialogue sequence from a text asset
+        /// Loads an INK Dialogue sequence from a text asset
         /// </summary>
         /// <param name="inkJson">The text asset that the dialogue sequence draws from</param>
-        protected void StartDialogue(TextAsset inkJson)
+        /// <param name="autostart">Automatically start the dialogue on load, on by default</param>
+        protected void LoadDialogue(TextAsset inkJson, bool autostart = true)
         {
             if (!DialogueManager.instance.dialogueIsPlaying)
             {
-                DialogueManager.instance.EnterDialogueMode(inkJson, this);
-                DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
-                dialogueIsRunning = true;
+                if (autostart)
+                {
+                    DialogueManager.instance.LoadDialogueMode(inkJson, this);
+                    DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
+                    dialogueIsRunning = true;   
+                }
+                else
+                {
+                    DialogueManager.instance.LoadDialogueMode(inkJson, this, false);
+                    toldNotToStartYet = true;
+                }
             }
+        }
+        
+        /// <summary>
+        /// Starts an INK Dialogue sequence only if we have already loaded one
+        /// </summary>
+        protected void StartDialogue()
+        {
+            if (!DialogueManager.instance.dialogueIsPlaying)
+            {
+                if (toldNotToStartYet)
+                {
+                    toldNotToStartYet = false;
+                    DialogueManager.instance.StartDialogue();
+                    DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
+                    dialogueIsRunning = true;   
+                }
+            }
+        }
+
+        public void SetDialogueVariables(Dictionary<string, string> variables)
+        {
+            DialogueManager.instance.SetDialogueVariables(variables);
         }
 
         /// <summary>
@@ -41,15 +76,10 @@ namespace PokemonGame.Dialogue
         /// Inheritors override this to handle tags
         /// </summary>
         /// <param name="tagKey">The tag key</param>
-        /// <param name="tagValue">The tag value</param>
+        /// <param name="tagValues">The tag values</param>
         public virtual void CallTag(string tagKey, string[] tagValues)
         {
             
-        }
-
-        public void SetDialogueVariable(string variableName, Ink.Runtime.Object value)
-        {
-            DialogueManager.instance.SetGlobalVariable(variableName, value);
         }
     }   
 }

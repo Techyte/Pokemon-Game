@@ -119,34 +119,29 @@ namespace PokemonGame.Battle
         public void Toxic(MoveMethodEventArgs e)
         {
             e.target.statusEffect = Registry.GetStatusEffect("Poisoned");
-            Debug.Log("Used Toxic on " + e.target.name);
         }
 
         public void Ember(MoveMethodEventArgs e)
         {
-            Debug.Log("Used Ember on " + e.target.name);
-            int damage = CalculateDamage(e.move, e.attacker, e.target);
-            e.target.TakeDamage(damage, e.attacker, e.battleData.battlersThatParticipated);
+            e.damageDealt = CalculateDamage(e.move, e.attacker, e.target);
         }
 
         public void RazorLeaf(MoveMethodEventArgs e)
         {
-            Debug.Log("Used Razor Leaf on " + e.target.name);
-            int damage = CalculateDamage(e.move, e.attacker, e.target);
-            e.target.TakeDamage(damage, e.attacker, e.battleData.battlersThatParticipated);
+            e.damageDealt = CalculateDamage(e.move, e.attacker, e.target);
         }
 
         public void Tackle(MoveMethodEventArgs e)
         {
-            Debug.Log("Used Tackle on " + e.target.name);
             int damage = CalculateDamage(e.move, e.attacker, e.target);
-            e.target.TakeDamage(damage, e.attacker, e.battleData.battlersThatParticipated);
+            e.damageDealt = damage;
+            Debug.Log(damage);
         }
 
         public void LeechLife(MoveMethodEventArgs e)
         {
             int damage = CalculateDamage(e);
-            e.target.TakeDamage(damage, e.attacker, e.battleData.battlersThatParticipated);
+            e.damageDealt = damage;
             e.attacker.HealDamage(damage/2);
         }
 

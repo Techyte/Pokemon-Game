@@ -1,3 +1,5 @@
+using PokemonGame.Dialogue;
+
 namespace PokemonGame.Battle
 {
     using System.Collections.Generic;
@@ -17,7 +19,7 @@ namespace PokemonGame.Battle
     /// <summary>
     /// The main class that manages battles
     /// </summary>
-    public class Battle : MonoBehaviour
+    public class Battle : DialogueTrigger
     {
         private static Battle _singleton;
         public static Battle Singleton
@@ -47,6 +49,8 @@ namespace PokemonGame.Battle
         
         [Header("Assignments")] 
         [SerializeField] private ExperienceCalculator expCalculator;
+
+        [SerializeField] private TextAsset battlerUsedText;
 
         [Space]
         [Header("Main Readouts")]
@@ -172,11 +176,28 @@ namespace PokemonGame.Battle
         {
             if (!hasShowedMoves)
             {
+                Dictionary<string, string> variables = new Dictionary<string, string>();
+                variables.Add("battlerUsed", playerCurrentBattler.name);
+                variables.Add("moveUsed", playerMoveToDo.name);
+                variables.Add("battlerHit", opponentCurrentBattler.name);
+                variables.Add("damageDealt", "5");
+                
+                LoadDialogue(battlerUsedText, false);
+                SetDialogueVariables(variables);
+                StartDialogue();
+
                 hasShowedMoves = true;
-                uiManager.ShowUI(false);
-                DoMoves();
-                playerHasChosenAttack = false;
-                currentTurn = TurnStatus.Ending;
+
+                MoveMethodEventArgs e = new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler,
+                    playerMoveToDoIndex, playerMoveToDo, ExternalBattleData.Construct(this));
+                
+                playerMoveToDo.MoveMethod(e);
+                
+                Debug.Log(e.damageDealt);
+                //uiManager.ShowUI(false);
+                //DoMoves();
+                //playerHasChosenAttack = false;
+                //currentTurn = TurnStatus.Ending;
             }
         }
 

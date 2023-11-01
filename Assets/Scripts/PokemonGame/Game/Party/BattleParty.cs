@@ -3,6 +3,7 @@ using PokemonGame.General;
 
 namespace PokemonGame.Game.Party
 {
+    [Serializable]
     public class BattleParty : Party
     {
         public event EventHandler PartyAllDefeated;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731703, g: 0.13414727, b: 0.121078506, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2037,13 +2037,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -2101,10 +2101,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 453293117287746523}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.965, y: 1.3700943}
-  m_SizeDelta: {x: 685.0701, y: 82.2598}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 434.607, y: -90.297}
+  m_SizeDelta: {x: 851.497, y: 153.404}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &453293116552543705
 GameObject:
@@ -2294,7 +2294,7 @@ MonoBehaviour:
   - {fileID: 453293117388818677}
   - {fileID: 453293116360056957}
   currentChoicesAmount: 0
-  maxCharAmount: 50
+  maxCharAmount: 100
   globalsInkFile: {fileID: 4900000, guid: 16248ed7785da2b41ba3ed3f47c9c56a, type: 3}
   currentTrigger: {fileID: 0}
   movement: {fileID: 0}

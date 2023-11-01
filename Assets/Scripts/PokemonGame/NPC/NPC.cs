@@ -51,7 +51,7 @@ namespace PokemonGame.NPC
                 if (_playerInRange)
                 {
                     visualCue.SetActive(true);
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    if (Input.GetKeyDown(KeyCode.C))
                     {
                         OnPlayerInteracted();
                     }

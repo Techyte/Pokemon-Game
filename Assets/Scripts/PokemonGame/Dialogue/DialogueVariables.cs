@@ -8,6 +8,7 @@ namespace PokemonGame.Dialogue
     public class DialogueVariables
     {
         public Dictionary<string, Ink.Runtime.Object> _variables;
+        
 
         public DialogueVariables(TextAsset globalsFilePath)
         {

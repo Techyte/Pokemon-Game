@@ -87,12 +87,12 @@ namespace PokemonGame.Trainers
         private IEnumerator StartDefeatedDialogue()
         {
             yield return new WaitForEndOfFrame();
-            StartDialogue(defeatedBattleText);
+            LoadDialogue(defeatedBattleText);
         }
 
         protected override void OnPlayerInteracted()
         {
-            StartDialogue(idleDialogue);
+            LoadDialogue(idleDialogue);
             base.OnPlayerInteracted();
         }
 
@@ -101,7 +101,7 @@ namespace PokemonGame.Trainers
             if (!isDefeated)
             {
                 Player.Instance.LookAtTarget(transform.position);
-                StartDialogue(startBattleText);
+                LoadDialogue(startBattleText);
             }
         }
 

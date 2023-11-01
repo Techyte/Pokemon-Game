@@ -26,6 +26,7 @@ namespace PokemonGame.Dialogue
         private Story _currentStory;
         [SerializeField] private TextAsset globalsInkFile;
         private TextMeshProUGUI[] _choicesText;
+        // TODO: get rid of this god awful global variable system, like jesus christ
         private DialogueVariables _dialogueVariables;
         private DialogueMethods _dialogueMethods;
         
@@ -39,6 +40,8 @@ namespace PokemonGame.Dialogue
 
         private string[] tempNextLines;
         private int currentTempIndex;
+
+        private bool wasToldToNotStart;
         
         private void Awake()
         {
@@ -74,7 +77,7 @@ namespace PokemonGame.Dialogue
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.Space) && !hasChoices)
+            if (Input.GetKeyDown(KeyCode.C) && !hasChoices)
             {
                 ContinueStory();
             }
@@ -104,20 +107,54 @@ namespace PokemonGame.Dialogue
         /// </summary>
         /// <param name="inkJson">The TextAsset with the information about the conversation</param>
         /// <param name="trigger">The DialogueTrigger that triggered this conversation</param>
-        public void EnterDialogueMode(TextAsset inkJson, DialogueTrigger trigger)
+        /// <param name="autostart">Automatically start the dialogue on load, on by default</param>
+        public void LoadDialogueMode(TextAsset inkJson, DialogueTrigger trigger, bool autostart = true)
         {
             DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(trigger, inkJson));
             
             currentTrigger = trigger;
             if(!isInBattle)
                 movement.canMove = false;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
             _currentStory = new Story(inkJson.text);
             _dialogueVariables.StartListening(_currentStory);
-            dialogueIsPlaying = true;
-            dialoguePanel.SetActive(true);
-            ContinueStory();
+            if (autostart)
+            {
+                dialogueIsPlaying = true;
+                dialoguePanel.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                ContinueStory();
+            }
+            else
+                wasToldToNotStart = true;
+        }
+
+        /// <summary>
+        /// Start a conversation, will only work if you loaded a conversation but did not start it. If not it will do nothing and give you a warning
+        /// </summary>
+        public void StartDialogue()
+        {
+            if (wasToldToNotStart)
+            {
+                wasToldToNotStart = false;
+                dialogueIsPlaying = true;
+                dialoguePanel.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                ContinueStory();
+            }
+            else
+            {
+                Debug.LogWarning("There is nothing to start!");
+            }
+        }
+
+        public void SetDialogueVariables(Dictionary<string, string> variables)
+        {
+            foreach (var variable in variables)
+            {
+                _currentStory.variablesState[variable.Key] = variable.Value;
+            }
         }
         
         private IEnumerator ExitDialogueMode()
@@ -125,9 +162,11 @@ namespace PokemonGame.Dialogue
             yield return new WaitForSeconds(0.2f);
             _dialogueVariables.StopListening(_currentStory);
             if(!isInBattle)
+            {
                 movement.canMove = true;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
             dialogueIsPlaying = false;
             dialoguePanel.SetActive(false);
             dialogueTextDisplay.text = "";
@@ -277,26 +316,6 @@ namespace PokemonGame.Dialogue
         {
             _currentStory.ChooseChoiceIndex(choiceIndex);
             ContinueStory();
-        }
-    
-        public Ink.Runtime.Object GetGlobalVariable(string variableName)
-        {
-            Ink.Runtime.Object variableValue = null;
-            if (_dialogueVariables._variables.TryGetValue(variableName, out variableValue))
-            {
-                return variableValue;
-            }
-            Debug.LogWarning($"Ink variable was found to be null {variableName}");
-            return null;
-        }
-
-        public void SetGlobalVariable(string variableName, Ink.Runtime.Object value)
-        {
-            if (_dialogueVariables._variables.ContainsKey(variableName))
-            {
-                _dialogueVariables._variables.Remove(variableName);
-            }
-            _dialogueVariables._variables.Add(variableName, value);
         }
     }
 

@@ -61,6 +61,7 @@ namespace PokemonGame.ScriptableObjects
         public int moveIndex;
         public Move move;
         public ExternalBattleData battleData;
+        public int damageDealt = 0;
 
         public MoveMethodEventArgs(Battler attacker, Battler target, int moveIndex, Move move, ExternalBattleData battleData)
         {
