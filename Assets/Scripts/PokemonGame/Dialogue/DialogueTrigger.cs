@@ -23,21 +23,18 @@ namespace PokemonGame.Dialogue
         /// </summary>
         /// <param name="inkJson">The text asset that the dialogue sequence draws from</param>
         /// <param name="autostart">Automatically start the dialogue on load, on by default</param>
-        protected void LoadDialogue(TextAsset inkJson, bool autostart = true)
+        protected void QueDialogue(TextAsset textAsset, bool autostart, Dictionary<string, string> variables = null)
         {
-            if (!DialogueManager.instance.dialogueIsPlaying)
+            if (autostart)
             {
-                if (autostart)
-                {
-                    DialogueManager.instance.LoadDialogueMode(inkJson, this);
-                    DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
-                    dialogueIsRunning = true;   
-                }
-                else
-                {
-                    DialogueManager.instance.LoadDialogueMode(inkJson, this, false);
-                    toldNotToStartYet = true;
-                }
+                DialogueManager.instance.QueDialogue(textAsset, this, true, variables);
+                DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
+                dialogueIsRunning = true;   
+            }
+            else
+            {
+                DialogueManager.instance.QueDialogue(textAsset, this, false);
+                toldNotToStartYet = true;
             }
         }
         
@@ -51,7 +48,7 @@ namespace PokemonGame.Dialogue
                 if (toldNotToStartYet)
                 {
                     toldNotToStartYet = false;
-                    DialogueManager.instance.StartDialogue();
+                    DialogueManager.instance.StartDialogue(this);
                     DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
                     dialogueIsRunning = true;   
                 }

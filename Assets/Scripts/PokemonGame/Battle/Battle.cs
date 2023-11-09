@@ -158,9 +158,9 @@ namespace PokemonGame.Battle
                     TurnShowing();
                     break;
                 case TurnStatus.Choosing:
-                    RunStartOfTurnStatusEffects();
                     if (!hasDoneChoosingUpdate)
                     {
+                        RunStartOfTurnStatusEffects();
                         uiManager.ShowUI(true);
                         uiManager.UpdateBattlerMoveDisplays();
                         enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
@@ -191,9 +191,7 @@ namespace PokemonGame.Battle
             variables.Add("battlerHit", battlerHit);
             variables.Add("damageDealt", damageDealt);
                 
-            LoadDialogue(battlerUsedText, false);
-            SetDialogueVariables(variables);
-            StartDialogue();
+            QueDialogue(battlerUsedText, true, variables);
         }
 
         private void TurnEnding()
@@ -248,7 +246,7 @@ namespace PokemonGame.Battle
             DialogueHurt(playerCurrentBattler.name, playerMoveToDo.name, opponentCurrentBattler.name,
                 e.damageDealt.ToString());
             
-            playerParty.CheckDefeatedStatus();
+            opponentParty.CheckDefeatedStatus();
 
             uiManager.UpdateHealthDisplays();
         }
@@ -374,6 +372,8 @@ namespace PokemonGame.Battle
 
         private void EndBattle(bool isDefeated)
         {
+            Debug.Log("ending the battle");
+            
             Dictionary<string, object> vars = new Dictionary<string, object>
             {
                 { "playerParty", playerParty },

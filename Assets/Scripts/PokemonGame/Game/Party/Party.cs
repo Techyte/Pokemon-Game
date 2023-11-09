@@ -62,35 +62,22 @@ namespace PokemonGame.Game.Party
 
         public int DefeatedCount()
         {
-            var partyCount = 0;
+            var defeatedCount = 0;
 
             for (int i = 0; i < party.Count; i++)
             {
-                if (party[i])
+                if(party[i].isFainted)
                 {
-                    if(party[i].isFainted)
-                    {
-                        partyCount++;
-                    }
+                    defeatedCount++;
                 }
             }
 
-            return partyCount;
+            return defeatedCount;
         }
 
         private int PartyCount()
         {
-            var partyCount = 0;
-
-            for (int i = 0; i < party.Count; i++)
-            {
-                if (party[i])
-                {
-                    partyCount++;
-                }
-            }
-
-            return partyCount;
+            return party.Count;
         }
 
         public Party Copy()

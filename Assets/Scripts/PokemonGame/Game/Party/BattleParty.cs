@@ -1,5 +1,6 @@
 ﻿using System;
 using PokemonGame.General;
+using UnityEngine;
 
 namespace PokemonGame.Game.Party
 {
@@ -10,28 +11,31 @@ namespace PokemonGame.Game.Party
 
         public void CheckDefeatedStatus()
         {
-            if (DefeatedCount() == Count)
+            Debug.Log("checking defeated status");
+            Debug.Log(DefeatedCount());
+            Debug.Log(Count);
+            if (DefeatedCount() >= Count)
             {
+                Debug.Log("party all defeated");
                 PartyAllDefeated?.Invoke(this, EventArgs.Empty);
             }
         }
 
         protected override void OnSet()
         {
-            CheckDefeatedStatus();
+            // CheckDefeatedStatus();
         }
 
         public override Battler this[int i]
         {
             get
             {
-                CheckDefeatedStatus();
                 return party[i]; 
             }
             set
             {
                 party[i] = value;
-                CheckDefeatedStatus();
+                // CheckDefeatedStatus();
             }
         }
 

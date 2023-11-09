@@ -24,6 +24,7 @@ namespace PokemonGame.Dialogue
         [SerializeField] private int currentChoicesAmount;
         [SerializeField] private int maxCharAmount;
         private Story _currentStory;
+        private TextAsset _currentTextAsset;
         [SerializeField] private TextAsset globalsInkFile;
         private TextMeshProUGUI[] _choicesText;
         // TODO: get rid of this god awful global variable system, like jesus christ
@@ -35,7 +36,10 @@ namespace PokemonGame.Dialogue
         [SerializeField] private PlayerMovement movement;
         
         public event EventHandler<DialogueStartedEventArgs> DialogueStarted;
-        
+        public event EventHandler<DialogueEndedEventArgs> DialogueEnded;
+
+        private Queue<QueuedDialogue> _queue = new Queue<QueuedDialogue>();
+
         private bool isInBattle => SceneManager.GetActiveScene().name == "Battle";
 
         private string[] tempNextLines;
@@ -108,17 +112,38 @@ namespace PokemonGame.Dialogue
         /// <param name="inkJson">The TextAsset with the information about the conversation</param>
         /// <param name="trigger">The DialogueTrigger that triggered this conversation</param>
         /// <param name="autostart">Automatically start the dialogue on load, on by default</param>
-        public void LoadDialogueMode(TextAsset inkJson, DialogueTrigger trigger, bool autostart = true)
+        public void QueDialogue(TextAsset inkJson, DialogueTrigger trigger, bool autostart, Dictionary<string, string> variables = null)
         {
-            DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(trigger, inkJson));
-            
-            currentTrigger = trigger;
+            QueuedDialogue dialogue = new QueuedDialogue(trigger, variables, inkJson, autostart);
+            if (_queue.Count > 0 || dialogueIsPlaying)
+            {
+                Debug.Log("adding to the queue");
+                _queue.Enqueue(dialogue);
+            }
+            else
+            {
+                Debug.Log("barging ahead");
+                LoadDialogueFromQueue(dialogue);
+            }
+        }
+
+        private void LoadDialogueFromQueue(QueuedDialogue dialogueToLoad)
+        {
+            currentTrigger = dialogueToLoad.trigger;
             if(!isInBattle)
                 movement.canMove = false;
-            _currentStory = new Story(inkJson.text);
+            _currentStory = new Story(dialogueToLoad.textAsset.text);
+            _currentTextAsset = dialogueToLoad.textAsset;
+            
             _dialogueVariables.StartListening(_currentStory);
-            if (autostart)
+            if(dialogueToLoad.variables != null)
             {
+                SetDialogueVariables(dialogueToLoad.variables);
+            }
+            
+            if (dialogueToLoad.autoStart)
+            {
+                DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(dialogueToLoad.trigger, _currentTextAsset));
                 dialogueIsPlaying = true;
                 dialoguePanel.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
@@ -132,16 +157,24 @@ namespace PokemonGame.Dialogue
         /// <summary>
         /// Start a conversation, will only work if you loaded a conversation but did not start it. If not it will do nothing and give you a warning
         /// </summary>
-        public void StartDialogue()
+        public void StartDialogue(DialogueTrigger trigger)
         {
-            if (wasToldToNotStart)
+            if (wasToldToNotStart && currentTrigger == trigger)
             {
-                wasToldToNotStart = false;
-                dialogueIsPlaying = true;
-                dialoguePanel.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                ContinueStory();
+                if(currentTrigger == trigger)
+                {
+                    DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(trigger, _currentTextAsset));
+                    wasToldToNotStart = false;
+                    dialogueIsPlaying = true;
+                    dialoguePanel.SetActive(true);
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                    ContinueStory();
+                }
+                else
+                {
+                    Debug.LogWarning("The trigger to start the dialogue must be the one that queued it");
+                }
             }
             else
             {
@@ -159,18 +192,29 @@ namespace PokemonGame.Dialogue
         
         private IEnumerator ExitDialogueMode()
         {
-            yield return new WaitForSeconds(0.2f);
-            _dialogueVariables.StopListening(_currentStory);
-            if(!isInBattle)
+            Debug.Log(_queue.Count);
+            if (_queue.Count > 0)
             {
-                movement.canMove = true;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                LoadDialogueFromQueue(_queue.Dequeue());
+                DialogueEnded?.Invoke(this, new DialogueEndedEventArgs(currentTrigger, true));
             }
-            dialogueIsPlaying = false;
-            dialoguePanel.SetActive(false);
-            dialogueTextDisplay.text = "";
-            currentTrigger.EndDialogue();
+            else
+            {
+                DialogueEnded?.Invoke(this, new DialogueEndedEventArgs(currentTrigger, false));
+            
+                yield return new WaitForSeconds(0.2f);
+                _dialogueVariables.StopListening(_currentStory);
+                if(!isInBattle)
+                {
+                    movement.canMove = true;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+                dialogueIsPlaying = false;
+                dialoguePanel.SetActive(false);
+                dialogueTextDisplay.text = "";
+                currentTrigger.EndDialogue();   
+            }
         }
         
         private void ContinueStory()
@@ -330,4 +374,32 @@ namespace PokemonGame.Dialogue
             this.textAsset = textAsset;
         }
     }   
+    
+    public class DialogueEndedEventArgs : EventArgs
+    {
+        public DialogueTrigger trigger;
+        public bool moreToGo;
+    
+        public DialogueEndedEventArgs(DialogueTrigger trigger, bool moreToGo)
+        {
+            this.trigger = trigger;
+            this.moreToGo = moreToGo;
+        }
+    }
+
+    public class QueuedDialogue
+    {
+        public DialogueTrigger trigger;
+        public Dictionary<string, string> variables;
+        public bool autoStart;
+        public TextAsset textAsset;
+
+        public QueuedDialogue(DialogueTrigger trigger, Dictionary<string, string> variables, TextAsset textAsset, bool autoStart = true)
+        {
+            this.trigger = trigger;
+            this.variables = variables;
+            this.textAsset = textAsset;
+            this.autoStart = autoStart;
+        }
+    }
 }

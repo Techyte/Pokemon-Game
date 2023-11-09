@@ -42,6 +42,8 @@ namespace PokemonGame.Trainers
         private GameLoader _gameLoader;
         
         private bool _hasTalkedDefeatedText;
+
+        private bool isStartingBattle;
         
         private void OnValidate()
         {
@@ -71,7 +73,7 @@ namespace PokemonGame.Trainers
                 }
             }
         }
-        
+
         /// <summary>
         /// Triggers the defeated dialogue
         /// </summary>
@@ -87,27 +89,28 @@ namespace PokemonGame.Trainers
         private IEnumerator StartDefeatedDialogue()
         {
             yield return new WaitForEndOfFrame();
-            LoadDialogue(defeatedBattleText);
+            QueDialogue(defeatedBattleText, true);
         }
 
         protected override void OnPlayerInteracted()
         {
-            LoadDialogue(idleDialogue);
+            QueDialogue(idleDialogue, true);
             base.OnPlayerInteracted();
         }
 
         private void StartBattle()
         {
-            if (!isDefeated)
+            if (!isDefeated && !isStartingBattle)
             {
+                isStartingBattle = true;
                 Player.Instance.LookAtTarget(transform.position);
-                LoadDialogue(startBattleText);
+                QueDialogue(startBattleText, true);
             }
         }
 
         private void DialogueEnded(object sender, EventArgs args)
         {
-            if(!isDefeated)
+            if(!isDefeated && isStartingBattle)
             {
                 LoadBattle();
             }
