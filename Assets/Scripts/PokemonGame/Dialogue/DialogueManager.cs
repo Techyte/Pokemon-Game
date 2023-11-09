@@ -29,7 +29,7 @@ namespace PokemonGame.Dialogue
         // TODO: get rid of this god awful global variable system, like jesus christ
         private DialogueVariables _dialogueVariables;
         private DialogueMethods _dialogueMethods;
-        
+
         public bool dialogueIsPlaying { get; private set; }
         public DialogueTrigger currentTrigger;
         [SerializeField] private PlayerMovement movement;

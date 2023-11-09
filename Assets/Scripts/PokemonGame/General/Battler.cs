@@ -118,7 +118,8 @@ namespace PokemonGame.General
         /// Inflict damage onto the battler
         /// </summary>
         /// <param name="damage">The amount of damage to inflict</param>
-        public void TakeDamage(int damage)
+        /// <param name="source">The source type of the damage</param>
+        public void TakeDamage(int damage, DamageSource source)
         {
             currentHealth -= damage;
             
@@ -127,54 +128,34 @@ namespace PokemonGame.General
             
             if (currentHealth <= 0)
             {
-                Fainted();
+                Fainted(source);
             }
         }
 
         /// <summary>
-        /// Inflict damage onto the battler
+        /// Heal the battler by the amount to heal, battlers health will not go above the <see cref="maxHealth"/>
         /// </summary>
-        /// <param name="damage">The amount of damage to inflict</param>
-        /// <param name="source">The source type of the damage</param>
-        /// <param name="battlersThatParticipated">The list of battlers that participated in dealing the damage</param>
-        public void TakeDamage(int damage, Battler source, List<Battler> battlersThatParticipated)
+        /// <param name="amountToHeal">The amount of health to gain</param>
+        public void Heal(int amountToHeal)
         {
-            currentHealth -= damage;
-            
-            OnTookDamage?.Invoke(this, EventArgs.Empty);
-            OnHealthUpdated?.Invoke(this, EventArgs.Empty);
-            
-            if (currentHealth <= 0)
-            {
-                Fainted(source, battlersThatParticipated);
-            }
+            UpdateHealth(currentHealth + amountToHeal);
         }
 
-        public void HealDamage(int amountToHeal)
-        {
-            currentHealth += amountToHeal;
-            
-            OnHealthUpdated?.Invoke(this, EventArgs.Empty);
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="amountToGain"></param>
         public void GainExp(int amountToGain)
         {
             // TODO: all the fucking logic for carrying over exp and other shit like leveling up and evolving
             exp += amountToGain;
         }
 
-        private void Fainted(Battler source, List<Battler> battlersThatParticipated)
+        private void Fainted(DamageSource source)
         {
             currentHealth = 0;
             isFainted = true;
-            OnFainted?.Invoke(this, new BattlerTookDamageArgs(new BattlerDamageSource(source, battlersThatParticipated)));
-        }
-
-        private void Fainted()
-        {
-            currentHealth = 0;
-            isFainted = true;
-            OnFainted?.Invoke(this, new BattlerTookDamageArgs(DamageSource.Empty));
+            OnFainted?.Invoke(this, new BattlerTookDamageArgs(source));
         }
 
         /// <summary>

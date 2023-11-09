@@ -118,13 +118,11 @@ namespace PokemonGame.Battle
 
             for (int i = 0; i < opponentParty.Count; i++)
             {
-                int newI = i;
+                int index = i;
                 
-                opponentParty[newI].OnFainted += (sender, args) =>
+                opponentParty[index].OnFainted += (sender, args) =>
                 {
-                    Debug.Log(opponentParty[newI]);
-                    
-                    BattlerFainted(args, opponentParty[newI]);
+                    BattlerFainted(args, opponentParty[index]);
                 };
             }
             
@@ -176,29 +174,26 @@ namespace PokemonGame.Battle
         {
             if (!hasShowedMoves)
             {
-                Dictionary<string, string> variables = new Dictionary<string, string>();
-                variables.Add("battlerUsed", playerCurrentBattler.name);
-                variables.Add("moveUsed", playerMoveToDo.name);
-                variables.Add("battlerHit", opponentCurrentBattler.name);
-                variables.Add("damageDealt", "5");
-                
-                LoadDialogue(battlerUsedText, false);
-                SetDialogueVariables(variables);
-                StartDialogue();
-
                 hasShowedMoves = true;
-
-                MoveMethodEventArgs e = new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler,
-                    playerMoveToDoIndex, playerMoveToDo, ExternalBattleData.Construct(this));
                 
-                playerMoveToDo.MoveMethod(e);
-                
-                Debug.Log(e.damageDealt);
-                //uiManager.ShowUI(false);
-                //DoMoves();
-                //playerHasChosenAttack = false;
-                //currentTurn = TurnStatus.Ending;
+                uiManager.ShowUI(false);
+                DoMoves();
+                playerHasChosenAttack = false;
+                currentTurn = TurnStatus.Ending;
             }
+        }
+
+        private void DialogueHurt(string battlerUsed, string moveUsed, string battlerHit, string damageDealt)
+        {
+            Dictionary<string, string> variables = new Dictionary<string, string>();
+            variables.Add("battlerUsed", battlerUsed);
+            variables.Add("moveUsed", moveUsed);
+            variables.Add("battlerHit", battlerHit);
+            variables.Add("damageDealt", damageDealt);
+                
+            LoadDialogue(battlerUsedText, false);
+            SetDialogueVariables(variables);
+            StartDialogue();
         }
 
         private void TurnEnding()
@@ -242,8 +237,16 @@ namespace PokemonGame.Battle
             }
             
             //You can add any animation calls for attacking here
+            
+            MoveMethodEventArgs e = new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler,
+                playerMoveToDoIndex, playerMoveToDo, ExternalBattleData.Construct(this));
+                
+            playerMoveToDo.MoveMethod(e);
+            
+            opponentCurrentBattler.TakeDamage(e.damageDealt, new BattlerDamageSource(playerCurrentBattler));
 
-            playerMoveToDo.MoveMethod(new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler, playerMoveToDoIndex, playerMoveToDo, ExternalBattleData.Construct(this)));
+            DialogueHurt(playerCurrentBattler.name, playerMoveToDo.name, opponentCurrentBattler.name,
+                e.damageDealt.ToString());
             
             playerParty.CheckDefeatedStatus();
 
@@ -283,7 +286,15 @@ namespace PokemonGame.Battle
 
             int moveToDoIndex = GetIndexOfMoveOnCurrentEnemy(enemyMoveToDo);
 
-            enemyMoveToDo.MoveMethod(new MoveMethodEventArgs(opponentCurrentBattler, playerCurrentBattler, moveToDoIndex, enemyMoveToDo, ExternalBattleData.Construct(this)));
+            MoveMethodEventArgs e = new MoveMethodEventArgs(opponentCurrentBattler, playerCurrentBattler, moveToDoIndex,
+                enemyMoveToDo, ExternalBattleData.Construct(this));
+            
+            enemyMoveToDo.MoveMethod(e);
+            
+            playerCurrentBattler.TakeDamage(e.damageDealt, new BattlerDamageSource(opponentCurrentBattler));
+            
+            DialogueHurt(opponentCurrentBattler.name, enemyMoveToDo.name, playerCurrentBattler.name,
+                e.damageDealt.ToString());
             
             playerParty.CheckDefeatedStatus();
             

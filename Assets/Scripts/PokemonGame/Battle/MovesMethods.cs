@@ -142,7 +142,7 @@ namespace PokemonGame.Battle
         {
             int damage = CalculateDamage(e);
             e.damageDealt = damage;
-            e.attacker.HealDamage(damage/2);
+            e.attacker.Heal(damage/2);
         }
 
         public void StringShot(MoveMethodEventArgs e)

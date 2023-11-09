@@ -1,3 +1,5 @@
+using PokemonGame.General;
+
 namespace PokemonGame.Battle
 {
     using UnityEngine;
@@ -16,7 +18,7 @@ namespace PokemonGame.Battle
 
         public void Poisoned(StatusEffectEventArgs args)
         {
-            args.battler.TakeDamage(1);
+            args.battler.TakeDamage(1, new EmptyDamageSource());
 
             Debug.Log(args.battler.name + " was hurt by poison");
         }
