@@ -10,51 +10,59 @@ namespace PokemonGame.Dialogue
     /// </summary>
     public class DialogueTrigger : MonoBehaviour
     {
+        /// <summary>
+        /// Allow this dialogue trigger to use global tags
+        /// </summary>
         public bool allowsGlobalTags = true;
-        [HideInInspector] public bool dialogueIsRunning;
-
-        public event EventHandler DialogueWasCalled;
-        public event EventHandler DialogueFinished;
-
-        private bool toldNotToStartYet;
 
         /// <summary>
-        /// Loads an INK Dialogue sequence from a text asset
+        /// Dialogue that the trigger queued was called
         /// </summary>
-        /// <param name="inkJson">The text asset that the dialogue sequence draws from</param>
+        public event EventHandler DialogueWasCalled;
+        /// <summary>
+        /// Dialogue that the trigger queued ended
+        /// </summary>
+        public event EventHandler DialogueFinished;
+
+        private bool _toldNotToStartYet;
+
+        /// <summary>
+        /// Queue dialogue to play
+        /// </summary>
+        /// <param name="textAsset">The text asset that the dialogue sequence draws from</param>
         /// <param name="autostart">Automatically start the dialogue on load, on by default</param>
+        /// <param name="variables">Variables to pass into the dialogue when it plays</param>
         protected void QueDialogue(TextAsset textAsset, bool autostart, Dictionary<string, string> variables = null)
         {
             if (autostart)
             {
                 DialogueManager.instance.QueDialogue(textAsset, this, true, variables);
                 DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
-                dialogueIsRunning = true;   
             }
             else
             {
                 DialogueManager.instance.QueDialogue(textAsset, this, false);
-                toldNotToStartYet = true;
+                _toldNotToStartYet = true;
             }
         }
         
         /// <summary>
-        /// Starts an INK Dialogue sequence only if we have already loaded one
+        /// Starts an INK Dialogue sequence only if we queued one and told it not to autostart
         /// </summary>
         protected void StartDialogue()
         {
-            if (!DialogueManager.instance.dialogueIsPlaying)
+            if(DialogueManager.instance.currentTrigger == this && !DialogueManager.instance.dialogueIsPlaying)
             {
-                if (toldNotToStartYet)
-                {
-                    toldNotToStartYet = false;
-                    DialogueManager.instance.StartDialogue(this);
-                    DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
-                    dialogueIsRunning = true;   
-                }
+                _toldNotToStartYet = false;
+                DialogueManager.instance.StartDialogue(this);
+                DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
             }
         }
 
+        /// <summary>
+        /// Set dialogue variables for the current story
+        /// </summary>
+        /// <param name="variables">Variables to set</param>
         public void SetDialogueVariables(Dictionary<string, string> variables)
         {
             DialogueManager.instance.SetDialogueVariables(variables);
@@ -66,7 +74,6 @@ namespace PokemonGame.Dialogue
         public void EndDialogue()
         {
             DialogueFinished?.Invoke(gameObject, EventArgs.Empty);
-            dialogueIsRunning = false;
         }
 
         /// <summary>

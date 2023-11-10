@@ -142,15 +142,19 @@ namespace PokemonGame.General
         }
 
         /// <summary>
-        /// 
+        /// Give the battler exp, will handle leveling up and stat gains
         /// </summary>
-        /// <param name="amountToGain"></param>
+        /// <param name="amountToGain">The amount of exp to give</param>
         public void GainExp(int amountToGain)
         {
             // TODO: all the fucking logic for carrying over exp and other shit like leveling up and evolving
             exp += amountToGain;
         }
 
+        /// <summary>
+        /// Handle fainting
+        /// </summary>
+        /// <param name="source">Source of damage that caused the battler to faint</param>
         private void Fainted(DamageSource source)
         {
             currentHealth = 0;
@@ -193,12 +197,19 @@ namespace PokemonGame.General
             }
         }
 
+        /// <summary>
+        /// Test if a battler can learn a move
+        /// </summary>
+        /// <param name="moveToLearn">Move to test</param>
+        /// <returns></returns>
         public bool CanLearn(Move moveToLearn)
         {
             return source.moves.Contains(moveToLearn);
         }
 
-        //Used for updating stats and such outside of runtime
+        /// <summary>
+        /// Used for updating stats and such outside of runtime
+        /// </summary>
         private void OnValidate()
         {
             if (!statusEffect)
@@ -229,7 +240,9 @@ namespace PokemonGame.General
                     moves.Add(null);
         }
         
-        //Updates the stats of the battler
+        /// <summary>
+        /// Updates the stats of the battler
+        /// </summary>
         private void UpdateStats()
         {
             if(!source) return;
@@ -244,6 +257,9 @@ namespace PokemonGame.General
         }
 
         //Updates the source of the battler
+        /// <summary>
+        /// Updates the properties of the battler that derive from the source template
+        /// </summary>
         private void UpdateSource()
         {
             primaryType = source.primaryType;

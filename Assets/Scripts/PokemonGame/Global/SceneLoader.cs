@@ -24,10 +24,10 @@ namespace PokemonGame.Global
         private static string sceneName;
 
         /// <summary>
-        /// Loads a scene from the sceneIndex param and what ever arguments you give it
+        /// Loads the scene with the same index as sceneIndex
         /// </summary>
-        /// <param name="sceneIndex">The scene index to load</param>
-        /// <param name="newVars">The variables to load the scene with</param>
+        /// <param name="sceneIndex">The index of the scene to load</param>
+        /// <param name="newVars">Variables to pass along to the next scene</param>
         public static void LoadScene(int sceneIndex, Dictionary<string, object> newVars)
         {
             ClearLoader();
@@ -47,7 +47,7 @@ namespace PokemonGame.Global
         }
 
         /// <summary>
-        /// Loads a a scene from the sceneIndex param
+        /// Loads the scene with the same index as sceneIndex
         /// </summary>
         /// <param name="sceneIndex">The index of the scene to load</param>
         public static void LoadScene(int sceneIndex)
@@ -68,7 +68,7 @@ namespace PokemonGame.Global
         }
 
         /// <summary>
-        /// Loads a a scene from the name param
+        /// Loads the scene with the same name as sceneName
         /// </summary>
         /// <param name="sceneName">The name of the scene to load</param>
         public static void LoadScene(string sceneName)
@@ -88,6 +88,11 @@ namespace PokemonGame.Global
             }
         }
     
+        /// <summary>
+        /// Loads the scene with the same name as sceneName
+        /// </summary>
+        /// <param name="sceneName">The name of the scene to load</param>
+        /// <param name="newVars">Variables to pass along to the next scene</param>
         public static void LoadScene(string sceneName, Dictionary<string, object> newVars)
         {
             ClearLoader();
@@ -107,6 +112,9 @@ namespace PokemonGame.Global
             }
         }
 
+        /// <summary>
+        /// Used to handle scene loading while dialogue is running
+        /// </summary>
         private static void IsDialogueDone(object sender, DialogueEndedEventArgs args)
         {
             Debug.Log(args.moreToGo);
@@ -142,6 +150,12 @@ namespace PokemonGame.Global
             sceneLoadedFrom = null;
         }
     
+        /// <summary>
+        /// Gets a variable from the carried over variables
+        /// </summary>
+        /// <param name="variableName">The name of the variable to get</param>
+        /// <typeparam name="T">The type of variable to get</typeparam>
+        /// <returns></returns>
         public static T GetVariable<T>(string variableName)
         {
             if (_vars.TryGetValue(variableName, out object var))

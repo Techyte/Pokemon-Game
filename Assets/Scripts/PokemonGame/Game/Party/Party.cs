@@ -60,6 +60,10 @@ namespace PokemonGame.Game.Party
             
         }
 
+        /// <summary>
+        /// Returns the amount of battlers in the party that are defeated
+        /// </summary>
+        /// <returns></returns>
         public int DefeatedCount()
         {
             var defeatedCount = 0;
@@ -75,16 +79,28 @@ namespace PokemonGame.Game.Party
             return defeatedCount;
         }
 
+        /// <summary>
+        /// Returns the amount of battlers in the party
+        /// </summary>
+        /// <returns></returns>
         private int PartyCount()
         {
             return party.Count;
         }
 
+        /// <summary>
+        /// Returns a complete copy of the party
+        /// </summary>
+        /// <returns></returns>
         public Party Copy()
         {
             return new Party(this);
         }
 
+        /// <summary>
+        /// Adds a battler to the party
+        /// </summary>
+        /// <param name="battlerToAdd">Battler to add to the party</param>
         public void Add(Battler battlerToAdd)
         {
             party.Add(battlerToAdd);

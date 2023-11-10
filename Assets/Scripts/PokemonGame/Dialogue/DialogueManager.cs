@@ -127,6 +127,10 @@ namespace PokemonGame.Dialogue
             }
         }
 
+        /// <summary>
+        /// Load dialogue from the queue
+        /// </summary>
+        /// <param name="dialogueToLoad">The queued dialogue to load</param>
         private void LoadDialogueFromQueue(QueuedDialogue dialogueToLoad)
         {
             currentTrigger = dialogueToLoad.trigger;
@@ -151,12 +155,16 @@ namespace PokemonGame.Dialogue
                 ContinueStory();
             }
             else
+            {
+                dialogueIsPlaying = false;
                 wasToldToNotStart = true;
+            }
         }
 
         /// <summary>
-        /// Start a conversation, will only work if you loaded a conversation but did not start it. If not it will do nothing and give you a warning
+        /// Start dialogue that you queued
         /// </summary>
+        /// <param name="trigger">Used to tell if you were the one that queued it</param>
         public void StartDialogue(DialogueTrigger trigger)
         {
             if (wasToldToNotStart && currentTrigger == trigger)
@@ -182,6 +190,10 @@ namespace PokemonGame.Dialogue
             }
         }
 
+        /// <summary>
+        /// Set dialogue variables for the current story
+        /// </summary>
+        /// <param name="variables">The dialogue variables to set</param>
         public void SetDialogueVariables(Dictionary<string, string> variables)
         {
             foreach (var variable in variables)
@@ -190,6 +202,10 @@ namespace PokemonGame.Dialogue
             }
         }
         
+        /// <summary>
+        /// Exit current dialogue and either start the next or finish up
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator ExitDialogueMode()
         {
             Debug.Log(_queue.Count);
@@ -217,8 +233,12 @@ namespace PokemonGame.Dialogue
             }
         }
         
+        /// <summary>
+        /// Continue the current story
+        /// </summary>
         private void ContinueStory()
         {
+            dialogueIsPlaying = true;
             StopAllCoroutines();
 
             if (tempNextLines == null)
@@ -363,9 +383,18 @@ namespace PokemonGame.Dialogue
         }
     }
 
+    /// <summary>
+    /// Event arguments for dialogue starting
+    /// </summary>
     public class DialogueStartedEventArgs : EventArgs
     {
+        /// <summary>
+        /// The dialogue trigger that started the dialogue
+        /// </summary>
         public DialogueTrigger trigger;
+        /// <summary>
+        /// The text asset that was used for the dialogue
+        /// </summary>
         public TextAsset textAsset;
     
         public DialogueStartedEventArgs(DialogueTrigger trigger, TextAsset textAsset)
@@ -373,11 +402,21 @@ namespace PokemonGame.Dialogue
             this.trigger = trigger;
             this.textAsset = textAsset;
         }
-    }   
+    }
     
+    
+    /// <summary>
+    /// Event arguments for dialogue ending
+    /// </summary>
     public class DialogueEndedEventArgs : EventArgs
     {
+        /// <summary>
+        /// The dialogue trigger that started the dialogue that just ended
+        /// </summary>
         public DialogueTrigger trigger;
+        /// <summary>
+        /// Weather there is more dialogue queued
+        /// </summary>
         public bool moreToGo;
     
         public DialogueEndedEventArgs(DialogueTrigger trigger, bool moreToGo)
@@ -387,11 +426,26 @@ namespace PokemonGame.Dialogue
         }
     }
 
+    /// <summary>
+    /// Container for queued dialogue
+    /// </summary>
     public class QueuedDialogue
     {
+        /// <summary>
+        /// Trigger that queued it
+        /// </summary>
         public DialogueTrigger trigger;
+        /// <summary>
+        /// Variables to set
+        /// </summary>
         public Dictionary<string, string> variables;
+        /// <summary>
+        /// Automatically start upon dequeing
+        /// </summary>
         public bool autoStart;
+        /// <summary>
+        /// Text asset to construct the dialogue from
+        /// </summary>
         public TextAsset textAsset;
 
         public QueuedDialogue(DialogueTrigger trigger, Dictionary<string, string> variables, TextAsset textAsset, bool autoStart = true)
