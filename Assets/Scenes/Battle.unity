@@ -1401,9 +1401,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 337073833}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.45, y: 0.45, z: 0}
+  m_LocalScale: {x: 0.45000002, y: 0.45000002, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 331944866}
@@ -1413,7 +1413,7 @@ RectTransform:
   - {fileID: 585518015}
   - {fileID: 1178402649}
   - {fileID: 1208924947}
-  m_Father: {fileID: 583115925}
+  m_Father: {fileID: 1145280087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2024,10 +2024,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1313120827}
   - {fileID: 1971165367}
-  - {fileID: 1406917650}
-  - {fileID: 337073834}
+  - {fileID: 1145280087}
   m_Father: {fileID: 481600975}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2866,7 +2864,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allowsGlobalTags: 1
-  dialogueIsRunning: 0
   uiManager: {fileID: 1038033301}
   expCalculator: {fileID: 1038033302}
   battlerUsedText: {fileID: 4900000, guid: 06cf16b39212cf9468feeab7b70acc98, type: 3}
@@ -2912,6 +2909,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerUIHolder: {fileID: 583115924}
+  controlUIHolder: {fileID: 1145280086}
   moveButtons: {fileID: 1313120826}
   healthDisplays: {fileID: 1971165366}
   changeBattlerDisplay: {fileID: 337073833}
@@ -3082,6 +3080,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1096175100}
   m_CullTransparentMesh: 1
+--- !u!1 &1145280086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1145280087}
+  m_Layer: 5
+  m_Name: ControlUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1145280087
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145280086}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1313120827}
+  - {fileID: 1406917650}
+  - {fileID: 337073834}
+  m_Father: {fileID: 583115925}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1178402648
 GameObject:
   m_ObjectHideFlags: 0
@@ -3507,14 +3543,14 @@ RectTransform:
   m_GameObject: {fileID: 1313120826}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.45, y: 0.45, z: 0}
+  m_LocalScale: {x: 0.45000002, y: 0.45000002, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1033898695}
   - {fileID: 5731961}
   - {fileID: 1838204569}
   - {fileID: 262383536}
-  m_Father: {fileID: 583115925}
+  m_Father: {fileID: 1145280087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3814,13 +3850,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1406917649}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.45, y: 0.45, z: 0}
+  m_LocalScale: {x: 0.45000002, y: 0.45000002, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 306563582}
-  m_Father: {fileID: 583115925}
+  m_Father: {fileID: 1145280087}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

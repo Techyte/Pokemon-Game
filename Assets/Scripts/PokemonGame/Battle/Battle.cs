@@ -91,6 +91,8 @@ namespace PokemonGame.Battle
         private Vector3 _playerPos;
         private Quaternion _playerRotation;
 
+        private bool _waitingToEndTurnShowing;
+
         private void Start()
         {
             Cursor.lockState = CursorLockMode.None;
@@ -114,6 +116,14 @@ namespace PokemonGame.Battle
             opponentParty.PartyAllDefeated += (sender, args) =>
             {
                 EndBattle(true);
+            };
+
+            DialogueManager.instance.DialogueEnded += (sender, args) =>
+            {
+                if (_waitingToEndTurnShowing && !args.moreToGo)
+                {
+                    EndTurnShowing();
+                }
             };
 
             for (int i = 0; i < opponentParty.Count; i++)
@@ -160,8 +170,8 @@ namespace PokemonGame.Battle
                 case TurnStatus.Choosing:
                     if (!hasDoneChoosingUpdate)
                     {
+                        uiManager.ShowControlUI(true);
                         RunStartOfTurnStatusEffects();
-                        uiManager.ShowUI(true);
                         uiManager.UpdateBattlerMoveDisplays();
                         enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
                         hasDoneChoosingUpdate = true;
@@ -176,11 +186,17 @@ namespace PokemonGame.Battle
             {
                 hasShowedMoves = true;
                 
-                uiManager.ShowUI(false);
+                uiManager.ShowControlUI(false);
                 DoMoves();
-                playerHasChosenAttack = false;
-                currentTurn = TurnStatus.Ending;
+                _waitingToEndTurnShowing = true;
             }
+        }
+
+        private void EndTurnShowing()
+        {
+            _waitingToEndTurnShowing = false;
+            playerHasChosenAttack = false;
+            currentTurn = TurnStatus.Ending;
         }
 
         private void DialogueHurt(string battlerUsed, string moveUsed, string battlerHit, string damageDealt)
@@ -196,7 +212,6 @@ namespace PokemonGame.Battle
 
         private void TurnEnding()
         {
-            uiManager.ShowUI(false);
             hasDoneChoosingUpdate = false;
             hasShowedMoves = false;
             playerHasChosenAttack = false;

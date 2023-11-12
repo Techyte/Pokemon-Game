@@ -7,6 +7,7 @@ namespace PokemonGame.Battle
     public class BattleUIManager : MonoBehaviour
     {
         [SerializeField] private GameObject playerUIHolder;
+        [SerializeField] private GameObject controlUIHolder;
         [SerializeField] private GameObject moveButtons;
         [SerializeField] private GameObject healthDisplays;
         [SerializeField] private GameObject changeBattlerDisplay;
@@ -66,9 +67,14 @@ namespace PokemonGame.Battle
             }
         }
 
-        public void ShowUI(bool showUIBool)
+        public void ShowUI(bool show)
         {
-            playerUIHolder.SetActive(showUIBool);
+            playerUIHolder.SetActive(show);
+        }
+
+        public void ShowControlUI(bool show)
+        {
+            controlUIHolder.SetActive(show);
         }
 
         public void SwitchBattler()

@@ -24,8 +24,6 @@ namespace PokemonGame.Dialogue
         /// </summary>
         public event EventHandler DialogueFinished;
 
-        private bool _toldNotToStartYet;
-
         /// <summary>
         /// Queue dialogue to play
         /// </summary>
@@ -42,7 +40,6 @@ namespace PokemonGame.Dialogue
             else
             {
                 DialogueManager.instance.QueDialogue(textAsset, this, false);
-                _toldNotToStartYet = true;
             }
         }
         
@@ -53,7 +50,6 @@ namespace PokemonGame.Dialogue
         {
             if(DialogueManager.instance.currentTrigger == this && !DialogueManager.instance.dialogueIsPlaying)
             {
-                _toldNotToStartYet = false;
                 DialogueManager.instance.StartDialogue(this);
                 DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
             }
