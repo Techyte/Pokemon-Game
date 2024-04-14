@@ -1,3 +1,5 @@
+using PokemonGame.Dialogue;
+
 namespace PokemonGame.Game
 {
     using UnityEngine;
@@ -28,6 +30,11 @@ namespace PokemonGame.Game
 
         private void FixedUpdate()
         {
+            if(look && !DialogueManager.instance.dialogueIsPlaying)
+            {
+                StopLooking();
+            }
+            
             if(look)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, _target, 0.04f);

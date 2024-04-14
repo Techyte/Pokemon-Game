@@ -30,7 +30,7 @@ namespace PokemonGame.Dialogue
         /// <param name="textAsset">The text asset that the dialogue sequence draws from</param>
         /// <param name="autostart">Automatically start the dialogue on load, on by default</param>
         /// <param name="variables">Variables to pass into the dialogue when it plays</param>
-        protected void QueDialogue(TextAsset textAsset, bool autostart, Dictionary<string, string> variables = null)
+        public void QueDialogue(TextAsset textAsset, bool autostart, Dictionary<string, string> variables = null)
         {
             if (autostart)
             {
@@ -40,6 +40,25 @@ namespace PokemonGame.Dialogue
             else
             {
                 DialogueManager.instance.QueDialogue(textAsset, this, false);
+            }
+        }
+        
+        /// <summary>
+        /// Queue dialogue to play
+        /// </summary>
+        /// <param name="textAsset">The text asset that the dialogue sequence draws from</param>
+        /// <param name="autostart">Automatically start the dialogue on load, on by default</param>
+        /// <param name="variables">Variables to pass into the dialogue when it plays</param>
+        public void QueDialogue(string text, bool autostart, Dictionary<string, string> variables = null)
+        {
+            if (autostart)
+            {
+                DialogueManager.instance.QueDialogue(text, this, true, variables);
+                DialogueWasCalled?.Invoke(gameObject, EventArgs.Empty);
+            }
+            else
+            {
+                DialogueManager.instance.QueDialogue(text, this, false);
             }
         }
         

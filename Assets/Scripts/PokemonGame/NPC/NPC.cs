@@ -50,10 +50,17 @@ namespace PokemonGame.NPC
             {
                 if (_playerInRange)
                 {
-                    visualCue.SetActive(true);
-                    if (Input.GetKeyDown(KeyCode.C))
+                    if (!DialogueManager.instance.dialogueIsPlaying)
                     {
-                        OnPlayerInteracted();
+                        visualCue.SetActive(true);
+                        if (Input.GetKeyDown(KeyCode.C))
+                        {
+                            OnPlayerInteracted();
+                        }
+                    }
+                    else
+                    {
+                        visualCue.SetActive(false);
                     }
                 }
                 else

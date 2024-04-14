@@ -23,11 +23,12 @@ namespace PokemonGame.Dialogue
         [SerializeField] private GameObject[] choices;
         [SerializeField] private int currentChoicesAmount;
         [SerializeField] private int maxCharAmount;
+        [SerializeField] private float textScrollSpeed = 1;
         private Story _currentStory;
         private TextAsset _currentTextAsset;
         [SerializeField] private TextAsset globalsInkFile;
         private TextMeshProUGUI[] _choicesText;
-        // TODO: get rid of this god awful global variable system, like jesus christ
+        // TODO: replace this god awful global variable system, like jesus christ
         private DialogueVariables _dialogueVariables;
         private DialogueMethods _dialogueMethods;
 
@@ -46,6 +47,8 @@ namespace PokemonGame.Dialogue
         private int currentTempIndex;
 
         private bool wasToldToNotStart;
+
+        private QueuedDialogue currentQueuedDialogue;
         
         private void Awake()
         {
@@ -126,6 +129,28 @@ namespace PokemonGame.Dialogue
                 LoadDialogueFromQueue(dialogue);
             }
         }
+        
+        
+        /// <summary>
+        /// Starts a new conversation
+        /// </summary>
+        /// <param name="inkJson">The TextAsset with the information about the conversation</param>
+        /// <param name="trigger">The DialogueTrigger that triggered this conversation</param>
+        /// <param name="autostart">Automatically start the dialogue on load, on by default</param>
+        public void QueDialogue(string text, DialogueTrigger trigger, bool autostart, Dictionary<string, string> variables = null)
+        {
+            QueuedDialogue dialogue = new QueuedDialogue(trigger, text, autostart);
+            if (_queue.Count > 0 || dialogueIsPlaying)
+            {
+                Debug.Log("adding to the queue");
+                _queue.Enqueue(dialogue);
+            }
+            else
+            {
+                Debug.Log("barging ahead");
+                LoadDialogueFromQueue(dialogue);
+            }
+        }
 
         /// <summary>
         /// Load dialogue from the queue
@@ -134,20 +159,25 @@ namespace PokemonGame.Dialogue
         private void LoadDialogueFromQueue(QueuedDialogue dialogueToLoad)
         {
             currentTrigger = dialogueToLoad.trigger;
+            currentQueuedDialogue = dialogueToLoad;
+            
             if(!isInBattle)
                 movement.canMove = false;
-            _currentStory = new Story(dialogueToLoad.textAsset.text);
-            _currentTextAsset = dialogueToLoad.textAsset;
             
-            _dialogueVariables.StartListening(_currentStory);
-            if(dialogueToLoad.variables != null)
+            if (dialogueToLoad.ink)
             {
-                SetDialogueVariables(dialogueToLoad.variables);
+                _currentStory = new Story(dialogueToLoad.textAsset.text);
+                _currentTextAsset = dialogueToLoad.textAsset;
+            
+                _dialogueVariables.StartListening(_currentStory);
+                if(dialogueToLoad.variables != null)
+                {
+                    SetDialogueVariables(dialogueToLoad.variables);
+                }
             }
             
             if (dialogueToLoad.autoStart)
             {
-                DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(dialogueToLoad.trigger, _currentTextAsset));
                 dialogueIsPlaying = true;
                 dialoguePanel.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
@@ -158,6 +188,18 @@ namespace PokemonGame.Dialogue
             {
                 dialogueIsPlaying = false;
                 wasToldToNotStart = true;
+            }
+
+            if (dialogueToLoad.ink)
+            {
+                if (dialogueToLoad.autoStart)
+                {
+                    DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(dialogueToLoad.trigger, _currentTextAsset));
+                }
+                if (dialogueToLoad.autoStart)
+                {
+                    DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(dialogueToLoad.trigger, dialogueToLoad.text));
+                }
             }
         }
 
@@ -171,7 +213,14 @@ namespace PokemonGame.Dialogue
             {
                 if(currentTrigger == trigger)
                 {
-                    DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(trigger, _currentTextAsset));
+                    if (currentQueuedDialogue.ink)
+                    {
+                        DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(trigger, _currentTextAsset));   
+                    }
+                    else
+                    {
+                        DialogueStarted?.Invoke(this, new DialogueStartedEventArgs(trigger, currentQueuedDialogue.text));  
+                    }
                     wasToldToNotStart = false;
                     dialogueIsPlaying = true;
                     dialoguePanel.SetActive(true);
@@ -216,8 +265,6 @@ namespace PokemonGame.Dialogue
             }
             else
             {
-                DialogueEnded?.Invoke(this, new DialogueEndedEventArgs(currentTrigger, false));
-            
                 yield return new WaitForSeconds(0.2f);
                 _dialogueVariables.StopListening(_currentStory);
                 if(!isInBattle)
@@ -229,7 +276,9 @@ namespace PokemonGame.Dialogue
                 dialogueIsPlaying = false;
                 dialoguePanel.SetActive(false);
                 dialogueTextDisplay.text = "";
-                currentTrigger.EndDialogue();   
+                currentTrigger.EndDialogue();
+                Debug.Log("ending dialogue");
+                DialogueEnded?.Invoke(this, new DialogueEndedEventArgs(currentTrigger, false));
             }
         }
         
@@ -243,59 +292,119 @@ namespace PokemonGame.Dialogue
 
             if (tempNextLines == null)
             {
-                if (_currentStory.canContinue)
+                if (currentQueuedDialogue.ink)
                 {
-                    string next = _currentStory.Continue();
-
-                    if (next.Length >= maxCharAmount)
+                    if (_currentStory.canContinue)
                     {
-                        string[] newNextLines = next.SplitIntoParts(maxCharAmount);
+                        string next = _currentStory.Continue();
+
+                        if (next.Length >= maxCharAmount)
+                        {
+                            string[] newNextLines = next.SplitIntoParts(maxCharAmount);
                         
-                        Debug.Log(newNextLines[0]);
+                            Debug.Log(newNextLines[0]);
 
-                        tempNextLines = newNextLines;
-                        StartCoroutine(DisplayText(newNextLines[currentTempIndex]));
-                        HandleTags(_currentStory.currentTags);
-                    }
-                    else
-                    {
-                        StartCoroutine(DisplayText(next));
-                        StartCoroutine(DisplayChoices());
-                        HandleTags(_currentStory.currentTags);
-                    }   
-                }
-                else
-                {
-                    StartCoroutine(ExitDialogueMode());
-                }
-            }
-            else
-            {
-                if (currentTempIndex >= tempNextLines.Length - 1)
-                {
-                    // exhausted our leftovers
-                    tempNextLines = null;
-                    currentTempIndex = 0;
-                    
-                    if(_currentStory.canContinue)
-                    {
-                        StartCoroutine(DisplayText(_currentStory.Continue()));
-                        StartCoroutine(DisplayChoices());
-                        HandleTags(_currentStory.currentTags);
+                            tempNextLines = newNextLines;
+                            StartCoroutine(DisplayText(newNextLines[currentTempIndex]));
+                            HandleTags(_currentStory.currentTags);
+                        }
+                        else
+                        {
+                            StartCoroutine(DisplayText(next));
+                            StartCoroutine(DisplayChoices());
+                            HandleTags(_currentStory.currentTags);
+                        }   
                     }
                     else
                     {
                         StartCoroutine(ExitDialogueMode());
-                    }
+                    }   
                 }
                 else
                 {
-                    currentTempIndex++;
-                    StartCoroutine(DisplayText(tempNextLines[currentTempIndex]));
-                    if(currentTempIndex == tempNextLines.Length-1)
+                    if (!string.IsNullOrEmpty(currentQueuedDialogue.text))
                     {
-                        StartCoroutine(DisplayChoices());
+                        string next = currentQueuedDialogue.text;
+
+                        if (next.Length >= maxCharAmount)
+                        {
+                            string[] newNextLines = next.SplitIntoParts(maxCharAmount);
+                        
+                            Debug.Log(newNextLines[0]);
+
+                            tempNextLines = newNextLines;
+                            StartCoroutine(DisplayText(newNextLines[currentTempIndex]));
+                        }
+                        else
+                        {
+                            StartCoroutine(DisplayText(next));
+                        }
+
+                        currentQueuedDialogue.text = string.Empty;
                     }
+                    else
+                    {
+                        StartCoroutine(ExitDialogueMode());
+                    } 
+                }
+            }
+            else
+            {
+                if (currentQueuedDialogue.ink)
+                {
+                    if (currentTempIndex >= tempNextLines.Length - 1)
+                    {
+                        // exhausted our leftovers
+                        tempNextLines = null;
+                        currentTempIndex = 0;
+                    
+                        if(_currentStory.canContinue)
+                        {
+                            StartCoroutine(DisplayText(_currentStory.Continue()));
+                            StartCoroutine(DisplayChoices());
+                            HandleTags(_currentStory.currentTags);
+                        }
+                        else
+                        {
+                            StartCoroutine(ExitDialogueMode());
+                        }
+                    }
+                    else
+                    {
+                        currentTempIndex++;
+                        StartCoroutine(DisplayText(tempNextLines[currentTempIndex]));
+                        if(currentTempIndex == tempNextLines.Length-1)
+                        {
+                            StartCoroutine(DisplayChoices());
+                        }
+                    }   
+                }
+                else
+                {
+                    if (currentTempIndex >= tempNextLines.Length - 1)
+                    {
+                        // exhausted our leftovers
+                        tempNextLines = null;
+                        currentTempIndex = 0;
+                    
+                        if(string.IsNullOrEmpty(currentQueuedDialogue.text))
+                        {
+                            StartCoroutine(DisplayText(_currentStory.Continue()));
+                        }
+                        else
+                        {
+                            StartCoroutine(ExitDialogueMode());
+                        }
+                    }
+                    else
+                    {
+                        currentTempIndex++;
+                        StartCoroutine(DisplayText(tempNextLines[currentTempIndex]));
+                        if(currentTempIndex == tempNextLines.Length-1)
+                        {
+                            StartCoroutine(DisplayChoices());
+                        }
+                    }  
                 }
             }
         }
@@ -306,7 +415,7 @@ namespace PokemonGame.Dialogue
             foreach (char letter in nextSentence)
             {
                 dialogueTextDisplay.text += letter;
-                yield return null;
+                yield return new WaitForSeconds(0.025f * textScrollSpeed);
             }
         }
         
@@ -396,11 +505,27 @@ namespace PokemonGame.Dialogue
         /// The text asset that was used for the dialogue
         /// </summary>
         public TextAsset textAsset;
+        /// <summary>
+        /// Weather the dialogue comes from an ink file or simply a single string
+        /// </summary>
+        public bool ink;
+        /// <summary>
+        /// Raw dialogue, only used when
+        /// </summary>
+        public string text;
     
         public DialogueStartedEventArgs(DialogueTrigger trigger, TextAsset textAsset)
         {
             this.trigger = trigger;
             this.textAsset = textAsset;
+            ink = true;
+        }
+        
+        public DialogueStartedEventArgs(DialogueTrigger trigger, string text)
+        {
+            this.trigger = trigger;
+            this.text = text;
+            ink = false;
         }
     }
     
@@ -447,6 +572,14 @@ namespace PokemonGame.Dialogue
         /// Text asset to construct the dialogue from
         /// </summary>
         public TextAsset textAsset;
+        /// <summary>
+        /// Weather the dialogue comes from an ink file or simply a single string
+        /// </summary>
+        public bool ink;
+        /// <summary>
+        /// Raw dialogue, only used when
+        /// </summary>
+        public string text;
 
         public QueuedDialogue(DialogueTrigger trigger, Dictionary<string, string> variables, TextAsset textAsset, bool autoStart = true)
         {
@@ -454,6 +587,15 @@ namespace PokemonGame.Dialogue
             this.variables = variables;
             this.textAsset = textAsset;
             this.autoStart = autoStart;
+            ink = true;
+        }
+        
+        public QueuedDialogue(DialogueTrigger trigger, string text, bool autoStart = true)
+        {
+            this.trigger = trigger;
+            this.text = text;
+            this.autoStart = autoStart;
+            ink = false;
         }
     }
 }

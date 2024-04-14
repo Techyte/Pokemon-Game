@@ -85,13 +85,16 @@ namespace PokemonGame.Battle
 
         public List<Battler> battlersThatParticipated;
 
-
         private string _opponentName;
 
         private Vector3 _playerPos;
         private Quaternion _playerRotation;
 
         private bool _waitingToEndTurnShowing;
+        private bool _waitingToEndTurnEnding;
+
+        private bool _wantToEnd = false;
+        private bool _defeated = false;
 
         private void Start()
         {
@@ -112,10 +115,14 @@ namespace PokemonGame.Battle
             playerParty.PartyAllDefeated += (sender, args) =>
             {
                 EndBattle(false);
+                //_wantToEnd = true;
+                //_defeated = false;
             };
             opponentParty.PartyAllDefeated += (sender, args) =>
             {
                 EndBattle(true);
+                //_wantToEnd = true;
+                //_defeated = true;
             };
 
             DialogueManager.instance.DialogueEnded += (sender, args) =>
@@ -123,6 +130,10 @@ namespace PokemonGame.Battle
                 if (_waitingToEndTurnShowing && !args.moreToGo)
                 {
                     EndTurnShowing();
+                }
+                if (_waitingToEndTurnEnding && !args.moreToGo)
+                {
+                    EndTurnEnding();
                 }
             };
 
@@ -212,10 +223,28 @@ namespace PokemonGame.Battle
 
         private void TurnEnding()
         {
-            hasDoneChoosingUpdate = false;
-            hasShowedMoves = false;
-            playerHasChosenAttack = false;
-            RunEndOfTurnStatusEffects();
+            if (!_waitingToEndTurnEnding)
+            {
+                hasDoneChoosingUpdate = false;
+                hasShowedMoves = false;
+                playerHasChosenAttack = false;
+
+                if (_wantToEnd)
+                {
+                    EndBattle(_defeated);
+                }
+                else
+                {
+                    RunEndOfTurnStatusEffects();
+                    _waitingToEndTurnEnding = true;
+                }   
+            }
+        }
+
+        private void EndTurnEnding()
+        {
+            _waitingToEndTurnEnding = false;
+            uiManager.UpdateHealthDisplays();
             currentTurn = TurnStatus.Choosing;
         }
 
@@ -349,11 +378,14 @@ namespace PokemonGame.Battle
 
         private void RunEndOfTurnStatusEffects()
         {
+            bool anyStatusEffectsUsed = false;
+            
             foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
             {
                 if (trigger.trigger == StatusEffectCaller.EndOfTurn)
                 {
                     trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
+                    anyStatusEffectsUsed = true;
                 }
             }
             
@@ -362,7 +394,13 @@ namespace PokemonGame.Battle
                 if (trigger.trigger == StatusEffectCaller.EndOfTurn)
                 {
                     trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
+                    anyStatusEffectsUsed = true;
                 }
+            }
+
+            if (!anyStatusEffectsUsed)
+            {
+                EndTurnEnding();
             }
         }
 

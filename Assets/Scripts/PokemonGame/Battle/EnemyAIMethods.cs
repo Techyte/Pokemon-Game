@@ -13,7 +13,7 @@ namespace PokemonGame.Battle
         {
             int moveToDo = Random.Range(0, e.battlerToUse.moves.Count);
 
-            Battle.Singleton.enemyMoveToDo = e.battlerToUse.moves[0];
+            Battle.Singleton.enemyMoveToDo = e.battlerToUse.moves[moveToDo];
         }
     }   
 }
