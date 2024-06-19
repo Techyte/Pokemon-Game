@@ -77,11 +77,14 @@ namespace PokemonGame.Battle
         
         [SerializeField] private bool hasDoneChoosingUpdate;
         
-        [SerializeField] private bool hasShowedMoves;
+        [SerializeField] private bool hasSetupShowing;
 
         private Battler playerCurrentBattler => playerParty[currentBattlerIndex];
 
         private Battler opponentCurrentBattler => opponentParty[opponentBattlerIndex];
+
+        public List<TurnItem> turnItemQueue = new List<TurnItem>();
+        private bool _currentlyRunningQueueItem = false;
 
         public List<Battler> battlersThatParticipated;
 
@@ -90,8 +93,11 @@ namespace PokemonGame.Battle
         private Vector3 _playerPos;
         private Quaternion _playerRotation;
 
-        private bool _waitingToEndTurnShowing;
+        private bool _availableToEndTurnShowing;
         private bool _waitingToEndTurnEnding;
+
+        private bool _playerWantsToSwap;
+        private int _playerSwapIndex;
 
         private bool _wantToEnd = false;
         private bool _defeated = false;
@@ -127,13 +133,12 @@ namespace PokemonGame.Battle
 
             DialogueManager.instance.DialogueEnded += (sender, args) =>
             {
-                if (_waitingToEndTurnShowing && !args.moreToGo)
+                Debug.Log($"More Dialogue to read out: {args.moreToGo}");
+                
+                if (_availableToEndTurnShowing && !args.moreToGo)
                 {
-                    EndTurnShowing();
-                }
-                if (_waitingToEndTurnEnding && !args.moreToGo)
-                {
-                    EndTurnEnding();
+                    //EndTurnShowing();  TODO: make this instead progress the queue
+                    TurnQueueItemEnded();
                 }
             };
 
@@ -193,19 +198,82 @@ namespace PokemonGame.Battle
 
         private void TurnShowing()
         {
-            if (!hasShowedMoves)
+            if (!hasSetupShowing)
             {
-                hasShowedMoves = true;
+                Debug.Log("Starting Turn Showing");
+                hasSetupShowing = true;
                 
                 uiManager.ShowControlUI(false);
-                DoMoves();
-                _waitingToEndTurnShowing = true;
+
+                if (_playerWantsToSwap)
+                {
+                    turnItemQueue.Add(TurnItem.PlayerSwap);
+                }
+                
+                QueueMoves();
+                _availableToEndTurnShowing = true;
             }
+
+            if (!_currentlyRunningQueueItem)
+            {
+                if (turnItemQueue.Count > 0)
+                {
+                    Debug.Log("Running a new turn item");
+                    
+                    _currentlyRunningQueueItem = true;
+                    
+                    TurnItem nextTurnItem = turnItemQueue[0];
+
+                    switch (nextTurnItem)
+                    {
+                        case TurnItem.PlayerMove:
+                            DoPlayerMove();
+                            break;
+                        case TurnItem.OpponentMove:
+                            DoEnemyMove();
+                            break;
+                        case TurnItem.EndBattlePlayerWin:
+                            EndBattle(false);
+                            break;
+                        case TurnItem.EndBattleOpponentWin:
+                            EndBattle(true);
+                            break;
+                        case TurnItem.PlayerSwap:
+                            SwapPlayerBattler();
+                            break;
+                        case TurnItem.OpponentSwap:
+                            break;
+                    }
+                }
+                else
+                {
+                    EndTurnShowing();
+                }
+            }
+        }
+
+        private void TurnQueueItemEnded()
+        {
+            Debug.Log($"Ending {turnItemQueue[0]}");
+            _currentlyRunningQueueItem = false;
+            Debug.Log("STARTING READTHROUGH OF TURN ITEM QUEUE");
+            for (int i = 0; i < turnItemQueue.Count; i++)
+            {
+                Debug.Log($"{turnItemQueue[i]} at location {i}");
+            }
+            Debug.Log("ENDING READTHROUGH OF TURN ITEM QUEUE");
+            turnItemQueue.Remove(0);
+            Debug.Log("STARTING READTHROUGH OF TURN ITEM QUEUE");
+            for (int i = 0; i < turnItemQueue.Count; i++)
+            {
+                Debug.Log($"{turnItemQueue[i]} at location {i}");
+            }
+            Debug.Log("ENDING READTHROUGH OF TURN ITEM QUEUE");
         }
 
         private void EndTurnShowing()
         {
-            _waitingToEndTurnShowing = false;
+            _availableToEndTurnShowing = false;
             playerHasChosenAttack = false;
             currentTurn = TurnStatus.Ending;
         }
@@ -225,9 +293,13 @@ namespace PokemonGame.Battle
         {
             if (!_waitingToEndTurnEnding)
             {
+                Debug.Log("Ending Turn");
                 hasDoneChoosingUpdate = false;
-                hasShowedMoves = false;
+                hasSetupShowing = false;
                 playerHasChosenAttack = false;
+                
+                enemyMoveToDo = null;
+                playerMoveToDo = null;
 
                 if (_wantToEnd)
                 {
@@ -255,15 +327,27 @@ namespace PokemonGame.Battle
             playerHasChosenAttack = true;
         }
 
+        public void ChooseToSwap(int newBattlerIndex)
+        {
+            _playerWantsToSwap = true;
+            _playerSwapIndex = newBattlerIndex;
+        }
+
+        private void SwapPlayerBattler()
+        {
+            currentBattlerIndex = _playerSwapIndex;
+            
+            AddParticipatedBattler(playerParty[_playerSwapIndex]);
+            
+            _playerWantsToSwap = false;
+            _playerSwapIndex = 0;
+        }
+
         public void AddParticipatedBattler(Battler battlerToParticipate)
         {
             if (!battlersThatParticipated.Contains(battlerToParticipate))
             {
                 battlersThatParticipated.Add(battlerToParticipate);
-            }
-            else
-            {
-                //Debug.Log("this battler has also been noted down as participating");
             }
         }
 
@@ -281,7 +365,9 @@ namespace PokemonGame.Battle
             
             MoveMethodEventArgs e = new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler,
                 playerMoveToDoIndex, playerMoveToDo, ExternalBattleData.Construct(this));
-                
+            
+            Debug.Log(playerMoveToDo);
+            
             playerMoveToDo.MoveMethod(e);
             
             opponentCurrentBattler.TakeDamage(e.damageDealt, new BattlerDamageSource(playerCurrentBattler));
@@ -292,23 +378,30 @@ namespace PokemonGame.Battle
             opponentParty.CheckDefeatedStatus();
         }
 
-        private void DoMoves()
+        private void QueueMoves()
         {
+            if (_playerWantsToSwap)
+            {
+                Debug.Log("Adding new opponent move");
+                turnItemQueue.Add(TurnItem.OpponentMove);
+
+                return;
+            }
+            
             if(playerCurrentBattler.speed > opponentCurrentBattler.speed)
             {
+                Debug.Log("Adding new opponent move");
                 //Player is faster
-                DoPlayerMove();
-                DoEnemyMove();
+                turnItemQueue.Add(TurnItem.OpponentMove);
+                turnItemQueue.Add(TurnItem.PlayerMove);
             }
             else
             {
+                Debug.Log("Adding new opponent move");
                 //Enemy is faster
-                DoEnemyMove();
-                DoPlayerMove();
+                turnItemQueue.Add(TurnItem.PlayerMove);
+                turnItemQueue.Add(TurnItem.OpponentMove);
             }
-
-            enemyMoveToDo = null;
-            playerMoveToDo = null;
         }
 
         private void DoEnemyMove()

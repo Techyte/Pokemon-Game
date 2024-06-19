@@ -3,7 +3,6 @@ using PokemonGame.Global;
 namespace PokemonGame.Game
 {
     using UnityEngine;
-    using UnityEngine.SceneManagement;
 
     public class Boot : MonoBehaviour
     {

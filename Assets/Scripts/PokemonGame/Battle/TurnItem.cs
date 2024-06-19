@@ -1,9 +1,14 @@
-using PokemonGame.Battle;
-
-public abstract class TurnItem
+namespace PokemonGame.Battle
 {
-    public virtual void Do(Battle battle)
+    public enum TurnItem
     {
-        
-    }
+        PlayerMove,
+        OpponentMove,
+        PlayerSwap,
+        OpponentSwap,
+        PlayerItem,
+        OpponentItem,
+        EndBattlePlayerWin,
+        EndBattleOpponentWin,
+    }   
 }

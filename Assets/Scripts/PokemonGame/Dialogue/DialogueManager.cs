@@ -134,7 +134,7 @@ namespace PokemonGame.Dialogue
         /// <summary>
         /// Starts a new conversation
         /// </summary>
-        /// <param name="inkJson">The TextAsset with the information about the conversation</param>
+        /// <param name="text">The text of the conversation</param>
         /// <param name="trigger">The DialogueTrigger that triggered this conversation</param>
         /// <param name="autostart">Automatically start the dialogue on load, on by default</param>
         public void QueDialogue(string text, DialogueTrigger trigger, bool autostart, Dictionary<string, string> variables = null)
@@ -573,7 +573,7 @@ namespace PokemonGame.Dialogue
         /// </summary>
         public TextAsset textAsset;
         /// <summary>
-        /// Weather the dialogue comes from an ink file or simply a single string
+        /// Weather the dialogue comes from an ink file or simply a string
         /// </summary>
         public bool ink;
         /// <summary>

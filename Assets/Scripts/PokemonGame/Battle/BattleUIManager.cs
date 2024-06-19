@@ -120,13 +120,9 @@ namespace PokemonGame.Battle
             moveButtons.SetActive(true);
             miscButtons.SetActive(true);
             changeBattlerDisplay.SetActive(false);
-            battle.currentBattlerIndex = partyID;
+            battle.ChooseToSwap(partyID);
             battle.AddParticipatedBattler(battle.playerParty[partyID]);
             Back();
-            UpdateBattlerButtons();
-            UpdateBattlerSprites();
-            UpdateBattlerMoveDisplays();
-            UpdateBattlerTexts();
         }
 
         public void Back()
@@ -148,6 +144,20 @@ namespace PokemonGame.Battle
         {
             currentBattlerRenderer.sprite = battle.playerParty[battle.currentBattlerIndex].texture;
             opponentBattlerRenderer.sprite = battle.opponentParty[battle.opponentBattlerIndex].texture;
+        }
+
+        public void UpdatePlayerBattlerDetails()
+        {
+            UpdateBattlerButtons();
+            UpdateBattlerSprites();
+            UpdateBattlerMoveDisplays();
+            UpdateBattlerTexts();
+        }
+
+        public void UpdateOpponentBattlerDetails()
+        {
+            UpdateBattlerSprites();
+            UpdateBattlerTexts();
         }
 
         public void UpdateBattlerMoveDisplays()

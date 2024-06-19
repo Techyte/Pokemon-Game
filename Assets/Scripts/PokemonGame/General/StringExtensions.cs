@@ -3,7 +3,7 @@ using System.Text;
 
 namespace PokemonGame.General
 {
-    // Extension method modified from: https://stackoverflow.com/questions/4133377/splitting-a-string-number-every-nth-character-number
+    // Extension methods modified from: https://stackoverflow.com/questions/4133377/splitting-a-string-number-every-nth-character-number
     // 2nd answer
     static class StringExtensions {
 
