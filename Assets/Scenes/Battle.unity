@@ -2986,6 +2986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04aeb2d4f80f4c644a885c70d951681a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthUpdateSpeed: 0.3
   playerUIHolder: {fileID: 583115924}
   controlUIHolder: {fileID: 1145280086}
   moveButtons: {fileID: 1313120826}

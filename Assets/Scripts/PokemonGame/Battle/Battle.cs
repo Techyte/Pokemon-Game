@@ -244,7 +244,6 @@ namespace PokemonGame.Battle
         private void EndTurnEnding()
         {
             _waitingToEndTurnEnding = false;
-            uiManager.UpdateHealthDisplays();
             currentTurn = TurnStatus.Choosing;
         }
 
@@ -291,8 +290,6 @@ namespace PokemonGame.Battle
                 e.damageDealt.ToString());
             
             opponentParty.CheckDefeatedStatus();
-
-            uiManager.UpdateHealthDisplays();
         }
 
         private void DoMoves()
@@ -344,8 +341,6 @@ namespace PokemonGame.Battle
             {
                 uiManager.SwitchBattlerBecauseOfDeath();
             }
-
-            uiManager.UpdateHealthDisplays();
         }
 
         private int GetIndexOfMoveOnCurrentEnemy(Move move)

@@ -1,3 +1,5 @@
+using System;
+
 namespace PokemonGame.Battle
 {
     using UnityEngine;
@@ -6,6 +8,9 @@ namespace PokemonGame.Battle
 
     public class BattleUIManager : MonoBehaviour
     {
+        [SerializeField] private float healthUpdateSpeed = 0.8f;
+        
+        [Space]
         [SerializeField] private GameObject playerUIHolder;
         [SerializeField] private GameObject controlUIHolder;
         [SerializeField] private GameObject moveButtons;
@@ -28,9 +33,19 @@ namespace PokemonGame.Battle
         {
             UpdateBattlerSprites();
             UpdateBattlerMoveDisplays();
-            UpdateHealthDisplays();
             UpdateBattlerTexts();
             UpdateBattlerButtons();
+            
+            opponentHealthDisplay.maxValue = battle.opponentParty[battle.opponentBattlerIndex].maxHealth;
+            opponentHealthDisplay.value = battle.opponentParty[battle.opponentBattlerIndex].currentHealth;
+
+            currentBattlerHealthDisplay.maxValue = battle.playerParty[battle.currentBattlerIndex].maxHealth;
+            currentBattlerHealthDisplay.value = battle.playerParty[battle.currentBattlerIndex].currentHealth;
+        }
+
+        private void Update()
+        {
+            UpdateHealthDisplays();
         }
 
         private void UpdateBattlerButtons()
@@ -111,7 +126,6 @@ namespace PokemonGame.Battle
             UpdateBattlerButtons();
             UpdateBattlerSprites();
             UpdateBattlerMoveDisplays();
-            UpdateHealthDisplays();
             UpdateBattlerTexts();
         }
 
@@ -160,13 +174,15 @@ namespace PokemonGame.Battle
             }
         }
 
-        public void UpdateHealthDisplays()
+        private void UpdateHealthDisplays()
         {
+            float t = healthUpdateSpeed;
+            
             opponentHealthDisplay.maxValue = battle.opponentParty[battle.opponentBattlerIndex].maxHealth;
-            opponentHealthDisplay.value = battle.opponentParty[battle.opponentBattlerIndex].currentHealth;
+            opponentHealthDisplay.value = Mathf.Lerp(opponentHealthDisplay.value, battle.opponentParty[battle.opponentBattlerIndex].currentHealth, t);
 
             currentBattlerHealthDisplay.maxValue = battle.playerParty[battle.currentBattlerIndex].maxHealth;
-            currentBattlerHealthDisplay.value = battle.playerParty[battle.currentBattlerIndex].currentHealth;
+            currentBattlerHealthDisplay.value = Mathf.Lerp(currentBattlerHealthDisplay.value, battle.playerParty[battle.currentBattlerIndex].currentHealth, t);
         }
     }
 }
