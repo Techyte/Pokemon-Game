@@ -25,7 +25,7 @@ MonoBehaviour:
   speed: 12
   texture: {fileID: 21300000, guid: 7474906acb369644c90c292e5efd482b, type: 3}
   isFainted: 0
-  statusEffect: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
+  statusEffect: {fileID: 11400000, guid: fbdcaf44baf653b4a9de5e816a866213, type: 2}
   primaryType: 7
   secondaryType: 0
   moves:

@@ -56,7 +56,6 @@ namespace PokemonGame.ScriptableObjects
     {
         Passive,
         StartOfTurn,
-        EndOfTurn,
-        BeforeMove
+        EndOfTurn
     }
 }

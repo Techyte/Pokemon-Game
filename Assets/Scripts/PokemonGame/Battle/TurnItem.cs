@@ -2,6 +2,7 @@ namespace PokemonGame.Battle
 {
     public enum TurnItem
     {
+        StartDelay,
         PlayerMove,
         OpponentMove,
         PlayerSwap,
@@ -10,5 +11,7 @@ namespace PokemonGame.Battle
         OpponentItem,
         EndBattlePlayerWin,
         EndBattleOpponentWin,
+        StartOfTurnStatusEffects,
+        EndOfTurnStatusEffects,
     }   
 }

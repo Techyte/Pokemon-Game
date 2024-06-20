@@ -92,7 +92,7 @@ namespace PokemonGame.General
         public List<Move> moves;
 
         /// <summary>
-        /// The pp information about this battlers moves
+        /// The pp information about this battler's moves
         /// </summary>
         public List<MovePPData> movePpInfos;
 

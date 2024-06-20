@@ -7,7 +7,7 @@ namespace PokemonGame.Battle
     using ScriptableObjects;
 
     /// <summary>
-    /// Contains all of the logic for every move
+    /// Contains all the logic for every move
     /// </summary>
     [CreateAssetMenu(fileName = "New Moves Methods", menuName = "All/New Moves Methods")]
     public class MovesMethods : ScriptableObject

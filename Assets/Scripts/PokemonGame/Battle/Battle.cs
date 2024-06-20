@@ -1,3 +1,4 @@
+using System.Collections;
 using PokemonGame.Dialogue;
 
 namespace PokemonGame.Battle
@@ -137,7 +138,6 @@ namespace PokemonGame.Battle
                 
                 if (_availableToEndTurnShowing && !args.moreToGo)
                 {
-                    //EndTurnShowing();  TODO: make this instead progress the queue
                     TurnQueueItemEnded();
                 }
             };
@@ -187,7 +187,6 @@ namespace PokemonGame.Battle
                     if (!hasDoneChoosingUpdate)
                     {
                         uiManager.ShowControlUI(true);
-                        RunStartOfTurnStatusEffects();
                         uiManager.UpdateBattlerMoveDisplays();
                         enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
                         hasDoneChoosingUpdate = true;
@@ -210,7 +209,10 @@ namespace PokemonGame.Battle
                     turnItemQueue.Add(TurnItem.PlayerSwap);
                 }
                 
+                turnItemQueue.Add(TurnItem.StartDelay);
+                turnItemQueue.Add(TurnItem.StartOfTurnStatusEffects);
                 QueueMoves();
+                turnItemQueue.Add(TurnItem.EndOfTurnStatusEffects);
                 _availableToEndTurnShowing = true;
             }
 
@@ -223,9 +225,13 @@ namespace PokemonGame.Battle
                     _currentlyRunningQueueItem = true;
                     
                     TurnItem nextTurnItem = turnItemQueue[0];
+                    turnItemQueue.RemoveAt(0);
 
                     switch (nextTurnItem)
                     {
+                        case TurnItem.StartDelay:
+                            StartCoroutine(TurnStartDelay());
+                            break;
                         case TurnItem.PlayerMove:
                             DoPlayerMove();
                             break;
@@ -243,6 +249,12 @@ namespace PokemonGame.Battle
                             break;
                         case TurnItem.OpponentSwap:
                             break;
+                        case TurnItem.StartOfTurnStatusEffects:
+                            RunStartOfTurnStatusEffects();
+                            break;
+                        case TurnItem.EndOfTurnStatusEffects:
+                            RunEndOfTurnStatusEffects();
+                            break;
                     }
                 }
                 else
@@ -252,27 +264,20 @@ namespace PokemonGame.Battle
             }
         }
 
+        private IEnumerator TurnStartDelay()
+        {
+            yield return new WaitForSeconds(1);
+            TurnQueueItemEnded();
+        }
+
         private void TurnQueueItemEnded()
         {
-            Debug.Log($"Ending {turnItemQueue[0]}");
             _currentlyRunningQueueItem = false;
-            Debug.Log("STARTING READTHROUGH OF TURN ITEM QUEUE");
-            for (int i = 0; i < turnItemQueue.Count; i++)
-            {
-                Debug.Log($"{turnItemQueue[i]} at location {i}");
-            }
-            Debug.Log("ENDING READTHROUGH OF TURN ITEM QUEUE");
-            turnItemQueue.Remove(0);
-            Debug.Log("STARTING READTHROUGH OF TURN ITEM QUEUE");
-            for (int i = 0; i < turnItemQueue.Count; i++)
-            {
-                Debug.Log($"{turnItemQueue[i]} at location {i}");
-            }
-            Debug.Log("ENDING READTHROUGH OF TURN ITEM QUEUE");
         }
 
         private void EndTurnShowing()
         {
+            Debug.Log("Ending turn showing");
             _availableToEndTurnShowing = false;
             playerHasChosenAttack = false;
             currentTurn = TurnStatus.Ending;
@@ -307,7 +312,6 @@ namespace PokemonGame.Battle
                 }
                 else
                 {
-                    RunEndOfTurnStatusEffects();
                     _waitingToEndTurnEnding = true;
                 }   
             }
@@ -353,14 +357,6 @@ namespace PokemonGame.Battle
 
         private void DoPlayerMove()
         {
-            foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
-            {
-                if (trigger.trigger == StatusEffectCaller.BeforeMove)
-                {
-                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
-                }
-            }
-            
             //You can add any animation calls for attacking here
             
             MoveMethodEventArgs e = new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler,
@@ -382,7 +378,6 @@ namespace PokemonGame.Battle
         {
             if (_playerWantsToSwap)
             {
-                Debug.Log("Adding new opponent move");
                 turnItemQueue.Add(TurnItem.OpponentMove);
 
                 return;
@@ -390,30 +385,20 @@ namespace PokemonGame.Battle
             
             if(playerCurrentBattler.speed > opponentCurrentBattler.speed)
             {
-                Debug.Log("Adding new opponent move");
                 //Player is faster
-                turnItemQueue.Add(TurnItem.OpponentMove);
                 turnItemQueue.Add(TurnItem.PlayerMove);
+                turnItemQueue.Add(TurnItem.OpponentMove);
             }
             else
             {
-                Debug.Log("Adding new opponent move");
                 //Enemy is faster
-                turnItemQueue.Add(TurnItem.PlayerMove);
                 turnItemQueue.Add(TurnItem.OpponentMove);
+                turnItemQueue.Add(TurnItem.PlayerMove);
             }
         }
 
         private void DoEnemyMove()
         {
-            foreach (var trigger in opponentCurrentBattler.statusEffect.triggers)
-            {
-                if (trigger.trigger == StatusEffectCaller.BeforeMove)
-                {
-                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
-                }
-            }
-            
             //You can add any animation calls for attacking here
 
             int moveToDoIndex = GetIndexOfMoveOnCurrentEnemy(enemyMoveToDo);
@@ -488,17 +473,20 @@ namespace PokemonGame.Battle
 
             if (!anyStatusEffectsUsed)
             {
-                EndTurnEnding();
+                TurnQueueItemEnded();
             }
         }
 
         private void RunStartOfTurnStatusEffects()
         {
+            bool ranAnyStatusEffects = false;
+            
             foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
             {
                 if (trigger.trigger == StatusEffectCaller.StartOfTurn)
                 {
                     trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
+                    ranAnyStatusEffects = true;
                 }
             }
             
@@ -507,7 +495,13 @@ namespace PokemonGame.Battle
                 if (trigger.trigger == StatusEffectCaller.StartOfTurn)
                 {
                     trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
+                    ranAnyStatusEffects = true;
                 }
+            }
+
+            if (!ranAnyStatusEffects)
+            {
+                TurnQueueItemEnded();
             }
         }
 
