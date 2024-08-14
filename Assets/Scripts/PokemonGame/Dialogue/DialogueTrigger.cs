@@ -74,6 +74,11 @@ namespace PokemonGame.Dialogue
             }
         }
 
+        public void ClearQueue()
+        {
+            DialogueManager.instance.ClearQueue();
+        }
+
         /// <summary>
         /// Set dialogue variables for the current story
         /// </summary>

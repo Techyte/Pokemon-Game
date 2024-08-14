@@ -100,9 +100,9 @@ namespace PokemonGame.Battle
         private bool _playerWantsToSwap;
         private int _playerSwapIndex;
 
-        private bool _wantToEnd = false;
-        private bool _defeated = false;
-
+        private bool _opponentDefeated;
+        private bool _endingDialogueRunning;
+        
         private void Start()
         {
             Cursor.lockState = CursorLockMode.None;
@@ -121,24 +121,25 @@ namespace PokemonGame.Battle
 
             playerParty.PartyAllDefeated += (sender, args) =>
             {
-                EndBattle(false);
-                //_wantToEnd = true;
-                //_defeated = false;
+                SomeoneDefeated(false);
             };
             opponentParty.PartyAllDefeated += (sender, args) =>
             {
-                EndBattle(true);
-                //_wantToEnd = true;
-                //_defeated = true;
+                SomeoneDefeated(true);
             };
 
             DialogueManager.instance.DialogueEnded += (sender, args) =>
             {
                 Debug.Log($"More Dialogue to read out: {args.moreToGo}");
                 
-                if (_availableToEndTurnShowing && !args.moreToGo)
+                if (_availableToEndTurnShowing)
                 {
                     TurnQueueItemEnded();
+                }
+                
+                if (_endingDialogueRunning)
+                {
+                    ExitBattle(_opponentDefeated);
                 }
             };
 
@@ -154,6 +155,11 @@ namespace PokemonGame.Battle
             
             // adds current battler to list of participating battlers
             battlersThatParticipated.Add(playerCurrentBattler);
+        }
+
+        private void ClearTurnQueue()
+        {
+            turnItemQueue.Clear();
         }
 
         public void BattlerFainted(BattlerTookDamageArgs e, Battler defeated)
@@ -239,10 +245,10 @@ namespace PokemonGame.Battle
                             DoEnemyMove();
                             break;
                         case TurnItem.EndBattlePlayerWin:
-                            EndBattle(false);
+                            BeginEndBattleDialogue(true);
                             break;
                         case TurnItem.EndBattleOpponentWin:
-                            EndBattle(true);
+                            BeginEndBattleDialogue(false);
                             break;
                         case TurnItem.PlayerSwap:
                             SwapPlayerBattler();
@@ -290,7 +296,7 @@ namespace PokemonGame.Battle
             variables.Add("moveUsed", moveUsed);
             variables.Add("battlerHit", battlerHit);
             variables.Add("damageDealt", damageDealt);
-                
+            
             QueDialogue(battlerUsedText, true, variables);
         }
 
@@ -306,14 +312,8 @@ namespace PokemonGame.Battle
                 enemyMoveToDo = null;
                 playerMoveToDo = null;
 
-                if (_wantToEnd)
-                {
-                    EndBattle(_defeated);
-                }
-                else
-                {
-                    _waitingToEndTurnEnding = true;
-                }   
+                _waitingToEndTurnEnding = true;
+                EndTurnEnding();
             }
         }
 
@@ -505,7 +505,7 @@ namespace PokemonGame.Battle
             }
         }
 
-        private void EndBattle(bool isDefeated)
+        private void ExitBattle(bool isDefeated)
         {
             Debug.Log("ending the battle");
             
@@ -519,6 +519,34 @@ namespace PokemonGame.Battle
             };
 
             SceneLoader.LoadScene("Game", vars);
+        }
+
+        private void SomeoneDefeated(bool isDefeated)
+        {
+            if (isDefeated)
+            {
+                turnItemQueue.Insert(0, TurnItem.EndBattlePlayerWin);
+            }
+            else
+            {
+                turnItemQueue.Insert(0, TurnItem.EndBattleOpponentWin);
+            }
+        }
+        
+        private void BeginEndBattleDialogue(bool isDefeated)
+        {
+            _opponentDefeated = isDefeated;
+            
+            if (isDefeated)
+            {
+                QueDialogue("All opponent Pokemon defeated!", true);
+            }
+            else
+            {
+                QueDialogue("All opponent Pokemon defeated!", true);
+            }
+
+            _endingDialogueRunning = true;
         }
     }
 }
