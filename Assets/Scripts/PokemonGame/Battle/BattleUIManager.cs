@@ -85,6 +85,8 @@ namespace PokemonGame.Battle
         public void ShowUI(bool show)
         {
             playerUIHolder.SetActive(show);
+            ShowControlUI(show);
+            healthDisplays.SetActive(show);
         }
 
         public void ShowControlUI(bool show)
@@ -106,6 +108,7 @@ namespace PokemonGame.Battle
         public void SwitchBattlerBecauseOfDeath()
         {
             playerUIHolder.SetActive(true);
+            controlUIHolder.SetActive(true);
             healthDisplays.SetActive(false);
             moveButtons.SetActive(false);
             miscButtons.SetActive(false);
@@ -116,6 +119,7 @@ namespace PokemonGame.Battle
 
         public void ChangeBattler(int partyID)
         {
+            playerUIHolder.SetActive(false);
             healthDisplays.SetActive(true);
             moveButtons.SetActive(true);
             miscButtons.SetActive(true);
@@ -138,12 +142,32 @@ namespace PokemonGame.Battle
         {
             currentBattlerNameDisplay.text = battle.playerParty[battle.currentBattlerIndex].name;
             opponentBattlerNameDisplay.text = battle.opponentParty[battle.opponentBattlerIndex].name;
+            
+            if (battle.playerParty[battle.currentBattlerIndex].isFainted)
+            {
+                currentBattlerNameDisplay.text = battle.playerParty[battle.currentBattlerIndex].name + " (FAINTED)";
+            }
+            
+            if (battle.opponentParty[battle.opponentBattlerIndex].isFainted)
+            {
+                opponentBattlerNameDisplay.text = battle.opponentParty[battle.opponentBattlerIndex].name + " (FAINTED)";
+            }
         }
 
         private void UpdateBattlerSprites()
         {
             currentBattlerRenderer.sprite = battle.playerParty[battle.currentBattlerIndex].texture;
             opponentBattlerRenderer.sprite = battle.opponentParty[battle.opponentBattlerIndex].texture;
+            
+            if (battle.playerParty[battle.currentBattlerIndex].isFainted)
+            {
+                currentBattlerRenderer.sprite = null;
+            }
+            
+            if (battle.opponentParty[battle.opponentBattlerIndex].isFainted)
+            {
+                opponentBattlerRenderer.sprite = null;
+            }
         }
 
         public void UpdatePlayerBattlerDetails()

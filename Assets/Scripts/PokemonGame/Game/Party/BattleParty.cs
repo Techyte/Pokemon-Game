@@ -14,10 +14,8 @@ namespace PokemonGame.Game.Party
         /// </summary>
         public void CheckDefeatedStatus()
         {
-            Debug.Log("checking defeated status");
             if (DefeatedCount() >= Count)
             {
-                Debug.Log("party all defeated");
                 PartyAllDefeated?.Invoke(this, EventArgs.Empty);
             }
         }

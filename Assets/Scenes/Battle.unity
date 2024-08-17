@@ -349,7 +349,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2957,7 +2957,8 @@ MonoBehaviour:
   enemyMoveToDo: {fileID: 0}
   playerHasChosenAttack: 0
   hasDoneChoosingUpdate: 0
-  hasShowedMoves: 0
+  hasSetupShowing: 0
+  turnItemQueue: 
   battlersThatParticipated: []
 --- !u!4 &1038033300
 Transform:
@@ -4510,7 +4511,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0

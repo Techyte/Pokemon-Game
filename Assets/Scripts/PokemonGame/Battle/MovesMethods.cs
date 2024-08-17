@@ -135,7 +135,6 @@ namespace PokemonGame.Battle
         {
             int damage = CalculateDamage(e.move, e.attacker, e.target);
             e.damageDealt = damage;
-            Debug.Log(damage);
         }
 
         public void LeechLife(MoveMethodEventArgs e)

@@ -26,9 +26,9 @@ namespace PokemonGame.Global
         /// <summary>
         /// Loads the scene with the same index as sceneIndex
         /// </summary>
-        /// <param name="sceneIndex">The index of the scene to load</param>
+        /// <param name="sceneToLoadIndex">The index of the scene to load</param>
         /// <param name="newVars">Variables to pass along to the next scene</param>
-        public static void LoadScene(int sceneIndex, Dictionary<string, object> newVars)
+        public static void LoadScene(int sceneToLoadIndex, Dictionary<string, object> newVars)
         {
             ClearLoader();
             _vars = newVars;
@@ -37,20 +37,20 @@ namespace PokemonGame.Global
                 Debug.Log("listening now");
                 DialogueManager.instance.DialogueEnded += IsDialogueDone;
                 listening = true;
-                SceneLoader.sceneIndex = sceneIndex;
+                sceneIndex = sceneToLoadIndex;
             }
             else
             {
                 sceneLoadedFrom = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(sceneIndex);   
+                SceneManager.LoadScene(sceneToLoadIndex);   
             }
         }
 
         /// <summary>
         /// Loads the scene with the same index as sceneIndex
         /// </summary>
-        /// <param name="sceneIndex">The index of the scene to load</param>
-        public static void LoadScene(int sceneIndex)
+        /// <param name="sceneToLoadIndex">The index of the scene to load</param>
+        public static void LoadScene(int sceneToLoadIndex)
         {
             ClearLoader();
             if (DialogueManager.instance.dialogueIsPlaying && !listening)
@@ -58,57 +58,54 @@ namespace PokemonGame.Global
                 Debug.Log("listening now");
                 DialogueManager.instance.DialogueEnded += IsDialogueDone;
                 listening = true;
-                SceneLoader.sceneIndex = sceneIndex;
+                sceneIndex = sceneToLoadIndex;
             }
             else
             {
                 sceneLoadedFrom = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(sceneIndex);   
+                SceneManager.LoadScene(sceneToLoadIndex); 
             }
         }
 
         /// <summary>
         /// Loads the scene with the same name as sceneName
         /// </summary>
-        /// <param name="sceneName">The name of the scene to load</param>
-        public static void LoadScene(string sceneName)
+        /// <param name="sceneToLoadName">The name of the scene to load</param>
+        public static void LoadScene(string sceneToLoadName)
         {
             ClearLoader();
             if (DialogueManager.instance.dialogueIsPlaying && !listening)
             {
-                Debug.Log("listening now");
                 DialogueManager.instance.DialogueEnded += IsDialogueDone;
                 listening = true;
-                SceneLoader.sceneName = sceneName;
+                sceneName = sceneToLoadName;
             }
             else
             {
                 sceneLoadedFrom = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(sceneName);   
+                SceneManager.LoadScene(sceneToLoadName);   
             }
         }
     
         /// <summary>
         /// Loads the scene with the same name as sceneName
         /// </summary>
-        /// <param name="sceneName">The name of the scene to load</param>
+        /// <param name="sceneToLoadName">The name of the scene to load</param>
         /// <param name="newVars">Variables to pass along to the next scene</param>
-        public static void LoadScene(string sceneName, Dictionary<string, object> newVars)
+        public static void LoadScene(string sceneToLoadName, Dictionary<string, object> newVars)
         {
             ClearLoader();
             _vars = newVars;
-            Debug.Log("loading scene from a name");
             if (DialogueManager.instance.dialogueIsPlaying && !listening)
             {
-                Debug.Log("listening now");
                 DialogueManager.instance.DialogueEnded += IsDialogueDone;
                 listening = true;
-                SceneLoader.sceneName = sceneName;
+                sceneName = sceneToLoadName;
             }
             else
             {
                 sceneLoadedFrom = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(sceneName);   
+                SceneManager.LoadScene(sceneToLoadName);
             }
         }
 

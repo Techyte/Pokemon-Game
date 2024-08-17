@@ -120,12 +120,10 @@ namespace PokemonGame.Dialogue
             QueuedDialogue dialogue = new QueuedDialogue(trigger, variables, inkJson, autostart);
             if (_queue.Count > 0 || dialogueIsPlaying)
             {
-                Debug.Log("adding to the queue");
                 _queue.Enqueue(dialogue);
             }
             else
             {
-                Debug.Log("barging ahead");
                 LoadDialogueFromQueue(dialogue);
             }
         }
@@ -142,12 +140,10 @@ namespace PokemonGame.Dialogue
             QueuedDialogue dialogue = new QueuedDialogue(trigger, text, autostart);
             if (_queue.Count > 0 || dialogueIsPlaying)
             {
-                Debug.Log("adding to the queue");
                 _queue.Enqueue(dialogue);
             }
             else
             {
-                Debug.Log("barging ahead");
                 LoadDialogueFromQueue(dialogue);
             }
         }
@@ -262,7 +258,6 @@ namespace PokemonGame.Dialogue
         /// <returns></returns>
         private IEnumerator ExitDialogueMode()
         {
-            Debug.Log(_queue.Count);
             if (_queue.Count > 0)
             {
                 LoadDialogueFromQueue(_queue.Dequeue());

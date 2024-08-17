@@ -118,8 +118,8 @@ namespace PokemonGame.General
         /// Inflict damage onto the battler
         /// </summary>
         /// <param name="damage">The amount of damage to inflict</param>
-        /// <param name="source">The source type of the damage</param>
-        public void TakeDamage(int damage, DamageSource source)
+        /// <param name="dSource">The source type of the damage</param>
+        public void TakeDamage(int damage, DamageSource dSource)
         {
             currentHealth -= damage;
             
@@ -128,7 +128,7 @@ namespace PokemonGame.General
             
             if (currentHealth <= 0)
             {
-                Fainted(source);
+                Fainted(dSource);
             }
         }
 

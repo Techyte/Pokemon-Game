@@ -74,7 +74,7 @@ namespace PokemonGame.Battle
         
         public Move enemyMoveToDo;
         
-        [SerializeField] private bool playerHasChosenAttack;
+        [SerializeField] private bool playerHasChosenMove;
         
         [SerializeField] private bool hasDoneChoosingUpdate;
         
@@ -85,7 +85,7 @@ namespace PokemonGame.Battle
         private Battler opponentCurrentBattler => opponentParty[opponentBattlerIndex];
 
         public List<TurnItem> turnItemQueue = new List<TurnItem>();
-        private bool _currentlyRunningQueueItem = false;
+        [SerializeField] private bool _currentlyRunningQueueItem = false;
 
         public List<Battler> battlersThatParticipated;
 
@@ -102,6 +102,9 @@ namespace PokemonGame.Battle
 
         private bool _opponentDefeated;
         private bool _endingDialogueRunning;
+
+        private bool _playerSwappedThisTurn;
+        private bool _playerChoseToSwap;
         
         private void Start()
         {
@@ -130,9 +133,16 @@ namespace PokemonGame.Battle
 
             DialogueManager.instance.DialogueEnded += (sender, args) =>
             {
-                Debug.Log($"More Dialogue to read out: {args.moreToGo}");
+                bool swapped = false;
                 
-                if (_availableToEndTurnShowing)
+                if (_playerWantsToSwap)
+                {
+                    swapped = true;
+                    Debug.Log(currentTurn);
+                    PlayerSwappedBattler();
+                }
+                
+                if (_currentlyRunningQueueItem && !args.moreToGo && !swapped)
                 {
                     TurnQueueItemEnded();
                 }
@@ -176,7 +186,7 @@ namespace PokemonGame.Battle
 
         private void Update()
         {
-            if (playerHasChosenAttack)
+            if (playerHasChosenMove)
             {
                 currentTurn = TurnStatus.Showing;
             }
@@ -192,10 +202,15 @@ namespace PokemonGame.Battle
                 case TurnStatus.Choosing:
                     if (!hasDoneChoosingUpdate)
                     {
+                        Debug.Log("Begin Turn Choosing");
                         uiManager.ShowControlUI(true);
+                        uiManager.ShowUI(true);
                         uiManager.UpdateBattlerMoveDisplays();
                         enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
                         hasDoneChoosingUpdate = true;
+                        Debug.Log("Setting swapped to false");
+                        _playerSwappedThisTurn = false;
+                        _playerChoseToSwap = false;
                     }
                     break;
             }
@@ -209,17 +224,15 @@ namespace PokemonGame.Battle
                 hasSetupShowing = true;
                 
                 uiManager.ShowControlUI(false);
-
-                if (_playerWantsToSwap)
+                
+                turnItemQueue.Add(TurnItem.StartDelay);
+                if (_playerChoseToSwap)
                 {
                     turnItemQueue.Add(TurnItem.PlayerSwap);
                 }
-                
-                turnItemQueue.Add(TurnItem.StartDelay);
                 turnItemQueue.Add(TurnItem.StartOfTurnStatusEffects);
                 QueueMoves();
                 turnItemQueue.Add(TurnItem.EndOfTurnStatusEffects);
-                _availableToEndTurnShowing = true;
             }
 
             if (!_currentlyRunningQueueItem)
@@ -250,8 +263,11 @@ namespace PokemonGame.Battle
                         case TurnItem.EndBattleOpponentWin:
                             BeginEndBattleDialogue(false);
                             break;
+                        case TurnItem.PlayerSwapBecauseFainted:
+                            BeginSwapPlayerBattler();
+                            break;
                         case TurnItem.PlayerSwap:
-                            SwapPlayerBattler();
+                            PlayerSwappedBattler();
                             break;
                         case TurnItem.OpponentSwap:
                             break;
@@ -283,9 +299,7 @@ namespace PokemonGame.Battle
 
         private void EndTurnShowing()
         {
-            Debug.Log("Ending turn showing");
-            _availableToEndTurnShowing = false;
-            playerHasChosenAttack = false;
+            playerHasChosenMove = false;
             currentTurn = TurnStatus.Ending;
         }
 
@@ -307,7 +321,7 @@ namespace PokemonGame.Battle
                 Debug.Log("Ending Turn");
                 hasDoneChoosingUpdate = false;
                 hasSetupShowing = false;
-                playerHasChosenAttack = false;
+                playerHasChosenMove = false;
                 
                 enemyMoveToDo = null;
                 playerMoveToDo = null;
@@ -328,23 +342,43 @@ namespace PokemonGame.Battle
         {
             playerMoveToDo = playerCurrentBattler.moves[moveID];
             playerMoveToDoIndex = moveID;
-            playerHasChosenAttack = true;
+            playerHasChosenMove = true;
         }
 
         public void ChooseToSwap(int newBattlerIndex)
         {
-            _playerWantsToSwap = true;
-            _playerSwapIndex = newBattlerIndex;
+            if (_currentlyRunningQueueItem)
+            {
+                _playerWantsToSwap = true;
+                _playerSwapIndex = newBattlerIndex;
+                QueDialogue($"You sent out {playerParty[newBattlerIndex].name}", true);
+            }
+            else
+            {
+                _playerSwapIndex = newBattlerIndex;
+                playerHasChosenMove = true;
+                _playerChoseToSwap = true;
+            }
         }
 
-        private void SwapPlayerBattler()
+        private void BeginSwapPlayerBattler()
+        {
+            uiManager.SwitchBattlerBecauseOfDeath();
+        }
+
+        private void PlayerSwappedBattler()
         {
             currentBattlerIndex = _playerSwapIndex;
             
             AddParticipatedBattler(playerParty[_playerSwapIndex]);
+
+            uiManager.UpdatePlayerBattlerDetails();
             
             _playerWantsToSwap = false;
-            _playerSwapIndex = 0;
+            
+            _playerSwappedThisTurn = true;
+            
+            QueDialogue($"Go ahead {playerCurrentBattler.name}!", true);
         }
 
         public void AddParticipatedBattler(Battler battlerToParticipate)
@@ -362,8 +396,6 @@ namespace PokemonGame.Battle
             MoveMethodEventArgs e = new MoveMethodEventArgs(playerCurrentBattler, opponentCurrentBattler,
                 playerMoveToDoIndex, playerMoveToDo, ExternalBattleData.Construct(this));
             
-            Debug.Log(playerMoveToDo);
-            
             playerMoveToDo.MoveMethod(e);
             
             opponentCurrentBattler.TakeDamage(e.damageDealt, new BattlerDamageSource(playerCurrentBattler));
@@ -376,7 +408,7 @@ namespace PokemonGame.Battle
 
         private void QueueMoves()
         {
-            if (_playerWantsToSwap)
+            if (_playerSwappedThisTurn || turnItemQueue.Contains(TurnItem.PlayerSwap))
             {
                 turnItemQueue.Add(TurnItem.OpponentMove);
 
@@ -417,8 +449,17 @@ namespace PokemonGame.Battle
             
             if (playerCurrentBattler.isFainted)
             {
-                uiManager.SwitchBattlerBecauseOfDeath();
+                PlayerBattlerDied();
             }
+        }
+
+        private void PlayerBattlerDied()
+        {
+            uiManager.UpdatePlayerBattlerDetails();
+
+            turnItemQueue.RemoveAll(item => item == TurnItem.PlayerMove);
+            
+            turnItemQueue.Add(TurnItem.PlayerSwapBecauseFainted);
         }
 
         private int GetIndexOfMoveOnCurrentEnemy(Move move)
@@ -451,27 +492,33 @@ namespace PokemonGame.Battle
 
         private void RunEndOfTurnStatusEffects()
         {
-            bool anyStatusEffectsUsed = false;
+            bool anyEffects = false;
             
-            foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
+            if (!playerCurrentBattler.isFainted)
             {
-                if (trigger.trigger == StatusEffectCaller.EndOfTurn)
+                foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
                 {
-                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
-                    anyStatusEffectsUsed = true;
-                }
-            }
-            
-            foreach (var trigger in opponentCurrentBattler.statusEffect.triggers)
-            {
-                if (trigger.trigger == StatusEffectCaller.EndOfTurn)
-                {
-                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
-                    anyStatusEffectsUsed = true;
+                    if (trigger.trigger == StatusEffectCaller.EndOfTurn)
+                    {
+                        trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
+                        anyEffects = true;
+                    }
                 }
             }
 
-            if (!anyStatusEffectsUsed)
+            if (!opponentCurrentBattler.isFainted)
+            {
+                foreach (var trigger in opponentCurrentBattler.statusEffect.triggers)
+                {
+                    if (trigger.trigger == StatusEffectCaller.EndOfTurn)
+                    {
+                        trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
+                        anyEffects = true;
+                    }
+                }
+            }
+            
+            if (!anyEffects)
             {
                 TurnQueueItemEnded();
             }
@@ -479,27 +526,33 @@ namespace PokemonGame.Battle
 
         private void RunStartOfTurnStatusEffects()
         {
-            bool ranAnyStatusEffects = false;
-            
-            foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
+            bool anyEffects = false;
+
+            if (!playerCurrentBattler.isFainted)
             {
-                if (trigger.trigger == StatusEffectCaller.StartOfTurn)
+                foreach (var trigger in playerCurrentBattler.statusEffect.triggers)
                 {
-                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
-                    ranAnyStatusEffects = true;
-                }
-            }
-            
-            foreach (var trigger in opponentCurrentBattler.statusEffect.triggers)
-            {
-                if (trigger.trigger == StatusEffectCaller.StartOfTurn)
-                {
-                    trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
-                    ranAnyStatusEffects = true;
+                    if (trigger.trigger == StatusEffectCaller.StartOfTurn)
+                    {
+                        trigger.EffectEvent.Invoke(new StatusEffectEventArgs(playerCurrentBattler));
+                        anyEffects = true;
+                    }
                 }
             }
 
-            if (!ranAnyStatusEffects)
+            if (!opponentCurrentBattler.isFainted)
+            {
+                foreach (var trigger in opponentCurrentBattler.statusEffect.triggers)
+                {
+                    if (trigger.trigger == StatusEffectCaller.StartOfTurn)
+                    {
+                        trigger.EffectEvent.Invoke(new StatusEffectEventArgs(opponentCurrentBattler));
+                        anyEffects = true;
+                    }
+                }
+            }
+
+            if (!anyEffects)
             {
                 TurnQueueItemEnded();
             }
@@ -543,7 +596,7 @@ namespace PokemonGame.Battle
             }
             else
             {
-                QueDialogue("All opponent Pokemon defeated!", true);
+                QueDialogue("All your Pokemon defeated!", true);
             }
 
             _endingDialogueRunning = true;

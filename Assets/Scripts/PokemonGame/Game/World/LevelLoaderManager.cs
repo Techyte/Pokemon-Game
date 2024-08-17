@@ -20,7 +20,7 @@ namespace PokemonGame.Game.World
                 
                 if (!string.IsNullOrEmpty(loaderName))
                 {
-                    spawnPointObject = transform.Find(loaderName);   
+                    spawnPointObject = transform.Find(loaderName);
                 }
                 else
                 {

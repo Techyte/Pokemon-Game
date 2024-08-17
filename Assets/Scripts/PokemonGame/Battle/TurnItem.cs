@@ -5,6 +5,7 @@ namespace PokemonGame.Battle
         StartDelay,
         PlayerMove,
         OpponentMove,
+        PlayerSwapBecauseFainted,
         PlayerSwap,
         OpponentSwap,
         PlayerItem,
