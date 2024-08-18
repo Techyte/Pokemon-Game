@@ -94,6 +94,7 @@ namespace PokemonGame.Global
         /// <param name="newVars">Variables to pass along to the next scene</param>
         public static void LoadScene(string sceneToLoadName, Dictionary<string, object> newVars)
         {
+            Debug.Log($"loading {sceneToLoadName}");
             ClearLoader();
             _vars = newVars;
             if (DialogueManager.instance.dialogueIsPlaying && !listening)

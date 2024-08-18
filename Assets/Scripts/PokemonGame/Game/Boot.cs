@@ -10,7 +10,6 @@ namespace PokemonGame.Game
         
         private void Start()
         {
-            Debug.Log("start");
             foreach (var objectToNotDestroy in DontDestroyObjects)
             {
                 DontDestroyOnLoad(objectToNotDestroy);

@@ -20,6 +20,8 @@ namespace PokemonGame.NPC
         [Header("Interactable")]
         public bool interactable = true;
 
+        private bool _playerInteracting = false;
+
         private bool _playerInRange;
         private Player _player;
 
@@ -28,7 +30,7 @@ namespace PokemonGame.NPC
             if (visualCue == null)
             {
                 Debug.Log("interact cue not there");
-                visualCue = Instantiate(Resources.Load<GameObject>(@"Pokemon Game\NPC\Interact Cue"), transform);
+                visualCue = Instantiate(Resources.Load<GameObject>("Pokemon Game/NPC/Interact Cue"), transform);
             }
         }
 
@@ -41,7 +43,11 @@ namespace PokemonGame.NPC
 
         private void StopPlayerLooking(object o, EventArgs e)
         {
-            _player.StopLooking();
+            if (_playerInteracting)
+            {
+                _player.StopLooking();
+                _playerInteracting = false;
+            }
         }
 
         private void Update()
@@ -86,6 +92,7 @@ namespace PokemonGame.NPC
         protected virtual void OnPlayerInteracted()
         {
             _player.LookAtTarget(transform.position);
+            _playerInteracting = true;
         }
 
         private void OnTriggerEnter(Collider other)

@@ -121,6 +121,8 @@ namespace PokemonGame.General
         /// <param name="dSource">The source type of the damage</param>
         public void TakeDamage(int damage, DamageSource dSource)
         {
+            Debug.Log($"Damage dealt: {damage}/{currentHealth}");
+            
             currentHealth -= damage;
             
             OnTookDamage?.Invoke(this, EventArgs.Empty);
@@ -159,7 +161,8 @@ namespace PokemonGame.General
         {
             currentHealth = 0;
             isFainted = true;
-            OnFainted?.Invoke(this, new BattlerTookDamageArgs(source));
+            OnFainted?.Invoke(this, new BattlerTookDamageArgs(source, this));
+            Debug.Log("Battler Fainted");
         }
 
         /// <summary>

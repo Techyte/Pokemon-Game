@@ -8,9 +8,13 @@ namespace PokemonGame.Game
 
     public class OptionsMenu : MonoBehaviour
     {
+        public static OptionsMenu instance;
+        
         [SerializeField] private KeyCode bagKey;
         [Space]
         [SerializeField] private PlayerMovement movement;
+
+        public bool on => state;
         
         [SerializeField] private bool state;
         [SerializeField] private GameObject menuObject;
@@ -23,6 +27,7 @@ namespace PokemonGame.Game
         private void Awake()
         {
             SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
+            instance = this;
         }
 
         public void OpenSeparateMenu(int menuIndex)

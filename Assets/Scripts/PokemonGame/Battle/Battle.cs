@@ -1,14 +1,15 @@
-using System.Collections;
-using PokemonGame.Dialogue;
+using System;
 
 namespace PokemonGame.Battle
 {
     using System.Collections.Generic;
+    using System.Collections;
     using Game.Party;
     using General;
     using Global;
     using ScriptableObjects;
     using UnityEngine;
+    using Dialogue;
 
     public enum TurnStatus
     {
@@ -33,7 +34,6 @@ namespace PokemonGame.Battle
                 else if (_singleton != value)
                 {
                     Debug.Log($"{nameof(Battle)} instance already exists, destroying duplicate!");
-                    Destroy(value);
                 }
             }
         }
@@ -106,6 +106,8 @@ namespace PokemonGame.Battle
         private bool _playerSwappedThisTurn;
         private bool _playerChoseToSwap;
         
+        EventHandler<BattlerTookDamageArgs> opponentBattlerDefeated = null;
+        
         private void Start()
         {
             Cursor.lockState = CursorLockMode.None;
@@ -122,49 +124,41 @@ namespace PokemonGame.Battle
             currentBattlerIndex = 0;
             opponentBattlerIndex = 0;
 
-            playerParty.PartyAllDefeated += (sender, args) =>
-            {
-                SomeoneDefeated(false);
-            };
-            opponentParty.PartyAllDefeated += (sender, args) =>
-            {
-                SomeoneDefeated(true);
-            };
+            DialogueManager.instance.DialogueEnded += DialogueEnded;
+            playerParty.PartyAllDefeated += PlayerPartyAllDefeated;
+            opponentParty.PartyAllDefeated += OpponentPartyAllDefeated;
 
-            DialogueManager.instance.DialogueEnded += (sender, args) =>
-            {
-                bool swapped = false;
-                
-                if (_playerWantsToSwap)
-                {
-                    swapped = true;
-                    Debug.Log(currentTurn);
-                    PlayerSwappedBattler();
-                }
-                
-                if (_currentlyRunningQueueItem && !args.moreToGo && !swapped)
-                {
-                    TurnQueueItemEnded();
-                }
-                
-                if (_endingDialogueRunning)
-                {
-                    ExitBattle(_opponentDefeated);
-                }
-            };
+            opponentBattlerDefeated = (s, e) => BattlerFainted(e, opponentParty.party.Find(x => x == e.damaged));
 
             for (int i = 0; i < opponentParty.Count; i++)
             {
-                int index = i;
-                
-                opponentParty[index].OnFainted += (sender, args) =>
-                {
-                    BattlerFainted(args, opponentParty[index]);
-                };
+                opponentParty[i].OnFainted += opponentBattlerDefeated;
             }
             
             // adds current battler to list of participating battlers
             battlersThatParticipated.Add(playerCurrentBattler);
+        }
+
+        private void OnDisable()
+        {
+            playerParty.PartyAllDefeated -= PlayerPartyAllDefeated;
+            opponentParty.PartyAllDefeated -= OpponentPartyAllDefeated;
+            DialogueManager.instance.DialogueEnded -= DialogueEnded;
+            
+            for (int i = 0; i < opponentParty.Count; i++)
+            {
+                opponentParty[i].OnFainted -= opponentBattlerDefeated;
+            }
+        }
+
+        private void PlayerPartyAllDefeated(object sender, EventArgs e)
+        {
+            SomeoneDefeated(false);
+        }
+
+        private void OpponentPartyAllDefeated(object sender, EventArgs e)
+        {
+            SomeoneDefeated(false);
         }
 
         private void ClearTurnQueue()
@@ -172,7 +166,7 @@ namespace PokemonGame.Battle
             turnItemQueue.Clear();
         }
 
-        public void BattlerFainted(BattlerTookDamageArgs e, Battler defeated)
+        public void BattlerFainted(EventArgs e, Battler defeated)
         {
             Debug.Log(defeated);
             
@@ -278,6 +272,12 @@ namespace PokemonGame.Battle
                             RunEndOfTurnStatusEffects();
                             break;
                     }
+                    
+                    playerParty.CheckDefeatedStatus();
+                    opponentParty.CheckDefeatedStatus();
+                    
+                    uiManager.UpdatePlayerBattlerDetails();
+                    uiManager.UpdateOpponentBattlerDetails();
                 }
                 else
                 {
@@ -345,6 +345,35 @@ namespace PokemonGame.Battle
             playerHasChosenMove = true;
         }
 
+        private void DialogueEnded(object sender, DialogueEndedEventArgs args)
+        {
+            bool swapped = false;
+                
+            if (_playerWantsToSwap)
+            {
+                swapped = true;
+                Debug.Log(currentTurn);
+                PlayerSwappedBattler();
+            }
+                
+            if (_currentlyRunningQueueItem && !args.moreToGo && !swapped)
+            {
+                TurnQueueItemEnded();
+            }
+                
+            if (_endingDialogueRunning)
+            {
+                if (!_opponentDefeated)
+                {
+                    ExitBattleLoss();
+                }
+                else
+                {
+                    ExitBattleWin();
+                }
+            }
+        }
+
         public void ChooseToSwap(int newBattlerIndex)
         {
             if (_currentlyRunningQueueItem)
@@ -402,8 +431,6 @@ namespace PokemonGame.Battle
 
             DialogueHurt(playerCurrentBattler.name, playerMoveToDo.name, opponentCurrentBattler.name,
                 e.damageDealt.ToString());
-            
-            opponentParty.CheckDefeatedStatus();
         }
 
         private void QueueMoves()
@@ -445,8 +472,6 @@ namespace PokemonGame.Battle
             DialogueHurt(opponentCurrentBattler.name, enemyMoveToDo.name, playerCurrentBattler.name,
                 e.damageDealt.ToString());
             
-            playerParty.CheckDefeatedStatus();
-            
             if (playerCurrentBattler.isFainted)
             {
                 PlayerBattlerDied();
@@ -455,8 +480,6 @@ namespace PokemonGame.Battle
 
         private void PlayerBattlerDied()
         {
-            uiManager.UpdatePlayerBattlerDetails();
-
             turnItemQueue.RemoveAll(item => item == TurnItem.PlayerMove);
             
             turnItemQueue.Add(TurnItem.PlayerSwapBecauseFainted);
@@ -558,7 +581,7 @@ namespace PokemonGame.Battle
             }
         }
 
-        private void ExitBattle(bool isDefeated)
+        private void ExitBattleWin()
         {
             Debug.Log("ending the battle");
             
@@ -568,10 +591,27 @@ namespace PokemonGame.Battle
                 { "trainerName", _opponentName },
                 { "playerPos", _playerPos },
                 { "playerRotation", _playerRotation },
-                { "isDefeated", isDefeated }
+                { "isDefeated", true }
             };
 
             SceneLoader.LoadScene("Game", vars);
+        }
+
+        private void ExitBattleLoss()
+        {
+            Debug.Log("ending the battle");
+            
+            Dictionary<string, object> vars = new Dictionary<string, object>
+            {
+                { "playerParty", playerParty },
+                { "trainerName", _opponentName },
+                { "playerPos", _playerPos },
+                { "playerRotation", _playerRotation },
+                { "isDefeated", false },
+                { "loaderName", "ForcedHealPoint" }
+            };
+
+            SceneLoader.LoadScene("Poke Center", vars);
         }
 
         private void SomeoneDefeated(bool isDefeated)

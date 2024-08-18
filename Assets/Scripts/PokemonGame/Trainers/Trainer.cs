@@ -37,39 +37,29 @@ namespace PokemonGame.Trainers
         [SerializeField] private TextAsset startBattleText;
         [SerializeField] private TextAsset defeatedBattleText;
         [SerializeField] private TextAsset idleDialogue;
-
-        
-        private GameLoader _gameLoader;
         
         private bool _hasTalkedDefeatedText;
 
         private bool isStartingBattle;
-        
-        private void OnValidate()
-        {
-            if (!_gameLoader)
-                _gameLoader = FindObjectOfType<GameLoader>();
-        }
-
-        private void Awake()
-        {
-            isDefeated = TrainerRegister.IsDefeated(this);
-        }
 
         private void Start()
         {
+            isDefeated = TrainerRegister.IsDefeated(this);
             interactable = isDefeated;
             DialogueFinished += DialogueEnded;
         }
 
         protected override void OverrideUpdate()
         {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
+            if (!isDefeated)
             {
-                if (hit.transform.GetComponent<Player>())
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
                 {
-                    StartBattle();   
+                    if (hit.transform.GetComponent<Player>())
+                    {
+                        StartBattle();
+                    }
                 }
             }
         }
@@ -82,6 +72,7 @@ namespace PokemonGame.Trainers
             isDefeated = true;
             
             TrainerRegister.Defeated(this);
+            Debug.Log($"Trainer is now deafeated: {TrainerRegister.IsDefeated(this)}");
             
             StartCoroutine(StartDefeatedDialogue());
         }
@@ -112,6 +103,7 @@ namespace PokemonGame.Trainers
         {
             if(!isDefeated && isStartingBattle)
             {
+                Debug.Log(!isDefeated && isStartingBattle);
                 LoadBattle();
             }
             else
@@ -127,7 +119,7 @@ namespace PokemonGame.Trainers
                 if (party[i])
                 {
                     Battler replacementBattler = Battler.CreateCopy(party[i]);
-                    party[i] = replacementBattler;   
+                    party[i] = replacementBattler;
                 }
             }
 

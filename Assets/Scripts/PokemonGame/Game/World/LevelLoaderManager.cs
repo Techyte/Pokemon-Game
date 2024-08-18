@@ -1,4 +1,5 @@
 using PokemonGame.Global;
+using UnityEngine.SceneManagement;
 
 namespace PokemonGame.Game.World
 {
@@ -12,7 +13,7 @@ namespace PokemonGame.Game.World
         
         private void Start()
         {
-            if (SceneLoader.sceneLoadedFrom != "Battle" && SceneLoader.sceneLoadedFrom != "Boot")
+            if ((SceneLoader.sceneLoadedFrom != "Battle" && SceneLoader.sceneLoadedFrom != "Boot") || (SceneManager.GetActiveScene().name == "Poke Center" && SceneLoader.sceneLoadedFrom == "Battle"))
             {
                 string loaderName = SceneLoader.GetVariable<string>("loaderName");
 
@@ -31,7 +32,7 @@ namespace PokemonGame.Game.World
                 if (spawnPointObject)
                 {
                     LevelLoader loader = spawnPointObject.GetComponent<LevelLoader>();
-                    loader.SpawnFrom();   
+                    loader.SpawnFrom();
                 }
                 else
                 {

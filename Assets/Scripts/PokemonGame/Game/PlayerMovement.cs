@@ -48,7 +48,7 @@ namespace PokemonGame.Game
                 }
             }
 
-            if (Physics.Raycast(groundDetectorPos.position, transform.TransformDirection(Vector3.down), out RaycastHit hit, Mathf.Infinity, ground))
+            if (Physics.Raycast(groundDetectorPos.position, Vector3.down, out RaycastHit hit, 10f, ground))
             {
                 Vector3 newPos = transform.position;
                 newPos.y = hit.point.y+transform.localScale.y/2;

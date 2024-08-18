@@ -6,6 +6,14 @@ namespace PokemonGame.General
     {
         public Transform cam;
 
+        private void Awake()
+        {
+            if (!cam)
+            {
+                cam = Camera.main.transform;
+            }
+        }
+
         private void LateUpdate()
         {
             transform.LookAt(transform.position + cam.forward);
