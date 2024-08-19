@@ -6,7 +6,7 @@ namespace PokemonGame.Battle
     using ScriptableObjects;
 
     /// <summary>
-    /// Contains all of the logic for every status effect
+    /// Contains all the logic for every status effect
     /// </summary>
     [CreateAssetMenu(fileName = "New All Status Effects", menuName = "All/New All Status Effect Methods")]
     public class StatusEffectsMethods : ScriptableObject

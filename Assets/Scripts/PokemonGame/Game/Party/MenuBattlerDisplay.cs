@@ -10,6 +10,9 @@ public class MenuBattlerDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statusDisplay;
     [SerializeField] private TextMeshProUGUI expText;
     [SerializeField] private Image battlerSpriteImage;
+    [SerializeField] private Image background;
+    [SerializeField] private Color aliveColour;
+    [SerializeField] private Color defeatedColour;
 
     public void Init(string name, int health, int maxHealth, StatusEffect effect, int exp, Sprite sprite)
     {
@@ -19,5 +22,6 @@ public class MenuBattlerDisplay : MonoBehaviour
         statusDisplay.text = effect.name;
         statusDisplay.color = effect.colour;
         expText.text = exp.ToString();
+        background.color = health == 0 ? defeatedColour : aliveColour;
     }
 }

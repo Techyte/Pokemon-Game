@@ -1,5 +1,3 @@
-using PokemonGame.Battle;
-
 namespace PokemonGame.General
 {
     using System;

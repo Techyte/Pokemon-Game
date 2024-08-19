@@ -23,11 +23,13 @@ namespace PokemonGame.Game.World
 
         public void SpawnFrom()
         {
-            Player.Instance.transform.position = spawnPoint.position;
-
             if (useSpawnPointRotation)
             {
-                Player.Instance.transform.rotation = spawnPoint.rotation;
+                Player.Instance.SetPosRot(spawnPoint.position, spawnPoint.rotation);
+            }
+            else
+            {
+                Player.Instance.SetPosRot(spawnPoint.position, Player.Instance.transform.rotation);
             }
         }
     }

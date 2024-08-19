@@ -4,11 +4,11 @@ namespace PokemonGame.Game.World
     using Trainers;
     using Global;
     using UnityEngine;
-
+    
     public class GameLoader : MonoBehaviour
     {
         [SerializeField] private Party party;
-    
+        
         private void Awake()
         {
             if(SceneLoader.sceneLoadedFrom == "Battle")

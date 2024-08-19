@@ -104,9 +104,13 @@ namespace PokemonGame.Battle
         private bool _endingDialogueRunning;
 
         private bool _playerSwappedThisTurn;
+        private bool _playerUsedItemThisTurn;
         private bool _playerChoseToSwap;
+        private bool _playerChoseToUseItem;
         
         EventHandler<BattlerTookDamageArgs> opponentBattlerDefeated = null;
+
+        private Item playerItemToUse;
         
         private void Start()
         {
@@ -158,7 +162,7 @@ namespace PokemonGame.Battle
 
         private void OpponentPartyAllDefeated(object sender, EventArgs e)
         {
-            SomeoneDefeated(false);
+            SomeoneDefeated(true);
         }
 
         private void ClearTurnQueue()
@@ -204,7 +208,9 @@ namespace PokemonGame.Battle
                         hasDoneChoosingUpdate = true;
                         Debug.Log("Setting swapped to false");
                         _playerSwappedThisTurn = false;
+                        _playerUsedItemThisTurn = false;                        
                         _playerChoseToSwap = false;
+                        _playerChoseToUseItem = false;
                     }
                     break;
             }
@@ -223,6 +229,9 @@ namespace PokemonGame.Battle
                 if (_playerChoseToSwap)
                 {
                     turnItemQueue.Add(TurnItem.PlayerSwap);
+                }else if (_playerChoseToUseItem)
+                {
+                    turnItemQueue.Add(TurnItem.PlayerItem);
                 }
                 turnItemQueue.Add(TurnItem.StartOfTurnStatusEffects);
                 QueueMoves();
@@ -263,6 +272,9 @@ namespace PokemonGame.Battle
                         case TurnItem.PlayerSwap:
                             PlayerSwappedBattler();
                             break;
+                        case TurnItem.PlayerItem:
+                            PlayerUseItem();
+                            break;
                         case TurnItem.OpponentSwap:
                             break;
                         case TurnItem.StartOfTurnStatusEffects:
@@ -270,6 +282,12 @@ namespace PokemonGame.Battle
                             break;
                         case TurnItem.EndOfTurnStatusEffects:
                             RunEndOfTurnStatusEffects();
+                            break;
+                        case TurnItem.OpponentParalysed:
+                            OpponentParalysed();
+                            break;
+                        case TurnItem.PlayerParalysed:
+                            PlayerParalysed();
                             break;
                     }
                     
@@ -374,6 +392,20 @@ namespace PokemonGame.Battle
             }
         }
 
+        public void UseItem(Item item)
+        {
+            playerItemToUse = item;
+            _playerChoseToUseItem = true;;
+            playerHasChosenMove = true;
+            _playerUsedItemThisTurn = true;
+            uiManager.Back();
+        }
+
+        private void PlayerUseItem()
+        {
+            QueDialogue($"You used {playerItemToUse.name}!");
+        }
+
         public void ChooseToSwap(int newBattlerIndex)
         {
             if (_currentlyRunningQueueItem)
@@ -410,6 +442,16 @@ namespace PokemonGame.Battle
             QueDialogue($"Go ahead {playerCurrentBattler.name}!", true);
         }
 
+        private void PlayerParalysed()
+        {
+            QueDialogue($"{playerCurrentBattler.name} is Paralysed! It is unable to move!");
+        }
+
+        private void OpponentParalysed()
+        {
+            QueDialogue($"The opponent {opponentCurrentBattler.name} is Paralysed! It is unable to move!");
+        }
+
         public void AddParticipatedBattler(Battler battlerToParticipate)
         {
             if (!battlersThatParticipated.Contains(battlerToParticipate))
@@ -435,24 +477,76 @@ namespace PokemonGame.Battle
 
         private void QueueMoves()
         {
-            if (_playerSwappedThisTurn || turnItemQueue.Contains(TurnItem.PlayerSwap))
+            if (_playerSwappedThisTurn || _playerUsedItemThisTurn)
             {
-                turnItemQueue.Add(TurnItem.OpponentMove);
+                AddOpponentMoveToQueue();
 
                 return;
             }
+
+            float playerAdjustedSpeed = playerCurrentBattler.speed;
+            float opponentAdjustedSpeed = opponentCurrentBattler.speed;
+
+            if (playerCurrentBattler.statusEffect == Registry.GetStatusEffect("Paralysed"))
+            {
+                playerAdjustedSpeed /= 2;
+            }
             
-            if(playerCurrentBattler.speed > opponentCurrentBattler.speed)
+            if (opponentCurrentBattler.statusEffect == Registry.GetStatusEffect("Paralysed"))
+            {
+                opponentAdjustedSpeed /= 2;
+            }
+            
+            
+            if(playerAdjustedSpeed > opponentAdjustedSpeed)
             {
                 //Player is faster
-                turnItemQueue.Add(TurnItem.PlayerMove);
-                turnItemQueue.Add(TurnItem.OpponentMove);
+                AddPlayerMoveToQueue();
+                AddOpponentMoveToQueue();
             }
             else
             {
                 //Enemy is faster
-                turnItemQueue.Add(TurnItem.OpponentMove);
+                AddOpponentMoveToQueue();
+                AddPlayerMoveToQueue();
+            }
+        }
+        
+        private void AddPlayerMoveToQueue()
+        {
+            if (playerCurrentBattler.statusEffect == Registry.GetStatusEffect("Paralysed"))
+            {
+                if (Random.Range(0, 4) == 0)
+                {
+                    turnItemQueue.Add(TurnItem.PlayerParalysed);
+                }
+                else
+                {
+                    turnItemQueue.Add(TurnItem.PlayerMove);
+                }
+            }
+            else
+            {
                 turnItemQueue.Add(TurnItem.PlayerMove);
+            }
+        }
+
+        private void AddOpponentMoveToQueue()
+        {
+            if (opponentCurrentBattler.statusEffect == Registry.GetStatusEffect("Paralysed"))
+            {
+                if (Random.Range(0, 4) == 0)
+                {
+                    turnItemQueue.Add(TurnItem.OpponentParalysed);
+                }
+                else
+                {
+                    turnItemQueue.Add(TurnItem.OpponentMove);
+                }
+            }
+            else
+            {
+                turnItemQueue.Add(TurnItem.OpponentMove);
             }
         }
 
