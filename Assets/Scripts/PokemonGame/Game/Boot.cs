@@ -10,6 +10,8 @@ namespace PokemonGame.Game
         
         private void Start()
         {
+            Bag.Add(Registry.GetItem("Potion"), 2);
+            
             foreach (var objectToNotDestroy in DontDestroyObjects)
             {
                 DontDestroyOnLoad(objectToNotDestroy);

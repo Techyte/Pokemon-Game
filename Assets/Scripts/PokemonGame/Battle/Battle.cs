@@ -1,4 +1,5 @@
 using System;
+using PokemonGame.Game;
 
 namespace PokemonGame.Battle
 {
@@ -110,7 +111,8 @@ namespace PokemonGame.Battle
         
         EventHandler<BattlerTookDamageArgs> opponentBattlerDefeated = null;
 
-        private Item playerItemToUse;
+        private Item _playerItemToUse;
+        private int _battlerToUseItemOn;
         
         private void Start()
         {
@@ -273,7 +275,7 @@ namespace PokemonGame.Battle
                             PlayerSwappedBattler();
                             break;
                         case TurnItem.PlayerItem:
-                            PlayerUseItem();
+                            PlayerUseItem(_battlerToUseItemOn);
                             break;
                         case TurnItem.OpponentSwap:
                             break;
@@ -392,18 +394,34 @@ namespace PokemonGame.Battle
             }
         }
 
-        public void UseItem(Item item)
+        public void UseItem(int battlerToUseOn)
         {
-            playerItemToUse = item;
             _playerChoseToUseItem = true;;
             playerHasChosenMove = true;
             _playerUsedItemThisTurn = true;
+            _battlerToUseItemOn = battlerToUseOn;
             uiManager.Back();
         }
 
-        private void PlayerUseItem()
+        public void PlayerPickedItemToUse(Item item)
         {
-            QueDialogue($"You used {playerItemToUse.name}!");
+            _playerItemToUse = item;
+        }
+
+        public void StartPickingBattlerToUseItemOn()
+        {
+            uiManager.OpenUseItemOnBattler();
+        }
+
+        private void PlayerUseItem(int battlerToUseOn)
+        {
+            ItemMethodEventArgs e = new ItemMethodEventArgs(playerParty[battlerToUseOn], _playerItemToUse, ExternalBattleData.Construct(this));
+            
+            _playerItemToUse.ItemMethod(e);
+            
+            Bag.Used(_playerItemToUse);
+            
+            QueDialogue($"You used {_playerItemToUse.name} on {playerParty[battlerToUseOn].name}!");
         }
 
         public void ChooseToSwap(int newBattlerIndex)

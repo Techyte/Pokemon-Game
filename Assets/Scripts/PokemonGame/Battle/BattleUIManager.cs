@@ -14,10 +14,12 @@ namespace PokemonGame.Battle
         [SerializeField] private GameObject moveButtons;
         [SerializeField] private GameObject healthDisplays;
         [SerializeField] private GameObject changeBattlerDisplay;
+        [SerializeField] private GameObject useItemOnBattlerDisplay;
         [SerializeField] private GameObject useItemDisplay;
         [SerializeField] private GameObject miscButtons;
         [SerializeField] private GameObject backButton;
         [SerializeField] private TextMeshProUGUI[] battlerDisplays;
+        [SerializeField] private TextMeshProUGUI[] itemBattlerDisplays;
         [SerializeField] private SpriteRenderer currentBattlerRenderer;
         [SerializeField] private SpriteRenderer opponentBattlerRenderer;
         [SerializeField] private Slider currentBattlerHealthDisplay;
@@ -50,6 +52,8 @@ namespace PokemonGame.Battle
 
         private void UpdateBattlerButtons()
         {
+            UpdateItemBattlerButtons();
+            
             foreach (var text in battlerDisplays)
             {
                 text.transform.parent.gameObject.SetActive(false);
@@ -85,6 +89,30 @@ namespace PokemonGame.Battle
             }
         }
 
+        private void UpdateItemBattlerButtons()
+        {
+            foreach (var text in itemBattlerDisplays)
+            {
+                text.transform.parent.gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < battle.playerParty.Count; i++)
+            {
+                if (!battle.playerParty[i])
+                {
+                    itemBattlerDisplays[i].transform.parent.gameObject.SetActive(false);
+                }
+                else
+                {
+                    itemBattlerDisplays[i].transform.parent.gameObject.SetActive(true);
+                    itemBattlerDisplays[i].text = battle.playerParty[i].name;
+                    itemBattlerDisplays[i].transform.parent.GetComponent<Button>().interactable = !battle.playerParty[i].isFainted;
+                    itemBattlerDisplays[i].color = Color.black;
+                }
+            }
+        }
+
+
         public void ShowUI(bool show)
         {
             playerUIHolder.SetActive(show);
@@ -104,6 +132,20 @@ namespace PokemonGame.Battle
             moveButtons.SetActive(false);
             miscButtons.SetActive(false);
             changeBattlerDisplay.SetActive(true);
+            useItemOnBattlerDisplay.SetActive(false);
+            useItemDisplay.SetActive(false);
+            backButton.SetActive(true);
+            UpdateBattlerButtons();
+        }
+
+        public void OpenUseItemOnBattler()
+        {
+            playerUIHolder.SetActive(true);
+            healthDisplays.SetActive(false);
+            moveButtons.SetActive(false);
+            miscButtons.SetActive(false);
+            changeBattlerDisplay.SetActive(false);
+            useItemOnBattlerDisplay.SetActive(true);
             useItemDisplay.SetActive(false);
             backButton.SetActive(true);
             UpdateBattlerButtons();
@@ -129,6 +171,7 @@ namespace PokemonGame.Battle
             moveButtons.SetActive(false);
             miscButtons.SetActive(false);
             changeBattlerDisplay.SetActive(true);
+            useItemOnBattlerDisplay.SetActive(false);
             backButton.SetActive(false);
             useItemDisplay.SetActive(false);
             UpdateBattlerButtons();
@@ -141,8 +184,27 @@ namespace PokemonGame.Battle
             moveButtons.SetActive(true);
             miscButtons.SetActive(true);
             changeBattlerDisplay.SetActive(false);
+            useItemOnBattlerDisplay.SetActive(false);
             useItemDisplay.SetActive(false);
+            
             battle.ChooseToSwap(partyID);
+            
+            battle.AddParticipatedBattler(battle.playerParty[partyID]);
+            Back();
+        }
+
+        public void UseItemOnBattler(int partyID)
+        {
+            playerUIHolder.SetActive(false);
+            healthDisplays.SetActive(true);
+            moveButtons.SetActive(true);
+            miscButtons.SetActive(true);
+            changeBattlerDisplay.SetActive(false);
+            useItemOnBattlerDisplay.SetActive(false);
+            useItemDisplay.SetActive(false);
+            
+            battle.UseItem(partyID);
+            
             battle.AddParticipatedBattler(battle.playerParty[partyID]);
             Back();
         }
@@ -153,6 +215,7 @@ namespace PokemonGame.Battle
             moveButtons.SetActive(true);
             miscButtons.SetActive(true);
             changeBattlerDisplay.SetActive(false);
+            useItemOnBattlerDisplay.SetActive(false);
             useItemDisplay.SetActive(false);
             UpdateBattlerButtons();
         }

@@ -16,3 +16,18 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 5b08821b7a98b5c4d88dfd2527a89fcd, type: 3}
   type: 4
   description: Heal your pokemon
+  ItemMethodEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: c504bf0615e0c8b4d9dbec02633597f5, type: 2}
+        m_TargetAssemblyTypeName: PokemonGame.Battle.ItemMethods, Assembly-CSharp
+        m_MethodName: Potion
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

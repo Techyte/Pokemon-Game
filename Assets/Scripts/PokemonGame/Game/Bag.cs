@@ -47,6 +47,18 @@ namespace PokemonGame.Game
             }
         }
 
+        public static void Used(Item itemUsed)
+        {
+            if (_items.TryGetValue(itemUsed, out BagItemData value))
+            {
+                value.amount -= 1;
+                if (value.amount <= 0)
+                {
+                    _items.Remove(itemUsed);
+                }
+            }
+        }
+
         public static Dictionary<Item, BagItemData> GetItems()
         {
             return _items;
