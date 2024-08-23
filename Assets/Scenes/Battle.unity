@@ -4397,6 +4397,9 @@ MonoBehaviour:
   currentBattlerNameDisplay: {fileID: 1821323010}
   opponentBattlerNameDisplay: {fileID: 134080510}
   battleBagMenu: {fileID: 8053423108129935676}
+  faintedRequiredItems:
+  - {fileID: 11400000, guid: 713fd127c53d4a64a9a645129272a769, type: 2}
+  - {fileID: 11400000, guid: a552bfe02db65eb478a5d7be550851dc, type: 2}
   battle: {fileID: 1038033299}
 --- !u!114 &1038033302
 MonoBehaviour:

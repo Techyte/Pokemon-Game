@@ -108,11 +108,6 @@ namespace PokemonGame.General
         public event EventHandler OnHealthUpdated;
 
         /// <summary>
-        /// Has some status effect or some other thing said that this battler cannot do a move this turn
-        /// </summary>
-        public bool hasMoveBlock = false;
-
-        /// <summary>
         /// Inflict damage onto the battler
         /// </summary>
         /// <param name="damage">The amount of damage to inflict</param>
@@ -177,6 +172,24 @@ namespace PokemonGame.General
             }
 
             OnHealthUpdated?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Revive(bool full)
+        {
+            isFainted = false;
+
+            if (full)
+            {
+                UpdateHealth(maxHealth);
+                foreach (var ppInfo in movePpInfos)
+                {
+                    ppInfo.CurrentPP = ppInfo.MaxPP;
+                }
+            }
+            else
+            {
+                UpdateHealth(maxHealth/2);
+            }
         }
 
         /// <summary>

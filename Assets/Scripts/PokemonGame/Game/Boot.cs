@@ -11,6 +11,8 @@ namespace PokemonGame.Game
         private void Start()
         {
             Bag.Add(Registry.GetItem("Potion"), 2);
+            Bag.Add(Registry.GetItem("Revive"), 2);
+            Bag.Add(Registry.GetItem("Max Revive"), 2);
             
             foreach (var objectToNotDestroy in DontDestroyObjects)
             {

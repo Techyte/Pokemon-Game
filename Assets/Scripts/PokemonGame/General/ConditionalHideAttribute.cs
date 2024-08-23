@@ -4,7 +4,7 @@
     using System;
 
     //Original version of the ConditionalHideAttribute created by Brecht Lecluyse (www.brechtos.com)
-    //Modified by: Techyte
+    //Modified by Techyte
     
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property |
         AttributeTargets.Class | AttributeTargets.Struct, Inherited = true)]

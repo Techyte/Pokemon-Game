@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b184adcd3091dd459bfd89c1b8710ff, type: 3}
-  m_Name: Potion
+  m_Name: Revive
   m_EditorClassIdentifier: 
-  name: Potion
-  sprite: {fileID: 21300000, guid: 5b08821b7a98b5c4d88dfd2527a89fcd, type: 3}
+  name: Revive
+  sprite: {fileID: 21300000, guid: c4aa6f585cacfe741b69fadc73fab8bc, type: 3}
   type: 4
-  description: Heal your pokemon
+  description: Bring a pokemon back to life!
   useInBattle: 1
-  specificTarget: 0
+  lockedTarget: 0
   playerParty: 0
   targetIndex: 0
   heldItem: 0
@@ -26,7 +26,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: c504bf0615e0c8b4d9dbec02633597f5, type: 2}
         m_TargetAssemblyTypeName: PokemonGame.Battle.ItemMethods, Assembly-CSharp
-        m_MethodName: Potion
+        m_MethodName: Revive
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

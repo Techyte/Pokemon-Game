@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using PokemonGame.ScriptableObjects;
+
 namespace PokemonGame.Battle
 {
     using UnityEngine;
@@ -29,7 +32,11 @@ namespace PokemonGame.Battle
         [SerializeField] private TextMeshProUGUI opponentBattlerNameDisplay;
         [SerializeField] private BattleBagMenu battleBagMenu;
 
+        [SerializeField] private List<Item> faintedRequiredItems = new List<Item>();
+
         public Battle battle;
+
+        private Item _playerItemToUse;
 
         private void Start()
         {
@@ -89,7 +96,7 @@ namespace PokemonGame.Battle
             }
         }
 
-        private void UpdateItemBattlerButtons()
+        public void UpdateItemBattlerButtons()
         {
             foreach (var text in itemBattlerDisplays)
             {
@@ -107,6 +114,18 @@ namespace PokemonGame.Battle
                     itemBattlerDisplays[i].transform.parent.gameObject.SetActive(true);
                     itemBattlerDisplays[i].text = battle.playerParty[i].name;
                     itemBattlerDisplays[i].transform.parent.GetComponent<Button>().interactable = !battle.playerParty[i].isFainted;
+
+                    if (_playerItemToUse)
+                    {
+                        Debug.Log(_playerItemToUse);
+                        Debug.Log(faintedRequiredItems.Contains(_playerItemToUse));
+                        if (faintedRequiredItems.Contains(_playerItemToUse))
+                        {
+                            itemBattlerDisplays[i].transform.parent.GetComponent<Button>().interactable =
+                                battle.playerParty[i].isFainted;
+                        }
+                    }
+                    
                     itemBattlerDisplays[i].color = Color.black;
                 }
             }
@@ -138,7 +157,7 @@ namespace PokemonGame.Battle
             UpdateBattlerButtons();
         }
 
-        public void OpenUseItemOnBattler()
+        public void OpenUseItemOnBattler(Item itemToUse)
         {
             playerUIHolder.SetActive(true);
             healthDisplays.SetActive(false);
@@ -149,6 +168,7 @@ namespace PokemonGame.Battle
             useItemDisplay.SetActive(false);
             backButton.SetActive(true);
             UpdateBattlerButtons();
+            _playerItemToUse = itemToUse;
         }
 
         public void UseItem()
@@ -203,7 +223,7 @@ namespace PokemonGame.Battle
             useItemOnBattlerDisplay.SetActive(false);
             useItemDisplay.SetActive(false);
             
-            battle.UseItem(partyID);
+            battle.UseItem(partyID, true);
             
             battle.AddParticipatedBattler(battle.playerParty[partyID]);
             Back();

@@ -4,7 +4,7 @@
     using UnityEditor;
 
     //Original version of the ConditionalHideAttribute created by Brecht Lecluyse (www.brechtos.com)
-    //Modified by: Techyte
+    //Modified by Techyte
     
     [CustomPropertyDrawer(typeof(ConditionalHideAttribute))]
     public class ConditionalHidePropertyDrawer : PropertyDrawer
@@ -12,7 +12,7 @@
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             ConditionalHideAttribute condHAtt = (ConditionalHideAttribute)attribute;
-            bool enabled = GetConditionalHideAttributeResult(condHAtt, property);        
+            bool enabled = GetConditionalHideAttributeResult(condHAtt, property); 
     
             bool wasEnabled = GUI.enabled;
             GUI.enabled = enabled;
@@ -84,7 +84,7 @@
             if (sourcePropertyValue != null)
             {
                 enabled = CheckPropertyType(sourcePropertyValue);
-                if (condHAtt.InverseCondition1) enabled = !enabled;             
+                if (condHAtt.InverseCondition1) enabled = !enabled;  
             }
             else
             {
@@ -93,9 +93,12 @@
 
             if (condHAtt.enumCheck)
             {
-                if (condHAtt.enumCheckIndex == sourcePropertyValue.enumValueIndex)
+                if (sourcePropertyValue.propertyType == SerializedPropertyType.Enum)
                 {
-                    enabled = true;
+                    if (condHAtt.enumCheckIndex == sourcePropertyValue.enumValueIndex)
+                    {
+                        enabled = true;
+                    }
                 }
             }
 

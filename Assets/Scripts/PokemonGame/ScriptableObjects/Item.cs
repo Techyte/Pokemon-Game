@@ -15,6 +15,11 @@ namespace PokemonGame.ScriptableObjects
         public Sprite sprite;
         public ItemType type;
         public string description;
+        public bool useInBattle;
+        [ConditionalHide("useInBattle", 1)] public bool lockedTarget;
+        [ConditionalHide("lockedTarget", 1)] public bool playerParty;
+        [ConditionalHide("lockedTarget", 1)] public int targetIndex;
+        public bool heldItem;
     
         public UnityEvent<ItemMethodEventArgs> ItemMethodEvent;
 
@@ -31,13 +36,11 @@ namespace PokemonGame.ScriptableObjects
     {
         public Battler target;
         public Item item;
-        public ExternalBattleData battleData;
 
-        public ItemMethodEventArgs(Battler target, Item item, ExternalBattleData battleData)
+        public ItemMethodEventArgs(Battler target, Item item)
         {
             this.target = target;
             this.item = item;
-            this.battleData = battleData;
         }
     }
 
@@ -52,5 +55,11 @@ namespace PokemonGame.ScriptableObjects
         Berry,
         KeyItem,
         HeldItem,
+    }
+
+    public enum ItemUseType : int
+    {
+        Battle = 1,
+        Held
     }
 }

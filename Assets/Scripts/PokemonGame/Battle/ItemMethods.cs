@@ -13,5 +13,15 @@ namespace PokemonGame.Battle
         {
             e.target.Heal(20);
         }
+        
+        public void Revive(ItemMethodEventArgs e)
+        {
+            e.target.Revive(false);
+        }
+        
+        public void MaxRevive(ItemMethodEventArgs e)
+        {
+            e.target.Revive(true);
+        }
     }   
 }

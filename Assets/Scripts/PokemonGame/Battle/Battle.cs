@@ -113,6 +113,7 @@ namespace PokemonGame.Battle
 
         private Item _playerItemToUse;
         private int _battlerToUseItemOn;
+        private bool _useItemOnPlayerParty;
         
         private void Start()
         {
@@ -275,7 +276,7 @@ namespace PokemonGame.Battle
                             PlayerSwappedBattler();
                             break;
                         case TurnItem.PlayerItem:
-                            PlayerUseItem(_battlerToUseItemOn);
+                            PlayerUseItem(_battlerToUseItemOn, _useItemOnPlayerParty);
                             break;
                         case TurnItem.OpponentSwap:
                             break;
@@ -394,12 +395,13 @@ namespace PokemonGame.Battle
             }
         }
 
-        public void UseItem(int battlerToUseOn)
+        public void UseItem(int battlerToUseOn, bool useOnPlayerParty)
         {
             _playerChoseToUseItem = true;;
             playerHasChosenMove = true;
             _playerUsedItemThisTurn = true;
             _battlerToUseItemOn = battlerToUseOn;
+            _useItemOnPlayerParty = useOnPlayerParty;
             uiManager.Back();
         }
 
@@ -410,18 +412,35 @@ namespace PokemonGame.Battle
 
         public void StartPickingBattlerToUseItemOn()
         {
-            uiManager.OpenUseItemOnBattler();
+            if (_playerItemToUse.lockedTarget)
+            {
+                if (_playerItemToUse.playerParty)
+                {
+                    UseItem(_playerItemToUse.targetIndex, true);
+                }
+                else
+                {
+                    UseItem(_playerItemToUse.targetIndex, false);
+                }
+            }
+            else
+            {
+                uiManager.OpenUseItemOnBattler(_playerItemToUse);
+                uiManager.UpdateItemBattlerButtons();
+            }
         }
 
-        private void PlayerUseItem(int battlerToUseOn)
+        private void PlayerUseItem(int battlerToUseOn, bool useOnPlayerParty)
         {
-            ItemMethodEventArgs e = new ItemMethodEventArgs(playerParty[battlerToUseOn], _playerItemToUse, ExternalBattleData.Construct(this));
+            Battler battleBeingUsedOn = useOnPlayerParty ? playerParty[battlerToUseOn] : opponentParty[battlerToUseOn];
+            
+            ItemMethodEventArgs e = new ItemMethodEventArgs(battleBeingUsedOn, _playerItemToUse);
             
             _playerItemToUse.ItemMethod(e);
             
             Bag.Used(_playerItemToUse);
             
-            QueDialogue($"You used {_playerItemToUse.name} on {playerParty[battlerToUseOn].name}!");
+            QueDialogue($"You used {_playerItemToUse.name} on {battleBeingUsedOn.name}!");
         }
 
         public void ChooseToSwap(int newBattlerIndex)
