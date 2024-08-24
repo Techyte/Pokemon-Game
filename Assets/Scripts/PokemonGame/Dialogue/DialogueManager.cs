@@ -38,6 +38,7 @@ namespace PokemonGame.Dialogue
         
         public event EventHandler<DialogueStartedEventArgs> DialogueStarted;
         public event EventHandler<DialogueEndedEventArgs> DialogueEnded;
+        public event EventHandler<DialogueChoiceEventArgs> DialogueChoice;
 
         private Queue<QueuedDialogue> _queue = new Queue<QueuedDialogue>();
 
@@ -84,7 +85,7 @@ namespace PokemonGame.Dialogue
                 }
             }
             
-            if (Input.GetKeyDown(KeyCode.C) && !hasChoices)
+            if ((Input.GetKeyDown(KeyCode.C) || Input.GetMouseButtonDown(0)) && !hasChoices)
             {
                 ContinueStory();
             }
@@ -298,6 +299,12 @@ namespace PokemonGame.Dialogue
                     {
                         string next = _currentStory.Continue();
 
+                        if (string.IsNullOrEmpty(next))
+                        {
+                            ContinueStory();
+                            return;
+                        }
+
                         if (next.Length >= maxCharAmount)
                         {
                             string[] newNextLines = next.SplitIntoParts(maxCharAmount);
@@ -325,6 +332,12 @@ namespace PokemonGame.Dialogue
                     if (!string.IsNullOrEmpty(currentQueuedDialogue.text))
                     {
                         string next = currentQueuedDialogue.text;
+                        
+                        if (string.IsNullOrEmpty(next))
+                        {
+                            ContinueStory();
+                            return;
+                        }
 
                         if (next.Length >= maxCharAmount)
                         {
@@ -411,6 +424,7 @@ namespace PokemonGame.Dialogue
         
         private IEnumerator DisplayText(string nextSentence)
         {
+            Debug.Log("displaying text");
             dialogueTextDisplay.text = "";
             foreach (char letter in nextSentence)
             {
@@ -488,6 +502,11 @@ namespace PokemonGame.Dialogue
         public void MakeChoice(int choiceIndex)
         {
             _currentStory.ChooseChoiceIndex(choiceIndex);
+
+            DialogueChoiceEventArgs args = new DialogueChoiceEventArgs(currentTrigger, choiceIndex);
+
+            DialogueChoice?.Invoke(this, args);
+            
             ContinueStory();
         }
     }
@@ -548,6 +567,18 @@ namespace PokemonGame.Dialogue
         {
             this.trigger = trigger;
             this.moreToGo = moreToGo;
+        }
+    }
+
+    public class DialogueChoiceEventArgs : EventArgs
+    {
+        public DialogueTrigger trigger;
+        public int choiceIndex;
+
+        public DialogueChoiceEventArgs(DialogueTrigger trigger, int choiceIndex)
+        {
+            this.trigger = trigger;
+            this.choiceIndex = choiceIndex;
         }
     }
 

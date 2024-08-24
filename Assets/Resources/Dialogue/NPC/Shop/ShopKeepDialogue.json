@@ -1,0 +1,1 @@
+﻿{"inkVersion":20,"root":[["^Hey there!","\n","^What do you want to do?","\n","ev","str","^Shop","/str","/ev",{"*":"0.c-0","flg":4},"ev","str","^Sell","/str","/ev",{"*":"0.c-1","flg":4},{"c-0":["\n",{"->":"0.g-0"},{"#f":5}],"c-1":["\n",{"->":"0.g-0"},{"#f":5}],"g-0":["done",{"#f":5}]}],"done",{"#f":1}],"listDefs":{}}

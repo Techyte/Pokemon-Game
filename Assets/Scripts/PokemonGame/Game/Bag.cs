@@ -8,6 +8,7 @@ namespace PokemonGame.Game
     public static class Bag
     {
         private static Dictionary<Item, BagItemData> _items = new Dictionary<Item, BagItemData>();
+        public static int balance = 0;
 
         public static event EventHandler<BagGotItemEventArgs> GotItem;
 
@@ -57,6 +58,33 @@ namespace PokemonGame.Game
                     _items.Remove(itemUsed);
                 }
             }
+        }
+
+        public static bool CanAfford(int potentialCost)
+        {
+            int endBalance = balance - potentialCost;
+
+            return endBalance >= 0;
+        }
+
+        public static void SpentMoney(int spent)
+        {
+            balance -= spent;
+
+            if (balance <= 0)
+            {
+                balance = 0;
+            }
+        }
+
+        public static void GainMoney(int gainedAmount)
+        {
+            balance += gainedAmount;
+        }
+
+        public static int GetCurrentMoney()
+        {
+            return balance;
         }
 
         public static Dictionary<Item, BagItemData> GetItems()
