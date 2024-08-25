@@ -144,10 +144,13 @@ namespace PokemonGame.Battle
             
             // adds current battler to list of participating battlers
             battlersThatParticipated.Add(playerCurrentBattler);
+            
+            Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyOpen"));
         }
 
         private void OnDisable()
         {
+            Debug.Log("disable");
             playerParty.PartyAllDefeated -= PlayerPartyAllDefeated;
             opponentParty.PartyAllDefeated -= OpponentPartyAllDefeated;
             DialogueManager.instance.DialogueEnded -= DialogueEnded;

@@ -13,9 +13,14 @@ namespace PokemonGame.Game
 
         public Quaternion targetRot => _target;
 
+        public bool interacting;
+
+        public PlayerMovement movement;
+
         private void Awake()
         {
             Instance = this;
+            movement = GetComponent<PlayerMovement>();
         }
 
         public void LookAtTarget(Vector3 trainerPos)

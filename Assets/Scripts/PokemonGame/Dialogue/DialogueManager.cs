@@ -290,6 +290,7 @@ namespace PokemonGame.Dialogue
         {
             dialogueIsPlaying = true;
             StopAllCoroutines();
+            ClearChoices();
 
             if (tempNextLines == null)
             {
@@ -302,25 +303,26 @@ namespace PokemonGame.Dialogue
                         if (string.IsNullOrEmpty(next))
                         {
                             ContinueStory();
-                            return;
-                        }
-
-                        if (next.Length >= maxCharAmount)
-                        {
-                            string[] newNextLines = next.SplitIntoParts(maxCharAmount);
-                        
-                            Debug.Log(newNextLines[0]);
-
-                            tempNextLines = newNextLines;
-                            StartCoroutine(DisplayText(newNextLines[currentTempIndex]));
-                            HandleTags(_currentStory.currentTags);
                         }
                         else
                         {
-                            StartCoroutine(DisplayText(next));
-                            StartCoroutine(DisplayChoices());
-                            HandleTags(_currentStory.currentTags);
-                        }   
+                            if (next.Length >= maxCharAmount)
+                            {
+                                string[] newNextLines = next.SplitIntoParts(maxCharAmount);
+                                
+                                Debug.Log(newNextLines[0]);
+
+                                tempNextLines = newNextLines;
+                                StartCoroutine(DisplayText(newNextLines[currentTempIndex]));
+                                HandleTags(_currentStory.currentTags);
+                            }
+                            else
+                            {
+                                StartCoroutine(DisplayText(next));
+                                StartCoroutine(DisplayChoices());
+                                HandleTags(_currentStory.currentTags);
+                            }
+                        }
                     }
                     else
                     {
@@ -336,24 +338,25 @@ namespace PokemonGame.Dialogue
                         if (string.IsNullOrEmpty(next))
                         {
                             ContinueStory();
-                            return;
-                        }
-
-                        if (next.Length >= maxCharAmount)
-                        {
-                            string[] newNextLines = next.SplitIntoParts(maxCharAmount);
-                        
-                            Debug.Log(newNextLines[0]);
-
-                            tempNextLines = newNextLines;
-                            StartCoroutine(DisplayText(newNextLines[currentTempIndex]));
                         }
                         else
                         {
-                            StartCoroutine(DisplayText(next));
-                        }
+                            if (next.Length >= maxCharAmount)
+                            {
+                                string[] newNextLines = next.SplitIntoParts(maxCharAmount);
+                        
+                                Debug.Log(newNextLines[0]);
 
-                        currentQueuedDialogue.text = string.Empty;
+                                tempNextLines = newNextLines;
+                                StartCoroutine(DisplayText(newNextLines[currentTempIndex]));
+                            }
+                            else
+                            {
+                                StartCoroutine(DisplayText(next));
+                            }
+
+                            currentQueuedDialogue.text = string.Empty;
+                        }
                     }
                     else
                     {
@@ -419,6 +422,14 @@ namespace PokemonGame.Dialogue
                         }
                     }  
                 }
+            }
+        }
+
+        private void ClearChoices()
+        {
+            foreach (var choiceButton in choices)
+            {
+                choiceButton.gameObject.SetActive(false);
             }
         }
         

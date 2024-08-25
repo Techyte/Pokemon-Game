@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace PokemonGame.Game.World
 {
     using UnityEngine;
@@ -10,8 +12,15 @@ namespace PokemonGame.Game.World
         [SerializeField] private string connectingLoaderName;
         [SerializeField] private bool useSpawnPointRotation = true;
         [SerializeField] private Transform spawnPoint;
+        [SerializeField] private TransitionType transitionType;
         
         private void OnTriggerEnter(Collider other)
+        {
+            Player.Instance.movement.canMove = false;
+            StartCoroutine(CloseTransition());
+        }
+
+        private void TransitionScene()
         {
             Dictionary<string, object> vars = new Dictionary<string, object>
             {
@@ -23,6 +32,7 @@ namespace PokemonGame.Game.World
 
         public void SpawnFrom()
         {
+            Player.Instance.movement.canMove = false;
             if (useSpawnPointRotation)
             {
                 Player.Instance.SetPosRot(spawnPoint.position, spawnPoint.rotation);
@@ -31,6 +41,40 @@ namespace PokemonGame.Game.World
             {
                 Player.Instance.SetPosRot(spawnPoint.position, Player.Instance.transform.rotation);
             }
+
+            StartCoroutine(OpenTransition());
+        }
+
+        private IEnumerator OpenTransition()
+        {
+            switch (transitionType)
+            {
+                case TransitionType.Circle:
+                    Instantiate(Resources.Load("Pokemon Game/Transitions/CircleFadeOpen"));
+                    break;
+                case TransitionType.Spiky:
+                    Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyOpen"));
+                    break;
+            }
+            
+            yield return new WaitForSeconds(0.4f);
+            Player.Instance.movement.canMove = true;
+        }
+
+        private IEnumerator CloseTransition()
+        {
+            switch (transitionType)
+            {
+                case TransitionType.Circle:
+                    Instantiate(Resources.Load("Pokemon Game/Transitions/CircleFadeClose"));
+                    break;
+                case TransitionType.Spiky:
+                    Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyClose"));
+                    break;
+            }
+            
+            yield return new WaitForSeconds(0.4f);
+            TransitionScene();
         }
     }
 }

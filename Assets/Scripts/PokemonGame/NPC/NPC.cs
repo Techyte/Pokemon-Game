@@ -1,8 +1,7 @@
-using PokemonGame.Global;
+using System.Collections.Generic;
 
 namespace PokemonGame.NPC
 {
-
     using System;
     using Dialogue;
     using Game;
@@ -19,11 +18,13 @@ namespace PokemonGame.NPC
 
         [Header("Interactable")]
         public bool interactable = true;
+        public bool customInteractionStopHandling = false;
+        public List<GameObject> interactionObjects;
 
         private bool _playerInteracting = false;
 
         private bool _playerInRange;
-        private Player _player;
+        protected Player Player;
 
         private void OnValidate()
         {
@@ -32,6 +33,41 @@ namespace PokemonGame.NPC
                 Debug.Log("interact cue not there");
                 visualCue = Instantiate(Resources.Load<GameObject>("Pokemon Game/NPC/Interact Cue"), transform);
             }
+        }
+
+        private void DialogueEnded(object sender, DialogueEndedEventArgs e)
+        {
+            foreach (var interactionObject in interactionObjects)
+            {
+                interactionObject.SetActive(true);
+            }
+        }
+
+        private void OnDialogueStarted(object sender, DialogueStartedEventArgs e)
+        {
+            foreach (var interactionObject in interactionObjects)
+            {
+                Debug.Log("turning it off");
+                interactionObject.SetActive(false);
+            }
+        }
+
+        private void OnEnable()
+        {
+            DialogueManager.instance.DialogueStarted += OnDialogueStarted;
+            DialogueManager.instance.DialogueEnded += DialogueEnded;
+            OverrideOnEnable();
+        }
+
+        protected virtual void OverrideOnEnable()
+        {
+            
+        }
+
+        private void OnDisable()
+        {
+            DialogueManager.instance.DialogueStarted -= OnDialogueStarted;
+            DialogueManager.instance.DialogueEnded -= DialogueEnded;
         }
 
         private void Awake()
@@ -43,9 +79,10 @@ namespace PokemonGame.NPC
 
         private void StopPlayerLooking(object o, EventArgs e)
         {
-            if (_playerInteracting)
+            if (_playerInteracting && !customInteractionStopHandling)
             {
-                _player.StopLooking();
+                Player.interacting = false;
+                Player.StopLooking();
                 _playerInteracting = false;
             }
         }
@@ -54,7 +91,7 @@ namespace PokemonGame.NPC
         {
             if(interactable)
             {
-                if (_playerInRange)
+                if (_playerInRange && !Player.interacting)
                 {
                     if (!DialogueManager.instance.dialogueIsPlaying)
                     {
@@ -91,7 +128,8 @@ namespace PokemonGame.NPC
         /// </summary>
         protected virtual void OnPlayerInteracted()
         {
-            _player.LookAtTarget(transform.position);
+            Player.interacting = true;
+            Player.LookAtTarget(transform.position);
             _playerInteracting = true;
         }
 
@@ -102,7 +140,7 @@ namespace PokemonGame.NPC
                 if (other.gameObject.CompareTag("Player"))
                 {
                     _playerInRange = true;
-                    _player = other.GetComponent<Player>();
+                    Player = other.GetComponent<Player>();
                 }
             }
         }
@@ -114,7 +152,7 @@ namespace PokemonGame.NPC
                 if (other.gameObject.CompareTag("Player"))
                 {
                     _playerInRange = false;
-                    _player = null;
+                    Player = null;
                 }
             }
         }

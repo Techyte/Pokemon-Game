@@ -320,6 +320,8 @@ MonoBehaviour:
   allowsGlobalTags: 1
   visualCue: {fileID: 2133515391}
   interactable: 0
+  customInteractionStopHandling: 0
+  interactionObjects: []
   isDefeated: 0
   party:
     PartyList:
@@ -1359,6 +1361,8 @@ MonoBehaviour:
   allowsGlobalTags: 1
   visualCue: {fileID: 771957309}
   interactable: 1
+  customInteractionStopHandling: 0
+  interactionObjects: []
   textAsset: {fileID: 4900000, guid: 7bb25bd9963091c44a7bf2fc2a6d06e7, type: 3}
 --- !u!1 &862792434
 GameObject:
@@ -1667,6 +1671,8 @@ MonoBehaviour:
   allowsGlobalTags: 1
   visualCue: {fileID: 862792434}
   interactable: 1
+  customInteractionStopHandling: 0
+  interactionObjects: []
   textAsset: {fileID: 4900000, guid: 3d6e66df359e6a747a2c7190b8c4f543, type: 3}
 --- !u!1 &960600132
 GameObject:
@@ -1958,6 +1964,7 @@ MonoBehaviour:
   connectingLoaderName: ShopEnterance
   useSpawnPointRotation: 1
   spawnPoint: {fileID: 22331102}
+  transitionType: 0
 --- !u!33 &1120707099
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2019,12 +2026,12 @@ PrefabInstance:
     - target: {fileID: 7329654792191553234, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000047491902
+      value: 0.000000047492534
       objectReference: {fileID: 0}
     - target: {fileID: 7329654792191553234, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 2.2625277e-10
+      value: -2.2625543e-10
       objectReference: {fileID: 0}
     - target: {fileID: 7329654792430254048, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
@@ -2081,25 +2088,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7329654792430254053, guid: a910e47a10cac8748b76751a494ed230,
+        type: 3}
+      propertyPath: camFreeLook
+      value: 
+      objectReference: {fileID: 1155825886}
     - target: {fileID: 7329654792492178585, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000032869593
+      value: 0.000000032869654
       objectReference: {fileID: 0}
     - target: {fileID: 7329654792492178585, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000000038728154
+      value: -0.0000000038728234
       objectReference: {fileID: 0}
     - target: {fileID: 7329654793761545742, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000003987569
+      value: 0.000000039876266
       objectReference: {fileID: 0}
     - target: {fileID: 7329654793761545742, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -5.335066e-10
+      value: 5.3351457e-10
       objectReference: {fileID: 0}
     - target: {fileID: 7329654794048219145, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
@@ -2109,18 +2121,30 @@ PrefabInstance:
     - target: {fileID: 7329654794048219145, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000040294942
+      value: 0.000000040293315
       objectReference: {fileID: 0}
     - target: {fileID: 7329654794048219145, guid: a910e47a10cac8748b76751a494ed230,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 9.2511065e-10
+      value: -9.250751e-10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a910e47a10cac8748b76751a494ed230, type: 3}
+--- !u!114 &1155825886 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7329654793326322050, guid: a910e47a10cac8748b76751a494ed230,
+    type: 3}
+  m_PrefabInstance: {fileID: 1155825885}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319d2fe34a804e245819465c9505ea59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1163373103
 GameObject:
   m_ObjectHideFlags: 0
@@ -2176,6 +2200,8 @@ MonoBehaviour:
   allowsGlobalTags: 1
   visualCue: {fileID: 426591930}
   interactable: 0
+  customInteractionStopHandling: 0
+  interactionObjects: []
   isDefeated: 0
   party:
     PartyList:
@@ -2344,6 +2370,8 @@ MonoBehaviour:
   allowsGlobalTags: 1
   visualCue: {fileID: 1897927045}
   interactable: 1
+  customInteractionStopHandling: 0
+  interactionObjects: []
   textAsset: {fileID: 4900000, guid: 53eed82a85c386f45b09201bc80520b3, type: 3}
 --- !u!1 &1272235731
 GameObject:
@@ -2691,6 +2719,8 @@ MonoBehaviour:
   allowsGlobalTags: 1
   visualCue: {fileID: 747936493}
   interactable: 1
+  customInteractionStopHandling: 0
+  interactionObjects: []
   textAsset: {fileID: 4900000, guid: d3400d76c0011ea4cbf02e97ef1c8a72, type: 3}
 --- !u!1 &1587678843
 GameObject:
@@ -3161,6 +3191,7 @@ MonoBehaviour:
   connectingLoaderName: CenterEnterance
   useSpawnPointRotation: 1
   spawnPoint: {fileID: 275384511}
+  transitionType: 0
 --- !u!4 &81158075914857542
 Transform:
   m_ObjectHideFlags: 0

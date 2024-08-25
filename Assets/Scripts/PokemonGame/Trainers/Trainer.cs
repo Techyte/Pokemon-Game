@@ -104,7 +104,7 @@ namespace PokemonGame.Trainers
             if(!isDefeated && isStartingBattle)
             {
                 Debug.Log(!isDefeated && isStartingBattle);
-                LoadBattle();
+                StartCoroutine(LoadBattle());
             }
             else
             {
@@ -112,7 +112,7 @@ namespace PokemonGame.Trainers
             }
         }
 
-        private void LoadBattle()
+        private IEnumerator LoadBattle()
         {
             for (int i = 0; i < party.Count; i++)
             {
@@ -146,6 +146,10 @@ namespace PokemonGame.Trainers
                 { "playerPosition", Player.Instance.transform.position },
                 { "playerRotation", Player.Instance.targetRot }
             };
+            
+            Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyClose"));
+
+            yield return new WaitForSeconds(0.4f);
 
             SceneLoader.LoadScene("Battle", vars);
         }

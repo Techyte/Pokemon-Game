@@ -1,3 +1,4 @@
+using System.Collections;
 using PokemonGame.Global;
 using UnityEngine.SceneManagement;
 
@@ -61,5 +62,11 @@ namespace PokemonGame.Game.World
                 Player.Instance.SetPosRot(spawnPoint.position, Player.Instance.transform.rotation);
             }
         }
-    }   
+    }
+
+    public enum TransitionType
+    {
+        Circle,
+        Spiky
+    }
 }
