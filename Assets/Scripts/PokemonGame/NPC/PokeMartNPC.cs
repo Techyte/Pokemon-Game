@@ -211,7 +211,7 @@ namespace PokemonGame.NPC
             selectAmountToBuyUI.SetActive(false);
         }
 
-        private void OnDisable()
+        protected override void OverrideOnDisable()
         {
             DialogueManager.instance.DialogueChoice -= OnDialogueChoice;
         }

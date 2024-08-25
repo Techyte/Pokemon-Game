@@ -64,10 +64,16 @@ namespace PokemonGame.NPC
             
         }
 
+        protected virtual void OverrideOnDisable()
+        {
+            
+        }
+
         private void OnDisable()
         {
             DialogueManager.instance.DialogueStarted -= OnDialogueStarted;
             DialogueManager.instance.DialogueEnded -= DialogueEnded;
+            OverrideOnDisable();
         }
 
         private void Awake()

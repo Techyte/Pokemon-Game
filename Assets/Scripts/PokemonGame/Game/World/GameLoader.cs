@@ -17,6 +17,7 @@ namespace PokemonGame.Game.World
             }
             else if (SceneLoader.sceneLoadedFrom == "Boot")
             {
+                Instantiate(Resources.Load("Pokemon Game/Transitions/CircleFadeOpen"));
                 PartyManager.SetPlayerParty(party.Copy());
             }
         }
