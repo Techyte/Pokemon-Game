@@ -19,7 +19,6 @@ namespace PokemonGame.Global
     
         public static string sceneLoadedFrom;
 
-        private static bool listening = false;
         private static int sceneIndex;
         private static string sceneName;
 
@@ -32,18 +31,8 @@ namespace PokemonGame.Global
         {
             ClearLoader();
             _vars = newVars;
-            if (DialogueManager.instance.dialogueIsPlaying && !listening)
-            {
-                Debug.Log("listening now");
-                DialogueManager.instance.DialogueEnded += IsDialogueDone;
-                listening = true;
-                sceneIndex = sceneToLoadIndex;
-            }
-            else
-            {
-                sceneLoadedFrom = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(sceneToLoadIndex);   
-            }
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(sceneToLoadIndex);   
         }
 
         /// <summary>
@@ -53,18 +42,8 @@ namespace PokemonGame.Global
         public static void LoadScene(int sceneToLoadIndex)
         {
             ClearLoader();
-            if (DialogueManager.instance.dialogueIsPlaying && !listening)
-            {
-                Debug.Log("listening now");
-                DialogueManager.instance.DialogueEnded += IsDialogueDone;
-                listening = true;
-                sceneIndex = sceneToLoadIndex;
-            }
-            else
-            {
-                sceneLoadedFrom = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(sceneToLoadIndex); 
-            }
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(sceneToLoadIndex); 
         }
 
         /// <summary>
@@ -74,17 +53,8 @@ namespace PokemonGame.Global
         public static void LoadScene(string sceneToLoadName)
         {
             ClearLoader();
-            if (DialogueManager.instance.dialogueIsPlaying && !listening)
-            {
-                DialogueManager.instance.DialogueEnded += IsDialogueDone;
-                listening = true;
-                sceneName = sceneToLoadName;
-            }
-            else
-            {
-                sceneLoadedFrom = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(sceneToLoadName);   
-            }
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(sceneToLoadName);   
         }
     
         /// <summary>
@@ -97,43 +67,8 @@ namespace PokemonGame.Global
             Debug.Log($"loading {sceneToLoadName}");
             ClearLoader();
             _vars = newVars;
-            if (DialogueManager.instance.dialogueIsPlaying && !listening)
-            {
-                DialogueManager.instance.DialogueEnded += IsDialogueDone;
-                listening = true;
-                sceneName = sceneToLoadName;
-            }
-            else
-            {
-                sceneLoadedFrom = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(sceneToLoadName);
-            }
-        }
-
-        /// <summary>
-        /// Used to handle scene loading while dialogue is running
-        /// </summary>
-        private static void IsDialogueDone(object sender, DialogueEndedEventArgs args)
-        {
-            Debug.Log(args.moreToGo);
-            if (!args.moreToGo)
-            {
-                sceneLoadedFrom = SceneManager.GetActiveScene().name;
-                if (string.IsNullOrEmpty(sceneName))
-                {
-                    SceneManager.LoadScene(sceneIndex);   
-                }
-                else
-                {
-                    SceneManager.LoadScene(sceneName);
-                }
-
-                sceneIndex = 0;
-                sceneName = null;
-
-                DialogueManager.instance.DialogueEnded -= IsDialogueDone;
-                listening = false;
-            }
+            sceneLoadedFrom = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(sceneToLoadName);
         }
     
         /// <summary>

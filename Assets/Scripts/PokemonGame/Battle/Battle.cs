@@ -303,7 +303,7 @@ namespace PokemonGame.Battle
                     uiManager.UpdatePlayerBattlerDetails();
                     uiManager.UpdateOpponentBattlerDetails();
                 }
-                else
+                else if (!_endingDialogueRunning)
                 {
                     EndTurnShowing();
                 }
@@ -389,11 +389,11 @@ namespace PokemonGame.Battle
             {
                 if (!_opponentDefeated)
                 {
-                    ExitBattleLoss();
+                    StartCoroutine(ExitBattleLoss());
                 }
                 else
                 {
-                    ExitBattleWin();
+                    StartCoroutine(ExitBattleWin());
                 }
             }
         }
@@ -715,10 +715,10 @@ namespace PokemonGame.Battle
             }
         }
 
-        private void ExitBattleWin()
+        private IEnumerator ExitBattleWin()
         {
             Debug.Log("ending the battle");
-            
+
             Dictionary<string, object> vars = new Dictionary<string, object>
             {
                 { "playerParty", playerParty },
@@ -727,11 +727,15 @@ namespace PokemonGame.Battle
                 { "playerRotation", _playerRotation },
                 { "isDefeated", true }
             };
+                
+            Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyClose"));
+            yield return new WaitForSeconds(0.4f);
+            Debug.Log("Exit battle loss");
 
             SceneLoader.LoadScene("Game", vars);
         }
 
-        private void ExitBattleLoss()
+        private IEnumerator ExitBattleLoss()
         {
             Debug.Log("ending the battle");
             
@@ -745,6 +749,9 @@ namespace PokemonGame.Battle
                 { "loaderName", "ForcedHealPoint" }
             };
 
+            Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyClose"));
+            yield return new WaitForSeconds(0.4f);
+
             SceneLoader.LoadScene("Poke Center", vars);
         }
 
@@ -752,11 +759,13 @@ namespace PokemonGame.Battle
         {
             if (isDefeated)
             {
-                turnItemQueue.Insert(0, TurnItem.EndBattlePlayerWin);
+                turnItemQueue.Clear();
+                turnItemQueue.Add(TurnItem.EndBattlePlayerWin);
             }
             else
             {
-                turnItemQueue.Insert(0, TurnItem.EndBattleOpponentWin);
+                turnItemQueue.Clear();
+                turnItemQueue.Add(TurnItem.EndBattlePlayerWin);
             }
         }
         
@@ -773,6 +782,7 @@ namespace PokemonGame.Battle
                 QueDialogue("All your Pokemon defeated!", true);
             }
 
+            TurnQueueItemEnded();
             _endingDialogueRunning = true;
         }
     }
