@@ -771,6 +771,9 @@ namespace PokemonGame.Battle
         
         private void BeginEndBattleDialogue(bool isDefeated)
         {
+            if (_endingDialogueRunning)
+                return;
+            
             _opponentDefeated = isDefeated;
             
             if (isDefeated)
@@ -782,7 +785,8 @@ namespace PokemonGame.Battle
                 QueDialogue("All your Pokemon defeated!", true);
             }
 
-            TurnQueueItemEnded();
+            //TurnQueueItemEnded();
+            turnItemQueue.Clear();
             _endingDialogueRunning = true;
         }
     }

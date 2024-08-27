@@ -13,6 +13,7 @@ namespace PokemonGame.Game.World
         {
             if(SceneLoader.sceneLoadedFrom == "Battle")
             {
+                Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyOpen"));
                 LoadGameFromBattle();
             }
             else if (SceneLoader.sceneLoadedFrom == "Boot")
