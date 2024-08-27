@@ -1,5 +1,7 @@
 INCLUDE ../../globals.ink
 
-Buy {amountToBuy} {itemToBuy}s for {totalCost}?
+Buy {amountToBuy} {itemToBuy}s for ${totalCost}?
 + [Yes]
+Done!
 + [No]
+Alright!
