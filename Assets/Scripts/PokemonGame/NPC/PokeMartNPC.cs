@@ -31,7 +31,7 @@ namespace PokemonGame.NPC
         [Header("Other stuff")]
         [SerializeField] private ItemDisplay itemDisplay;
 
-        [SerializeField] private List<ShopItem> stock;
+        [SerializeField] private List<Item> stock;
 
         private int _currentlySelectedItem;
 
@@ -76,7 +76,8 @@ namespace PokemonGame.NPC
                 {
                     // yes
                     Bag.SpentMoney(stock[_currentlySelectedItem].cost * _amountToBuy);
-                    Bag.Add(stock[_currentlySelectedItem].item, _amountToBuy);
+                    Bag.Add(stock[_currentlySelectedItem], _amountToBuy);
+                    BackToBuy();
                 }
                 else
                 {
@@ -136,9 +137,9 @@ namespace PokemonGame.NPC
                 
                 ItemDisplay display = Instantiate(itemDisplay, buttonHolder);
 
-                display.NameText.text = $"{stock[i].item.name}: ${stock[i].cost}";
-                display.DescriptionText.text = stock[i].item.description;
-                display.TextureImage.sprite = stock[i].item.sprite;
+                display.NameText.text = $"{stock[i].name}: ${stock[i].cost}";
+                display.DescriptionText.text = stock[i].description;
+                display.TextureImage.sprite = stock[i].sprite;
                 display.GetComponentInChildren<Button>().onClick.AddListener(() =>
                 {
                     SelectItemToBuy(index);
@@ -189,7 +190,7 @@ namespace PokemonGame.NPC
 
                 Dictionary<string, string> variables = new Dictionary<string, string>();
                 variables.Add("amountToBuy", _amountToBuy.ToString());
-                variables.Add("itemToBuy", stock[_currentlySelectedItem].item.name);
+                variables.Add("itemToBuy", stock[_currentlySelectedItem].name);
                 variables.Add("totalCost", totalCost.ToString());
                 
                 QueDialogue(confirmationDialogue, true, variables);
@@ -237,19 +238,6 @@ namespace PokemonGame.NPC
             buttonHolder.parent.parent.GetComponent<ScrollRect>().enabled = true;
             QueDialogue("Thank you for visiting!");
             Player.interacting = false;
-        }
-    }
-
-    [Serializable]
-    public class ShopItem
-    {
-        public Item item;
-        public int cost;
-
-        public ShopItem(Item item, int cost)
-        {
-            this.item = item;
-            this.cost = cost;
         }
     }
 }

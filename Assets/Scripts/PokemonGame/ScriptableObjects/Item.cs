@@ -15,6 +15,8 @@ namespace PokemonGame.ScriptableObjects
         public Sprite sprite;
         public ItemType type;
         public string description;
+        public int cost;
+        public int sellPrice;
         public bool useInBattle;
         [ConditionalHide("useInBattle", 1)] public bool lockedTarget;
         [ConditionalHide("lockedTarget", 1)] public bool playerParty;

@@ -90,6 +90,8 @@ namespace PokemonGame.Battle
 
         public List<Battler> battlersThatParticipated;
 
+        public bool trainerBattle;
+
         private string _opponentName;
 
         private Vector3 _playerPos;
@@ -121,12 +123,16 @@ namespace PokemonGame.Battle
             Cursor.visible = true;
 
             //Loads relevant info like the opponent and player party
+            trainerBattle = SceneLoader.GetVariable<bool>("trainerBattle");
             playerParty = new BattleParty(SceneLoader.GetVariable<Party>("playerParty"));
             opponentParty = new BattleParty(SceneLoader.GetVariable<Party>("opponentParty"));
-            enemyAI = SceneLoader.GetVariable<EnemyAI>("enemyAI");
-            _opponentName = SceneLoader.GetVariable<string>("opponentName");
             _playerPos = SceneLoader.GetVariable<Vector3>("playerPosition");
             _playerRotation = SceneLoader.GetVariable<Quaternion>("playerRotation");
+            if (trainerBattle)
+            {
+                enemyAI = SceneLoader.GetVariable<EnemyAI>("enemyAI");
+                _opponentName = SceneLoader.GetVariable<string>("opponentName");
+            }
 
             currentBattlerIndex = 0;
             opponentBattlerIndex = 0;
@@ -210,7 +216,15 @@ namespace PokemonGame.Battle
                         uiManager.ShowControlUI(true);
                         uiManager.ShowUI(true);
                         uiManager.UpdateBattlerMoveDisplays();
-                        enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
+                        if (trainerBattle)
+                        {
+                            enemyAI.AIMethod(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
+                        }
+                        else
+                        {
+                            Debug.Log("Asking wild pokemon function to run");
+                            EnemyAIMethods.WildPokemon(new AIMethodEventArgs(opponentCurrentBattler, opponentParty));
+                        }
                         hasDoneChoosingUpdate = true;
                         Debug.Log("Setting swapped to false");
                         _playerSwappedThisTurn = false;

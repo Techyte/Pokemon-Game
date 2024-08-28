@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace PokemonGame.General
 {
     using System;
@@ -83,7 +85,7 @@ namespace PokemonGame.General
         /// The secondary type of the battler
         /// </summary>
         public BasicType secondaryType;
-
+        
         /// <summary>
         /// The list of moves that the battler has
         /// </summary>
@@ -202,6 +204,7 @@ namespace PokemonGame.General
             if (moves.Count < 4 && CanLearn(moveToLearn))
             {
                 moves.Add(moveToLearn);
+                Debug.Log(moves.Count);
                 movePpInfos.Add(new MovePPData(moveToLearn.basePP, moveToLearn.basePP));
                 return true;
             }
@@ -235,7 +238,7 @@ namespace PokemonGame.General
             {
                 UpdateStats();
             }
-
+            
             if (_oldSource != source)
             {
                 UpdateStats();
@@ -249,9 +252,10 @@ namespace PokemonGame.General
                 currentHealth = maxHealth;
             
             //Making sure the battler always has 4 moves
-            if (moves.Count < 4)
-                for (int i = 0; i < 4-moves.Count; i++)
-                    moves.Add(null);
+            if (moves.Count > 4)
+            {
+                moves.RemoveAt(4);
+            }
         }
         
         /// <summary>
@@ -279,6 +283,17 @@ namespace PokemonGame.General
             primaryType = source.primaryType;
             secondaryType = source.secondaryType;
             texture = source.texture;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                name = source.name;
+            }
+        }
+
+        public void UpdateLevel(int newLevel)
+        {
+            level = newLevel;
+            UpdateStats();
         }
 
         /// <summary>
@@ -313,7 +328,7 @@ namespace PokemonGame.General
                     returnBattler.LearnMove(move);
                 }
             }
-            
+            Debug.Log(returnBattler.moves.Count);
             
             returnBattler.UpdateStats();
 

@@ -16,6 +16,8 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: c4aa6f585cacfe741b69fadc73fab8bc, type: 3}
   type: 4
   description: Bring a pokemon back to life!
+  cost: 50
+  sellPrice: 30
   useInBattle: 1
   lockedTarget: 0
   playerParty: 0

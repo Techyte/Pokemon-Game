@@ -144,7 +144,8 @@ namespace PokemonGame.Trainers
                 { "enemyAI", ai },
                 { "opponentName", gameObject.name },
                 { "playerPosition", Player.Instance.transform.position },
-                { "playerRotation", Player.Instance.targetRot }
+                { "playerRotation", Player.Instance.targetRot },
+                { "trainerBattle", true}
             };
             
             Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyClose"));

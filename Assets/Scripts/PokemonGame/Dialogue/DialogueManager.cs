@@ -74,8 +74,13 @@ namespace PokemonGame.Dialogue
         {
             if (!dialogueIsPlaying)
                 return;
-            currentChoicesAmount = _currentStory.currentChoices.Count;
-            var hasChoices = currentChoicesAmount > 0;
+
+            var hasChoices = false;
+            if (currentQueuedDialogue.ink)
+            {
+                currentChoicesAmount = _currentStory.currentChoices.Count;
+                hasChoices = currentChoicesAmount > 0;
+            }
 
             if (tempNextLines != null)
             {
@@ -267,7 +272,10 @@ namespace PokemonGame.Dialogue
             else
             {
                 yield return new WaitForSeconds(0.2f);
-                _dialogueVariables.StopListening(_currentStory);
+                if (currentQueuedDialogue.ink)
+                {
+                    _dialogueVariables.StopListening(_currentStory);
+                }
                 if(!isInBattle)
                 {
                     movement.canMove = true;
@@ -435,7 +443,6 @@ namespace PokemonGame.Dialogue
         
         private IEnumerator DisplayText(string nextSentence)
         {
-            Debug.Log("displaying text");
             dialogueTextDisplay.text = "";
             foreach (char letter in nextSentence)
             {

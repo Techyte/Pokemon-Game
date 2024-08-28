@@ -29,8 +29,6 @@ MonoBehaviour:
   primaryType: 10
   secondaryType: 0
   moves:
+  - {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
+  - {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
   - {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}
-  - {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
-  - {fileID: 11400000, guid: c89118671ae78da4a93d500eb430599b, type: 2}
-  - {fileID: 11400000, guid: f3783e25e6746824db8d1881a50ee7c9, type: 2}
-  hasMoveBlock: 0

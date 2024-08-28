@@ -10,26 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 34c34158a6a1ace4da0180135a1a41b4, type: 3}
-  m_Name: Player Charmander
+  m_Name: Squirtle
   m_EditorClassIdentifier: 
-  source: {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3, type: 2}
-  level: 5
-  name: Charmander
-  maxHealth: 9
-  currentHealth: 9
+  source: {fileID: 11400000, guid: db309f2b3aa1fb047b0aa64dcd5d8d4c, type: 2}
+  level: 3
+  name: Squirtle
+  maxHealth: 8
+  currentHealth: 8
   exp: 0
-  attack: 11
-  defense: 10
-  specialAttack: 11
-  specialDefense: 10
-  speed: 12
-  texture: {fileID: 21300000, guid: 7474906acb369644c90c292e5efd482b, type: 3}
+  attack: 8
+  defense: 9
+  specialAttack: 8
+  specialDefense: 9
+  speed: 8
+  texture: {fileID: 21300000, guid: 608e4d377eeb8674d956108a10a6343d, type: 3}
   isFainted: 0
-  statusEffect: {fileID: 11400000, guid: f9928bd9fcd42cf45b7a2381ff0ecf66, type: 2}
-  primaryType: 7
+  statusEffect: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}
+  primaryType: 18
   secondaryType: 0
   moves:
-  - {fileID: 11400000, guid: 20feb6eebf69e2f438f8c3b2aa15ed27, type: 2}
-  - {fileID: 11400000, guid: 71e65ff655656454b8becbb1cc1b57b4, type: 2}
   - {fileID: 11400000, guid: d4639e5cb3f782d4587a463bffb7265a, type: 2}
   - {fileID: 11400000, guid: d64e418a175825643a0869689a75d087, type: 2}
