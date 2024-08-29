@@ -25,13 +25,18 @@ namespace PokemonGame.Game.World
 
         private void LoadGameFromBattle()
         {
+            bool trainerBattle = SceneLoader.GetVariable<bool>("trainerBattle");
             PartyManager.SetPlayerParty(SceneLoader.GetVariable<Party>("playerParty"));
-            string trainerName = SceneLoader.GetVariable<string>("trainerName");
+            string trainerName = "";
+            if (trainerBattle)
+            {
+                trainerName = SceneLoader.GetVariable<string>("trainerName");
+            }
             Vector3 playerPos = SceneLoader.GetVariable<Vector3>("playerPos");
             Quaternion playerRotation = SceneLoader.GetVariable<Quaternion>("playerRotation");
             bool isDefeated = SceneLoader.GetVariable<bool>("isDefeated");
             
-            if (isDefeated)
+            if (isDefeated && trainerBattle)
             {
                 GameObject.Find(trainerName).GetComponent<Trainer>().Defeated();
             }

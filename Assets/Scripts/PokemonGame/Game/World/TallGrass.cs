@@ -79,7 +79,7 @@ public class TallGrass : DialogueTrigger
 
     private void Attack()
     {
-        Battler attacker = pool[Random.Range(0, pool.Count)];
+        Battler attacker = Battler.CreateCopy(pool[Random.Range(0, pool.Count)]);
         attacker.UpdateLevel(Random.Range(minLevel, maxLevel));
 
         _attacker = attacker;
@@ -97,7 +97,9 @@ public class TallGrass : DialogueTrigger
         yield return new WaitForSeconds(0.4f);
         
         Party party = new Party();
-        party.Add(Battler.CreateCopy(_attacker));
+        party.Add(_attacker);
+        Debug.Log(party[0].level);
+        Debug.Log(party[0].currentHealth);
             
         Dictionary<string, object> vars = new Dictionary<string, object>
         {

@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Squirtle
   m_EditorClassIdentifier: 
   source: {fileID: 11400000, guid: db309f2b3aa1fb047b0aa64dcd5d8d4c, type: 2}
-  level: 3
+  level: 1
   name: Squirtle
-  maxHealth: 8
-  currentHealth: 8
+  maxHealth: 6
+  currentHealth: 6
   exp: 0
-  attack: 8
-  defense: 9
-  specialAttack: 8
-  specialDefense: 9
-  speed: 8
+  attack: 6
+  defense: 6
+  specialAttack: 6
+  specialDefense: 6
+  speed: 6
   texture: {fileID: 21300000, guid: 608e4d377eeb8674d956108a10a6343d, type: 3}
   isFainted: 0
   statusEffect: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}

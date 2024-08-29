@@ -294,6 +294,7 @@ namespace PokemonGame.General
         {
             level = newLevel;
             UpdateStats();
+            currentHealth = maxHealth;
         }
 
         /// <summary>
@@ -311,7 +312,7 @@ namespace PokemonGame.General
             Battler returnBattler = CreateInstance<Battler>();
             
             returnBattler.source = source;
-            returnBattler.level = level;
+            returnBattler.UpdateLevel(level);
             returnBattler.name = name;
             returnBattler.isFainted = false;
             returnBattler.exp = 0;
@@ -351,6 +352,7 @@ namespace PokemonGame.General
                 battler.moves, true);
 
             returnBattler.currentHealth = battler.currentHealth;
+            returnBattler.isFainted = battler.isFainted;
             
             return returnBattler;
         }

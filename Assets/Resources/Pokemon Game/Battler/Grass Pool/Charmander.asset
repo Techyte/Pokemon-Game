@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Charmander
   m_EditorClassIdentifier: 
   source: {fileID: 11400000, guid: 4f843dafd69ae554e90f655d7e688db3, type: 2}
-  level: 3
+  level: 1
   name: Charmander
-  maxHealth: 7
-  currentHealth: 7
+  maxHealth: 5
+  currentHealth: 5
   exp: 0
-  attack: 8
-  defense: 8
-  specialAttack: 9
-  specialDefense: 8
-  speed: 9
+  attack: 6
+  defense: 6
+  specialAttack: 6
+  specialDefense: 6
+  speed: 6
   texture: {fileID: 21300000, guid: 7474906acb369644c90c292e5efd482b, type: 3}
   isFainted: 0
   statusEffect: {fileID: 11400000, guid: 70a8b2171523288439f255c2f97685d9, type: 2}

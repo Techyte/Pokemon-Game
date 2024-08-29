@@ -739,7 +739,8 @@ namespace PokemonGame.Battle
                 { "trainerName", _opponentName },
                 { "playerPos", _playerPos },
                 { "playerRotation", _playerRotation },
-                { "isDefeated", true }
+                { "isDefeated", true },
+                { "trainerBattle", trainerBattle}
             };
                 
             Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyClose"));
@@ -760,7 +761,8 @@ namespace PokemonGame.Battle
                 { "playerPos", _playerPos },
                 { "playerRotation", _playerRotation },
                 { "isDefeated", false },
-                { "loaderName", "ForcedHealPoint" }
+                { "loaderName", "ForcedHealPoint" },
+                { "trainerBattle", trainerBattle}
             };
 
             Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyClose"));
