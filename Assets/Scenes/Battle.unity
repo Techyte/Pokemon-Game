@@ -10804,7 +10804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDisplayHolder: {fileID: 8053423108229525260}
-  itemDisplayGameObject: {fileID: 4033615252156821667, guid: 096cfda60606639498d96a0dd7c1590d,
+  itemDisplayGameObject: {fileID: 4033615252156821667, guid: d403579b363b44747b4916dec601bbf6,
     type: 3}
   itemUseButton: {fileID: 822797762381835501, guid: b3ec8fa81f632d54680f9f4b341b7b9f,
     type: 3}

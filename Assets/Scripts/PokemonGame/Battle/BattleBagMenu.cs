@@ -65,7 +65,7 @@ namespace PokemonGame.Battle
                 
                 _currentlyDisplayedItems.Add(sortedItems[i].item);
 
-                Button useButton = Instantiate(itemUseButton, new Vector3(useButtonXOffset, 0, 0), quaternion.identity, display.transform);
+                Button useButton = display.GetComponentInChildren<Button>();
                 int index = i;
                 
                 if (Battle.Singleton.trainerBattle && sortedItems[i].item.type == ItemType.PokeBall)
