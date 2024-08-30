@@ -105,6 +105,7 @@ namespace PokemonGame.Battle
 
         private bool _opponentDefeated;
         private bool _endingDialogueRunning;
+        private bool _ending;
 
         private bool _playerSwappedThisTurn;
         private bool _playerCatchThisTurn;
@@ -117,6 +118,8 @@ namespace PokemonGame.Battle
         private Item _playerItemToUse;
         private int _battlerToUseItemOn;
         private bool _useItemOnPlayerParty;
+
+        private bool _wantToRun;
         
         private void Start()
         {
@@ -248,7 +251,12 @@ namespace PokemonGame.Battle
                 uiManager.ShowControlUI(false);
                 
                 turnItemQueue.Add(TurnItem.StartDelay);
-                if (_playerChoseToSwap)
+
+                if (_wantToRun)
+                {
+                    turnItemQueue.Add(TurnItem.Run);
+                }
+                else if (_playerChoseToSwap)
                 {
                     turnItemQueue.Add(TurnItem.PlayerSwap);
                 }
@@ -267,7 +275,7 @@ namespace PokemonGame.Battle
 
             if (!_currentlyRunningQueueItem)
             {
-                if (turnItemQueue.Count > 0)
+                if (turnItemQueue.Count > 0 && !_ending)
                 {
                     Debug.Log("Running a new turn item");
                     
@@ -319,6 +327,9 @@ namespace PokemonGame.Battle
                         case TurnItem.CatchAttempt:
                             CatchAttempt();
                             break;
+                        case TurnItem.Run:
+                            RunRunAwayDialogue();
+                            break;
                     }
                     
                     playerParty.CheckDefeatedStatus();
@@ -327,7 +338,7 @@ namespace PokemonGame.Battle
                     uiManager.UpdatePlayerBattlerDetails();
                     uiManager.UpdateOpponentBattlerDetails();
                 }
-                else if (!_endingDialogueRunning)
+                else if (!_endingDialogueRunning && !_ending)
                 {
                     EndTurnShowing();
                 }
@@ -396,7 +407,13 @@ namespace PokemonGame.Battle
         private void DialogueEnded(object sender, DialogueEndedEventArgs args)
         {
             bool swappedDialogue = false;
-                
+
+            if (_wantToRun)
+            {
+                // does the same stuff that we want from a run, so we just use the existing function
+                StartCoroutine(ExitBattleWin());
+            }
+            
             if (_playerWantsToSwap)
             {
                 swappedDialogue = true;
@@ -666,6 +683,17 @@ namespace PokemonGame.Battle
             turnItemQueue.Add(TurnItem.PlayerSwapBecauseFainted);
         }
 
+        public void RunFromBattle()
+        {
+            playerHasChosenMove = true;
+            _wantToRun = true;
+        }
+
+        private void RunRunAwayDialogue()
+        {
+            QueDialogue("Running Away!");
+        }
+
         private int GetIndexOfMoveOnCurrentEnemy(Move move)
         {
             for (int i = 0; i < opponentCurrentBattler.moves.Count; i++)
@@ -764,6 +792,7 @@ namespace PokemonGame.Battle
 
         private IEnumerator ExitBattleWin()
         {
+            _ending = true;
             Debug.Log("ending the battle");
 
             Dictionary<string, object> vars = new Dictionary<string, object>
@@ -785,6 +814,7 @@ namespace PokemonGame.Battle
 
         private IEnumerator ExitBattleLoss()
         {
+            _ending = true;
             Debug.Log("ending the battle");
             
             Dictionary<string, object> vars = new Dictionary<string, object>

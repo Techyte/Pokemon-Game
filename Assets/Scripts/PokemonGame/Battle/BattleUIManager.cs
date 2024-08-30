@@ -21,6 +21,7 @@ namespace PokemonGame.Battle
         [SerializeField] private GameObject useItemDisplay;
         [SerializeField] private GameObject miscButtons;
         [SerializeField] private GameObject backButton;
+        [SerializeField] private GameObject runButton;
         [SerializeField] private TextMeshProUGUI[] battlerDisplays;
         [SerializeField] private TextMeshProUGUI[] itemBattlerDisplays;
         [SerializeField] private SpriteRenderer currentBattlerRenderer;
@@ -50,6 +51,8 @@ namespace PokemonGame.Battle
 
             currentBattlerHealthDisplay.maxValue = battle.playerParty[battle.currentBattlerIndex].maxHealth;
             currentBattlerHealthDisplay.value = battle.playerParty[battle.currentBattlerIndex].currentHealth;
+
+            runButton.SetActive(!Battle.Singleton.trainerBattle);
         }
 
         private void Update()

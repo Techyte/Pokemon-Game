@@ -17,5 +17,6 @@ namespace PokemonGame.Battle
         PlayerParalysed,
         OpponentParalysed,
         CatchAttempt,
+        Run,
     }   
 }
