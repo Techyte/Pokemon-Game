@@ -107,6 +107,7 @@ namespace PokemonGame.Battle
         private bool _endingDialogueRunning;
 
         private bool _playerSwappedThisTurn;
+        private bool _playerCatchThisTurn;
         private bool _playerUsedItemThisTurn;
         private bool _playerChoseToSwap;
         private bool _playerChoseToUseItem;
@@ -228,6 +229,7 @@ namespace PokemonGame.Battle
                         hasDoneChoosingUpdate = true;
                         Debug.Log("Setting swapped to false");
                         _playerSwappedThisTurn = false;
+                        _playerCatchThisTurn = false;
                         _playerUsedItemThisTurn = false;                        
                         _playerChoseToSwap = false;
                         _playerChoseToUseItem = false;
@@ -249,7 +251,12 @@ namespace PokemonGame.Battle
                 if (_playerChoseToSwap)
                 {
                     turnItemQueue.Add(TurnItem.PlayerSwap);
-                }else if (_playerChoseToUseItem)
+                }
+                else if (_playerCatchThisTurn)
+                {
+                    turnItemQueue.Add(TurnItem.CatchAttempt);
+                }
+                else if (_playerChoseToUseItem)
                 {
                     turnItemQueue.Add(TurnItem.PlayerItem);
                 }
@@ -308,6 +315,9 @@ namespace PokemonGame.Battle
                             break;
                         case TurnItem.PlayerParalysed:
                             PlayerParalysed();
+                            break;
+                        case TurnItem.CatchAttempt:
+                            CatchAttempt();
                             break;
                     }
                     
@@ -385,16 +395,16 @@ namespace PokemonGame.Battle
 
         private void DialogueEnded(object sender, DialogueEndedEventArgs args)
         {
-            bool swapped = false;
+            bool swappedDialogue = false;
                 
             if (_playerWantsToSwap)
             {
-                swapped = true;
+                swappedDialogue = true;
                 Debug.Log(currentTurn);
                 PlayerSwappedBattler();
             }
                 
-            if (_currentlyRunningQueueItem && !args.moreToGo && !swapped)
+            if (_currentlyRunningQueueItem && !args.moreToGo && !swappedDialogue)
             {
                 TurnQueueItemEnded();
             }
@@ -422,6 +432,13 @@ namespace PokemonGame.Battle
             uiManager.Back();
         }
 
+        public void PlayerPickedPokeBall(PokeBall ball)
+        {
+            _playerCatchThisTurn = true;
+            playerHasChosenMove = true;
+            _playerItemToUse = ball;
+        }
+
         public void PlayerPickedItemToUse(Item item)
         {
             _playerItemToUse = item;
@@ -444,6 +461,22 @@ namespace PokemonGame.Battle
             {
                 uiManager.OpenUseItemOnBattler(_playerItemToUse);
                 uiManager.UpdateItemBattlerButtons();
+            }
+        }
+
+        private void CatchAttempt()
+        {
+            QueDialogue($"Threw a pokeball at {opponentCurrentBattler.name}!");
+
+            if (expCalculator.Captured(opponentCurrentBattler, (PokeBall)_playerItemToUse))
+            {
+                QueDialogue($"Caught {opponentCurrentBattler.name}!");
+                PartyManager.AddBattler(opponentCurrentBattler);
+                turnItemQueue.Insert(0, TurnItem.EndBattlePlayerWin);
+            }
+            else
+            {
+                QueDialogue($"Failed to catch {opponentCurrentBattler.name}!");
             }
         }
 
@@ -531,7 +564,7 @@ namespace PokemonGame.Battle
 
         private void QueueMoves()
         {
-            if (_playerSwappedThisTurn || _playerUsedItemThisTurn)
+            if (_playerSwappedThisTurn || _playerUsedItemThisTurn || _playerCatchThisTurn)
             {
                 AddOpponentMoveToQueue();
 
@@ -794,7 +827,14 @@ namespace PokemonGame.Battle
             
             if (isDefeated)
             {
-                QueDialogue("All opponent Pokemon defeated!", true);
+                if (trainerBattle)
+                {
+                    QueDialogue("All opponent Pokemon defeated!", true);
+                }
+                else
+                {
+                    StartCoroutine(ExitBattleWin());
+                }
             }
             else
             {

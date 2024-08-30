@@ -13,6 +13,7 @@ namespace PokemonGame.Game
             Bag.Add(Registry.GetItem("Potion"), 2);
             Bag.Add(Registry.GetItem("Revive"), 2);
             Bag.Add(Registry.GetItem("Max Revive"), 2);
+            Bag.Add(Registry.GetItem("Poke Ball"),50);
             Bag.GainMoney(10000);
             
             foreach (var objectToNotDestroy in DontDestroyObjects)

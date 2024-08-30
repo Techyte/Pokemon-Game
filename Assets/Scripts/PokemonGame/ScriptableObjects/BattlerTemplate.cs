@@ -11,8 +11,9 @@ namespace PokemonGame.ScriptableObjects
         public BasicType secondaryType;
         public List<Move> moves;
         public Sprite texture;
-        [Space]
-        [Header("Stats")]
+        [Space] 
+        [Header("Stats")] 
+        public int catchRate;
         public int baseHealth;
         public int baseAttack;
         public int baseDefense;

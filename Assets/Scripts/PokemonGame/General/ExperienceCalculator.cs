@@ -1,3 +1,4 @@
+using PokemonGame.ScriptableObjects;
 using UnityEngine;
 
 namespace PokemonGame.General
@@ -24,6 +25,33 @@ namespace PokemonGame.General
             exp = (int)(b * L / 7 * 1 / s * e * a);
 
             return exp;
+        }
+
+        public bool Captured(Battler target, PokeBall ball)
+        {
+            float statusBonus = 1;
+
+            if (target.asleep || target.frozen)
+            {
+                statusBonus = 2;
+            }
+
+            switch (target.statusEffect.name)
+            {
+                case "Paralysed":
+                    statusBonus = 1.5f;
+                    break;
+                case "Poisoned":
+                    statusBonus = 1.5f;
+                    break;
+                case "Burned":
+                    statusBonus = 1.5f;
+                    break;
+            }
+            
+            float a = ((3f*target.maxHealth - 2f * target.currentHealth)/(3f*target.maxHealth)) * target.catchRate * ball.bonus * statusBonus;
+            
+            return a <= Random.Range(0, 255);
         }
     }   
 }

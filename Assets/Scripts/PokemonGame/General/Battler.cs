@@ -38,6 +38,8 @@ namespace PokemonGame.General
         /// The current health of the battler
         /// </summary>
         public int currentHealth;
+
+        public int catchRate;
         
         /// <summary>
         /// The current amount of experience points the battler has in progressing through its current level
@@ -76,6 +78,10 @@ namespace PokemonGame.General
         /// The current status effect that the batter has
         /// </summary>
         public StatusEffect statusEffect;
+
+        public bool frozen = false;
+        
+        public bool asleep = false;
 
         /// <summary>
         /// The primary type of the battler
@@ -283,6 +289,7 @@ namespace PokemonGame.General
             primaryType = source.primaryType;
             secondaryType = source.secondaryType;
             texture = source.texture;
+            catchRate = source.catchRate;
 
             if (string.IsNullOrEmpty(name))
             {
@@ -321,6 +328,7 @@ namespace PokemonGame.General
             returnBattler.secondaryType = source.secondaryType;
             returnBattler.moves = new List<Move>();
             returnBattler.movePpInfos = new List<MovePPData>();
+            returnBattler.catchRate = source.catchRate;
 
             foreach (var move in moves)
             {
@@ -353,6 +361,8 @@ namespace PokemonGame.General
 
             returnBattler.currentHealth = battler.currentHealth;
             returnBattler.isFainted = battler.isFainted;
+            returnBattler.frozen = battler.frozen;
+            returnBattler.asleep = battler.asleep;
             
             return returnBattler;
         }

@@ -52,6 +52,11 @@ namespace PokemonGame.Battle
 
             for (int i = 0; i < sortedItems.Count; i++)
             {
+                if (!sortedItems[i].item.useInBattle)
+                {
+                    continue;
+                }
+                
                 ItemDisplay display = Instantiate(itemDisplayGameObject, Vector3.zero, Quaternion.identity,
                     itemDisplayHolder.transform).GetComponent<ItemDisplay>();
                 display.NameText.text = $"{sortedItems[i].item.name} x{sortedItems[i].amount}";
@@ -63,11 +68,36 @@ namespace PokemonGame.Battle
                 Button useButton = Instantiate(itemUseButton, new Vector3(useButtonXOffset, 0, 0), quaternion.identity, display.transform);
                 int index = i;
                 
-                useButton.onClick.AddListener(() =>
+                if (Battle.Singleton.trainerBattle && sortedItems[i].item.type == ItemType.PokeBall)
                 {
-                    Battle.Singleton.PlayerPickedItemToUse(_currentlyDisplayedItems[index]);
-                    Battle.Singleton.StartPickingBattlerToUseItemOn();
-                });
+                    useButton.interactable = false;
+                }
+
+                if (sortedItems[i].item.lockedTarget)
+                {
+                    if (sortedItems[i].item.type == ItemType.PokeBall)
+                    {
+                        useButton.onClick.AddListener(() =>
+                        {
+                            Battle.Singleton.PlayerPickedPokeBall((PokeBall)sortedItems[index].item);
+                        });
+                    }
+                    else
+                    {
+                        useButton.onClick.AddListener(() =>
+                        {
+                            Battle.Singleton.UseItem(sortedItems[index].item.targetIndex, sortedItems[index].item.playerParty);
+                        });
+                    }
+                }
+                else
+                {
+                    useButton.onClick.AddListener(() =>
+                    {
+                        Battle.Singleton.PlayerPickedItemToUse(_currentlyDisplayedItems[index]);
+                        Battle.Singleton.StartPickingBattlerToUseItemOn();
+                    });
+                }
             }
         }
     }
