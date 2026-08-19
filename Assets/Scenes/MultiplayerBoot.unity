@@ -269,8 +269,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   expandWhenHover: 1
+  hasClickOverride: 1
   scale: 1.1
   speed: 4
+  targetButton: {fileID: 420519848}
+  hasTargetOverride: 0
   targetGraphic: {fileID: 420519845}
   onHover:
     m_PersistentCalls:
@@ -982,8 +985,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   expandWhenHover: 1
+  hasClickOverride: 1
   scale: 1.1
   speed: 4
+  targetButton: {fileID: 1632985774}
+  hasTargetOverride: 0
   targetGraphic: {fileID: 1632985771}
   onHover:
     m_PersistentCalls:
@@ -1473,8 +1479,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   expandWhenHover: 1
+  hasClickOverride: 0
   scale: 1.1
   speed: 4
+  targetButton: {fileID: 453293116288280159}
+  hasTargetOverride: 0
   targetGraphic: {fileID: 453293116288280096}
   onHover:
     m_PersistentCalls:
@@ -1642,8 +1651,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   expandWhenHover: 1
+  hasClickOverride: 0
   scale: 1.1
   speed: 4
+  targetButton: {fileID: 453293116360056956}
+  hasTargetOverride: 0
   targetGraphic: {fileID: 453293116360056953}
   onHover:
     m_PersistentCalls:
@@ -2169,9 +2181,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 453293117578365663}
   dialoguePanels:
-  - {fileID: 453293117287746524}
-  - {fileID: 420519844}
-  - {fileID: 1632985770}
+  - {fileID: 453293117287746525}
+  - {fileID: 420519848}
+  - {fileID: 1632985774}
   choices:
   - {fileID: 453293116288280097}
   - {fileID: 453293117388818677}
@@ -2349,8 +2361,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   expandWhenHover: 1
+  hasClickOverride: 1
   scale: 1.1
   speed: 4
+  targetButton: {fileID: 453293117287746525}
+  hasTargetOverride: 0
   targetGraphic: {fileID: 453293117287746523}
   onHover:
     m_PersistentCalls:
@@ -2518,8 +2533,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   expandWhenHover: 1
+  hasClickOverride: 0
   scale: 1.1
   speed: 4
+  targetButton: {fileID: 453293117388818675}
+  hasTargetOverride: 0
   targetGraphic: {fileID: 453293117388818676}
   onHover:
     m_PersistentCalls:

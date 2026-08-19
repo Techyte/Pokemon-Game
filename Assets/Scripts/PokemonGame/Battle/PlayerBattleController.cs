@@ -77,7 +77,7 @@ namespace PokemonGame.Battle
         {
             if (item.lockedTarget)
             {
-                battle.PlayerOneUseItem(item, item.targetIndex, item.userParty);
+                battle.PlayerOneUseItem(item, item.targetIndex, item.userParty ? 0 : 1);
             }
             else
             {
@@ -88,7 +88,7 @@ namespace PokemonGame.Battle
 
         public void PlayerUseItem(Item item, int targetIndex, bool userParty)
         {
-            battle.PlayerOneUseItem(item, targetIndex, userParty);
+            battle.PlayerOneUseItem(item, targetIndex, userParty ? 0 : 1);
         }
 
         public void PlayerPickedPokeBall(PokeBall ball)
