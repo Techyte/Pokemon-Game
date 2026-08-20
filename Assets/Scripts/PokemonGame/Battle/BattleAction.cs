@@ -2,6 +2,29 @@ using System.Collections.Generic;
 
 namespace PokemonGame.Battle
 {
+    public class BattleAction
+    {
+        public BattleActionType Type;
+        public List<object> Variables;
+
+        public BattleAction(BattleActionType type, List<object> variables)
+        {
+            Type = type;
+            Variables = variables;
+        }
+        
+        public BattleAction(BattleActionType type)
+        {
+            Type = type;
+            Variables = new List<object>();
+        }
+
+        public BattleAction()
+        {
+            Variables = new List<object>();
+        }
+    }
+    
     public class TurnItem
     {
         public TurnItemType Type;
@@ -24,7 +47,14 @@ namespace PokemonGame.Battle
             Variables = new List<object>();
         }
     }
-    
+
+    public enum BattleActionType
+    {
+        Move,
+        Switch,
+        Item,
+        Run
+    }
     
     public enum TurnItemType
     {
@@ -42,5 +72,5 @@ namespace PokemonGame.Battle
         PlayerAsleep,
         CatchAttempt,
         Run,
-    }   
+    }
 }
