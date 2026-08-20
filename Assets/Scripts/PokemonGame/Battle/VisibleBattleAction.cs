@@ -2,30 +2,30 @@ using System.Collections.Generic;
 
 namespace PokemonGame.Battle
 {
-    public class BattleAction
+    public class VisibleBattleAction
     {
-        public BattleActionType Type;
+        public VisibleBattleActionType Type;
         public List<object> Variables;
 
-        public BattleAction(BattleActionType type, List<object> variables)
+        public VisibleBattleAction(VisibleBattleActionType type, List<object> variables)
         {
             Type = type;
             Variables = variables;
         }
         
-        public BattleAction(BattleActionType type)
+        public VisibleBattleAction(VisibleBattleActionType type)
         {
             Type = type;
             Variables = new List<object>();
         }
 
-        public BattleAction()
+        public VisibleBattleAction()
         {
             Variables = new List<object>();
         }
     }
 
-    public enum BattleActionType
+    public enum VisibleBattleActionType
     {
         Move,
         Switch,
