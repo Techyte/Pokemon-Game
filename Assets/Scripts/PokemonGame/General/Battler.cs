@@ -118,9 +118,9 @@ namespace PokemonGame.General
         public event EventHandler OnHealthUpdated;
         
         /// <summary>
-        /// The number of turns the battler will be asleep for
+        /// The number of turns the battler will be afflicted for
         /// </summary>
-        public int sleepTurns = 0;
+        public int statusTurns = 0;
 
         public StatStages modifierStats;
 
@@ -546,7 +546,7 @@ namespace PokemonGame.General
         public static Battler Init(Battler sourceBattler, bool autoAssignHealth)
         {
             return Init(sourceBattler.source, sourceBattler.level, sourceBattler.name, sourceBattler.gender, sourceBattler.shiny, sourceBattler.isFainted,
-                sourceBattler.exp, sourceBattler.statusEffect, sourceBattler.ability, sourceBattler.sleepTurns, sourceBattler.statusEffectSeverity, sourceBattler.EVs, sourceBattler.IVs, sourceBattler.nature,
+                sourceBattler.exp, sourceBattler.statusEffect, sourceBattler.ability, sourceBattler.statusTurns, sourceBattler.statusEffectSeverity, sourceBattler.EVs, sourceBattler.IVs, sourceBattler.nature,
                 sourceBattler.currentHealth,
                 sourceBattler.moves, autoAssignHealth);
         }
@@ -651,7 +651,7 @@ namespace PokemonGame.General
         /// <param name="autoAssignHealth">Weather to automatically set the current health to the max health</param>
         /// <returns>The created battler</returns>
         public static Battler Init(BattlerTemplate source, int level, string name, Gender gender, bool shiny, bool isFainted, int exp,
-            StatusEffect statusEffect, Ability ability, int sleepTurns, int statusEffectSeverity, BattlerStats EVs, BattlerStats IVs, Nature nature, int currentHealth, List<Move> moves, bool autoAssignHealth)
+            StatusEffect statusEffect, Ability ability, int statusTurns, int statusEffectSeverity, BattlerStats EVs, BattlerStats IVs, Nature nature, int currentHealth, List<Move> moves, bool autoAssignHealth)
         {
             Battler returnBattler = CreateInstance<Battler>();
             
@@ -662,7 +662,7 @@ namespace PokemonGame.General
             returnBattler.exp = exp;
             returnBattler.statusEffect = statusEffect;
             returnBattler.ability = ability;
-            returnBattler.sleepTurns = sleepTurns;
+            returnBattler.statusTurns = statusTurns;
             returnBattler.statusEffectSeverity = statusEffectSeverity;
             returnBattler.moves = new List<Move>();
             returnBattler.movePpInfos = new List<MovePPData>();
@@ -822,8 +822,6 @@ namespace PokemonGame.General
         public int specialAttack;
         public int specialDefense;
         public int speed;
-        public int accuracyMultiplier;
-        public int evasionMultiplier;
 
         public static BattlerStats Zero = new BattlerStats(0, 0, 0, 0, 0, 0);
 
@@ -835,8 +833,6 @@ namespace PokemonGame.General
             this.specialAttack = specialAttack;
             this.specialDefense = specialDefense;
             this.speed = speed;
-            accuracyMultiplier = 1;
-            evasionMultiplier = 1;
         }
 
         public override bool Equals(object obj)

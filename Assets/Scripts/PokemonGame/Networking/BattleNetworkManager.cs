@@ -59,6 +59,10 @@ namespace PokemonGame.Networking
 
         public bool UseSteam = false;
 
+        // temporary variable, just tracks how many players needed on both sides to start the game
+        public int teamSize = 1;
+
+        // tracks if the client has received everyone's party information
         private int _acknowledgedPartyCount;
         
         public event EventHandler OnUpdatePlayerInfo;
@@ -267,10 +271,25 @@ namespace PokemonGame.Networking
         
         private IEnumerator StartBattle()
         {
+            List<NetworkPlayer> players = Players.Values.ToList();
+            int assigned = 0;
+            int teamToAssign = 1;
+            for (int i = 0; i < players.Count; i++)
+            {
+                players[i].Team = teamToAssign;
+                assigned++;
+                if (assigned >= teamSize)
+                {
+                    assigned = 0;
+                    teamToAssign++;
+                }
+            }
+            
             Dictionary<string, object> vars = new Dictionary<string, object>
             {
                 { "online", true },
-                { "trainerBattle", false}
+                { "trainerBattle", false},
+                { "battlersEach", 1}
             };
             
             Instantiate(Resources.Load("Pokemon Game/Transitions/SpikyClose"));
@@ -393,12 +412,12 @@ namespace PokemonGame.Networking
             UnSubscribeToServerEvents();
         }
         
-        public void ServerConnectionInfo(ushort messageId, string username, int pfp)
+        public void ServerConnectionInfo(ushort fromPlayerId, string username, int pfp)
         {
             Debug.Log("Server received basic info");
             
             NetworkPlayer player = new NetworkPlayer();
-            player.Id = messageId;
+            player.Id = fromPlayerId;
             player.Username = username;
             player.Pfp = pfp;
             
@@ -621,9 +640,17 @@ namespace PokemonGame.Networking
     
     public class NetworkPlayer
     {
+        /// <summary>
+        /// NETWORK ID, not player index, may go beyond bounds of max players
+        /// </summary>
         public ushort Id;
         public string Username;
         public int Pfp;
         public Party Party;
+
+        /// <summary>
+        /// Only set just before the battle begins, generally based on join order
+        /// </summary>
+        public int Team;
     }
 }

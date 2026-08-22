@@ -27,9 +27,13 @@ namespace PokemonGame.Battle
 
     public enum VisibleBattleActionType
     {
-        Move,
+        MoveUsed,
         Switch,
         Item,
+        Catch,
+        HasStatus,
+        HitSelf,
+        StatusChange,
         Run
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace PokemonGame.Battle
 {
@@ -8,6 +9,11 @@ namespace PokemonGame.Battle
         public virtual void Event(Battle battle)
         {
             // called by battle class to begin an event
+        }
+
+        public virtual void Event(Battle battle, List<object> variables)
+        {
+            
         }
     }
 }

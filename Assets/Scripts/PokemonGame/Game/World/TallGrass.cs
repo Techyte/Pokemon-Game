@@ -103,13 +103,19 @@ public class TallGrass : DialogueTrigger
         
         Party party = new Party();
         party.Add(_attacker);
-            
+
+        List<PokemonGame.Battle.Player> players = new List<PokemonGame.Battle.Player>
+        {
+            new (0, "payishvibes", PartyManager.GetParty(), 0, true),
+            new (1, "WILD POKEMON", party, 1, false),
+        };
+        
         Dictionary<string, object> vars = new Dictionary<string, object>
         {
-            { "partyOne", PartyManager.GetParty()},
-            { "partyTwo", party },
+            { "players", players},
             { "online", false },
-            { "trainerBattle", false}
+            { "trainerBattle", false},
+            { "battlersEach", 1}
         };
 
         Player.globalPlayerPos = Player.Instance.transform.position;

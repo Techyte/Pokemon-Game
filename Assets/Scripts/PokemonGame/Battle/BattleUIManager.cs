@@ -593,7 +593,7 @@ namespace PokemonGame.Battle
                 text.transform.parent.gameObject.SetActive(false);
             }
             
-            List<Move> moves = battle.localPlayerOne ? battle.PlayerOneBattler.moves : battle.PlayerTwoBattler.moves;
+            List<Moves> moves = battle.localPlayerOne ? battle.PlayerOneBattler.moves : battle.PlayerTwoBattler.moves;
             List<MovePPData> movePpInfos = battle.localPlayerOne ? battle.PlayerOneBattler.movePpInfos : battle.PlayerTwoBattler.movePpInfos;
             
             for (var i = 0; i < moves.Count; i++)
@@ -622,7 +622,7 @@ namespace PokemonGame.Battle
 
         private void SetMoveButtonUINavigations()
         {
-            List<Move> moves = battle.localPlayerOne ? battle.PlayerOneBattler.moves : battle.PlayerTwoBattler.moves;
+            List<Moves> moves = battle.localPlayerOne ? battle.PlayerOneBattler.moves : battle.PlayerTwoBattler.moves;
             
             for (int i = 0; i < moves.Count; i++)
             {

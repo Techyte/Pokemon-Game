@@ -64,7 +64,7 @@ namespace PokemonGame.Battle
         {
             if (battle.localPlayerOne)
             {
-                battle.PlayerOneChooseMove(moveID);
+                battle.PlayerChooseMove(0, 0, moveID);
             }
             else
             {

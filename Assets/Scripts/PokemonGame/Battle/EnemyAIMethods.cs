@@ -25,24 +25,24 @@ namespace PokemonGame.Battle
             }
         }
         
-        public static void WildPokemon(AIMethodEventArgs e)
+        public static void WildPokemon(Battle b, int i)
         {
-            int moveToDo = Random.Range(0, e.battlerToUse.moves.Count);
+            for (int j = 0; j < b.battlersEach; j++)
+            {
+                int moveToDo = Random.Range(0, b.activeBattlers[i][j].moves.Count);
             
-            Battle.Singleton.PlayerTwoChooseMove(moveToDo);
+                Battle.Singleton.PlayerChooseMove(i, j, moveToDo);
+            }
         }
         
-        public void DefaultAI(AIMethodEventArgs e)
+        public void DefaultAI(Battle b, int i)
         {
-            switch (e.battlerToUse.name)
+            for (int j = 0; j < b.battlersEach; j++)
             {
-                case "Bulbasaur":
-                    break;
+                int moveToDo = Random.Range(0, b.activeBattlers[i][j].moves.Count);
+            
+                Battle.Singleton.PlayerChooseMove(i, j, moveToDo);
             }
-
-            int moveToDo = Random.Range(0, e.battlerToUse.moves.Count);
-
-            Battle.Singleton.PlayerTwoChooseMove(moveToDo);
         }
     }   
 }

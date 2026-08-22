@@ -123,17 +123,23 @@ namespace PokemonGame.Trainers
             }
 
             Party playerParty = PartyManager.GetParty();
+
+            List<Battle.Player> players = new List<Battle.Player>
+            {
+                new (0, "payishvibes", playerParty, 0, true),
+                new (1, name, party, 1, false),
+            };
             
             Dictionary<string, object> vars = new Dictionary<string, object>
             {
-                { "partyOne", playerParty},
-                { "partyTwo", party },
+                { "players", players},
                 { "online", false },
                 { "enemyAI", ai },
                 { "opponentName", gameObject.name },
-                { "trainerBattle", true}
+                { "trainerBattle", true},
+                { "battlersEach", 1}
             };
-
+            
             Player.globalPlayerPos = Player.Instance.transform.position;
             Player.globalPlayerRot = Player.Instance.transform.rotation;
             

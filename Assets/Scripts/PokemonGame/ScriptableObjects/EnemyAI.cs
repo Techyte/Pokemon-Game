@@ -1,10 +1,9 @@
-using PokemonGame.Battle;
 
 namespace PokemonGame.ScriptableObjects
 {
     using System;
     using Game.Party;
-    using General;
+    using Battle;
     using UnityEngine;
     using UnityEngine.Events;
 
@@ -13,32 +12,18 @@ namespace PokemonGame.ScriptableObjects
     {
         public new string name;
 
-        public UnityEvent<AIMethodEventArgs> aIMethodEvent;
+        public UnityEvent<Battle, int> aIMethodEvent;
         public UnityEvent<AISwitchEventArgs> aISwitchEvent;
 
-        public void AIMethod(AIMethodEventArgs e)
+        public void AIMethod(Battle b, int i)
         {
-            aIMethodEvent?.Invoke(e);
+            aIMethodEvent?.Invoke(b, i);
         }
 
         public void AISwitchMethod(AISwitchEventArgs e)
         {
             aISwitchEvent?.Invoke(e);
         }
-    }
-
-    public class AIMethodEventArgs : EventArgs
-    {
-        public AIMethodEventArgs(Battler battlerToUse, Party usableParty, ExternalBattleData battleData)
-        {
-            this.battlerToUse = battlerToUse;
-            this.usableParty = usableParty;
-            this.battlerToUse = battlerToUse;
-        }
-        
-        public Battler battlerToUse;
-        public Party usableParty;
-        public ExternalBattleData battleData;
     }
 
     public class AISwitchEventArgs : EventArgs

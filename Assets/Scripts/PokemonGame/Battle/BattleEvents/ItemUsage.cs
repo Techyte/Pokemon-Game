@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using PokemonGame.Game.Party;
+using PokemonGame.General;
 
 namespace PokemonGame.Battle
 {
@@ -13,15 +15,25 @@ namespace PokemonGame.Battle
         {
             for (int i = 0; i < battle.playerActions.Count; i++)
             {
-                if (battle.playerActions[i].Type == BattleActionType.Item)
+                for (int j = 0; j < battle.playerActions[i].Count; j++)
                 {
-                    // this player wants to use an item
+                    if (battle.playerActions[i][j].Type == BattleActionType.Item)
+                    {
+                        // this player wants to use an item
 
-                    Item itemToUse = (Item)battle.playerActions[i].Variables[0];
-                    int playerTarget = (int)battle.playerActions[i].Variables[1];
-                    int battlerTarget = (int)battle.playerActions[i].Variables[2];
-                    
-                    UseItem(battle, itemToUse, i, playerTarget, battlerTarget);
+                        Item itemToUse = (Item)battle.playerActions[i][j].Variables[0];
+                        int playerTarget = (int)battle.playerActions[i][j].Variables[1];
+                        int battlerTarget = (int)battle.playerActions[i][j].Variables[2];
+
+                        if (itemToUse is PokeBall)
+                        {
+                            CatchAttempt(battle, (PokeBall)itemToUse, i, battlerTarget, playerTarget);
+                        }
+                        else
+                        {
+                            UseItem(battle, itemToUse, i, playerTarget, battlerTarget);
+                        }
+                    }
                 }
             }
         }
@@ -40,6 +52,26 @@ namespace PokemonGame.Battle
                 playerTarget,
                 battlerTarget,
                 e.success
+            });
+        }
+        
+        public static void CatchAttempt(Battle battle, PokeBall ball, int playerId, int playerTarget,  int battlerTarget)
+        {
+            bool captured = ExperienceCalculator.Captured(battle.activeBattlers[playerTarget][battlerTarget],
+                battle.activeBattlers[playerId][0],
+                ball);
+
+            if (captured)
+            {
+                PartyManager.AddBattler(battle.activeBattlers[playerTarget][battlerTarget]);
+            }
+            
+            battle.AddVisibleBattleAction(VisibleBattleActionType.Catch, new List<object>
+            {
+                playerId,
+                ball,
+                playerTarget,
+                battlerTarget,
             });
         }
     }

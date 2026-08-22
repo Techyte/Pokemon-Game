@@ -19,7 +19,7 @@ namespace PokemonGame.Battle
     [CreateAssetMenu(fileName = "New Moves Methods", menuName = "All/New Moves Methods")]
     public class MovesMethods : ScriptableObject
     {
-        public static int CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked, out int effectiveIndex, out bool hitCrit)
+        public static int CalculateDamage(Moves move, Battler battlerThatUsed, Battler battlerBeingAttacked, out int effectiveIndex, out bool hitCrit)
         {
             //Damage calculation equation from: https://bulbapedia.bulbagarden.net/wiki/Damage#Generation_II
             
@@ -195,9 +195,9 @@ namespace PokemonGame.Battle
         {
             PokeApiClient pokeClient = new PokeApiClient();
             
-            List<Move> moves = Resources.FindObjectsOfTypeAll<Move>().ToList();
+            List<Moves> moves = Resources.FindObjectsOfTypeAll<Moves>().ToList();
             
-            List<Move> movesToDelete = new List<Move>();
+            List<Moves> movesToDelete = new List<Moves>();
             
             foreach (var pokeMove in moves)
             {
