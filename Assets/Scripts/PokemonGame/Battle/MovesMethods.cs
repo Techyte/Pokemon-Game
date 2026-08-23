@@ -247,16 +247,18 @@ namespace PokemonGame.Battle
 
                 BattlerDamageSource source = new BattlerDamageSource(e.Attacker);
                 
+                target.TakeDamage(damageDealt, source);
+                
                 e.Battle.AddVisibleBattleAction(VisibleBattleActionType.DamageDealt, new List<object>
                 {
                     e.Targets[targetIndex].Item1,
                     e.Targets[targetIndex].Item2,
+                    damageDealt,
                     source,
                     effectiveIndex,
                     crit
                 });
                 
-                target.TakeDamage(damageDealt, source);
                 return damageDealt;
             }
 

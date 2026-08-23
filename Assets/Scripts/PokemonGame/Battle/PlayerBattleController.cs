@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using PokemonGame.Dialogue;
 using Riptide;
 using PokemonGame.General;
@@ -56,7 +57,6 @@ namespace PokemonGame.Battle
         public void FinishedViewingLevelUpScreen()
         {
             Destroy(_currentLevelUpObj);
-            battle.TurnQueueItemEnded();
         }
 
         //Public method used by the move UI buttons
@@ -64,7 +64,10 @@ namespace PokemonGame.Battle
         {
             if (battle.localPlayerOne)
             {
-                battle.PlayerChooseMove(0, 0, moveID);
+                battle.PlayerChooseMove(0, 0, moveID, new List<(int, int)>
+                {
+                    (0, 0)
+                });
             }
             else
             {
@@ -77,7 +80,7 @@ namespace PokemonGame.Battle
         {
             if (item.lockedTarget)
             {
-                battle.PlayerOneUseItem(item, item.targetIndex, item.userParty ? 0 : 1);
+                battle.PlayerUseItem(0, 0, item, item.targetIndex, item.userParty);
             }
             else
             {
@@ -88,19 +91,19 @@ namespace PokemonGame.Battle
 
         public void PlayerUseItem(Item item, int targetIndex, bool userParty)
         {
-            battle.PlayerOneUseItem(item, targetIndex, userParty ? 0 : 1);
+            battle.PlayerUseItem(0, 0, item, item.targetIndex, item.userParty);
         }
 
         public void PlayerPickedPokeBall(PokeBall ball)
         {
-            battle.PlayerOnePickedPokeBall(ball);
+            battle.PlayerUseItem(0, 0, ball, ball.targetIndex, ball.userParty);
         }
 
         public void PlayerChooseToSwap(int battlerIndex)
         {
             if (battle.localPlayerOne)
             {
-                battle.PlayerOneChooseToSwap(battlerIndex);
+                battle.PlayerChooseToSwap(battlerIndex);
             }
             else
             {

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using PokemonGame.General;
 using PokemonGame.Global;
 using PokemonGame.ScriptableObjects;
+using UnityEngine;
 
 namespace PokemonGame.Battle
 {
@@ -22,7 +24,14 @@ namespace PokemonGame.Battle
 
                     if (battler.statusEffect == poisoned)
                     {
+                        battler.TakeDamage(Mathf.CeilToInt(battler.stats.maxHealth/8f), new StatusEffectDamageSource(battler.statusEffect));
                         
+                        battle.AddVisibleBattleAction(VisibleBattleActionType.HasStatus, new List<object>
+                        {
+                            i,
+                            j,
+                            poisoned
+                        });
                     }
                 }
             }

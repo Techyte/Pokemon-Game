@@ -36,7 +36,6 @@ namespace PokemonGame.Battle
         Resists,
         Missed,
         StatusChange,
-        HealthUpdate,
         Run
     }
 }

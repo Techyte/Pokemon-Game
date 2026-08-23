@@ -28,17 +28,17 @@ namespace PokemonGame.ScriptableObjects
 
     public class AISwitchEventArgs : EventArgs
     {
-        public AISwitchEventArgs(int currentIndex, Party usableParty, ExternalBattleData battleData)
+        public AISwitchEventArgs(int currentIndex, Party usableParty, Battle battle)
         {
             this.currentIndex = currentIndex;
             this.usableParty = usableParty;
-            this.battleData = battleData;
+            this.battle = battle;
             newBattlerIndex = currentIndex;
         }
 
         public int currentIndex;
         public int newBattlerIndex;
         public Party usableParty;
-        public ExternalBattleData battleData;
+        public Battle battle;
     }
 }

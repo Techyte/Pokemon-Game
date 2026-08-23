@@ -67,20 +67,21 @@ namespace PokemonGame.Battle
                 dummyMove.damage = 40;
                 dummyMove.type = ScriptableObject.CreateInstance<Type>();
 
-                int damageTaken = MovesMethods.CalculateDamage(Registry.GetMove("CONFUSION"), attacker, attacker,
+                int damageTaken = MovesMethods.CalculateDamage(dummyMove, attacker, attacker,
                     out int effectiveIndex, out bool hitCrit, false);
+                
+                BattlerDamageSource source = new BattlerDamageSource(attacker);
+                
+                attacker.TakeDamage(damageTaken, source);
                 
                 battle.AddVisibleBattleAction(VisibleBattleActionType.DamageDealt, new List<object>
                 {
                     status.PlayerIndex,
-                    status.ActionIndex
-                });
-                
-                battle.AddVisibleBattleAction(VisibleBattleActionType.HealthUpdate, new List<object>
-                {
-                    status.PlayerIndex,
                     status.ActionIndex,
-                    damageTaken
+                    damageTaken,
+                    source,
+                    effectiveIndex,
+                    hitCrit
                 });
             }
             else

@@ -31,7 +31,10 @@ namespace PokemonGame.Battle
             {
                 int moveToDo = Random.Range(0, b.activeBattlers[i][j].moves.Count);
             
-                Battle.Singleton.PlayerChooseMove(i, j, moveToDo);
+                Battle.Singleton.PlayerChooseMove(i, j, moveToDo, new List<(int, int)>
+                {
+                    (0, 0)
+                });
             }
         }
         
@@ -41,7 +44,10 @@ namespace PokemonGame.Battle
             {
                 int moveToDo = Random.Range(0, b.activeBattlers[i][j].moves.Count);
             
-                Battle.Singleton.PlayerChooseMove(i, j, moveToDo);
+                Battle.Singleton.PlayerChooseMove(i, j, moveToDo, new List<(int, int)>
+                {
+                    (0, 0)
+                });
             }
         }
     }   
