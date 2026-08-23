@@ -347,12 +347,11 @@ namespace PokemonGame.Battle
             currentTurn = TurnStatus.Showing;
         }
 
-        public void PlayerChooseMove(int playerIndex, int actionIndex, int moveID, int targetPlayer, int targetBattler)
+        public void PlayerChooseMove(int playerIndex, int actionIndex, int moveID, List<(int, int)> targets)
         {
             PickPlayerAction(playerIndex, actionIndex, new BattleAction(BattleActionType.Move, new List<object>()
             {
-                targetPlayer,
-                targetBattler,
+                targets,
                 moveID,
             }));
         }
@@ -420,7 +419,7 @@ namespace PokemonGame.Battle
             }
         }
 
-        public void DoPlayerOneMove(Moves playerOneMoveToDo)
+        public void DoPlayerOneMove(Move playerOneMoveToDo)
         {
             bool missed = false;
 
@@ -454,7 +453,7 @@ namespace PokemonGame.Battle
             OnPlayerMove?.Invoke(this, 0);
         }
         
-        public void DoPlayerTwoMove(Moves playerTwoMoveToDo)
+        public void DoPlayerTwoMove(Move playerTwoMoveToDo)
         {
             bool missed = false;
 
@@ -563,7 +562,7 @@ namespace PokemonGame.Battle
             QueDialogue("Running Away!", DialogueBoxType.Event, "run");
         }
 
-        public int GetIndexOfMovePlayerTwo(Moves move)
+        public int GetIndexOfMovePlayerTwo(Move move)
         {
             for (int i = 0; i < playerTwoCurrentBattler.moves.Count; i++)
             {
@@ -577,7 +576,7 @@ namespace PokemonGame.Battle
             return -1;
         }
         
-        public int GetIndexOfMovePlayerOne(Moves move)
+        public int GetIndexOfMovePlayerOne(Move move)
         {
             for (int i = 0; i < playerOneCurrentBattler.moves.Count; i++)
             {

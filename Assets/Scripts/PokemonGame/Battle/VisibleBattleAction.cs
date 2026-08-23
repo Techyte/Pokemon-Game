@@ -32,8 +32,11 @@ namespace PokemonGame.Battle
         Item,
         Catch,
         HasStatus,
-        HitSelf,
+        DamageDealt,
+        Resists,
+        Missed,
         StatusChange,
+        HealthUpdate,
         Run
     }
 }

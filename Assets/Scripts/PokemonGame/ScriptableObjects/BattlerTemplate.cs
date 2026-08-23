@@ -136,6 +136,14 @@ namespace PokemonGame.ScriptableObjects
             return yields;
         }
 
+        public virtual bool GetCanTypeHit(Type type)
+        {
+            Type pType = Type.FromBasic(primaryType);
+            Type sType = Type.FromBasic(secondaryType);
+
+            return type.cantHit.Contains(pType) || type.cantHit.Contains(sType);
+        }
+
         #region Auto Complete Stuff
         
         public void TryFillInfo()

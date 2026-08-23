@@ -1,3 +1,4 @@
+using System;
 using PokemonGame.Global;
 
 namespace PokemonGame.ScriptableObjects
@@ -10,9 +11,9 @@ namespace PokemonGame.ScriptableObjects
         public new string name;
         public Color color;
         public Sprite sprite;
-        public Type[] strongAgainst;
-        public Type[] cantHit;
-        public Type[] weakAgainst;
+        public Type[] strongAgainst = Array.Empty<Type>();
+        public Type[] cantHit = Array.Empty<Type>();
+        public Type[] weakAgainst = Array.Empty<Type>();
 
         public static Type FromBasic(BasicType basicType)
         {

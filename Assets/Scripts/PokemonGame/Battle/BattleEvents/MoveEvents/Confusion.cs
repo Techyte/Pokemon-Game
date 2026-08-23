@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace PokemonGame.Battle
@@ -54,19 +55,32 @@ namespace PokemonGame.Battle
         public void Confused(Battle battle, MoveStatus status)
         {
             bool hitSelf = Random.Range(1, 4) == 1; // 1 in 3 chance of hitting self
+            
+            Battler attacker = battle.activeBattlers[status.PlayerIndex][status.ActionIndex];
 
             if (hitSelf)
             {
                 status.Failed = true;
+
+                Move dummyMove = ScriptableObject.CreateInstance<Move>();
+                dummyMove.category = MoveCategory.Physical;
+                dummyMove.damage = 40;
+                dummyMove.type = ScriptableObject.CreateInstance<Type>();
+
+                int damageTaken = MovesMethods.CalculateDamage(Registry.GetMove("CONFUSION"), attacker, attacker,
+                    out int effectiveIndex, out bool hitCrit, false);
                 
+                battle.AddVisibleBattleAction(VisibleBattleActionType.DamageDealt, new List<object>
+                {
+                    status.PlayerIndex,
+                    status.ActionIndex
+                });
                 
-                
-                battle.AddVisibleBattleAction(VisibleBattleActionType.HitSelf, new List<object>
+                battle.AddVisibleBattleAction(VisibleBattleActionType.HealthUpdate, new List<object>
                 {
                     status.PlayerIndex,
                     status.ActionIndex,
-                    confusion,
-                    StatusEffect.Healthy
+                    damageTaken
                 });
             }
             else

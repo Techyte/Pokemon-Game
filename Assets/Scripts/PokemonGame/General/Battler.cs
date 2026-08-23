@@ -618,7 +618,7 @@ namespace PokemonGame.General
         /// Gets the index of a move in the battlers move list
         /// </summary>
         /// <param name="move">The move to search for</param>
-        /// <returns>0 if not found, the index of the move if it is found</returns>
+        /// <returns>-1 if not found, the index of the move if it is found</returns>
         public int GetIndexOfMove(Move move)
         {
             for (int i = 0; i < moves.Count; i++)
@@ -629,7 +629,17 @@ namespace PokemonGame.General
                 }
             }
 
-            return 0;
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets if the type can hit this battler
+        /// </summary>
+        /// <param name="type">Teh type test</param>
+        /// <returns>If the type can hit this battler</returns>
+        public bool GetCanTypeHit(ScriptableObjects.Type type)
+        {
+            return source.GetCanTypeHit(type);
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace PokemonGame.Battle
     [CreateAssetMenu(fileName = "New Moves Methods", menuName = "All/New Moves Methods")]
     public class MovesMethods : ScriptableObject
     {
-        public static int CalculateDamage(Moves move, Battler battlerThatUsed, Battler battlerBeingAttacked, out int effectiveIndex, out bool hitCrit)
+        public static int CalculateDamage(Move move, Battler battlerThatUsed, Battler battlerBeingAttacked, out int effectiveIndex, out bool hitCrit, bool canCrit = true)
         {
             //Damage calculation equation from: https://bulbapedia.bulbagarden.net/wiki/Damage#Generation_II
             
@@ -146,7 +146,7 @@ namespace PokemonGame.Battle
                 hitCrit = true;
             }
 
-            if (hitCrit)
+            if (hitCrit && canCrit)
             {
                 critical = 1.5f;
             }
@@ -195,9 +195,9 @@ namespace PokemonGame.Battle
         {
             PokeApiClient pokeClient = new PokeApiClient();
             
-            List<Moves> moves = Resources.FindObjectsOfTypeAll<Moves>().ToList();
+            List<Move> moves = Resources.FindObjectsOfTypeAll<Move>().ToList();
             
-            List<Moves> movesToDelete = new List<Moves>();
+            List<Move> movesToDelete = new List<Move>();
             
             foreach (var pokeMove in moves)
             {
@@ -237,66 +237,81 @@ namespace PokemonGame.Battle
             return Resources.Load<MovesMethods>("Pokemon Game/Move/Move Methods");
         }
 
-        public void DefaultMoveMethod(MoveMethodEventArgs e)
+        public int DefaultMoveMethod(MoveStatus e, int targetIndex)
         {
-            if (e.move.category != MoveCategory.Status)
+            Battler target = e.GetTarget(targetIndex);
+            if (e.Move.category != MoveCategory.Status)
             {
-                e.target.TakeDamage(e.damageDealt, new BattlerDamageSource(e.attacker));
+                int damageDealt = CalculateDamage(e.Move, e.Attacker, target,
+                    out int effectiveIndex, out bool crit);
+
+                BattlerDamageSource source = new BattlerDamageSource(e.Attacker);
+                
+                e.Battle.AddVisibleBattleAction(VisibleBattleActionType.DamageDealt, new List<object>
+                {
+                    e.Targets[targetIndex].Item1,
+                    e.Targets[targetIndex].Item2,
+                    source,
+                    effectiveIndex,
+                    crit
+                });
+                
+                target.TakeDamage(damageDealt, source);
+                return damageDealt;
             }
+
+            return 0;
         }
         
-        public void Toxic(MoveMethodEventArgs e)
+        public void Toxic(MoveStatus e, int targetIndex)
         {
-            e.target.statusEffect = Registry.GetStatusEffect("Poisoned");
-            Battle.Singleton.QueDialogue($"{e.target.name} was poisoned!", DialogueBoxType.Event, "generalFinishing");
+            Battler target = e.GetTarget(targetIndex);
+            target.statusEffect = Registry.GetStatusEffect("Poisoned");
+            Battle.Singleton.QueDialogue($"{target.name} was poisoned!", DialogueBoxType.Event, "generalFinishing");
         }
 
-        public void LeechLife(MoveMethodEventArgs e)
+        public void LeechLife(MoveStatus e, int targetIndex)
         {
-            int damage = e.damageDealt;
-            e.target.TakeDamage(damage, new BattlerDamageSource(e.attacker));
-            Battle.Singleton.QueDialogue($"{e.attacker.name} healed {damage/2} health!", DialogueBoxType.Event, "generalFinishing");
-            e.attacker.Heal(damage/2);
+            int damageDealt = DefaultMoveMethod(e, targetIndex);
+            Battle.Singleton.QueDialogue($"{e.Attacker.name} healed {damageDealt/2} health!", DialogueBoxType.Event, "generalFinishing");
+            e.Attacker.Heal(damageDealt/2);
         }
 
-        public void SleepPowder(MoveMethodEventArgs e)
+        public void SleepPowder(MoveStatus e, int targetIndex)
         {
             StatusEffect sleep = Registry.GetStatusEffect("Asleep");
-            if (e.target.BecomeAffectedBy(sleep))
+            Battler target = e.GetTarget(targetIndex);
+            if (target.BecomeAffectedBy(sleep))
             {
-                e.target.sleepTurns = Random.Range(1, 4);
-                Battle.Singleton.QueDialogue($"{e.target.name} was put to sleep!", DialogueBoxType.Event, "generalFinishing");
+                target.statusTurns = Random.Range(1, 4);
+                Battle.Singleton.QueDialogue($"{target.name} was put to sleep!", DialogueBoxType.Event, "generalFinishing");
             }
             else
             {
-                e.success = false;
+                e.Failures[targetIndex] = true;
             }
         }
 
-        public void WillOWisp(MoveMethodEventArgs e)
+        public void WillOWisp(MoveStatus e, int targetIndex)
         {
             StatusEffect burn = Registry.GetStatusEffect("Burn");
-            if (e.target.statusEffect == burn)
+            Battler target = e.GetTarget(targetIndex);
+            if (target.statusEffect == burn)
             {
-                e.success = false;
+                e.Failures[targetIndex] = true;
             }
             else
             {
-                e.target.statusEffect = Registry.GetStatusEffect("Burn");
-                Battle.Singleton.QueDialogue($"{e.target.name} was burned!", DialogueBoxType.Event, "generalFinishing");
+                target.statusEffect = Registry.GetStatusEffect("Burn");
+                Battle.Singleton.QueDialogue($"{target.name} was burned!", DialogueBoxType.Event, "generalFinishing");
             }
         }
 
-        public void BadTime(MoveMethodEventArgs e)
+        public void BadTime(MoveStatus e, int targetIndex)
         {
-            Battle.Singleton.QueDialogue($"{e.target.name} is going to have a very Bad Time", DialogueBoxType.Event, "generalFinishing");
-            DefaultMoveMethod(e);
-        }
-
-        public void SelfDestruct(MoveMethodEventArgs e)
-        {
-            int damageDealt = e.damageDealt;
-            e.target.TakeDamage(damageDealt, new BattlerDamageSource(e.attacker));
+            Battler target = e.GetTarget(targetIndex);
+            Battle.Singleton.QueDialogue($"{target.name} is going to have a very Bad Time", DialogueBoxType.Event, "generalFinishing");
+            DefaultMoveMethod(e, targetIndex);
         }
     }
 }

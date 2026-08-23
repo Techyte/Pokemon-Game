@@ -593,7 +593,7 @@ namespace PokemonGame.Battle
                 text.transform.parent.gameObject.SetActive(false);
             }
             
-            List<Moves> moves = battle.localPlayerOne ? battle.PlayerOneBattler.moves : battle.PlayerTwoBattler.moves;
+            List<Move> moves = battle.localPlayerOne ? battle.PlayerOneBattler.moves : battle.PlayerTwoBattler.moves;
             List<MovePPData> movePpInfos = battle.localPlayerOne ? battle.PlayerOneBattler.movePpInfos : battle.PlayerTwoBattler.movePpInfos;
             
             for (var i = 0; i < moves.Count; i++)

@@ -27,7 +27,7 @@ namespace PokemonGame.Battle
                         // i is the playerIndex
                         // j is the action (or battler) index
 
-                        int moveId = (int)battle.playerActions[i][j].Variables[0];
+                        int moveId = (int)battle.playerActions[i][j].Variables[1];
                         
                         Move move = battle.activeBattlers[i][j].moves[moveId];
                         Battler attacker = battle.activeBattlers[i][j];
@@ -101,47 +101,68 @@ namespace PokemonGame.Battle
 
         private void SimulateMove(Battle battle, int playerIndex, int actionIndex)
         {
-            int moveId = (int)battle.playerActions[playerIndex][actionIndex].Variables[0];
-            int targetPlayer = (int)battle.playerActions[playerIndex][actionIndex].Variables[1];
-            int targetBattler = (int)battle.playerActions[playerIndex][actionIndex].Variables[2];
+            List<(int, int)> targets = (List<(int, int)>)battle.playerActions[playerIndex][actionIndex].Variables[0];
+            int moveId = (int)battle.playerActions[playerIndex][actionIndex].Variables[1];
+            
+            Battler attacker = battle.activeBattlers[playerIndex][actionIndex];
+            Move move = battle.activeBattlers[playerIndex][actionIndex].moves[moveId];
 
             List<object> vars = new List<object>
             {
                 moveId,
-                targetPlayer,
-                targetBattler
+                targets
             };
 
             foreach (var moveEvent in nestedMoveEvents)
             {
                 MoveStatus currentStatus =
-                    new MoveStatus(playerIndex, actionIndex, moveId, targetPlayer, targetBattler);
-
-                battle.AddVisibleBattleAction(VisibleBattleActionType.MoveUsed, new List<object> { currentStatus });
-                moveEvent.Event(battle, vars);
+                    new MoveStatus(battle, playerIndex, actionIndex, attacker, moveId, move, targets);
+                
+                moveEvent.Event(battle, new List<object> { currentStatus });
+                
+                battle.AddVisibleBattleAction(VisibleBattleActionType.MoveUsed, vars);
             }
         }
     }
 
     public class MoveStatus
     {
+        public Battle Battle;
         public int PlayerIndex;
         public int ActionIndex;
         public int MoveId;
-        public int TargetPlayer;
-        public int TargetBattler;
+        public List<(int, int)> Targets;
 
+        // have the other indicies but this is just easier in most cases to have a direct reference to the objects
+        public Move Move;
+        public Battler Attacker;
+
+        // used when the USER failed to use the move
         public bool Failed;
 
-        public MoveStatus(int playerIndex, int actionIndex, int moveId, int targetPlayer, int targetBattler)
+        // used when the TARGET managed to avoid the move in some way
+        public List<bool> Failures;
+
+        public MoveStatus(Battle battle, int playerIndex, int actionIndex, Battler attacker, int moveId, Move move, List<(int, int)> targets)
         {
+            Battle = battle;
             PlayerIndex = playerIndex;
             ActionIndex =  actionIndex;
             MoveId = moveId;
-            TargetPlayer = targetPlayer;
-            TargetBattler = targetBattler;
+            Targets = targets;
+            Move = move;
+            Attacker = attacker;
+            
+            Failures = new List<bool>(targets.Count);
 
             Failed = false;
+        }
+
+        public Battler GetTarget(int index)
+        {
+            (int, int) target = Targets[index];
+
+            return Battle.activeBattlers[target.Item1][target.Item2];
         }
     }
 }

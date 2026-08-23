@@ -30,7 +30,7 @@ namespace PokemonGame.ScriptableObjects
         
         [ConditionalHide("unique", true)] public Battler uniqueBattler;
     
-        public UnityEvent<MoveMethodEventArgs> MoveMethodEvent;
+        public UnityEvent<MoveStatus, int> MoveMethodEvent;
 
         private void OnValidate()
         {
@@ -43,17 +43,18 @@ namespace PokemonGame.ScriptableObjects
         /// <summary>
         /// Calls the associated function in StatusMoveMethods.cs
         /// </summary>
-        /// <param name="e">The MoveMethodArgs that can be used to store additional information to be parsed onto the method</param>
-        public void MoveMethod(MoveMethodEventArgs e)
+        /// <param name="e">The MoveStatus that can be used to store additional information to be parsed onto the method</param>
+        /// <param name="targetIndex">The index of the target within the movestatus target list</param>
+        public void MoveMethod(MoveStatus e, int targetIndex)
         {
-            int PP = e.movePPData.CurrentPP;
+            int PP = e.Battle.activeBattlers[e.PlayerIndex][e.ActionIndex].movePpInfos[e.MoveId].CurrentPP;
 
             if (PP > 0)
             {
-                MoveMethodEvent?.Invoke(e);
+                MoveMethodEvent?.Invoke(e, targetIndex);
                 if (MoveMethodEvent.GetPersistentEventCount() == 0)
                 {
-                    MovesMethods.GetMoveMethods().DefaultMoveMethod(e);
+                    MovesMethods.GetMoveMethods().DefaultMoveMethod(e, targetIndex);
                 }
             }
             else
@@ -72,36 +73,6 @@ namespace PokemonGame.ScriptableObjects
         Special,
         Status,
         ZMove
-    }
-    
-    /// <summary>
-    /// Arguments that can be given to a MoveMethod to give it additional information
-    /// </summary>
-    public class MoveMethodEventArgs : EventArgs
-    {
-        public Battler target;
-        public Battler attacker;
-        public Move move;
-        public MovePPData movePPData;
-        public int effectiveIndex = 0;
-        public bool crit;
-        public bool missed = false;
-        public int damageDealt;
-        public bool success = true;
-
-        public MoveMethodEventArgs(Battler attacker, Battler target, Move move, MovePPData movePPData, ExternalBattleData battleData)
-        {
-            this.target = target;
-            this.attacker = attacker;
-            this.move = move;
-            this.movePPData = movePPData;
-            effectiveIndex = 0;
-        }
-
-        public MoveMethodEventArgs()
-        {
-            
-        }
     }
 
     [System.Serializable]
