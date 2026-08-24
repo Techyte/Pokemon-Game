@@ -42,7 +42,7 @@ namespace PokemonGame.Battle
             switch (e.id)
             {
                 case "leveledUp":
-                    OnLevelUpEventArgs args = battle.PlayerOneBattler.InitiateLevelUp();
+                    OnLevelUpEventArgs args = battle.activeBattlers[battle.localPlayerIndex][0].InitiateLevelUp();
                     ShowBattlerLeveled(args);
                     uiManager.UpdatePlayerOneBattlerDetails();
                     break;
@@ -62,36 +62,20 @@ namespace PokemonGame.Battle
         //Public method used by the move UI buttons
         public void ChooseMove(int moveID)
         {
-            if (battle.localPlayerOne)
+            battle.PlayerChooseMove(0, 0, moveID, new List<(int, int)>
             {
-                battle.PlayerChooseMove(0, 0, moveID, new List<(int, int)>
-                {
-                    (0, 0)
-                });
-            }
-            else
-            {
-                ClientSendPlayerMoveSelected(moveID);
-            }
-            uiManager.ShowControlUI(false);
+                (0, 0)
+            });
         }
         
         public void StartPickingBattlerToUseItemOn(Item item)
         {
-            if (item.lockedTarget)
-            {
-                battle.PlayerUseItem(0, 0, item, item.targetIndex, item.userParty);
-            }
-            else
-            {
-                uiManager.OpenUseItemOnBattler(item);
-                uiManager.UpdateItemBattlerButtons();
-            }
+            battle.PlayerUseItem(0, 0, item, item.targetIndex, item.userParty);
         }
 
         public void PlayerUseItem(Item item, int targetIndex, bool userParty)
         {
-            battle.PlayerUseItem(0, 0, item, item.targetIndex, item.userParty);
+            battle.PlayerUseItem(0, 0, item, targetIndex, userParty);
         }
 
         public void PlayerPickedPokeBall(PokeBall ball)
@@ -101,31 +85,7 @@ namespace PokemonGame.Battle
 
         public void PlayerChooseToSwap(int battlerIndex)
         {
-            if (battle.localPlayerOne)
-            {
-                battle.PlayerChooseToSwap(battlerIndex);
-            }
-            else
-            {
-                ClientSendPlayerSwapSelected(battlerIndex);
-            }
-            uiManager.ShowControlUI(false);
-        }
-
-        private void ClientSendPlayerMoveSelected(int moveIndex)
-        {
-            Message message = Message.Create(MessageSendMode.Reliable, ClientToServerMessageId.MoveSelected);
-            message.AddInt(moveIndex);
-
-            BattleNetworkManager.Instance.Client.Send(message);
-        }
-
-        private void ClientSendPlayerSwapSelected(int battlerIndex)
-        {
-            Message message = Message.Create(MessageSendMode.Reliable, ClientToServerMessageId.SwapSelected);
-            message.AddInt(battlerIndex);
-
-            BattleNetworkManager.Instance.Client.Send(message);
+            battle.PlayerChooseSwitch(0, 0, 0, battlerIndex);
         }
     }
 }

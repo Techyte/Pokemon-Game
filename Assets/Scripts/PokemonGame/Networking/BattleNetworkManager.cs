@@ -23,9 +23,7 @@ namespace PokemonGame.Networking
     {
         ConnectionInfo,
         AllPartiesReceived,
-        TurnItemEnd,
-        MoveSelected,
-        SwapSelected,
+        Action,
     }
     
     public enum ServerToClientMessageId : ushort
@@ -33,17 +31,7 @@ namespace PokemonGame.Networking
         UpdatePlayerInfo,
         PartyInfo,
         StartBattle,
-        // turn item messages here:
-        TurnPlayerMove,
-        TurnPlayerMissed,
-        TurnPlayerSwapBecauseFainted,
-        TurnPlayerSwap,
-        TurnEndBattle,
-        TurnStartOfTurnEffects,
-        TurnEndOfTurnEffects,
-        TurnPlayerParalysed,
-        TurnPlayerAsleep,
-        TurnSequenceEnded,
+        VisibleActions,
     }
     
     public class BattleNetworkManager : MonoBehaviour

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using PokemonGame.General;
+﻿using PokemonGame.General;
 using PokemonGame.ScriptableObjects;
 
 namespace PokemonGame.Battle

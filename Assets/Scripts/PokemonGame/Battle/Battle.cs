@@ -1,13 +1,11 @@
 using System;
-using System.Linq;
-using PokemonGame.Game;
 using PokemonGame.Networking;
+using Riptide;
 
 namespace PokemonGame.Battle
 {
     using System.Collections.Generic;
     using System.Collections;
-    using Game.Party;
     using General;
     using Global;
     using ScriptableObjects;
@@ -56,6 +54,8 @@ namespace PokemonGame.Battle
         [SerializeField] public TurnStatus currentTurn = TurnStatus.Choosing;
 
         public List<Player> players; // list of participating players
+        public Player localPlayer => players[localPlayerIndex];
+        public int localPlayerIndex;
         public List<List<Battler>> activeBattlers; // list of actively in-use pokemon, eg; [0][0] gets player ones first slot pokemon in play
         
         [SerializeField] private EnemyAI enemyAI;
@@ -159,6 +159,7 @@ namespace PokemonGame.Battle
                 }
                 
                 players = SceneLoader.GetVariable<List<Player>>("players");
+                localPlayerIndex = 0;
             }
             else
             {
@@ -167,6 +168,10 @@ namespace PokemonGame.Battle
                 foreach (var player in BattleNetworkManager.Instance.Players.Values)
                 {
                     Player battlePlayer = new Player(player, index);
+                    if (battlePlayer.Local)
+                    {
+                        localPlayerIndex = index;
+                    }
                     players.Add(battlePlayer);
                     index++;
                 }
@@ -226,16 +231,6 @@ namespace PokemonGame.Battle
             {
                 hasSetupShowing = true;
                 OnNewTurnState?.Invoke(this, 1);
-
-                if (IsNotOnlineHost())
-                {
-                    return;
-                }
-            }
-            
-            if (IsNotOnlineHost())
-            {
-                return;
             }
         }
 
@@ -246,7 +241,7 @@ namespace PokemonGame.Battle
 
         public void AddVisibleBattleAction(VisibleBattleActionType type, List<object> variables)
         {
-            visibleActions.Add(new VisibleBattleAction(type, variables));
+            AddVisibleBattleAction(new VisibleBattleAction(type, variables));
         }
 
         private void TurnEnding()
@@ -265,9 +260,50 @@ namespace PokemonGame.Battle
 
         private void PickPlayerAction(int playerIndex, int actionIndex, BattleAction action)
         {
-            playerActions[playerIndex][actionIndex] = action;
-            OnPlayerPickedAction?.Invoke(this, playerIndex);
-            CheckReadyToSimulate();
+            if (localPlayerIndex == 0)
+            {
+                playerActions[playerIndex][actionIndex] = action;
+                OnPlayerPickedAction?.Invoke(this, playerIndex);
+                CheckReadyToSimulate();
+            }
+            else
+            {
+                ClientSendBattleAction(playerIndex, actionIndex, action);
+            }
+        }
+        
+        private void ClientSendBattleAction(int playerIndex, int actionIndex, BattleAction action)
+        {
+            Message message = Message.Create(MessageSendMode.Reliable, ClientToServerMessageId.Action);
+            message.AddInt(playerIndex);
+            message.AddInt(actionIndex);
+
+            switch (action.Type)
+            {
+                case BattleActionType.Switch:
+                    message.AddInt((int)action.Variables[0]);
+                    message.AddInt((int)action.Variables[1]);
+                    break;
+                case BattleActionType.Item:
+                    message.AddInt((int)action.Variables[0]);
+                    message.AddInt((int)action.Variables[1]);
+                    message.AddInt((int)action.Variables[2]);
+                    break;
+                case BattleActionType.Move:
+                    List<(int, int)> targets = (List<(int, int)>)action.Variables[0];
+
+                    message.AddInt(targets.Count);
+                    for (int i = 0; i < targets.Count; i++)
+                    {
+                        message.AddInt(targets[i].Item1);
+                        message.AddInt(targets[i].Item2);
+                    }
+                    
+                    message.AddInt((int)action.Variables[1]);
+                    break;
+            }
+            
+            BattleNetworkManager.Instance.Client.Send(message);
         }
 
         private void CheckReadyToSimulate()
@@ -303,6 +339,15 @@ namespace PokemonGame.Battle
                 item, // item to use
                 useOnUserParty ? 0 : 1, // player to target
                 battlerToUseOn // battler to target
+            }));
+        }
+
+        public void PlayerChooseSwitch(int playerIndex, int actionIndex, int switchingOut, int switchingIn)
+        {
+            PickPlayerAction(playerIndex, actionIndex, new BattleAction(BattleActionType.Switch, new List<object>()
+            {
+                switchingOut,
+                switchingIn,
             }));
         }
 
@@ -354,8 +399,8 @@ namespace PokemonGame.Battle
             
             Dictionary<string, object> vars = new Dictionary<string, object>
             {
-                { "partyOne", partyOne },
-                { "trainerName", _playerTwoName },
+                { "partyOne", players[0].Party },
+                { "trainerName", players[1].Name },
                 { "isDefeated", true },
                 { "trainerBattle", trainerBattle}
             };
@@ -372,8 +417,8 @@ namespace PokemonGame.Battle
             
             Dictionary<string, object> vars = new Dictionary<string, object>
             {
-                { "partyOne", partyOne },
-                { "trainerName", _playerTwoName },
+                { "partyOne", players[0].Party },
+                { "trainerName", players[1].Name },
                 { "isDefeated", false },
                 { "loaderName", "ForcedHealPoint" },
                 { "trainerBattle", trainerBattle}
@@ -383,26 +428,6 @@ namespace PokemonGame.Battle
             yield return new WaitForSeconds(0.4f);
             
             SceneLoader.LoadScene("Poke Center", vars);
-        }
-        
-        private bool IsNotOnlineHost()
-        {
-            if (onlineBattle)
-            {
-                return !BattleNetworkManager.Instance.IsHost;
-            }
-
-            return false;
-        }
-
-        private bool IsOnlineHost()
-        {
-            if (onlineBattle)
-            {
-                return BattleNetworkManager.Instance.IsHost;
-            }
-
-            return false;
         }
     }
 }
