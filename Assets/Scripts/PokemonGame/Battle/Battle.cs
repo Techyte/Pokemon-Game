@@ -56,7 +56,10 @@ namespace PokemonGame.Battle
         public List<Player> players; // list of participating players
         public Player localPlayer => players[localPlayerIndex];
         public int localPlayerIndex;
+
         public List<List<Battler>> activeBattlers; // list of actively in-use pokemon, eg; [0][0] gets player ones first slot pokemon in play
+
+        public List<List<int>> activeBattlerIndices;
         
         [SerializeField] private EnemyAI enemyAI;
         
@@ -89,14 +92,8 @@ namespace PokemonGame.Battle
         
         // public events
         public EventHandler<int> OnNewTurnState;
-        public EventHandler OnNewTurnItem;
-        public EventHandler OnBattlerEvolved;
         public EventHandler<int> OnPlayerPickedAction;
-        public EventHandler<bool> OnCatchAttempt;
-        public EventHandler<int> OnSwapBecauseFainted;
         public EventHandler<int> OnChangeBattler;
-        public EventHandler<int> OnStartChangeBattlerIndex;
-        public EventHandler<int> OnPlayerMove;
         
         // events
         private EventHandler<int> _playerOneBattlerLeveledUp = null;
@@ -115,6 +112,7 @@ namespace PokemonGame.Battle
                 Player player = players[i];
                 
                 activeBattlers.Add(new List<Battler>());
+                activeBattlerIndices.Add(new List<int>());
                 
                 int assigned = 0;
                 
@@ -123,6 +121,7 @@ namespace PokemonGame.Battle
                     if (!player.Party[j].isFainted)
                     {
                         activeBattlers[i].Add(player.Party[j]);
+                        activeBattlerIndices[i].Add(j);
                         assigned++;
                         if (assigned >= battlersEach)
                         {
@@ -231,7 +230,38 @@ namespace PokemonGame.Battle
             {
                 hasSetupShowing = true;
                 OnNewTurnState?.Invoke(this, 1);
+                
+                SimulateTurn();
+                FinishedSimulating();
             }
+        }
+
+        private void SimulateTurn()
+        {
+            foreach (var battleEvent in turnSequence)
+            {
+                battleEvent.Event(this);
+            }
+        }
+
+        private void FinishedSimulating()
+        {
+            if (onlineBattle)
+            {
+                BattleNetworkManager.Instance.ServerSendVisibleBattleActions(visibleActions);
+            }
+            DisplayVisibleBattleActions();
+        }
+
+        public void ReceiveVisibleActions(List<VisibleBattleAction> actions)
+        {
+            visibleActions = actions;
+            DisplayVisibleBattleActions();
+        }
+
+        private void DisplayVisibleBattleActions()
+        {
+            // TODO: actualy like show this stuff
         }
 
         public void AddVisibleBattleAction(VisibleBattleAction action)
@@ -258,7 +288,7 @@ namespace PokemonGame.Battle
             currentTurn = TurnStatus.Choosing;
         }
 
-        private void PickPlayerAction(int playerIndex, int actionIndex, BattleAction action)
+        public void PickPlayerAction(int playerIndex, int actionIndex, BattleAction action)
         {
             if (localPlayerIndex == 0)
             {
@@ -268,42 +298,8 @@ namespace PokemonGame.Battle
             }
             else
             {
-                ClientSendBattleAction(playerIndex, actionIndex, action);
+                BattleNetworkManager.Instance.ClientSendBattleAction(actionIndex, action); // dont need to send playerIndex cause it can be derrived from the network ID
             }
-        }
-        
-        private void ClientSendBattleAction(int playerIndex, int actionIndex, BattleAction action)
-        {
-            Message message = Message.Create(MessageSendMode.Reliable, ClientToServerMessageId.Action);
-            message.AddInt(playerIndex);
-            message.AddInt(actionIndex);
-
-            switch (action.Type)
-            {
-                case BattleActionType.Switch:
-                    message.AddInt((int)action.Variables[0]);
-                    message.AddInt((int)action.Variables[1]);
-                    break;
-                case BattleActionType.Item:
-                    message.AddInt((int)action.Variables[0]);
-                    message.AddInt((int)action.Variables[1]);
-                    message.AddInt((int)action.Variables[2]);
-                    break;
-                case BattleActionType.Move:
-                    List<(int, int)> targets = (List<(int, int)>)action.Variables[0];
-
-                    message.AddInt(targets.Count);
-                    for (int i = 0; i < targets.Count; i++)
-                    {
-                        message.AddInt(targets[i].Item1);
-                        message.AddInt(targets[i].Item2);
-                    }
-                    
-                    message.AddInt((int)action.Variables[1]);
-                    break;
-            }
-            
-            BattleNetworkManager.Instance.Client.Send(message);
         }
 
         private void CheckReadyToSimulate()
@@ -354,6 +350,7 @@ namespace PokemonGame.Battle
         public void SetPlayerActiveBattlers(int playerId, int switchingOut, int switchingIn)
         {
             activeBattlers[playerId][switchingOut] = players[playerId].Party[switchingIn];
+            activeBattlerIndices[playerId][switchingOut] = switchingIn;
             
             AddVisibleBattleAction(VisibleBattleActionType.Switch, new List<object>{
                 playerId,
@@ -389,10 +386,20 @@ namespace PokemonGame.Battle
                 }
             }
         }
-        private void RunAwayDialogue()
+
+        public int GetPlayerIndexFromNetworkId(int networkId)
         {
-            QueDialogue("Running Away!", DialogueBoxType.Event, "run");
+            foreach (var player in players)
+            {
+                if (player.NetworkId == networkId)
+                {
+                    return player.Id;
+                }
+            }
+
+            return -1;
         }
+        
         private IEnumerator ExitBattleWin()
         {
             yield return new WaitForSeconds(0.5f);

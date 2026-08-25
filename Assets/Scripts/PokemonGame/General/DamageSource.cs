@@ -1,7 +1,11 @@
 ﻿namespace PokemonGame.General
 {
-    public abstract class DamageSource
+    public enum DamageSource
     {
-        public static DamageSource Empty => new EmptyDamageSource();
+        OtherBattler,
+        Self,
+        Poison,
+        Confusion,
+        Burn
     }
 }

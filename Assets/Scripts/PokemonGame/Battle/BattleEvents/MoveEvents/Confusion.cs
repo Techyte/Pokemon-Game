@@ -70,16 +70,14 @@ namespace PokemonGame.Battle
                 int damageTaken = MovesMethods.CalculateDamage(dummyMove, attacker, attacker,
                     out int effectiveIndex, out bool hitCrit, false);
                 
-                BattlerDamageSource source = new BattlerDamageSource(attacker);
-                
-                attacker.TakeDamage(damageTaken, source);
+                attacker.TakeDamage(damageTaken, DamageSource.Confusion);
                 
                 battle.AddVisibleBattleAction(VisibleBattleActionType.DamageDealt, new List<object>
                 {
                     status.PlayerIndex,
                     status.ActionIndex,
                     damageTaken,
-                    source,
+                    DamageSource.Confusion,
                     effectiveIndex,
                     hitCrit
                 });

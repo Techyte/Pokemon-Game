@@ -24,13 +24,25 @@ namespace PokemonGame.Battle
 
                     if (battler.statusEffect == poisoned)
                     {
-                        battler.TakeDamage(Mathf.CeilToInt(battler.stats.maxHealth/8f), new StatusEffectDamageSource(battler.statusEffect));
+                        int damageTaken = Mathf.CeilToInt(battler.stats.maxHealth / 8f);
+                        
+                        battler.TakeDamage(damageTaken, DamageSource.Poison);
                         
                         battle.AddVisibleBattleAction(VisibleBattleActionType.HasStatus, new List<object>
                         {
                             i,
                             j,
                             poisoned
+                        });
+                        
+                        battle.AddVisibleBattleAction(VisibleBattleActionType.DamageDealt, new List<object>
+                        {
+                            i,
+                            j,
+                            damageTaken,
+                            DamageSource.Confusion,
+                            0,
+                            false
                         });
                     }
                 }

@@ -14,7 +14,7 @@ namespace PokemonGame.Battle
         public bool Local;
 
         /// <summary>
-        /// only used in online battles, -1 otherwise
+        /// only used in online battles, 0 otherwise so can still be identified as a local player
         /// </summary>
         public int NetworkId;
 
@@ -35,7 +35,7 @@ namespace PokemonGame.Battle
             Party = new BattleParty(party);
             Team = team;
             Local = local;
-            NetworkId = -1;
+            NetworkId = 0;
         }
     }
 }

@@ -473,157 +473,44 @@ namespace PokemonGame.Networking
             StartCoroutine(StartBattle());
         }
 
-        #region TurnSendingLogic
+        public void ServerSendVisibleBattleActions(List<VisibleBattleAction> visibleBattleActions)
+        {
+            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.VisibleActions);
 
-        #region ServerSending
-
-        public void ServerSendTurnPlayerMove(bool playerOne, MoveMethodEventArgs e)
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnPlayerMove);
-            message.AddBool(playerOne);
-            message.AddMoveEventArgs(e);
-            Server.SendToAll(message, Client.Id);
-        }
-        public void ServerSendTurnPlayerMissed()
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnPlayerMissed);
-            Server.SendToAll(message);
-        }
-        public void ServerSendTurnPlayerSwapBecauseFainted(bool playerOne)
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnPlayerSwapBecauseFainted);
-            message.AddBool(playerOne);
-            Server.SendToAll(message);
-        }
-        public void ServerSendTurnPlayerSwap(bool playerOne, int targetBattlerIndex, bool becauseFainted, bool dontSendToLocal = false)
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnPlayerSwap);
-            message.AddBool(playerOne);
-            message.AddInt(targetBattlerIndex);
-            message.AddBool(becauseFainted);
-            if (dontSendToLocal)
-            {
-                Server.SendToAll(message, Client.Id);
-            }
-            else
-            {
-                Server.SendToAll(message);
-            }
-        }
-        public void ServerSendTurnEndBattle(bool playerTwoDefeated)
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnEndBattle);
-            message.AddBool(playerTwoDefeated);
-            Server.SendToAll(message);
-        }
-        public void ServerSendTurnStartOfTurnEffects()
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnStartOfTurnEffects);
-            Server.SendToAll(message);
-        }
-        public void ServerSendTurnEndOfTurnEffects()
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnEndOfTurnEffects);
-            Server.SendToAll(message);
-        }
-        public void ServerSendTurnPlayerParalysed(bool playerOne)
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnPlayerParalysed);
-            message.AddBool(playerOne);
-            Server.SendToAll(message);
-        }
-        public void ServerSendTurnPlayerAsleep(bool playerOne)
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnPlayerAsleep);
-            message.AddBool(playerOne);
-            Server.SendToAll(message);
-        }
-
-        public void ServerSendTurnSequenceEnded()
-        {
-            Message message =  Message.Create(MessageSendMode.Reliable, ServerToClientMessageId.TurnSequenceEnded);
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(visibleBattleActions);
+            message.AddString(json);
+            
             Server.SendToAll(message, Client.Id);
         }
 
-        #endregion
-        
-        #region ClientReceiving
+        public void ClientGetVisibleBattleActions(Message message)
+        {
+            List<VisibleBattleAction> actions =
+                Newtonsoft.Json.JsonConvert.DeserializeObject<List<VisibleBattleAction>>(message.GetString());
 
-        public void ClientGotTurnPlayerMove(Message message)
-        {
-            bool playerOne = message.GetBool();
-            MoveMethodEventArgs e = message.GetMoveEventArgs();
-            
-            if (playerOne)
-                Battle.Singleton.PlayAuthoritativeMove(e, true);
-            else
-                Battle.Singleton.PlayAuthoritativeMove(e, false);
+            Battle.Singleton.ReceiveVisibleActions(actions);
         }
-        public void ClientGotTurnPlayerMissed()
-        {
-            Battle.Singleton.MoveMissed();
-        }
-        public void ClientGotTurnPlayerSwapBecauseFainted(Message message)
-        {
-            bool playerOne = message.GetBool();
-            
-            if (playerOne)
-                Battle.Singleton.BeginSwapPlayerOneBattler();
-            else
-                Battle.Singleton.BeginSwapPlayerTwoBattler();
-        }
-        public void ClientGotTurnPlayerSwap(Message message)
-        {
-            bool playerOne = message.GetBool();
-            int targetBattlerIndex = message.GetInt();
-            bool becauseFainted = message.GetBool();
 
-            if (playerOne)
-                Battle.Singleton.PlayerOneSwappedBattler(targetBattlerIndex, becauseFainted);
-            else
-                Battle.Singleton.PlayerTwoSwappedBattler(targetBattlerIndex, becauseFainted);
-        }
-        public void ClientGotTurnEndBattle(Message message)
+        public void ServerGetClientAction(ushort fromClientId, Message message)
         {
-            bool playerTwoDefeated = message.GetBool();
+            int playerId = Battle.Singleton.GetPlayerIndexFromNetworkId(fromClientId);
+            int actionIndex = message.GetInt();
             
-            Battle.Singleton.BeginEndBattleDialogue(playerTwoDefeated);
-        }
-        public void ClientGotTurnStartOfTurnEffects()
-        {
-            Battle.Singleton.RunStartOfTurnEffects();
-        }
-        public void ClientGotTurnEndOfTurnEffects()
-        {
-            Battle.Singleton.RunEndOfTurnEffects();
-        }
-        public void ClientGotTurnPlayerParalysed(Message message)
-        {
-            bool playerOne = message.GetBool();
+            BattleAction action = Newtonsoft.Json.JsonConvert.DeserializeObject<BattleAction>(message.GetString());
             
-            if (playerOne)
-                Battle.Singleton.PlayerOneParalysed();
-            else
-                Battle.Singleton.PlayerTwoParalysed();
-        }
-        public void ClientGotTurnPlayerAsleep(Message message)
-        {
-            bool playerOne = message.GetBool();
-            
-            if (playerOne)
-                Battle.Singleton.PlayerOneAsleep();
-            else
-                Battle.Singleton.PlayerTwoAsleep();
+            Battle.Singleton.PickPlayerAction(playerId, actionIndex, action);
         }
         
-        public void ClientGotTurnSequenceEnded(Message message)
+        public void ClientSendBattleAction(int actionIndex, BattleAction action)
         {
-            Battle.Singleton.EndTurnShowing();
+            Message message = Message.Create(MessageSendMode.Reliable, ClientToServerMessageId.Action);
+            message.AddInt(actionIndex);
+            
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(action);
+            message.AddString(json);
+            
+            Client.Send(message);
         }
-
-        #endregion
-
-        #endregion
     }
     
     public class NetworkPlayer

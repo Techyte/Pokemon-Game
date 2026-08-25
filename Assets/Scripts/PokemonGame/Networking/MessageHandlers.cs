@@ -19,22 +19,10 @@ namespace PokemonGame.Networking
             BattleNetworkManager.Instance.ServerAllPartiesReceived();
         }
 
-        [MessageHandler((ushort)ClientToServerMessageId.TurnItemEnd)]
-        private static void ServerTurnItemEnd(ushort fromPlayerId, Message message)
-        {
-            Battle.Singleton.ServerTurnItemEnd(fromPlayerId);
-        }
-
-        [MessageHandler((ushort)ClientToServerMessageId.MoveSelected)]
-        private static void ServerMoveSelected(ushort fromPlayerId, Message message)
-        {
-            Battle.Singleton.PlayerTwoChooseMove(message.GetInt());
-        }
-
-        [MessageHandler((ushort)ClientToServerMessageId.SwapSelected)]
+        [MessageHandler((ushort)ClientToServerMessageId.Action)]
         private static void ServerSwapSelected(ushort fromPlayerId, Message message)
         {
-            Battle.Singleton.PlayerTwoChooseToSwap(message.GetInt());
+            BattleNetworkManager.Instance.ServerGetClientAction(fromPlayerId, message);
         }
         
         [MessageHandler((ushort)ServerToClientMessageId.UpdatePlayerInfo)]
@@ -55,58 +43,10 @@ namespace PokemonGame.Networking
             BattleNetworkManager.Instance.ClientStartBattle();
         }
         
-        // Turn Item receivers here:
-        
-        [MessageHandler((ushort)ServerToClientMessageId.TurnPlayerMove)]
+        [MessageHandler((ushort)ServerToClientMessageId.VisibleActions)]
         private static void ClientTurnPlayerMove(Message message)
         {
-            BattleNetworkManager.Instance.ClientGotTurnPlayerMove(message);
-        }
-        [MessageHandler((ushort)ServerToClientMessageId.TurnPlayerMissed)]
-        private static void ClientTurnPlayerMissed(Message message)
-        {
-            BattleNetworkManager.Instance.ClientGotTurnPlayerMissed();
-        }
-        [MessageHandler((ushort)ServerToClientMessageId.TurnPlayerSwapBecauseFainted)]
-        private static void ClientTurnPlayerSwapBecauseFainted(Message message)
-        {
-            BattleNetworkManager.Instance.ClientGotTurnPlayerSwapBecauseFainted(message);
-        }
-        [MessageHandler((ushort)ServerToClientMessageId.TurnPlayerSwap)]
-        private static void ClientTurnPlayerSwap(Message message)
-        {
-            BattleNetworkManager.Instance.ClientGotTurnPlayerSwap(message);
-        }
-        [MessageHandler((ushort)ServerToClientMessageId.TurnEndBattle)]
-        private static void ClientTurnEndBattle(Message message)
-        {
-            BattleNetworkManager.Instance.ClientGotTurnEndBattle(message);
-        }
-        [MessageHandler((ushort)ServerToClientMessageId.TurnStartOfTurnEffects)]
-        private static void ClientTurnStartOfTurnStatusEffects(Message message)
-        {
-            BattleNetworkManager.Instance.ClientGotTurnStartOfTurnEffects();
-        }
-        [MessageHandler((ushort)ServerToClientMessageId.TurnEndOfTurnEffects)]
-        private static void ClientTurnEndOfTurnStatusEffects(Message message)
-        {
-            BattleNetworkManager.Instance.ClientGotTurnEndOfTurnEffects();
-        }
-        [MessageHandler((ushort)ServerToClientMessageId.TurnPlayerParalysed)]
-        private static void ClientTurnPlayerParalysed(Message message)
-        {
-            BattleNetworkManager.Instance.ClientGotTurnPlayerParalysed(message);
-        }
-        [MessageHandler((ushort)ServerToClientMessageId.TurnPlayerAsleep)]
-        private static void ClientTurnPlayerAsleep(Message message)
-        {
-            BattleNetworkManager.Instance.ClientGotTurnPlayerAsleep(message);
-        }
-        
-        [MessageHandler((ushort)ServerToClientMessageId.TurnSequenceEnded)]
-        private static void ClientTurnSequenceEnded(Message message)
-        {
-            BattleNetworkManager.Instance.ClientGotTurnSequenceEnded(message);
+            BattleNetworkManager.Instance.ClientGetVisibleBattleActions(message);
         }
     }
 }

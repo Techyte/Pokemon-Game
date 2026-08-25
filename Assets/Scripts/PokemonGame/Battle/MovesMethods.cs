@@ -153,19 +153,19 @@ namespace PokemonGame.Battle
 
             if (type > 1)
             {
-                effectiveIndex = 2;
+                effectiveIndex = 2; // super effective
             }else if (type < 1)
             {
-                effectiveIndex = 1;
+                effectiveIndex = 1; // not very effective
             }
             else if (Mathf.Approximately(type, 1))
             {
-                effectiveIndex = 0;
+                effectiveIndex = 0; // effective
             }
 
-            if (move.category == MoveCategory.Special)
+            if (move.category == MoveCategory.Status)
             {
-                effectiveIndex = 0;
+                effectiveIndex = 0; // effective
             }
 
             damage = Mathf.RoundToInt(((((2f * level) / 5) * power * (attack / (float)defense)) / 50) + 2 * targets * pb * weather *
@@ -244,17 +244,15 @@ namespace PokemonGame.Battle
             {
                 int damageDealt = CalculateDamage(e.Move, e.Attacker, target,
                     out int effectiveIndex, out bool crit);
-
-                BattlerDamageSource source = new BattlerDamageSource(e.Attacker);
                 
-                target.TakeDamage(damageDealt, source);
+                target.TakeDamage(damageDealt, DamageSource.OtherBattler);
                 
                 e.Battle.AddVisibleBattleAction(VisibleBattleActionType.DamageDealt, new List<object>
                 {
                     e.Targets[targetIndex].Item1,
                     e.Targets[targetIndex].Item2,
                     damageDealt,
-                    source,
+                    DamageSource.OtherBattler,
                     effectiveIndex,
                     crit
                 });

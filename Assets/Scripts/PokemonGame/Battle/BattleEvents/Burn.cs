@@ -24,13 +24,25 @@ namespace PokemonGame.Battle
 
                     if (battler.statusEffect == burn)
                     {
-                        battler.TakeDamage(Mathf.CeilToInt(battler.stats.maxHealth/8f), new StatusEffectDamageSource(battler.statusEffect));
+                        int damageTaken = Mathf.CeilToInt(battler.stats.maxHealth / 8f);
+                        
+                        battler.TakeDamage(damageTaken, DamageSource.Burn);
                         
                         battle.AddVisibleBattleAction(VisibleBattleActionType.HasStatus, new List<object>
                         {
                             i,
                             j,
                             burn
+                        });
+                        
+                        battle.AddVisibleBattleAction(VisibleBattleActionType.DamageDealt, new List<object>
+                        {
+                            i,
+                            j,
+                            damageTaken,
+                            DamageSource.Burn,
+                            0,
+                            false
                         });
                     }
                 }

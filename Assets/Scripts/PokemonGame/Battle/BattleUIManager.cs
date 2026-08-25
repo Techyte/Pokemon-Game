@@ -94,35 +94,6 @@ namespace PokemonGame.Battle
             }
         }
 
-        private void HookEvents()
-        {
-            InputSystem.actions.FindAction("Escape").performed += OnEscapePressed;
-            battle.OnNewTurnState += OnNewTurnState;
-            battle.OnNewTurnItem += OnNewTurnItem;
-            battle.OnBattlerEvolved += OnBattlerEvolved;
-            battle.OnPlayerPickedAction += OnPlayerPickedAction;
-            battle.OnCatchAttempt += OnCatchAttempt;
-            battle.OnSwapBecauseFainted += OnSwapBecauseFainted;
-            battle.OnChangeBattler += OnChangeBattler;
-            battle.OnStartChangeBattlerIndex += OnStartChangeBattlerIndex;
-            battle.OnPlayerMove += OnPlayerMove;
-            DialogueManager.instance.OnDialogueStarted += OnDialogueStarted;
-        }
-        private void UnhookEvents()
-        {
-            InputSystem.actions.FindAction("Escape").performed -= OnEscapePressed;
-            battle.OnNewTurnState -= OnNewTurnState;
-            battle.OnNewTurnItem -= OnNewTurnItem;
-            battle.OnBattlerEvolved -= OnBattlerEvolved;
-            battle.OnPlayerPickedAction -= OnPlayerPickedAction;
-            battle.OnCatchAttempt -= OnCatchAttempt;
-            battle.OnSwapBecauseFainted -= OnSwapBecauseFainted;
-            battle.OnChangeBattler -= OnChangeBattler;
-            battle.OnStartChangeBattlerIndex -= OnStartChangeBattlerIndex;
-            battle.OnPlayerMove -= OnPlayerMove;
-            DialogueManager.instance.OnDialogueStarted -= OnDialogueStarted;
-        }
-
         private void OnNewTurnState(object sender, int e)
         {
             switch (e)
@@ -169,13 +140,13 @@ namespace PokemonGame.Battle
             switch (e)
             {
                 case 0:
-                    if (battle.localPlayerOne)
+                    if (battle.localPlayer.NetworkId == 0)
                     {
                         SwitchBattlerBecauseOfDeath();
                     }
                     break;
                 case 1:
-                    if (!battle.localPlayerOne)
+                    if (battle.localPlayer.NetworkId != 0)
                     {
                         SwitchBattlerBecauseOfDeath();
                     }
@@ -276,7 +247,7 @@ namespace PokemonGame.Battle
                 text.transform.parent.gameObject.SetActive(false);
             }
 
-            BattleParty party = battle.localPlayerOne ? battle.partyOne : battle.partyTwo;
+            BattleParty party = battle.localPlayer.Party;
 
             for (int i = 0; i < party.Count; i++)
             {
@@ -295,9 +266,7 @@ namespace PokemonGame.Battle
                     Color newColour = buttonParent.targetGraphic.color;
                     newColour.a = 1;
 
-                    int currentBattlerIndex = battle.localPlayerOne
-                        ? battle.playerOneBattlerIndex
-                        : battle.playerTwoBattlerIndex;
+                    int currentBattlerIndex = battle.activeBattlerIndices[0][0];
 
                     if (i == currentBattlerIndex)
                     {
@@ -314,8 +283,9 @@ namespace PokemonGame.Battle
                         battlerDisplays[i].color = Color.red;
                         newColour.a = .5f;
                     }
+
                     buttonParent.targetGraphic.color = newColour;
-                    
+
                 }
             }
         }
@@ -330,9 +300,9 @@ namespace PokemonGame.Battle
             int unUsable = 0;
             int total = 0;
 
-            for (int i = 0; i < battle.partyOne.Count; i++)
+            for (int i = 0; i < battle.localPlayer.Party.Count; i++)
             {
-                if (!battle.partyOne[i])
+                if (!battle.localPlayer.Party[i])
                 {
                     itemBattlerDisplays[i].transform.parent.gameObject.SetActive(false);
                 }
@@ -340,15 +310,15 @@ namespace PokemonGame.Battle
                 {
                     total++;
                     itemBattlerDisplays[i].transform.parent.gameObject.SetActive(true);
-                    itemBattlerDisplays[i].text = battle.partyOne[i].name;
-                    itemBattlerDisplays[i].transform.parent.GetComponent<Button>().interactable = !battle.partyOne[i].isFainted;
+                    itemBattlerDisplays[i].text = battle.localPlayer.Party[i].name;
+                    itemBattlerDisplays[i].transform.parent.GetComponent<Button>().interactable = !battle.localPlayer.Party[i].isFainted;
 
                     if (_playerItemToUse)
                     {
                         if (faintedRequiredItems.Contains(_playerItemToUse))
                         {
                             itemBattlerDisplays[i].transform.parent.GetComponent<Button>().interactable =
-                                battle.partyOne[i].isFainted;
+                                battle.localPlayer.Party[i].isFainted;
                         }
                     }
 
@@ -477,19 +447,9 @@ namespace PokemonGame.Battle
 
         public void ChangeBattler(int battlerID)
         {
-            if (battle.localPlayerOne)
+            if (battle.localPlayer.Party[battlerID].isFainted)
             {
-                if (battle.partyOne[battlerID].isFainted || battlerID == battle.playerOneBattlerIndex)
-                {
-                    return;
-                }
-            }
-            else
-            {
-                if (battle.partyTwo[battlerID].isFainted || battlerID == battle.playerTwoBattlerIndex)
-                {
-                    return;
-                }
+                return;
             }
             
             // playerUIHolder.SetActive(false);
@@ -541,26 +501,16 @@ namespace PokemonGame.Battle
 
         private void UpdateBattlerTexts()
         {
-            if (battle.localPlayerOne)
-            {
-                playerOneNameDisplay.text = battle.PlayerOneBattler.name;
-                playerOneLevelDisplay.text = "Lv. " + battle.PlayerOneBattler.level;
-                playerTwoBattlerNameDisplay.text = battle.PlayerTwoBattler.name;
-                playerTwoBattlerLevelDisplay.text = "Lv. " + battle.PlayerTwoBattler.level;
-            }
-            else
-            {
-                playerOneNameDisplay.text = battle.PlayerTwoBattler.name;
-                playerOneLevelDisplay.text = "Lv. " + battle.PlayerTwoBattler.level;
-                playerTwoBattlerNameDisplay.text = battle.PlayerOneBattler.name;
-                playerTwoBattlerLevelDisplay.text = "Lv. " + battle.PlayerOneBattler.level;
-            }
+            playerOneNameDisplay.text = battle.activeBattlers[0][0].name;
+            playerOneLevelDisplay.text = "Lv. " + battle.activeBattlers[0][0].level;
+            playerTwoBattlerNameDisplay.text = battle.activeBattlers[1][0].name;
+            playerTwoBattlerLevelDisplay.text = "Lv. " + battle.activeBattlers[1][0].level;
         }
 
         private void UpdateBattlerSprites()
         {
-            playerOneRenderer.sprite = battle.partyOne[battle.currentDisplayBattlerIndex].GetSpriteFront();
-            playerTwoBattlerRenderer.sprite = battle.partyTwo[battle.playerTwoDisplayBattlerIndex].GetSpriteFront();
+            playerOneRenderer.sprite = battle.activeBattlers[0][0].GetSpriteFront();
+            playerTwoBattlerRenderer.sprite = battle.activeBattlers[1][0].GetSpriteFront();
         }
 
         public void UpdatePlayerOneBattlerDetails()
@@ -573,11 +523,11 @@ namespace PokemonGame.Battle
 
         public void ForceHealthSet()
         {
-            _playerTwoCurrent = battle.PlayerTwoBattler.currentHealth /
-                                   (float)battle.PlayerTwoBattler.stats.maxHealth;
+            _playerTwoCurrent = battle.activeBattlers[1][0].currentHealth /
+                                   (float)battle.activeBattlers[1][0].stats.maxHealth;
 
-            _playerOneCurrent = battle.PlayerOneBattler.currentHealth /
-                                      (float)battle.PlayerOneBattler.stats.maxHealth;
+            _playerOneCurrent = battle.activeBattlers[0][0].currentHealth /
+                                      (float)battle.activeBattlers[0][0].stats.maxHealth;
         }
 
         public void UpdatePlayerTwoBattlerDetails()
@@ -592,9 +542,9 @@ namespace PokemonGame.Battle
             {
                 text.transform.parent.gameObject.SetActive(false);
             }
-            
-            List<Move> moves = battle.localPlayerOne ? battle.PlayerOneBattler.moves : battle.PlayerTwoBattler.moves;
-            List<MovePPData> movePpInfos = battle.localPlayerOne ? battle.PlayerOneBattler.movePpInfos : battle.PlayerTwoBattler.movePpInfos;
+
+            List<Move> moves = battle.activeBattlers[0][0].moves;
+            List<MovePPData> movePpInfos = battle.activeBattlers[0][0].movePpInfos;
             
             for (var i = 0; i < moves.Count; i++)
             {
@@ -622,7 +572,7 @@ namespace PokemonGame.Battle
 
         private void SetMoveButtonUINavigations()
         {
-            List<Moves> moves = battle.localPlayerOne ? battle.PlayerOneBattler.moves : battle.PlayerTwoBattler.moves;
+            List<Move> moves = battle.activeBattlers[0][0].moves;
             
             for (int i = 0; i < moves.Count; i++)
             {
@@ -663,18 +613,8 @@ namespace PokemonGame.Battle
         {
             float t = healthUpdateSpeed * Time.deltaTime;
 
-            float playerTwoTarget = 0;
-
-            if (battle.localPlayerOne)
-            {
-                playerTwoTarget = battle.PlayerTwoBattler.currentHealth /
-                                        (float)battle.PlayerTwoBattler.stats.maxHealth;
-            }
-            else
-            {
-                playerTwoTarget = battle.PlayerOneBattler.currentHealth /
-                                  (float)battle.PlayerOneBattler.stats.maxHealth;
-            }
+            float playerTwoTarget = battle.activeBattlers[1][0].currentHealth /
+                                    (float)battle.activeBattlers[1][0].stats.maxHealth;
             
             float playerTwoDifference = _playerTwoCurrent - playerTwoTarget;
             float absDifference = playerTwoDifference > 0 ? playerTwoDifference : -playerTwoDifference;
@@ -697,17 +637,8 @@ namespace PokemonGame.Battle
                 }
             }
 
-            float playerTarget = 0;
-            if (battle.localPlayerOne)
-            {
-                playerTarget = battle.PlayerOneBattler.currentHealth /
-                                     (float)battle.PlayerOneBattler.stats.maxHealth;
-            }
-            else
-            {
-                playerTarget = battle.PlayerTwoBattler.currentHealth /
-                               (float)battle.PlayerTwoBattler.stats.maxHealth;
-            }
+            float playerTarget = battle.activeBattlers[0][0].currentHealth /
+                                 (float)battle.activeBattlers[0][0].stats.maxHealth;
             
             float playerDifference = _playerOneCurrent - playerTarget;
             float absPlayerOneDifference = playerDifference > 0 ? playerDifference : -playerDifference;
@@ -730,39 +661,19 @@ namespace PokemonGame.Battle
                 }
             }
 
-            if (battle.localPlayerOne)
-            {
-                playerTwoHealthDisplay.transform.localScale = new Vector3(_playerTwoCurrent, 1, 1);
-                playerTwoSideBorder.position = Vector3.Lerp(playerTwoSideBorderLimitRight.position,
-                    playerTwoSideBorderLimitLeft.position, _playerTwoCurrent);
+            playerTwoHealthDisplay.transform.localScale = new Vector3(_playerTwoCurrent, 1, 1);
+            playerTwoSideBorder.position = Vector3.Lerp(playerTwoSideBorderLimitRight.position,
+                playerTwoSideBorderLimitLeft.position, _playerTwoCurrent);
                 
-                playerOneHealthDisplay.transform.localScale = new Vector3(_playerOneCurrent, 1, 1);
-                playerOneSideBorder.position = Vector3.Lerp(playerOneSideBorderLimitLeft.position,
-                    playerOneSideBorderLimitRight.position, _playerOneCurrent);
-            }
-            else
-            {
-                playerTwoHealthDisplay.transform.localScale = new Vector3(_playerTwoCurrent, 1, 1);
-                // Debug.LogError(playerCurrent);
-                playerTwoSideBorder.position = Vector3.Lerp(playerTwoSideBorderLimitRight.position,
-                    playerTwoSideBorderLimitLeft.position, _playerTwoCurrent);
-                
-                playerOneHealthDisplay.transform.localScale = new Vector3(_playerOneCurrent, 1, 1);
-                // Debug.LogError(_playerTwoCurrent);
-                playerOneSideBorder.position = Vector3.Lerp(playerOneSideBorderLimitLeft.position,
-                    playerOneSideBorderLimitRight.position, _playerOneCurrent);
-            }
+            playerOneHealthDisplay.transform.localScale = new Vector3(_playerOneCurrent, 1, 1);
+            playerOneSideBorder.position = Vector3.Lerp(playerOneSideBorderLimitLeft.position,
+                playerOneSideBorderLimitRight.position, _playerOneCurrent);
         }
 
         public void UpdatePartyIndicators()
         {
-            BattleParty partyOne = battle.partyOne;
-            BattleParty partyTwo = battle.partyTwo;
-
-            if (!battle.localPlayerOne)
-            {
-                (partyOne, partyTwo) = (partyTwo, partyOne);
-            }
+            BattleParty partyOne = battle.players[0].Party;
+            BattleParty partyTwo = battle.players[1].Party;
             
             foreach (var indicator in playerOnePartyIndicators)
             {
@@ -799,16 +710,6 @@ namespace PokemonGame.Battle
                     playerTwoPartyIndicators[i].sprite = partyAliveImage;
                 }
             }
-        }
-
-        private void OnEnable()
-        {
-            HookEvents();
-        }
-
-        private void OnDisable()
-        {
-            UnhookEvents();
         }
     }
 }
