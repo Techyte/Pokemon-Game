@@ -1,16 +1,18 @@
-using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using PokemonGame.General;
 using PokemonGame.Global;
 using PokemonGame.ScriptableObjects;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace PokemonGame.Battle
 {
-    [Serializable]
-    public class Moves : BattleEvent
+    public class Moves : BattleEvent/*, ISerializationCallbackReceiver*/
     {
-        public List<BattleEvent> nestedMoveEvents;
+        public override string Name { get; set; } = "Moves";
+        
+        public BattleSequence nestedMoveEvents;
         
         public override void Event(Battle battle)
         {
@@ -113,7 +115,7 @@ namespace PokemonGame.Battle
                 targets
             };
 
-            foreach (var moveEvent in nestedMoveEvents)
+            foreach (var moveEvent in nestedMoveEvents.sequence)
             {
                 MoveStatus currentStatus =
                     new MoveStatus(battle, playerIndex, actionIndex, attacker, moveId, move, targets);
@@ -123,6 +125,16 @@ namespace PokemonGame.Battle
                 battle.AddVisibleBattleAction(VisibleBattleActionType.MoveUsed, vars);
             }
         }
+
+        // public void OnBeforeSerialize()
+        // {
+        //     
+        // }
+        //
+        // public void OnAfterDeserialize()
+        // {
+        //     
+        // }
     }
 
     public class MoveStatus

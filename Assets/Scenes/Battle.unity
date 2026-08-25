@@ -7758,22 +7758,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowsGlobalTags: 1
   shrinkEffectDelay: 1
-  playerOneBattlerIndex: 0
-  playerTwoBattlerIndex: 0
   currentTurn: 0
-  localPlayerOne: 0
-  partyOne:
-    PartyList: []
-    defeated: 0
-  partyTwo:
-    PartyList: []
-    defeated: 0
+  localPlayerIndex: 0
   enemyAI: {fileID: 0}
-  currentDisplayBattlerIndex: 0
-  playerTwoDisplayBattlerIndex: 0
+  turnSequence: []
   playerOneBattlersThatParticipated: []
   trainerBattle: 0
   onlineBattle: 1
+  battlersEach: 1
+  eventToAdd: 0
 --- !u!4 &1038033300
 Transform:
   m_ObjectHideFlags: 0

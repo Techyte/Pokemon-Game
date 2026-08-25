@@ -7,9 +7,10 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
-    [Serializable]
     public class Burn : BattleEvent
     {
+        public override string Name { get; set; } = "Burn";
+        
         public override void Event(Battle battle)
         {
             for (int i = 0; i < battle.activeBattlers.Count; i++)

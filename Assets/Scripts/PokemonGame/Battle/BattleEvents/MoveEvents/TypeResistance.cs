@@ -4,9 +4,10 @@ using PokemonGame.General;
 
 namespace PokemonGame.Battle
 {
-    [Serializable]
     public class TypeResistance : BattleEvent
     {
+        public override string Name { get; set; } = "Type Resistance";
+        
         public override void Event(Battle battle, List<object> vars)
         {
             MoveStatus status = (MoveStatus)vars[0];

@@ -1,6 +1,5 @@
 using System;
 using PokemonGame.Networking;
-using Riptide;
 
 namespace PokemonGame.Battle
 {
@@ -57,9 +56,9 @@ namespace PokemonGame.Battle
         public Player localPlayer => players[localPlayerIndex];
         public int localPlayerIndex;
 
-        public List<List<Battler>> activeBattlers; // list of actively in-use pokemon, eg; [0][0] gets player ones first slot pokemon in play
+        public List<List<Battler>> activeBattlers = new List<List<Battler>>(); // list of actively in-use pokemon, eg; [0][0] gets player ones first slot pokemon in play
 
-        public List<List<int>> activeBattlerIndices;
+        public List<List<int>> activeBattlerIndices = new List<List<int>>();
         
         [SerializeField] private EnemyAI enemyAI;
         
@@ -73,7 +72,7 @@ namespace PokemonGame.Battle
         /// </summary>
         private bool hasSetupShowing;
 
-        [SerializeField] private List<BattleEvent> turnSequence;
+        [SerializeField] private BattleSequence turnSequence;
         
         /// <summary>
         /// the list of battlers that participated on the players team during this battle
@@ -100,7 +99,6 @@ namespace PokemonGame.Battle
         private EventHandler<EvolutionData> _playerOneBattlerEvolved = null;
 
         public bool onlineBattle;
-
         public int battlersEach;
 
         private void Initialise()
@@ -238,7 +236,8 @@ namespace PokemonGame.Battle
 
         private void SimulateTurn()
         {
-            foreach (var battleEvent in turnSequence)
+            Debug.Log("Simulating turn");
+            foreach (var battleEvent in turnSequence.sequence)
             {
                 battleEvent.Event(this);
             }

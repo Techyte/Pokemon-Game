@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace PokemonGame.Battle
 {
-    using General;
-    [Serializable]
     public class PrimaryEffect : BattleEvent
     {
+        public override string Name { get; set; } = "Primary Effect";
+        
         public override void Event(Battle battle, List<object> vars)
         {
             MoveStatus status = (MoveStatus)vars[0];

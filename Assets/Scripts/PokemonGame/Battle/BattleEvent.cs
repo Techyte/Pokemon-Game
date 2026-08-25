@@ -6,6 +6,8 @@ namespace PokemonGame.Battle
     [Serializable]
     public class BattleEvent
     {
+        public virtual string Name { get; set; } = "Battle Event";
+        
         public virtual void Event(Battle battle)
         {
             // called by battle class to begin an event

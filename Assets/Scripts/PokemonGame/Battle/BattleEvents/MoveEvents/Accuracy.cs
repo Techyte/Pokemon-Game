@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -7,9 +6,10 @@ namespace PokemonGame.Battle
 {
     using General;
     
-    [Serializable]
     public class Accuracy : BattleEvent
     {
+        public override string Name { get; set; } = "Accuracy";
+        
         public override void Event(Battle battle, List<object> vars)
         {
             MoveStatus status = (MoveStatus)vars[0];

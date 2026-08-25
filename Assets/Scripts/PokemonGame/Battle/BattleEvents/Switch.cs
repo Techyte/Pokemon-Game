@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
-    [Serializable]
     public class Switch : BattleEvent
     {
+        public override string Name { get; set; } = "Switch";
+        
         public override void Event(Battle battle)
         {
             for (int i = 0; i < battle.playerActions.Count; i++)
