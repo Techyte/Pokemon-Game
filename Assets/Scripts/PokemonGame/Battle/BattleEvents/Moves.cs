@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 namespace PokemonGame.Battle
 {
     [Serializable]
-    public class Moves : BattleEvent/*, ISerializationCallbackReceiver*/
+    public class Moves : BattleEvent
     {
         public override string Name()
         {
@@ -130,16 +130,6 @@ namespace PokemonGame.Battle
                 battle.AddVisibleBattleAction(VisibleBattleActionType.MoveUsed, vars);
             }
         }
-
-        // public void OnBeforeSerialize()
-        // {
-        //     
-        // }
-        //
-        // public void OnAfterDeserialize()
-        // {
-        //     
-        // }
     }
 
     public class MoveStatus
@@ -158,7 +148,7 @@ namespace PokemonGame.Battle
         public bool Failed;
 
         // used when the TARGET managed to avoid the move in some way
-        public List<bool> Failures;
+        public bool[] Failures;
 
         public MoveStatus(Battle battle, int playerIndex, int actionIndex, Battler attacker, int moveId, Move move, List<(int, int)> targets)
         {
@@ -170,7 +160,11 @@ namespace PokemonGame.Battle
             Move = move;
             Attacker = attacker;
             
-            Failures = new List<bool>(targets.Count);
+            Failures = new bool[targets.Count];
+            // for (int i = 0; i < targets.Count; i++)
+            // {
+            //     Failures[i] = false;
+            // }
 
             Failed = false;
         }
