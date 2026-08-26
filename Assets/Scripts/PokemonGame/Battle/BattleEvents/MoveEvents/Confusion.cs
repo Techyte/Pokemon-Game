@@ -9,10 +9,14 @@ namespace PokemonGame.Battle
     using Global;
     using ScriptableObjects;
     
+    [Serializable]
     public class Confusion : BattleEvent
     {
-        public override string Name { get; set; } = "Confusion";
-        
+        public override string Name()
+        {
+            return "Confusion";
+        }
+
         public override void Event(Battle battle, List<object> vars)
         {
             MoveStatus status = (MoveStatus)vars[0];

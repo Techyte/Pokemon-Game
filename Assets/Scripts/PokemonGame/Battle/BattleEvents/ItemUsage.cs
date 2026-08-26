@@ -8,10 +8,14 @@ namespace PokemonGame.Battle
     using Game;
     using ScriptableObjects;
     
+    [Serializable]
     public class ItemUsage : BattleEvent
     {
-        public override string Name { get; set; } = "ItemUsage";
-        
+        public override string Name()
+        {
+            return "Item Usage";
+        }
+
         public override void Event(Battle battle)
         {
             for (int i = 0; i < battle.playerActions.Count; i++)

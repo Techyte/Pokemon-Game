@@ -37,28 +37,18 @@ namespace PokemonGame.Editor
         {
             BattleEvent battleEvent = ((BattleSequence)target).sequence[index];
             
-            try
+            EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), battleEvent.Name());
+
+            if (CanCast<Moves>(battleEvent))
             {
                 Moves moves = (Moves)battleEvent;
-                EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), battleEvent.Name);
 
                 moves.nestedMoveEvents = (BattleSequence)EditorGUI.ObjectField(
                     new Rect(rect.x + 50, rect.y, rect.width-50, EditorGUIUtility.singleLineHeight), moves.nestedMoveEvents,
                     typeof(BattleSequence), false);
-
-                // Save changes to the object
-                if (GUI.changed) {
-                    EditorUtility.SetDirty((BattleSequence)target);
-                }
-            }
-            catch (Exception e)
-            {
-                // not a moves event
-                EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), battleEvent.Name);
             }
         }
 
-        //Draws the header
         void DrawHeader(Rect rect)
         {
             string name = "Battle Sequence";
@@ -67,34 +57,39 @@ namespace PokemonGame.Editor
         
         public override void OnInspectorGUI()
         {
+            EditorUtility.SetDirty(target);
             serializedObject.Update();
+
+            list.DoLayoutList();
             
-            // 1. Get a reference to the target script
             BattleSequence script = (BattleSequence)target;
-
-            list.DoLayoutList(); // Have the ReorderableList do its work
-
-            // We need to call this so that changes on the Inspector are saved by Unity.
-            
-            // 2. Store the current value before drawing the popup
             BattleSequence.BattleEventsToAdd previousValue = script.eventToAdd;
             
-            // 3. Draw the dropdown
             script.eventToAdd = (BattleSequence.BattleEventsToAdd)EditorGUILayout.EnumPopup("", script.eventToAdd);
             
-            // 4. If the value changed, execute your logic
             if (script.eventToAdd != previousValue)
             {
                 Debug.Log("Option changed to: " + script.eventToAdd);
-                script.AddBattleEvent(); // Call the method in your main script
+                script.AddBattleEvent();
                 script.eventToAdd = 0;
             }
-            
-            serializedObject.ApplyModifiedProperties();
 
             if (GUILayout.Button("Clear"))
             {
                 script.sequence = new List<BattleEvent>();
+            }
+        }
+
+        private bool CanCast<T>(object obj)
+        {
+            try
+            {
+                T cast = (T)obj;
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
     }

@@ -14,8 +14,6 @@ namespace PokemonGame.ScriptableObjects
         public new string name;
         public Color colour;
 
-        public List<StatusEventTrigger> triggers;
-
         /// <summary>
         /// The default status effect
         /// </summary>
@@ -33,29 +31,4 @@ namespace PokemonGame.ScriptableObjects
             return null;
         }
     }
-
-    public class StatusEffectEventArgs : EventArgs
-    {
-        public StatusEffectEventArgs(Battler battler)
-        {
-            this.battler = battler;
-        }
-        
-        public Battler battler;
-    }
-
-    [Serializable]
-    public class StatusEventTrigger
-    {
-        public EffectTrigger trigger;
-        public UnityEvent<StatusEffectEventArgs> EffectEvent;
-    }
-}
-
-[Serializable]
-public enum EffectTrigger
-{
-    StartOfTurn,
-    EndOfTurn,
-    EnterBattleSelf,
 }

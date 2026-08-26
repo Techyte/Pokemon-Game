@@ -226,6 +226,8 @@ namespace PokemonGame.Battle
         {
             if (!hasSetupShowing)
             {
+                visibleActions = new List<VisibleBattleAction>();
+                
                 hasSetupShowing = true;
                 OnNewTurnState?.Invoke(this, 1);
                 

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53a3ecee5adf23c42af052e4246e08d2, type: 3}
-  m_Name: Poisoned
-  m_EditorClassIdentifier: 
-  name: Poisoned
-  colour: {r: 0.5049739, g: 0, b: 1, a: 1}
+  m_Name: Confusion
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonGame.ScriptableObjects.StatusEffect
+  name: Confusion
+  colour: {r: 0.90150565, g: 0.8417841, b: 0.11703609, a: 1}
   triggers: []

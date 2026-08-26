@@ -7,10 +7,14 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
+    [Serializable]
     public class Poison : BattleEvent
     {
-        public override string Name { get; set; } = "Poison";
-        
+        public override string Name()
+        {
+            return "Poison";
+        }
+
         public override void Event(Battle battle)
         {
             for (int i = 0; i < battle.activeBattlers.Count; i++)

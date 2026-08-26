@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0251631f8ddc1695aa7794c104f0a3c, type: 3}
+  m_Name: Moves Sequence
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonGame.ScriptableObjects.BattleSequence
+  sequence:
+  - rid: 8719880970385752217
+  - rid: 8719880970385752218
+  - rid: 8719880970385752219
+  - rid: 8719880970385752220
+  - rid: 8719880970385752221
+  eventToAdd: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 8719880970385752217
+      type: {class: Asleep, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data: 
+    - rid: 8719880970385752218
+      type: {class: Confusion, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data: 
+    - rid: 8719880970385752219
+      type: {class: TypeResistance, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data: 
+    - rid: 8719880970385752220
+      type: {class: Accuracy, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data: 
+    - rid: 8719880970385752221
+      type: {class: PrimaryEffect, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data: 

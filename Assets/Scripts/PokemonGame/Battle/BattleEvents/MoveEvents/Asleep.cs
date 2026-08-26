@@ -9,10 +9,14 @@ namespace PokemonGame.Battle
     using Global;
     using ScriptableObjects;
     
+    [Serializable]
     public class Asleep : BattleEvent
     {
-        public override string Name { get; set; } = "Asleep";
-            
+        public override string Name()
+        {
+            return "Asleep";
+        }
+
         public override void Event(Battle battle, List<object> vars)
         {
             MoveStatus status = (MoveStatus)vars[0];

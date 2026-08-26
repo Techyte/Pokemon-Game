@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using PokemonGame.General;
@@ -8,10 +9,14 @@ using Random = UnityEngine.Random;
 
 namespace PokemonGame.Battle
 {
+    [Serializable]
     public class Moves : BattleEvent/*, ISerializationCallbackReceiver*/
     {
-        public override string Name { get; set; } = "Moves";
-        
+        public override string Name()
+        {
+            return "Moves";
+        }
+
         public BattleSequence nestedMoveEvents;
         
         public override void Event(Battle battle)

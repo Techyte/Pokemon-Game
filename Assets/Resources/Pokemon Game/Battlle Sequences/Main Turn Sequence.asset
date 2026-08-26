@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0251631f8ddc1695aa7794c104f0a3c, type: 3}
+  m_Name: Main Turn Sequence
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonGame.ScriptableObjects.BattleSequence
+  sequence:
+  - rid: 8719880970385752212
+  - rid: 8719880970385752213
+  - rid: 8719880970385752214
+  - rid: 8719880970385752215
+  - rid: 8719880970385752216
+  eventToAdd: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 8719880970385752212
+      type: {class: Switch, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data: 
+    - rid: 8719880970385752213
+      type: {class: ItemUsage, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data: 
+    - rid: 8719880970385752214
+      type: {class: Moves, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data:
+        nestedMoveEvents: {fileID: 11400000, guid: 94cd4b08f89f3d11889254451f9526a2,
+          type: 2}
+    - rid: 8719880970385752215
+      type: {class: Poison, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data: 
+    - rid: 8719880970385752216
+      type: {class: Burn, ns: PokemonGame.Battle, asm: Assembly-CSharp}
+      data: 

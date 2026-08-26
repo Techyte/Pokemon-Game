@@ -7,9 +7,13 @@ using UnityEngine;
 
 namespace PokemonGame.Battle
 {
+    [Serializable]
     public class Burn : BattleEvent
     {
-        public override string Name { get; set; } = "Burn";
+        public override string Name()
+        {
+            return "Burn";
+        }
         
         public override void Event(Battle battle)
         {

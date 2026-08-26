@@ -7761,12 +7761,11 @@ MonoBehaviour:
   currentTurn: 0
   localPlayerIndex: 0
   enemyAI: {fileID: 0}
-  turnSequence: []
+  turnSequence: {fileID: 11400000, guid: 1da13039bac0a73e4874612606d6a87e, type: 2}
   playerOneBattlersThatParticipated: []
   trainerBattle: 0
   onlineBattle: 1
   battlersEach: 1
-  eventToAdd: 0
 --- !u!4 &1038033300
 Transform:
   m_ObjectHideFlags: 0
